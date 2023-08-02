@@ -24,6 +24,7 @@
   "devDependencies": {
     "@babel/core": "^7.20.7",
     "@babel/preset-env": "^7.20.2",
+    "@types/mustache": "^4.2.2",
     "@typescript-eslint/eslint-plugin": "^5.59.9",
     "@typescript-eslint/parser": "^5.59.9",
     "babel-loader": "^9.1.0",
@@ -41,7 +42,6 @@
     "html-loader": "^4.2.0",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.7.2",
-    "mustache": "^4.2.0",
     "mustache-loader": "^1.4.3",
     "normalize.css": "^8.0.1",
     "postcss": "^8.4.20",
@@ -64,5 +64,8 @@
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.11.1"
+  },
+  "dependencies": {
+    "mustache": "^4.2.0"
   }
 }
