@@ -42,3 +42,14 @@ npm run lint
 npm run lint-fix
 
 ```
+
+### Создание файлов (blob)
+```shell
+1) npm run generate
+2) Выбор конечной папки(пример: component)
+3) Имя файла в CamelCase(пример: Header)
+4) Указать необходимость SCSS файла(пример: y)
+5) Указать необходимость *.types.ts файла(пример: y)
+
+
+```
