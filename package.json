@@ -5,12 +5,13 @@
   "main": "index.ts",
   "scripts": {
     "start": "webpack serve",
-    "build-dev": "webpack",
-    "build-prod": "webpack --node-env=production",
-    "clear-u": "rd /s /q dist",
-    "clear-w": "rm -r /s /q dist",
+    "build:dev": "webpack",
+    "build:prod": "webpack --node-env=production",
+    "clear:unix": "rd /s /q dist",
+    "clear:windows": "rm -r /s /q dist",
     "lint": "eslint ./src",
-    "lint-fix": "eslint ./src --fix"
+    "lint:fix": "eslint ./src --fix",
+    "format": "prettier --write **/*.{html,scss,ts}"
   },
   "keywords": [],
   "author": "",

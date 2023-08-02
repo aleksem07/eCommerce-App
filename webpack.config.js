@@ -21,7 +21,6 @@ module.exports = {
     hot: true,
   },
 
-  //путь
   entry: path.resolve(__dirname, "src", "index"),
   output: {
     path: path.resolve(__dirname, "dist"),
