@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ESLintPlugin = require("eslint-webpack-plugin");
 const StylelintPlugin = require("stylelint-webpack-plugin");
+const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 
 const mode = process.env.NODE_ENV || "development";
 const devMode = mode === "development";
@@ -45,6 +46,7 @@ module.exports = {
     }),
   ],
   resolve: {
+    plugins: [new TsconfigPathsPlugin()],
     extensions: [".js", ".ts"],
   },
   module: {
