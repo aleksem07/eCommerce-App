@@ -11,7 +11,8 @@
     "clear:windows": "rm -r /s /q dist",
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
-    "format": "prettier --write **/*.{html,scss,ts}"
+    "format": "prettier --write **/*.{html,scss,ts}",
+    "generate": "plop"
   },
   "keywords": [],
   "author": "",
@@ -43,6 +44,7 @@
     "image-webpack-loader": "^8.1.0",
     "mini-css-extract-plugin": "^2.7.2",
     "normalize.css": "^8.0.1",
+    "plop": "^3.1.2",
     "postcss": "^8.4.20",
     "postcss-less": "^6.0.0",
     "postcss-loader": "^7.0.2",
