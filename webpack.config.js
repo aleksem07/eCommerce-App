@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ESLintPlugin = require("eslint-webpack-plugin");
 const StylelintPlugin = require("stylelint-webpack-plugin");
+const postcssPresetEnv = require("postcss-preset-env");
 
 const mode = process.env.NODE_ENV || "development";
 const devMode = mode === "development";
@@ -66,7 +67,7 @@ module.exports = {
             loader: "postcss-loader",
             options: {
               postcssOptions: {
-                plugins: [require("postcss-preset-env")],
+                plugins: [postcssPresetEnv],
               },
             },
           },
@@ -82,16 +83,7 @@ module.exports = {
           },
         ],
       },
-      //fonts
-      {
-        test: /\.woff2?$/i,
-        type: "asset/resource",
-        generator: {
-          filename: "fonts/[name][ext]",
-        },
-      },
 
-      //img
       {
         test: /\.(jpe?g|png|webp|gif|svg)$/i,
         use: devMode
@@ -120,18 +112,6 @@ module.exports = {
               },
             ],
         type: "asset/resource",
-      },
-
-      //js
-      {
-        test: /\.m?js$/i,
-        exclude: /(node_modules|bower_components)/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: ["@babel/preset-env"],
-          },
-        },
       },
     ],
   },

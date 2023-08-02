@@ -12,22 +12,22 @@ npm run start
 
 ### Сборка проекта без оптимизации
 ```shell
-npm run build-dev
+npm run build:dev
 ```
 
 ### Сборка проекта с оптимизацией
 ```shell
-npm run build-prod
+npm run build:prod
 ```
 
 ### Очистка папки dist
 //unix (linux, macOS)
 ```shell
-npm run clear-u
+npm run clear:unix
 ```
 //windows
 ```shell
-npm run clear-w
+npm run clear:windows
 
 ```
 
@@ -39,6 +39,12 @@ npm run lint
 
 ### Запуск линтера (исправление ошибок)
 ```shell
-npm run lint-fix
+npm run lint:fix
+
+```
+
+### Запуск prettier 
+```shell
+npm run format
 
 ```
