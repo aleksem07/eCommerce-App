@@ -52,6 +52,10 @@ module.exports = {
         loader: "html-loader",
       },
       {
+        test: /\.mustache|mst$/,
+        use: "mustache-loader",
+      },
+      {
         test: /\.ts$/i,
         use: "ts-loader",
       },
