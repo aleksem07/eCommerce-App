@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ESLintPlugin = require("eslint-webpack-plugin");
 const StylelintPlugin = require("stylelint-webpack-plugin");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
+const postcssPresetEnv = require("postcss-preset-env");
 
 const mode = process.env.NODE_ENV || "development";
 const devMode = mode === "development";
@@ -30,10 +31,7 @@ module.exports = {
   },
 
   plugins: [
-    new HtmlWebpackPlugin({
-      filename: "index.html",
-      template: path.resolve(__dirname, "src", "index.html"),
-    }),
+    new HtmlWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: "[name].[contenthash].css",
     }),
@@ -68,7 +66,7 @@ module.exports = {
             loader: "postcss-loader",
             options: {
               postcssOptions: {
-                plugins: [require("postcss-preset-env")],
+                plugins: [postcssPresetEnv],
               },
             },
           },
@@ -83,57 +81,6 @@ module.exports = {
             },
           },
         ],
-      },
-      //fonts
-      {
-        test: /\.woff2?$/i,
-        type: "asset/resource",
-        generator: {
-          filename: "fonts/[name][ext]",
-        },
-      },
-
-      //img
-      {
-        test: /\.(jpe?g|png|webp|gif|svg)$/i,
-        use: devMode
-          ? []
-          : [
-              {
-                loader: "image-webpack-loader",
-                options: {
-                  mozjpeg: {
-                    progressive: true,
-                  },
-                  optipng: {
-                    enabled: false,
-                  },
-                  pngquant: {
-                    quality: [0.65, 0.9],
-                    speed: 4,
-                  },
-                  gifsicle: {
-                    interlaced: false,
-                  },
-                  webp: {
-                    quality: 75,
-                  },
-                },
-              },
-            ],
-        type: "asset/resource",
-      },
-
-      //js
-      {
-        test: /\.m?js$/i,
-        exclude: /(node_modules|bower_components)/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: ["@babel/preset-env"],
-          },
-        },
       },
     ],
   },
