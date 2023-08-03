@@ -59,3 +59,17 @@ npm run format
 
 
 ```
+### Импорт в ts
+
+Пример:
+
+import Login from "@Pages/login/login";
+
+Список всех сокращений:
+
+@Components/* === src/components/*",
+@Pages/* === src/pages/*,
+@Services/* === src/services/*,
+@State/* === src/state/*,
+@Utils/* === src//utils/*,
+
