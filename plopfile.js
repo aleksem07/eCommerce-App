@@ -28,6 +28,14 @@ function addActions(data, src) {
     });
   }
 
+  if (src === "components") {
+    actions.push({
+      type: "add",
+      path: `src/${src}/{{dashCase name}}/{{dashCase name}}.html`,
+      templateFile: "templates/component.html.hbs",
+    });
+  }
+
   return actions;
 }
 const prompts = [
