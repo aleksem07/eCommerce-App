@@ -50,7 +50,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.html$/,
+        test: /\.mst$/,
         use: "mustache-loader",
       },
       {

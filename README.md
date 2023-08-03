@@ -81,14 +81,14 @@ npm run generate component ComponentName
 
 ### Структура
 
-- component-name.html: разметка компонента
+- component-name.mst: разметка компонента
 - component-name.ts: содержит данные компонента, методы, обязательный метод Draw возвращающий разметку
 - component-name.test.ts: содержит тесты для компонента
 - component-name.scss: стили компонента (необязательно)
 
 ### Пример
 
-component-name.html
+component-name.mst
 
 ```handlebars
 <div>
@@ -100,7 +100,7 @@ component-name.html
 component-name.ts
 
 ```ts
-import template from "./component-name.html";
+import template from "./component-name.mst";
 
 export default class ComponentName {
   data = {

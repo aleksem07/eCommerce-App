@@ -31,8 +31,8 @@ function addActions(data, src) {
   if (src === "components") {
     actions.push({
       type: "add",
-      path: `src/${src}/{{dashCase name}}/{{dashCase name}}.html`,
-      templateFile: "templates/component.html.hbs",
+      path: `src/${src}/{{dashCase name}}/{{dashCase name}}.mst`,
+      templateFile: "templates/component.mst.hbs",
     });
   }
 
