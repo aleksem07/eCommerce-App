@@ -5,6 +5,14 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitAny": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@Components/*": ["./components/*"],
+      "@Pages/*": ["./pages/*"],
+      "@Services/*": ["./services/*"],
+      "@State/*": ["./state/*"],
+      "@Utils/*": ["./utils/*"],
+    }
   }
 }
