@@ -139,4 +139,6 @@ npm run generate util UtilName
 
 ------------------
 
+## Husky
 
+prepare - служебная команда установки при выполнении npm install
