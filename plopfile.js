@@ -12,7 +12,7 @@ function addActions(data, src) {
     },
   ];
 
-  if (data.addStyles) {
+  if (data.addStyles && src === "components") {
     actions.push({
       type: "add",
       path: `src/${src}/{{dashCase name}}/{{dashCase name}}.scss`,
@@ -46,7 +46,7 @@ const prompts = [
     type: "confirm",
     name: "addStyles",
     message: "Do you want to add an SCSS file?",
-    default: true,
+    default: false,
   },
   {
     type: "confirm",
