@@ -1,9 +1,4 @@
 {
-  "settings": {
-    "import/resolver": {
-      "typescript": {}
-    }
-  },
   "extends": [
     "prettier",
     "airbnb/base",
