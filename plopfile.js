@@ -1,41 +1,43 @@
+function createObj(path = "templates", template = "", type = "add") {
+  return {
+    type: type,
+    path: path,
+    templateFile: template,
+  };
+}
+
 function addActions(data, src) {
   const actions = [
-    {
-      type: "add",
-      path: `src/${src}/{{dashCase name}}/{{dashCase name}}.ts`,
-      templateFile: `templates/${src}/component.ts.txt`,
-    },
-    {
-      type: "add",
-      path: `src/${src}/{{dashCase name}}/{{dashCase name}}.test.ts`,
-      templateFile: `templates/${src}/test.ts.txt`,
-    },
+    createObj(
+      `src/${src}/{{dashCase name}}/{{dashCase name}}.test.ts`,
+      `templates/${src}/test.ts.txt`
+    ),
   ];
-
   if (data.addStyles && (src === "components" || src === "pages")) {
-    actions.push({
-      type: "add",
-      path: `src/${src}/{{dashCase name}}/{{dashCase name}}.scss`,
-      template: "",
-    });
+    actions.push(createObj(`src/${src}/{{dashCase name}}/{{dashCase name}}.scss`));
   }
-
   if (data.addTypes) {
-    actions.push({
-      type: "add",
-      path: `src/${src}/{{dashCase name}}/{{dashCase name}}.types.ts`,
-      template: "",
-    });
+    actions.push(createObj(`src/${src}/{{dashCase name}}/{{dashCase name}}.types.ts`));
   }
-
   if (data.addMst && (src === "components" || src === "pages")) {
-    actions.push({
-      type: "add",
-      path: `src/${src}/{{dashCase name}}/{{dashCase name}}.mst`,
-      templateFile: `templates/${src}/component.mst.txt`,
-    });
+    actions.push(
+      createObj(
+        `src/${src}/{{dashCase name}}/{{dashCase name}}.mst`,
+        `templates/${src}/component.mst.txt`
+      ),
+      createObj(
+        `src/${src}/{{dashCase name}}/{{dashCase name}}.ts`,
+        `templates/${src}/componentWithmst.ts.txt`
+      )
+    );
+  } else {
+    actions.push(
+      createObj(
+        `src/${src}/{{dashCase name}}/{{dashCase name}}.ts`,
+        `templates/${src}/component.ts.txt`
+      )
+    );
   }
-
   return actions;
 }
 const promptsDOM = [
