@@ -8,8 +8,7 @@
   "plugins": ["prettier", "import", "@typescript-eslint"],
   "parserOptions": {
     "ecmaVersion": "latest",
-    "sourceType": "module",
-    "project": "./tsconfig.json"
+    "sourceType": "module"
   },
   "env": {
     "es6": true,
@@ -22,7 +21,6 @@
     "no-console": 1,
     "class-methods-use-this": "off",
     "@typescript-eslint/no-explicit-any": "error",
-    "@typescript-eslint/no-unnecessary-type-assertion": "error",
     "@typescript-eslint/no-non-null-assertion": "error",
     "@typescript-eslint/no-var-requires": "off",
     "max-lines-per-function": ["error", 40]

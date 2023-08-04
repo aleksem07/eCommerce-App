@@ -11,10 +11,11 @@
     "clear:windows": "rm -r /s /q dist",
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
-    "format": "prettier --write **/*.{html,scss,ts}",
+    "format": "prettier --write **/*.{mst,scss,ts}",
     "generate": "plop",
     "prepare": "husky install",
-    "test": "jest"
+    "test": "jest",
+    "test:coverage": "jest --coverage"
   },
   "keywords": [],
   "author": "",
