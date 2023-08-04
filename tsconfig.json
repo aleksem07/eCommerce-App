@@ -12,8 +12,8 @@
       "@Pages/*": ["./pages/*"],
       "@Services/*": ["./services/*"],
       "@State/*": ["./state/*"],
-      "@Utils/*": ["./utils/*"],
-
+      "@Utils/*": ["./utils/*"]
     }
-  }
+  },
+  "exclude": ["node_modules"]
 }

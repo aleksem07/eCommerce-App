@@ -11,21 +11,27 @@ npm run start
 ```
 
 ### Сборка проекта без оптимизации
+
 ```shell
 npm run build:dev
 ```
 
 ### Сборка проекта с оптимизацией
+
 ```shell
 npm run build:prod
 ```
 
 ### Очистка папки dist
+
 //unix (linux, macOS)
+
 ```shell
 npm run clear:unix
 ```
+
 //windows
+
 ```shell
 npm run clear:windows
 
@@ -38,12 +44,14 @@ npm run lint
 ```
 
 ### Запуск линтера (исправление ошибок)
+
 ```shell
 npm run lint:fix
 
 ```
 
-### Запуск prettier 
+### Запуск prettier
+
 ```shell
 npm run format
 
@@ -67,9 +75,55 @@ npm run generate component ComponentName
 
 2. Укажите необходимость SCSS файла напечатав y(нужны) или n(не нужны)
 
-3. Укажите необходимость *.types.ts файла напечатав y(нужны) или n(не нужны)
+3. Укажите необходимость \*.types.ts файла напечатав y(нужны) или n(не нужны)
 
 4. Папка с файлами появится в src/componets
+
+### Структура
+
+- component-name.mst: разметка компонента
+- component-name.ts: содержит данные компонента, методы, обязательный метод Draw возвращающий разметку
+- component-name.test.ts: содержит тесты для компонента
+- component-name.scss: стили компонента (необязательно)
+
+### Пример
+
+component-name.mst
+
+```handlebars
+<div>
+  <h2>{{title}}</h2>
+  <p>{{content}}</p>
+</div>
+```
+
+component-name.ts
+
+```ts
+import template from "./component-name.mst";
+
+export default class ComponentName {
+  data = {
+    title: "Component title",
+    content: "text",
+  };
+
+  draw() {
+    return template(this.data);
+  }
+}
+```
+
+Использование компонента
+
+```ts
+import ComponentName from "./component-name";
+
+const element = new ComponentName();
+
+document.body.innerHTML = element.draw();
+```
+
 ## Страницы
 
 Папка: `pages`
@@ -86,7 +140,7 @@ npm run generate page PageName
 
 4. Укажите необходимость SCSS файла напечатав y(нужны) или n(не нужны)
 
-5. Укажите необходимость *.types.ts файла напечатав y(нужны) или n(не нужны)
+5. Укажите необходимость \*.types.ts файла напечатав y(нужны) или n(не нужны)
 
 6. Папка с файлами появится в src/pages
 
@@ -106,7 +160,7 @@ npm run generate service ServiceName
 
 2. Укажите необходимость SCSS файла напечатав y(нужны) или n(не нужны)
 
-3. Укажите необходимость *.types.ts файла напечатав y(нужны) или n(не нужны)
+3. Укажите необходимость \*.types.ts файла напечатав y(нужны) или n(не нужны)
 
 4. Папка с файлами появится в src/services
 
@@ -126,7 +180,7 @@ npm run generate util UtilName
 
 2. Укажите необходимость SCSS файла напечатав y(нужны) или n(не нужны)
 
-3. Укажите необходимость *.types.ts файла напечатав y(нужны) или n(не нужны)
+3. Укажите необходимость \*.types.ts файла напечатав y(нужны) или n(не нужны)
 
 4. Папка с файлами появится в src/utils
 
@@ -136,7 +190,4 @@ npm run generate util UtilName
 
 Импорт алиас: `@State`
 
-
-------------------
-
-
+---
