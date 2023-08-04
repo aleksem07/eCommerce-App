@@ -1,5 +1,9 @@
-component
-export default class {{pascalCase name}} {
+import template from "./{{dashCase name}}.mst";
+
+export default class {{pascalCase name}}Component {
   constructor() {
+  }
+  draw() {
+    return template();
   }
 }

@@ -1,5 +1,4 @@
-utils
-export default class {{pascalCase name}} {
+export default class {{pascalCase name}}Util {
   constructor() {
   }
 }

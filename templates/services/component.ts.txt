@@ -1,5 +1,4 @@
-services
-export default class {{pascalCase name}} {
+export default class {{pascalCase name}}Service {
   constructor() {
   }
 }
