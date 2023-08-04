@@ -38,7 +38,7 @@ function addActions(data, src) {
 
   return actions;
 }
-const prompts = [
+const promptsDOM = [
   {
     type: "input",
     name: "name",
@@ -58,6 +58,32 @@ const prompts = [
   },
   {
     type: "confirm",
+    name: "addMst",
+    message: "Do you want to add a .mst file?",
+    default: false,
+  },
+  {
+    type: "confirm",
+    name: "addTypes",
+    message: "Do you want to add a *.types.ts file?",
+    default: false,
+  },
+];
+
+const promptsWithoutDOM = [
+  {
+    type: "input",
+    name: "name",
+    message: "Enter the component name (in PascalCase):",
+    validate: (value) => {
+      if (/^[A-Z][A-Za-z]*$/.test(value)) {
+        return true;
+      }
+      return "Invalid component name. Must be in PascalCase and start with a capital letter.";
+    },
+  },
+  {
+    type: "confirm",
     name: "addTypes",
     message: "Do you want to add a *.types.ts file?",
     default: false,
@@ -67,7 +93,7 @@ const prompts = [
 module.exports = (plop) => {
   plop.setGenerator("component", {
     description: "Generate a new component",
-    prompts,
+    prompts: promptsDOM,
     actions: (data) => {
       const res = addActions(data, "components");
       return res;
@@ -75,7 +101,7 @@ module.exports = (plop) => {
   });
   plop.setGenerator("page", {
     description: "Generate a new page",
-    prompts,
+    prompts: promptsDOM,
     actions: (data) => {
       const res = addActions(data, "pages");
       return res;
@@ -83,7 +109,7 @@ module.exports = (plop) => {
   });
   plop.setGenerator("service", {
     description: "Generate a new service",
-    prompts,
+    prompts: promptsWithoutDOM,
     actions: (data) => {
       const res = addActions(data, "services");
       return res;
@@ -91,7 +117,7 @@ module.exports = (plop) => {
   });
   plop.setGenerator("util", {
     description: "Generate a new util",
-    prompts,
+    prompts: promptsWithoutDOM,
     actions: (data) => {
       const res = addActions(data, "utils");
       return res;
