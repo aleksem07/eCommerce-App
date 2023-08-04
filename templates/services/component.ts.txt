@@ -1,0 +1,5 @@
+services
+export default class {{pascalCase name}} {
+  constructor() {
+  }
+}

@@ -1,3 +1,4 @@
+pages
 export default class {{pascalCase name}} {
   constructor() {
   }

@@ -3,16 +3,16 @@ function addActions(data, src) {
     {
       type: "add",
       path: `src/${src}/{{dashCase name}}/{{dashCase name}}.ts`,
-      templateFile: "templates/component.ts.txt",
+      templateFile: `templates/${src}/component.ts.txt`,
     },
     {
       type: "add",
       path: `src/${src}/{{dashCase name}}/{{dashCase name}}.test.ts`,
-      templateFile: "templates/test.ts.txt",
+      templateFile: `templates/${src}/test.ts.txt`,
     },
   ];
 
-  if (data.addStyles && src === "components") {
+  if (data.addStyles && (src === "components" || src === "pages")) {
     actions.push({
       type: "add",
       path: `src/${src}/{{dashCase name}}/{{dashCase name}}.scss`,
@@ -28,11 +28,11 @@ function addActions(data, src) {
     });
   }
 
-  if (src === "components") {
+  if (data.addMst && (src === "components" || src === "pages")) {
     actions.push({
       type: "add",
       path: `src/${src}/{{dashCase name}}/{{dashCase name}}.mst`,
-      templateFile: "templates/component.mst.txt",
+      templateFile: `templates/${src}/component.mst.txt`,
     });
   }
 
