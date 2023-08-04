@@ -3,12 +3,12 @@ function addActions(data, src) {
     {
       type: "add",
       path: `src/${src}/{{dashCase name}}/{{dashCase name}}.ts`,
-      templateFile: "templates/component.ts.hbs",
+      templateFile: "templates/component.ts.txt",
     },
     {
       type: "add",
       path: `src/${src}/{{dashCase name}}/{{dashCase name}}.test.ts`,
-      templateFile: "templates/test.ts.hbs",
+      templateFile: "templates/test.ts.txt",
     },
   ];
 
@@ -32,7 +32,7 @@ function addActions(data, src) {
     actions.push({
       type: "add",
       path: `src/${src}/{{dashCase name}}/{{dashCase name}}.mst`,
-      templateFile: "templates/component.mst.hbs",
+      templateFile: "templates/component.mst.txt",
     });
   }
 
