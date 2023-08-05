@@ -1,8 +1,8 @@
-import {{pascalCase name}} from "./{{dashCase name}}";
+import {{pascalCase name}}Util from "./{{dashCase name}}";
 
 describe("{{pascalCase name}}", () => {
   it("should instantiate", () => {
-    const instance = new {{pascalCase name}}();
+    const instance = new {{pascalCase name}}Util();
     expect(instance).toBeInstanceOf({{pascalCase name}});
   });
 });

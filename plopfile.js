@@ -1,4 +1,4 @@
-function createObj(path = "templates", template = "", type = "add") {
+function createAction(path = "templates", template = "", type = "add") {
   return {
     type: type,
     path: path,
@@ -8,35 +8,29 @@ function createObj(path = "templates", template = "", type = "add") {
 
 function addActions(data, src) {
   const actions = [
-    createObj(
+    createAction(
       `src/${src}/{{dashCase name}}/{{dashCase name}}.test.ts`,
       `templates/${src}/test.ts.txt`
     ),
+    createAction(
+      `src/${src}/{{dashCase name}}/{{dashCase name}}.ts`,
+      `templates/${src}/component.ts.txt`
+    ),
   ];
   if (data.addStyles && (src === "components" || src === "pages")) {
-    actions.push(createObj(`src/${src}/{{dashCase name}}/{{dashCase name}}.scss`));
+    const style = createAction(`src/${src}/{{dashCase name}}/{{dashCase name}}.scss`);
+    actions.push(style);
   }
   if (data.addTypes) {
-    actions.push(createObj(`src/${src}/{{dashCase name}}/{{dashCase name}}.types.ts`));
+    const style = createAction(`src/${src}/{{dashCase name}}/{{dashCase name}}.types.ts`);
+    actions.push(style);
   }
-  if (data.addMst && (src === "components" || src === "pages")) {
-    actions.push(
-      createObj(
-        `src/${src}/{{dashCase name}}/{{dashCase name}}.mst`,
-        `templates/${src}/component.mst.txt`
-      ),
-      createObj(
-        `src/${src}/{{dashCase name}}/{{dashCase name}}.ts`,
-        `templates/${src}/componentWithmst.ts.txt`
-      )
+  if (src === "components" || src === "pages") {
+    const style = createAction(
+      `src/${src}/{{dashCase name}}/{{dashCase name}}.mst`,
+      `templates/${src}/component.mst.txt`
     );
-  } else {
-    actions.push(
-      createObj(
-        `src/${src}/{{dashCase name}}/{{dashCase name}}.ts`,
-        `templates/${src}/component.ts.txt`
-      )
-    );
+    actions.push(style);
   }
   return actions;
 }
@@ -60,19 +54,13 @@ const promptsDOM = [
   },
   {
     type: "confirm",
-    name: "addMst",
-    message: "Do you want to add a .mst file?",
-    default: false,
-  },
-  {
-    type: "confirm",
     name: "addTypes",
     message: "Do you want to add a *.types.ts file?",
     default: false,
   },
 ];
 
-const promptsWithoutDOM = [
+const templatelessPrompt = [
   {
     type: "input",
     name: "name",
@@ -104,25 +92,16 @@ module.exports = (plop) => {
   plop.setGenerator("page", {
     description: "Generate a new page",
     prompts: promptsDOM,
-    actions: (data) => {
-      const res = addActions(data, "pages");
-      return res;
-    },
+    actions: (data) => addActions(data, "pages"),
   });
   plop.setGenerator("service", {
     description: "Generate a new service",
-    prompts: promptsWithoutDOM,
-    actions: (data) => {
-      const res = addActions(data, "services");
-      return res;
-    },
+    prompts: templatelessPrompt,
+    actions: (data) => addActions(data, "services"),
   });
   plop.setGenerator("util", {
     description: "Generate a new util",
-    prompts: promptsWithoutDOM,
-    actions: (data) => {
-      const res = addActions(data, "utils");
-      return res;
-    },
+    prompts: templatelessPrompt,
+    actions: (data) => addActions(data, "utils"),
   });
 };
