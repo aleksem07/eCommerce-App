@@ -88,6 +88,8 @@ npm run generate component ComponentName
 
 ### Пример
 
+#### Создание компонента и его элементов
+
 component-name.view.ts
 
 ```ts
@@ -124,6 +126,123 @@ export default class ComponentName {
   }
 }
 ```
+
+#### Привязка событий
+
+<details>
+<summary>Пример кода</summary>
+
+component-name.view.ts
+
+```ts
+import { ViewBuilder } from "@Interfaces/view-builder";
+
+export default class ComponentNameView extends ViewBuilder {
+  element: HTMLElement;
+  private button: HTMLButtonElement;
+
+  constructor() {
+    super();
+    this.element = this.createElement("div");
+
+    this.button = this.createElement("button");
+    this.element.appendChild(this.button);
+  }
+
+  buttonClickListener(handler: () => void) {
+    this.button.addEventListener("click", handler);
+  }
+
+  render() {
+    this.appendTo("#root", this.element);
+  }
+}
+```
+
+component-name.ts
+
+```ts
+import ComponentNameView from "./component-name.view";
+
+export default class ComponentName {
+  private view: ComponentNameView;
+
+  constructor() {
+    this.view = new ComponentNameView();
+    this.view.buttonClickListener(this.buttonClickHandler.bind(this));
+  }
+
+  buttonClickHandler() {
+    // any logic here
+  }
+
+  init() {
+    this.view.render();
+  }
+}
+```
+
+</details>
+
+#### Вызов API сервисов
+
+<details>
+<summary>Пример кода</summary>
+
+component-name.view.ts
+
+```ts
+import { ViewBuilder } from "@Interfaces/view-builder";
+
+export default class ComponentNameView extends ViewBuilder {
+  element: HTMLElement;
+
+  constructor() {
+    super();
+    this.element = this.createElement("div");
+  }
+
+  displayProducts(products: Product) {
+    // create elements for products displaying
+    // append them to this.element
+  }
+
+  render() {
+    this.appendTo("#root", this.element);
+  }
+}
+```
+
+component-name.ts
+
+```ts
+import ComponentNameView from "./component-name.view";
+
+export default class ComponentName {
+  private view: ComponentNameView;
+  private service: ProductsAPIService;
+
+  private products: Product[] = [];
+
+  constructor() {
+    this.view = new ComponentNameView();
+    this.service = new ProductsAPIService();
+
+    this.fetchProducts();
+  }
+
+  async fetchProducts() {
+    this.products = await this.service.fetchProducts();
+    this.view.displayProducts(this.products);
+  }
+
+  init() {
+    this.view.render();
+  }
+}
+```
+
+</details>
 
 ## Страницы
 
