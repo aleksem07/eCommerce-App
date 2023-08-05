@@ -11,7 +11,7 @@
     "clear:windows": "rm -r /s /q dist",
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
-    "format": "prettier --write **/*.{mst,scss,ts}",
+    "format": "prettier --write **/*.{scss,ts}",
     "generate": "plop",
     "prepare": "husky install",
     "test": "jest",
