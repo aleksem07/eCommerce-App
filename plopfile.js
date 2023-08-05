@@ -34,7 +34,7 @@ function addActions(data, src) {
   }
   return actions;
 }
-const promptsDOM = [
+const templatefulPrompt = [
   {
     type: "input",
     name: "name",
@@ -83,7 +83,7 @@ const templatelessPrompt = [
 module.exports = (plop) => {
   plop.setGenerator("component", {
     description: "Generate a new component",
-    prompts: promptsDOM,
+    prompts: templatefulPrompt,
     actions: (data) => {
       const res = addActions(data, "components");
       return res;
@@ -91,7 +91,7 @@ module.exports = (plop) => {
   });
   plop.setGenerator("page", {
     description: "Generate a new page",
-    prompts: promptsDOM,
+    prompts: templatefulPrompt,
     actions: (data) => addActions(data, "pages"),
   });
   plop.setGenerator("service", {
