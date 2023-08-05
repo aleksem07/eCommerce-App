@@ -14,5 +14,6 @@
       "@State/*": ["./state/*"],
       "@Utils/*": ["./utils/*"],
     }
-  }
+  },
+  "exclude": ["node_modules"]
 }

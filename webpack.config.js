@@ -50,8 +50,8 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.html$/i,
-        loader: "html-loader",
+        test: /\.mst$/,
+        use: "mustache-loader",
       },
       {
         test: /\.ts$/i,

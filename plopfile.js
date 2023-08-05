@@ -1,36 +1,40 @@
+function createAction(path = "templates", template = "", type = "add") {
+  return {
+    type: type,
+    path: path,
+    templateFile: template,
+  };
+}
+
 function addActions(data, src) {
   const actions = [
-    {
-      type: "add",
-      path: `src/${src}/{{dashCase name}}/{{dashCase name}}.ts`,
-      templateFile: "templates/component.ts.hbs",
-    },
-    {
-      type: "add",
-      path: `src/${src}/{{dashCase name}}/{{dashCase name}}.test.ts`,
-      templateFile: "templates/test.ts.hbs",
-    },
+    createAction(
+      `src/${src}/{{dashCase name}}/{{dashCase name}}.test.ts`,
+      `templates/${src}/test.ts.txt`
+    ),
+    createAction(
+      `src/${src}/{{dashCase name}}/{{dashCase name}}.ts`,
+      `templates/${src}/component.ts.txt`
+    ),
   ];
-
-  if (data.addStyles && src === "components") {
-    actions.push({
-      type: "add",
-      path: `src/${src}/{{dashCase name}}/{{dashCase name}}.scss`,
-      template: "",
-    });
+  if (data.addStyles && (src === "components" || src === "pages")) {
+    const style = createAction(`src/${src}/{{dashCase name}}/{{dashCase name}}.scss`);
+    actions.push(style);
   }
-
   if (data.addTypes) {
-    actions.push({
-      type: "add",
-      path: `src/${src}/{{dashCase name}}/{{dashCase name}}.types.ts`,
-      template: "",
-    });
+    const style = createAction(`src/${src}/{{dashCase name}}/{{dashCase name}}.types.ts`);
+    actions.push(style);
   }
-
+  if (src === "components" || src === "pages") {
+    const style = createAction(
+      `src/${src}/{{dashCase name}}/{{dashCase name}}.mst`,
+      `templates/${src}/component.mst.txt`
+    );
+    actions.push(style);
+  }
   return actions;
 }
-const prompts = [
+const templatefulPrompt = [
   {
     type: "input",
     name: "name",
@@ -56,10 +60,30 @@ const prompts = [
   },
 ];
 
+const templatelessPrompt = [
+  {
+    type: "input",
+    name: "name",
+    message: "Enter the component name (in PascalCase):",
+    validate: (value) => {
+      if (/^[A-Z][A-Za-z]*$/.test(value)) {
+        return true;
+      }
+      return "Invalid component name. Must be in PascalCase and start with a capital letter.";
+    },
+  },
+  {
+    type: "confirm",
+    name: "addTypes",
+    message: "Do you want to add a *.types.ts file?",
+    default: false,
+  },
+];
+
 module.exports = (plop) => {
   plop.setGenerator("component", {
     description: "Generate a new component",
-    prompts,
+    prompts: templatefulPrompt,
     actions: (data) => {
       const res = addActions(data, "components");
       return res;
@@ -67,26 +91,17 @@ module.exports = (plop) => {
   });
   plop.setGenerator("page", {
     description: "Generate a new page",
-    prompts,
-    actions: (data) => {
-      const res = addActions(data, "pages");
-      return res;
-    },
+    prompts: templatefulPrompt,
+    actions: (data) => addActions(data, "pages"),
   });
   plop.setGenerator("service", {
     description: "Generate a new service",
-    prompts,
-    actions: (data) => {
-      const res = addActions(data, "services");
-      return res;
-    },
+    prompts: templatelessPrompt,
+    actions: (data) => addActions(data, "services"),
   });
   plop.setGenerator("util", {
     description: "Generate a new util",
-    prompts,
-    actions: (data) => {
-      const res = addActions(data, "utils");
-      return res;
-    },
+    prompts: templatelessPrompt,
+    actions: (data) => addActions(data, "utils"),
   });
 };
