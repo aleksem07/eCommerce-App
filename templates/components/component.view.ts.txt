@@ -1,6 +1,6 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
 
-export default class HeaderView extends ViewBuilder {
+export default class {{pascalCase name}}View extends ViewBuilder {
   element: HTMLElement;
 
   constructor() {
