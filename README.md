@@ -81,47 +81,48 @@ npm run generate component ComponentName
 
 ### Структура
 
-- component-name.mst: разметка компонента
-- component-name.ts: содержит данные компонента, методы, обязательный метод Draw возвращающий разметку
+- component-name.view.ts: содержит разметку компонента, создание DOM елементов и привязку событий
+- component-name.ts: содержит данные компонента, методы и обработчик событий
 - component-name.test.ts: содержит тесты для компонента
 - component-name.scss: стили компонента (необязательно)
 
 ### Пример
 
-component-name.mst
+component-name.view.ts
 
-```handlebars
-<div>
-  <h2>{{title}}</h2>
-  <p>{{content}}</p>
-</div>
+```ts
+import { ViewBuilder } from "@Interfaces/view-builder";
+
+export default class ComponentNameView extends ViewBuilder {
+  element: HTMLElement;
+
+  constructor() {
+    super();
+    this.element = this.createElement("div");
+  }
+
+  render() {
+    this.appendTo("#root", this.element);
+  }
+}
 ```
 
 component-name.ts
 
 ```ts
-import template from "./component-name.mst";
+import ComponentNameView from "./component-name.view";
 
 export default class ComponentName {
-  data = {
-    title: "Component title",
-    content: "text",
-  };
+  private view: ComponentNameView;
 
-  draw() {
-    return template(this.data);
+  constructor() {
+    this.view = new ComponentNameView();
+  }
+
+  init() {
+    this.view.render();
   }
 }
-```
-
-Использование компонента
-
-```ts
-import ComponentName from "./component-name";
-
-const element = new ComponentName();
-
-document.body.innerHTML = element.draw();
 ```
 
 ## Страницы
