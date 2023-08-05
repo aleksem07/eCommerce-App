@@ -1,8 +1,8 @@
 import {{pascalCase name}}Service from "./{{dashCase name}}";
 
-describe("{{pascalCase name}}", () => {
+describe("{{pascalCase name}}Service", () => {
   it("should instantiate", () => {
     const instance = new {{pascalCase name}}Service();
-    expect(instance).toBeInstanceOf({{pascalCase name}});
+    expect(instance).toBeInstanceOf({{pascalCase name}}Service);
   });
 });

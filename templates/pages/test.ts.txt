@@ -1,8 +1,8 @@
 import {{pascalCase name}}Page from "./{{dashCase name}}";
 
-describe("{{pascalCase name}}", () => {
+describe("{{pascalCase name}}Page", () => {
   it("should instantiate", () => {
     const instance = new {{pascalCase name}}Page();
-    expect(instance).toBeInstanceOf({{pascalCase name}});
+    expect(instance).toBeInstanceOf({{pascalCase name}}Page);
   });
 });
