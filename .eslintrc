@@ -3,18 +3,19 @@
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended",
-    "prettier"
+    "prettier",
+    "plugin:jest/recommended"
   ],
-  "plugins": ["prettier", "import", "@typescript-eslint"],
+  "plugins": ["prettier", "import", "@typescript-eslint", "jest"],
   "parserOptions": {
     "ecmaVersion": "latest",
-    "sourceType": "module",
-    "project": "./tsconfig.json"
+    "sourceType": "module"
   },
   "env": {
     "es6": true,
     "browser": true,
-    "node": true
+    "node": true,
+    "jest/globals": true
   },
   "rules": {
     "no-plusplus": "off",
@@ -22,10 +23,14 @@
     "no-console": 1,
     "class-methods-use-this": "off",
     "@typescript-eslint/no-explicit-any": "error",
-    "@typescript-eslint/no-unnecessary-type-assertion": "error",
     "@typescript-eslint/no-non-null-assertion": "error",
     "@typescript-eslint/no-var-requires": "off",
-    "max-lines-per-function": ["error", 40]
+    "max-lines-per-function": ["error", 40],
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/prefer-to-have-length": "warn",
+    "jest/valid-expect": "error"
   },
   "parser": "@typescript-eslint/parser",
   "root": true
