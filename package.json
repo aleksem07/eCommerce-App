@@ -25,6 +25,7 @@
   "devDependencies": {
     "@babel/core": "^7.20.7",
     "@babel/preset-env": "^7.20.2",
+    "@types/bootstrap": "^5.2.6",
     "@typescript-eslint/eslint-plugin": "^5.59.9",
     "@typescript-eslint/parser": "^5.59.9",
     "autoprefixer": "^10.4.14",
@@ -46,7 +47,6 @@
     "normalize.css": "^8.0.1",
     "plop": "^3.1.2",
     "postcss": "^8.4.20",
-    "postcss-less": "^6.0.0",
     "postcss-loader": "^7.3.3",
     "prettier": "^3.0.0",
     "recommended": "^0.0.7",
@@ -67,7 +67,6 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
-    "@types/bootstrap": "^5.2.6",
     "bootstrap": "^5.3.1",
     "bootstrap-icons": "^1.10.5"
   }
