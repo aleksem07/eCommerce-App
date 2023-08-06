@@ -1,4 +1,2 @@
-import "./index.scss";
-import * as bootstrap from "bootstrap";
-
-export { bootstrap };
+import "bootstrap/scss/bootstrap.scss";
+import "bootstrap-icons/font/bootstrap-icons.scss";

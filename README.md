@@ -199,7 +199,7 @@ npm run generate util UtilName
 Подключить стили:
 
 ```shell
-@import "bootstrap/scss/bootstrap";
+import "bootstrap/scss/bootstrap.scss";
 ```
 
 ### JS
@@ -222,7 +222,7 @@ import { Tooltip, Toast, Popover } from 'bootstrap'
 Подключить: 
 
 ```shell
-@import "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css";
+import "bootstrap-icons/font/bootstrap-icons.scss";
 ```
 
 Вставить:
