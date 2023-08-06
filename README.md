@@ -9,6 +9,7 @@ by **random team #19**
 4. [Code Guide](#Code-Guide)
 5. [Contribute](#Contribute)
 6. [Tools / Plugins](#Tools-/-Plugins)
+   - [Bootstrap](#Bootstrap)
    - [Husky](#Husky)
    - [Jest](#Jest)
    - [Plugins](#VS-Code-Plugins)
@@ -104,6 +105,49 @@ Runs Prettier to format the code according to defined rules.
 ## Contribute
 
 ## Tools / Plugins
+
+### Bootstrap
+
+#### Style
+
+To include Bootstrap styles, import the SCSS file in your project:
+
+```shell
+import "bootstrap/scss/bootstrap.scss";
+```
+
+#### JS
+
+To include all Bootstrap JavaScript components, import the entire library like this:
+
+```shell
+import * as bootstrap from 'bootstrap'
+```
+
+To include only specific Bootstrap JavaScript plugins, you can import them individually like this:
+
+```shell
+import Alert from 'bootstrap/js/dist/alert'
+import { Tooltip, Toast, Popover } from 'bootstrap'
+```
+
+#### Icons
+
+To use Bootstrap icons, first, import the icon font:
+
+```shell
+import "bootstrap-icons/font/bootstrap-icons.scss";
+```
+
+Then, you can use the icons in your HTML code as follows:
+
+```shell
+<i class="bi bi-icon-name">
+```
+
+Where `.bi` is the class used for all Bootstrap icons, and 
+`.bi-icon-name` is the specific icon's name. 
+By default, the icon size is set to `1em`. It is recommended to use `width: 1em` (and optionally `height: 1em`) to easily adjust the icon's size using the `font-size` property.
 
 ### Husky
 
