@@ -3,7 +3,6 @@
     "stylelint-config-standard"
   ],
   "plugins": ["stylelint-order", "stylelint-scss"],
-  "customSyntax": "postcss-less",
 
   "rules": {
     "declaration-no-important": true,

@@ -310,6 +310,52 @@ npm run generate util UtilName
 
 Импорт алиас: `@State`
 
+------------------
+
+## Bootstrap 
+
+### Style
+
+Подключить стили:
+
+```shell
+import "bootstrap/scss/bootstrap.scss";
+```
+
+### JS
+
+Подключить весь JS: 
+
+```shell
+import * as bootstrap from 'bootstrap'
+```
+
+Подключить только необходимые JS плагины: 
+
+```shell
+import Alert from 'bootstrap/js/dist/alert'
+import { Tooltip, Toast, Popover } from 'bootstrap'
+```
+
+### Icons
+
+Подключить: 
+
+```shell
+import "bootstrap-icons/font/bootstrap-icons.scss";
+```
+
+Вставить:
+
+```shell
+<i class="bi bi-icon-name">
+```
+
+где .bi - используется для всех элементов иконок,
+bi-icon-name - имя конкретной иконки.
+Размер по умолчанию - 1em. Рекомендуется использовать ширину: 1em (и, при желании, высоту: 1em) для удобного изменения размера с помощью font-size.
+Доступные иконки: https://icons.getbootstrap.com/#icons
+
 ## Husky
 
 Перед коммитом автоматически запускает форматирование и проверку кода, и запрещает коммит по найденным ошибкам
