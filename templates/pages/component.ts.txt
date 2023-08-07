@@ -1,10 +1,13 @@
-import template from "./{{dashCase name}}.mst";
+import {{pascalCase name}}View from "./{{dashCase name}}.view";
 
 export default class {{pascalCase name}}Page {
+  private view: {{pascalCase name}}View;
+
   constructor() {
+    this.view = new {{pascalCase name}}View();
   }
 
-  render() {
-    return template();
+  init() {
+    this.view.render();
   }
 }

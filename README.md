@@ -261,26 +261,39 @@ npm run generate component ComponentName
 
 `component-name.mst`
 
-```handlebars
-<div>
-  <h2>{{title}}</h2>
-  <p>{{content}}</p>
-</div>
+component-name.view.ts
+
+```ts
+import { ViewBuilder } from "@Interfaces/view-builder";
+
+export default class ComponentNameView extends ViewBuilder {
+  element: HTMLElement;
+
+  constructor() {
+    super();
+    this.element = this.createElement("div");
+  }
+
+  render() {
+    this.appendTo("#root", this.element);
+  }
+}
 ```
 
 `component-name.ts`
 
 ```ts
-import template from "./component-name.mst";
+import ComponentNameView from "./component-name.view";
 
 export default class ComponentName {
-  data = {
-    title: "Component title",
-    content: "text",
-  };
+  private view: ComponentNameView;
 
-  draw() {
-    return template(this.data);
+  constructor() {
+    this.view = new ComponentNameView();
+  }
+
+  init() {
+    this.view.render();
   }
 }
 ```
@@ -288,11 +301,28 @@ export default class ComponentName {
 Usage of the component:
 
 ```ts
-import ComponentName from "./component-name";
+import { ViewBuilder } from "@Interfaces/view-builder";
 
-const element = new ComponentName();
+export default class ComponentNameView extends ViewBuilder {
+  element: HTMLElement;
+  private button: HTMLButtonElement;
 
-document.body.innerHTML = element.draw();
+  constructor() {
+    super();
+    this.element = this.createElement("div");
+
+    this.button = this.createElement("button");
+    this.element.appendChild(this.button);
+  }
+
+  buttonClickListener(handler: () => void) {
+    this.button.addEventListener("click", handler);
+  }
+
+  render() {
+    this.appendTo("#root", this.element);
+  }
+}
 ```
 
 ### Pages

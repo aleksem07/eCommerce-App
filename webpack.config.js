@@ -3,8 +3,8 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ESLintPlugin = require("eslint-webpack-plugin");
 const StylelintPlugin = require("stylelint-webpack-plugin");
+const autoprefixer = require("autoprefixer");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
-const postcssPresetEnv = require("postcss-preset-env");
 
 const mode = process.env.NODE_ENV || "development";
 const devMode = mode === "development";
@@ -50,15 +50,11 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.mst$/,
-        use: "mustache-loader",
-      },
-      {
         test: /\.ts$/i,
         use: "ts-loader",
       },
       {
-        test: /\.(c|sa|sc)ss$/i,
+        test: /\.(scss)$/,
         use: [
           devMode ? "style-loader" : MiniCssExtractPlugin.loader,
           "css-loader",
@@ -66,13 +62,9 @@ module.exports = {
             loader: "postcss-loader",
             options: {
               postcssOptions: {
-                plugins: [postcssPresetEnv],
+                plugins: () => [autoprefixer],
               },
             },
-          },
-          "group-css-media-queries-loader",
-          {
-            loader: "resolve-url-loader",
           },
           {
             loader: "sass-loader",
