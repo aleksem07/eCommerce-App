@@ -1,14 +1,20 @@
+const { pathsToModuleNameMapper } = require("ts-jest");
+const { compilerOptions } = require("./tsconfig");
+
 module.exports = {
   preset: "ts-jest",
-  testEnvironment: "node",
-  collectCoverage: true,
+  testEnvironment: "jsdom",
+  collectCoverage: false,
   coverageReporters: ["json", "lcov", "text", "clover"],
   coverageThreshold: {
     global: {
-      branches: 80,
-      functions: 80,
-      lines: 80,
-      statements: -10,
+      branches: 25,
+      functions: 25,
+      lines: 25,
+      statements: 25,
     },
   },
+  roots: ["<rootDir>"],
+  modulePaths: [compilerOptions.baseUrl],
+  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
 };

@@ -8,12 +8,12 @@
     "skipLibCheck": true,
     "baseUrl": "./src",
     "paths": {
-      "@Components/*": ["./components/*"],
-      "@Pages/*": ["./pages/*"],
-      "@Services/*": ["./services/*"],
-      "@State/*": ["./state/*"],
-      "@Utils/*": ["./utils/*"],
-      "@Interfaces/*": ["./interfaces/*"]
+      "@Components/*": ["components/*"],
+      "@Pages/*": ["pages/*"],
+      "@Services/*": ["services/*"],
+      "@State/*": ["state/*"],
+      "@Utils/*": ["utils/*"],
+      "@Interfaces/*": ["interfaces/*"]
     }
   },
   "exclude": ["node_modules"]
