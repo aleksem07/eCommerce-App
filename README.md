@@ -1,94 +1,265 @@
-# WEBPACK
+# eCommerce-Application 2023Q1
 
-Для установки пакетов используйте команду npm install
+by **random team #19**
 
-## Команды
+## Table of Contents
+1. [Description](#Description)
+2. [Install](#install)
+3. [Avilable scripts](#Avilable-scripts)
+4. [Code Guide](#Code-Guide)
+5. [Contribute](#Contribute)
+6. [Tools / Plugins](#Tools-/-Plugins)
+   * [Bootstrap](#Bootstrap)
+   * [Husky](#Husky)
+   * [Jest](#Jest)
+   * [Plugins](#VS-Code-Plugins)
+7. [Modules](#Modules)
+   * [Components](#Components)
+   * [Pages](#Pages)
+   * [Services](#Services)
+   * [Utilities](#Utilities)
+   * [State](#State)
+   
+## Description
 
-### Запуск сервера для разработки (порт 3000)
+The app is a Single Page Application (SPA) powered by CommerceTools, a leading provider of commercial solutions for B2C and B2B businesses.
+
+## Install
+
+```shell
+git clone https://github.com/NikitaStarmoussov/eCommerce-Application.git
+cd project
+npm install
+```
+
+## Avilable scripts
+
+### Running the Development Server
 
 ```shell
 npm run start
 ```
 
-### Сборка проекта без оптимизации
+Starts the development server on port 3000 for local development.
+
+### Building the Project (Development)
 
 ```shell
 npm run build:dev
 ```
 
-### Сборка проекта с оптимизацией
+Builds the project without optimization for development purposes.
+
+### Building the Project (Production)
 
 ```shell
 npm run build:prod
 ```
 
-### Очистка папки dist
+Builds the project with optimization for production deployment.
 
-//unix (linux, macOS)
+### Clearing the Dist Folder
+
+#### unix (Linux, macOS)
 
 ```shell
 npm run clear:unix
 ```
 
-//windows
+Clears the contents of the "dist" folder on Unix-based systems.
+
+#### windows
 
 ```shell
 npm run clear:windows
-
 ```
 
-### Запуск линтера
+Clears the contents of the "dist" folder on Windows.
+
+### Running the Linter
 
 ```shell
 npm run lint
 ```
 
-### Запуск линтера (исправление ошибок)
+Runs the linter to check for code style and formatting issues.
+
+### Running the Linter (Fixing Errors)
 
 ```shell
 npm run lint:fix
-
 ```
 
-### Запуск prettier
+Runs the linter and automatically fixes code style and formatting issues.
+
+### Running Prettier
 
 ```shell
 npm run format
-
 ```
 
-# Модули
+Runs Prettier to format the code according to defined rules.
 
-## Компоненты
+## Code Guide
 
-Папка: `src/components`
+### Name conventions
 
-Импорт алиас: `@Components`
+#### Cody style
 
-### Генерация файлов
+* Typescript usage is required
+* Use class oriented code style
+* Follow eslint recommended rules
+* Follow stylelint recommended rules
 
-1. Введите команду в терминале:
+#### Files
+
+* Use dash-case for file and folder names, e.g. auth, product-card
+* Locate folders and files appropriately according to [Folder Structure](#Folder-Structure)
+* Use `generate` command to follow this convention easily
+* Add new modules if necessary
+* Follow folder aliases approach, see tsconfig.json for examples
+* Edit file generation templates if necessary
+
+#### Classes
+
+* Each class in specific module has suffix with module name, e.g. AuthService, ProductCardComponent, LoginPage, DOMUtil
+
+### Folder Structure
+
+Follow agreed folder structure:
+
+* [components: Reusable interface elements.](#Components)
+* [pages: Separate app pages and routes.](#Pages)
+* [services: Logic and data interaction.](#Services)
+* [utilities: Helper functions and tools.](#Utilities)
+* [state: Application state management.](#State)
+
+### Code Review
+
+Follow Google recommendations for Code Review:
+
+* <https://habr.com/ru/articles/473308/>
+* <https://habr.com/ru/articles/474334/>
+
+## Contribute
+
+1. Clone repository `git clone https://github.com/NikitaStarmoussov/eCommerce-Application.git`
+2. Install dependencies with `npm intstall`
+3. Run development service `npm run start`
+4. Make changes
+5. Verify your changes:
+  * Build is successful `npm run build:dev` or `npm run build:prod`
+  * There are no eslint errors `npm run lint`
+  * Code is formatted `npm run format`
+  * Tests are passed successfully `npm run test`
+  * Test coverage is not less than 35% `npm run test:coverage`
+6. Create pull request to `develop`
+7. Pass code review
+  * Fix comments
+  * Refactor
+  * Get approvals from team
+8. Merge pull request
+9. Wait for deploy and release
+
+## Tools / Plugins
+
+### Bootstrap
+
+#### Style
+
+To include Bootstrap styles, import the SCSS file in your project:
+
+```shell
+import "bootstrap/scss/bootstrap.scss";
+```
+
+#### JS
+
+To include all Bootstrap JavaScript components, import the entire library like this:
+
+```shell
+import * as bootstrap from 'bootstrap'
+```
+
+To include only specific Bootstrap JavaScript plugins, you can import them individually like this:
+
+```shell
+import Alert from 'bootstrap/js/dist/alert'
+import { Tooltip, Toast, Popover } from 'bootstrap'
+```
+
+#### Icons
+
+To use Bootstrap icons, first, import the icon font:
+
+```shell
+import "bootstrap-icons/font/bootstrap-icons.scss";
+```
+
+Then, you can use the icons in your HTML code as follows:
+
+```shell
+<i class="bi bi-icon-name">
+```
+
+where `.bi` is the class used for all Bootstrap icons, and 
+`.bi-icon-name` is the specific icon's name. 
+By default, the icon size is set to `1em`. It is recommended to use `width: 1em` (and optionally `height: 1em`) to easily adjust the icon's size using the `font-size` property.
+
+### Husky
+
+Husky runs automatic formatting and code checking before committing and prohibits commits with errors.
+
+The `prepare` script is used for setup when running `npm install`.
+
+### Jest
+
+- `test`: runs all tests.
+- `test:coverage`: displays code coverage metrics showing the percentage of code executed during tests.
+
+1. Lines: The percentage of code lines that were executed during tests. Any unexecuted code lines will be shown in the report.
+2. Functions: The percentage of functions that were called during tests. Functions that were not called during tests will be indicated in the report.
+3. Branches: The percentage of branches (if/else, switch, ternary operators, etc.) in your code that were covered by tests. Any branches that were not executed during tests will be shown in the report.
+4. Statements: The percentage of instructions (or expressions) that were executed during tests.
+
+### VS Code Plugins
+
+- [Orta.vscode-jest](https://marketplace.visualstudio.com/items?itemName=Orta.vscode-jest)
+- [esbenp.prettier-vscode](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- [dbaeumer.vscode-eslint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+
+## Modules
+
+### Components
+
+Folder: `src/components`
+
+Import Alias: `@Components`
+
+#### Generating Files
+
+1. To generate a new component, use the following command in the terminal:
 
 ```shell
 npm run generate component ComponentName
 ```
 
-2. Укажите необходимость SCSS файла напечатав y(нужны) или n(не нужны)
+2. Specify if SCSS files are needed by typing "y" or "n".
 
-3. Укажите необходимость \*.types.ts файла напечатав y(нужны) или n(не нужны)
+3. Specify if `*.types.ts` files are needed by typing "y" or "n".
 
-4. Папка с файлами появится в src/componets
+4. The folder with the files will be created in `src/components`.
 
-### Структура
+#### Structure
 
-- component-name.view.ts: содержит разметку компонента, создание DOM елементов и привязку событий
-- component-name.ts: содержит данные компонента, методы и обработчик событий
-- component-name.test.ts: содержит тесты для компонента
-- component-name.scss: стили компонента (необязательно)
+* `component-name.view.ts`: This file contains the component's layout, creation of DOM elements, and event binding.
+* `component-name.ts`: This file contains the component's data, methods, and event handlers.
+* `component-name.test.ts`: contains tests for the component
+* `component-name.scss`: component styles (optional)
 
-### Пример
+### Example
 
-#### Создание компонента и его элементов
+#### Creating a Component and its Elements
 
 component-name.view.ts
 
@@ -127,10 +298,10 @@ export default class ComponentName {
 }
 ```
 
-#### Привязка событий
+#### Event Binding
 
 <details>
-<summary>Пример кода</summary>
+<summary>Code Example</summary>
 
 component-name.view.ts
 
@@ -184,10 +355,10 @@ export default class ComponentName {
 
 </details>
 
-#### Вызов API сервисов
+#### Calling API Services
 
 <details>
-<summary>Пример кода</summary>
+<summary>Code Example</summary>
 
 component-name.view.ts
 
@@ -244,129 +415,68 @@ export default class ComponentName {
 
 </details>
 
-## Страницы
+### Pages
 
-Папка: `pages`
+Folder: `pages`
 
-Импорт алиас: `@Pages`
+Import Alias: `@Pages`
 
-### Генерация файлов
+#### Generating Files
 
-1. Введите команду в терминале:
+1. To generate a new page, use the following command in the terminal:
 
 ```shell
 npm run generate page PageName
 ```
 
-4. Укажите необходимость SCSS файла напечатав y(нужны) или n(не нужны)
+2. Specify if SCSS files are needed by typing "y" or "n".
 
-5. Укажите необходимость \*.types.ts файла напечатав y(нужны) или n(не нужны)
+3. Specify if `*.types.ts` files are needed by typing "y" or "n".
 
-6. Папка с файлами появится в src/pages
+4. The folder with the files will be created in src/pages.
 
-## Сервисы
+### Services
 
-Папка: `services`
+Folder: `services`
 
-Импорт алиас: `@Services`
+Import Alias: `@Services`
 
-### Генерация файлов
+#### Generating Files
 
-1. Введите команду в терминале:
+1. To generate a new service, use the following command in the terminal:
 
 ```shell
 npm run generate service ServiceName
 ```
 
-2. Укажите необходимость SCSS файла напечатав y(нужны) или n(не нужны)
+2. Specify if SCSS files are needed by typing "y" or "n".
 
-3. Укажите необходимость \*.types.ts файла напечатав y(нужны) или n(не нужны)
+3. Specify if `*.types.ts` files are needed by typing "y" or "n".
 
-4. Папка с файлами появится в src/services
+4. The folder with the files will be created in src/services.
 
-## Утилиты
+### Utilities
 
-Папка: `utils`
+Folder: `utils`
 
-Импорт алиас: `@Utils`
+Import Alias: `@Utils`
 
-### Генерация файлов
+#### Generating Files
 
-1. Введите команду в терминале:
+1. To generate a new utility, use the following command in the terminal:
 
 ```shell
 npm run generate util UtilName
 ```
 
-2. Укажите необходимость SCSS файла напечатав y(нужны) или n(не нужны)
+2. Specify if SCSS files are needed by typing "y" or "n".
 
-3. Укажите необходимость \*.types.ts файла напечатав y(нужны) или n(не нужны)
+3. Specify if `*.types.ts` files are needed by typing "y" or "n".
 
-4. Папка с файлами появится в src/utils
+4. The folder with the files will be created in src/utils.
 
-## State
+### State
 
-Папка: `state`
+Folder: `state`
 
-Импорт алиас: `@State`
-
-------------------
-
-## Bootstrap 
-
-### Style
-
-Подключить стили:
-
-```shell
-import "bootstrap/scss/bootstrap.scss";
-```
-
-### JS
-
-Подключить весь JS: 
-
-```shell
-import * as bootstrap from 'bootstrap'
-```
-
-Подключить только необходимые JS плагины: 
-
-```shell
-import Alert from 'bootstrap/js/dist/alert'
-import { Tooltip, Toast, Popover } from 'bootstrap'
-```
-
-### Icons
-
-Подключить: 
-
-```shell
-import "bootstrap-icons/font/bootstrap-icons.scss";
-```
-
-Вставить:
-
-```shell
-<i class="bi bi-icon-name">
-```
-
-где .bi - используется для всех элементов иконок,
-bi-icon-name - имя конкретной иконки.
-Размер по умолчанию - 1em. Рекомендуется использовать ширину: 1em (и, при желании, высоту: 1em) для удобного изменения размера с помощью font-size.
-Доступные иконки: https://icons.getbootstrap.com/#icons
-
-## Husky
-
-Перед коммитом автоматически запускает форматирование и проверку кода, и запрещает коммит по найденным ошибкам
-
-prepare - служебная команда установки при выполнении npm install
-
-## Jest
-
-- test - команда для запуска всех тестов.
-- test:coverage - это метрика, которая показывает, какой процент кода вашего приложения исполняется при запуске тестов.
-  1. Строки (Lines): Это процент строк кода, которые были выполнены. Если у вас есть строка кода, которая не была выполнена во время тестов, это будет показано в отчете.
-  2. Функции (Functions): Это процент функций, которые были вызваны во время тестов. Если есть функция, которая ни разу не вызывалась во время тестов, это будет указано в отчете.
-  3. Ветвления (Branches): Это процент ветвлений (if/else, switch, тернарные операторы и т.д.) в вашем коде, которые были проверены. Если у вас есть ветвление, которое не было выполнено во время тестов, это будет показано в отчете.
-  4. Утверждения (Statements): Это процент инструкций (или выражений), которые были выполнены во время тестов.
+Import Alias: `@State`
