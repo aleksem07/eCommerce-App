@@ -9,16 +9,16 @@ by **random team #19**
 4. [Code Guide](#Code-Guide)
 5. [Contribute](#Contribute)
 6. [Tools / Plugins](#Tools-/-Plugins)
-   - [Bootstrap](#Bootstrap)
-   - [Husky](#Husky)
-   - [Jest](#Jest)
-   - [Plugins](#VS-Code-Plugins)
+   * [Bootstrap](#Bootstrap)
+   * [Husky](#Husky)
+   * [Jest](#Jest)
+   * [Plugins](#VS-Code-Plugins)
 7. [Modules](#Modules)
-   - [Components](#Components)
-   - [Pages](#Pages)
-   - [Services](#Services)
-   - [Utilities](#Utilities)
-   - [State](#State)
+   * [Components](#Components)
+   * [Pages](#Pages)
+   * [Services](#Services)
+   * [Utilities](#Utilities)
+   * [State](#State)
    
 ## Description
 
@@ -102,6 +102,45 @@ Runs Prettier to format the code according to defined rules.
 
 ## Code Guide
 
+### Name conventions
+
+#### Cody style
+
+* Typescript usage is required
+* Use class oriented code style
+* Follow eslint recommended rules
+* Follow stylelint recommended rules
+
+#### Files
+
+* Use dash-case for file and folder names, e.g. auth, product-card
+* Locate folders and files appropriately according to Folder Structure (добавить ссылку на Folder Structure ниже)
+* Use `generate` command to follow this convention easily
+* Add new modules if necessary
+* Follow folder aliases approach, see tsconfig.json for examples
+* Edit file generation templates if necessary
+
+#### Classes
+
+* Each class in specific module has suffix with module name, e.g. AuthService, ProductCardComponent, LoginPage, DOMUtil
+
+### Folder Structure
+
+Follow agreed folder structure:
+
+* [components: Reusable interface elements.](#Components)
+* [pages: Separate app pages and routes.](#Pages)
+* [services: Logic and data interaction.](#Services)
+* [utilities: Helper functions and tools.](#Utilities)
+* [state: Application state management.](#State)
+
+### Code Review
+
+Follow Google recommendations for Code Review:
+
+* https://habr.com/ru/articles/473308/
+* https://habr.com/ru/articles/474334/
+
 ## Contribute
 
 ## Tools / Plugins
@@ -173,13 +212,13 @@ The `prepare` script is used for setup when running `npm install`.
 
 ## Modules
 
-### Компоненты
+### Components
 
 Folder: `src/components`
 
 Import Alias: `@Components`
 
-#### Генерация файлов
+#### Generating Files
 
 1. To generate a new component, use the following command in the terminal:
 
