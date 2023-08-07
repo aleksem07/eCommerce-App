@@ -50,7 +50,7 @@ npm run build:dev
 
 Builds the project without optimization for development purposes.
 
-### Building the Project (Production)й
+### Building the Project (Production)
 
 ```shell
 npm run build:prod
@@ -114,7 +114,7 @@ Runs Prettier to format the code according to defined rules.
 #### Files
 
 * Use dash-case for file and folder names, e.g. auth, product-card
-* Locate folders and files appropriately according to Folder Structure (добавить ссылку на Folder Structure ниже)
+* Locate folders and files appropriately according to [Folder Structure](#Folder-Structure)
 * Use `generate` command to follow this convention easily
 * Add new modules if necessary
 * Follow folder aliases approach, see tsconfig.json for examples
@@ -138,10 +138,28 @@ Follow agreed folder structure:
 
 Follow Google recommendations for Code Review:
 
-* https://habr.com/ru/articles/473308/
-* https://habr.com/ru/articles/474334/
+* <https://habr.com/ru/articles/473308/>
+* <https://habr.com/ru/articles/474334/>
 
 ## Contribute
+
+1. Clone repository `git clone https://github.com/NikitaStarmoussov/eCommerce-Application.git`
+2. Install dependencies with `npm intstall`
+3. Run development service `npm run start`
+4. Make changes
+5. Verify your changes:
+  * Build is successful `npm run build:dev` or `npm run build:prod`
+  * There are no eslint errors `npm run lint`
+  * Code is formatted `npm run format`
+  * Tests are passed successfully `npm run test`
+  * Test coverage is not less than 35% `npm run test:coverage`
+6. Create pull request to `develop`
+7. Pass code review
+  * Fix comments
+  * Refactor
+  * Get approvals from team
+8. Merge pull request
+9. Wait for deploy and release
 
 ## Tools / Plugins
 
@@ -184,7 +202,7 @@ Then, you can use the icons in your HTML code as follows:
 <i class="bi bi-icon-name">
 ```
 
-Where `.bi` is the class used for all Bootstrap icons, and 
+where `.bi` is the class used for all Bootstrap icons, and 
 `.bi-icon-name` is the specific icon's name. 
 By default, the icon size is set to `1em`. It is recommended to use `width: 1em` (and optionally `height: 1em`) to easily adjust the icon's size using the `font-size` property.
 
