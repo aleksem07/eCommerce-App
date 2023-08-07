@@ -50,10 +50,6 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.mst$/,
-        use: "mustache-loader",
-      },
-      {
         test: /\.ts$/i,
         use: "ts-loader",
       },

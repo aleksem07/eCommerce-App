@@ -22,15 +22,15 @@ function addActions(data, src) {
     actions.push(style);
   }
   if (data.addTypes) {
-    const style = createAction(`src/${src}/{{dashCase name}}/{{dashCase name}}.types.ts`);
-    actions.push(style);
+    const types = createAction(`src/${src}/{{dashCase name}}/{{dashCase name}}.types.ts`);
+    actions.push(types);
   }
   if (src === "components" || src === "pages") {
-    const style = createAction(
-      `src/${src}/{{dashCase name}}/{{dashCase name}}.mst`,
-      `templates/${src}/component.mst.txt`
+    const view = createAction(
+      `src/${src}/{{dashCase name}}/{{dashCase name}}.view.ts`,
+      `templates/${src}/component.view.ts.txt`
     );
-    actions.push(style);
+    actions.push(view);
   }
   return actions;
 }
@@ -84,10 +84,7 @@ module.exports = (plop) => {
   plop.setGenerator("component", {
     description: "Generate a new component",
     prompts: templatefulPrompt,
-    actions: (data) => {
-      const res = addActions(data, "components");
-      return res;
-    },
+    actions: (data) => addActions(data, "components"),
   });
   plop.setGenerator("page", {
     description: "Generate a new page",

@@ -81,48 +81,168 @@ npm run generate component ComponentName
 
 ### Структура
 
-- component-name.mst: разметка компонента
-- component-name.ts: содержит данные компонента, методы, обязательный метод Draw возвращающий разметку
+- component-name.view.ts: содержит разметку компонента, создание DOM елементов и привязку событий
+- component-name.ts: содержит данные компонента, методы и обработчик событий
 - component-name.test.ts: содержит тесты для компонента
 - component-name.scss: стили компонента (необязательно)
 
 ### Пример
 
-component-name.mst
+#### Создание компонента и его элементов
 
-```handlebars
-<div>
-  <h2>{{title}}</h2>
-  <p>{{content}}</p>
-</div>
+component-name.view.ts
+
+```ts
+import { ViewBuilder } from "@Interfaces/view-builder";
+
+export default class ComponentNameView extends ViewBuilder {
+  element: HTMLElement;
+
+  constructor() {
+    super();
+    this.element = this.createElement("div");
+  }
+
+  render() {
+    this.appendTo("#root", this.element);
+  }
+}
 ```
 
 component-name.ts
 
 ```ts
-import template from "./component-name.mst";
+import ComponentNameView from "./component-name.view";
 
 export default class ComponentName {
-  data = {
-    title: "Component title",
-    content: "text",
-  };
+  private view: ComponentNameView;
 
-  draw() {
-    return template(this.data);
+  constructor() {
+    this.view = new ComponentNameView();
+  }
+
+  init() {
+    this.view.render();
   }
 }
 ```
 
-Использование компонента
+#### Привязка событий
+
+<details>
+<summary>Пример кода</summary>
+
+component-name.view.ts
 
 ```ts
-import ComponentName from "./component-name";
+import { ViewBuilder } from "@Interfaces/view-builder";
 
-const element = new ComponentName();
+export default class ComponentNameView extends ViewBuilder {
+  element: HTMLElement;
+  private button: HTMLButtonElement;
 
-document.body.innerHTML = element.draw();
+  constructor() {
+    super();
+    this.element = this.createElement("div");
+
+    this.button = this.createElement("button");
+    this.element.appendChild(this.button);
+  }
+
+  buttonClickListener(handler: () => void) {
+    this.button.addEventListener("click", handler);
+  }
+
+  render() {
+    this.appendTo("#root", this.element);
+  }
+}
 ```
+
+component-name.ts
+
+```ts
+import ComponentNameView from "./component-name.view";
+
+export default class ComponentName {
+  private view: ComponentNameView;
+
+  constructor() {
+    this.view = new ComponentNameView();
+    this.view.buttonClickListener(this.buttonClickHandler.bind(this));
+  }
+
+  buttonClickHandler() {
+    // any logic here
+  }
+
+  init() {
+    this.view.render();
+  }
+}
+```
+
+</details>
+
+#### Вызов API сервисов
+
+<details>
+<summary>Пример кода</summary>
+
+component-name.view.ts
+
+```ts
+import { ViewBuilder } from "@Interfaces/view-builder";
+
+export default class ComponentNameView extends ViewBuilder {
+  element: HTMLElement;
+
+  constructor() {
+    super();
+    this.element = this.createElement("div");
+  }
+
+  displayProducts(products: Product) {
+    // create elements for products displaying
+    // append them to this.element
+  }
+
+  render() {
+    this.appendTo("#root", this.element);
+  }
+}
+```
+
+component-name.ts
+
+```ts
+import ComponentNameView from "./component-name.view";
+
+export default class ComponentName {
+  private view: ComponentNameView;
+  private service: ProductsAPIService;
+
+  private products: Product[] = [];
+
+  constructor() {
+    this.view = new ComponentNameView();
+    this.service = new ProductsAPIService();
+
+    this.fetchProducts();
+  }
+
+  async fetchProducts() {
+    this.products = await this.service.fetchProducts();
+    this.view.displayProducts(this.products);
+  }
+
+  init() {
+    this.view.render();
+  }
+}
+```
+
+</details>
 
 ## Страницы
 
