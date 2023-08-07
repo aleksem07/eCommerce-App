@@ -252,14 +252,14 @@ npm run generate component ComponentName
 
 #### Structure
 
-- `component-name.mst`: component markup
-- `component-name.ts`: contains component data, methods, and a mandatory `draw` method returning the markup
-- `component-name.test.ts`: contains tests for the component
-- `component-name.scss`: component styles (optional)
+* `component-name.view.ts`: This file contains the component's layout, creation of DOM elements, and event binding.
+* `component-name.ts`: This file contains the component's data, methods, and event handlers.
+* `component-name.test.ts`: contains tests for the component
+* `component-name.scss`: component styles (optional)
 
-#### Example
+### Example
 
-`component-name.mst`
+#### Creating a Component and its Elements
 
 component-name.view.ts
 
@@ -280,7 +280,7 @@ export default class ComponentNameView extends ViewBuilder {
 }
 ```
 
-`component-name.ts`
+component-name.ts
 
 ```ts
 import ComponentNameView from "./component-name.view";
@@ -298,7 +298,12 @@ export default class ComponentName {
 }
 ```
 
-Usage of the component:
+#### Event Binding
+
+<details>
+<summary>Code Example</summary>
+
+component-name.view.ts
 
 ```ts
 import { ViewBuilder } from "@Interfaces/view-builder";
@@ -324,6 +329,91 @@ export default class ComponentNameView extends ViewBuilder {
   }
 }
 ```
+
+component-name.ts
+
+```ts
+import ComponentNameView from "./component-name.view";
+
+export default class ComponentName {
+  private view: ComponentNameView;
+
+  constructor() {
+    this.view = new ComponentNameView();
+    this.view.buttonClickListener(this.buttonClickHandler.bind(this));
+  }
+
+  buttonClickHandler() {
+    // any logic here
+  }
+
+  init() {
+    this.view.render();
+  }
+}
+```
+
+</details>
+
+#### Calling API Services
+
+<details>
+<summary>Code Example</summary>
+
+component-name.view.ts
+
+```ts
+import { ViewBuilder } from "@Interfaces/view-builder";
+
+export default class ComponentNameView extends ViewBuilder {
+  element: HTMLElement;
+
+  constructor() {
+    super();
+    this.element = this.createElement("div");
+  }
+
+  displayProducts(products: Product) {
+    // create elements for products displaying
+    // append them to this.element
+  }
+
+  render() {
+    this.appendTo("#root", this.element);
+  }
+}
+```
+
+component-name.ts
+
+```ts
+import ComponentNameView from "./component-name.view";
+
+export default class ComponentName {
+  private view: ComponentNameView;
+  private service: ProductsAPIService;
+
+  private products: Product[] = [];
+
+  constructor() {
+    this.view = new ComponentNameView();
+    this.service = new ProductsAPIService();
+
+    this.fetchProducts();
+  }
+
+  async fetchProducts() {
+    this.products = await this.service.fetchProducts();
+    this.view.displayProducts(this.products);
+  }
+
+  init() {
+    this.view.render();
+  }
+}
+```
+
+</details>
 
 ### Pages
 
