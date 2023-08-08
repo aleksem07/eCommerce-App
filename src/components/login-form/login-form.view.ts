@@ -6,9 +6,10 @@ export default class LoginFormView extends ViewBuilder {
   constructor() {
     super();
     this.element = this.createElement("div");
+    this.element.textContent = "LOGIN FORM";
   }
 
   render() {
-    this.appendTo("", this.element);
+    this.appendTo("#login-page", this.element);
   }
 }

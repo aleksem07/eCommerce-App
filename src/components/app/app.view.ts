@@ -5,10 +5,12 @@ export default class AppView extends ViewBuilder {
 
   constructor() {
     super();
-    this.element = this.createElement("div");
+    this.element = this.createElement("div", {
+      id: "root",
+    });
   }
 
   render() {
-    this.appendTo("", this.element);
+    document.body.append(this.element);
   }
 }
