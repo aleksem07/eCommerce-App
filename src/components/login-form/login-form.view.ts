@@ -5,7 +5,7 @@ export default class LoginFormView extends ViewBuilder {
 
   constructor() {
     super();
-    this.element = this.createElement("div");
+    this.element = this.createElement("div", { id: "login-form" });
     this.element.textContent = "LOGIN FORM";
   }
 
