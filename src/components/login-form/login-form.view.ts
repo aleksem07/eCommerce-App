@@ -22,7 +22,7 @@ export default class LoginFormView extends ViewBuilder {
       dataset: [{ for: "loginLabelEmail" }],
     });
     this.emailInput = this.createElement("input", {
-      id: "login_email-label",
+      id: "login_email-input",
       classes: ["form-control", "mb-3"],
       dataset: [{ for: "loginInputEmail" }],
     });
@@ -51,17 +51,23 @@ export default class LoginFormView extends ViewBuilder {
       dataset: [{ type: "submit" }],
     });
   }
-  fillEmailWprapper() {
+  private fillEmailWprapper() {
     this.emailLabel.textContent = "Email address";
     this.emailHelp.textContent = "We'll never share your email with anyone else.";
     this.container.append(this.emailWrapper);
     this.emailWrapper.append(this.emailLabel, this.emailInput, this.emailHelp);
   }
-  fillPaswordWrapper() {
+  private fillPaswordWrapper() {
     this.passwordLabel.textContent = "Password";
     this.passwordHelp.textContent = "Must be at least 8 characters";
     this.container.append(this.passwordWrapper);
     this.passwordWrapper.append(this.passwordLabel, this.passwordInput, this.passwordHelp);
+  }
+
+  submitFormListener(handler: (event: SubmitEvent) => void) {
+    this.form.addEventListener("submit", (event) => {
+      handler(event);
+    });
   }
 
   render() {
