@@ -11,7 +11,11 @@ export default class ValidatorUtil {
 
   constructor() {
     this.emailSchema = yup.object().shape({
-      email: yup.string().trim().email("Invalid email address").required("Email is required"),
+      email: yup
+        .string()
+        .trim()
+        .email("Invalid email address(example@gmail.com)")
+        .required("Email is required"),
     });
     this.passwordSchema = yup.object().shape({
       password: yup

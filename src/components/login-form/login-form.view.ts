@@ -69,6 +69,16 @@ export default class LoginFormView extends ViewBuilder {
       handler(event);
     });
   }
+  inputEmailListener(handler: (event: InputEvent) => void) {
+    this.emailInput.addEventListener("input", (event) => {
+      handler(event as InputEvent);
+    });
+  }
+  inputPasswordListener(handler: (event: InputEvent) => void) {
+    this.passwordInput.addEventListener("input", (event) => {
+      handler(event as InputEvent);
+    });
+  }
 
   render() {
     this.fillEmailWprapper();

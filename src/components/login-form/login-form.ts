@@ -6,6 +6,8 @@ export default class LoginFormComponent {
   constructor() {
     this.view = new LoginFormView();
     this.view.submitFormListener(this.submitFormListener.bind(this));
+    this.view.inputEmailListener(this.inputEmailListener.bind(this));
+    this.view.inputPasswordListener(this.inputPasswordListener.bind(this));
     this.validator = new ValidatorUtil();
   }
   async submitFormListener(event: SubmitEvent) {
@@ -14,12 +16,24 @@ export default class LoginFormComponent {
     const password = (this.view.passwordInput as HTMLInputElement).value;
     const emailChecked = await this.validator.validateEmail(email);
     const passwordChecked = await this.validator.validatePassword(password);
-    // if (emailChecked.result && passwordChecked.result) {
-    //   alert("Login successful");
-    // } else {
-    //   alert("Login failed");
-    // }
+    if (emailChecked.result && passwordChecked.result) {
+      alert("Login successful");
+    } else {
+      alert("Login failed");
+    }
+    // this.view.emailHelp.textContent = emailChecked.message;
+    // this.view.passwordHelp.textContent = passwordChecked.message;
+  }
+  async inputEmailListener(event: InputEvent) {
+    event.preventDefault();
+    const email = (this.view.emailInput as HTMLInputElement).value;
+    const emailChecked = await this.validator.validateEmail(email);
     this.view.emailHelp.textContent = emailChecked.message;
+  }
+  async inputPasswordListener(event: InputEvent) {
+    event.preventDefault();
+    const password = (this.view.passwordInput as HTMLInputElement).value;
+    const passwordChecked = await this.validator.validatePassword(password);
     this.view.passwordHelp.textContent = passwordChecked.message;
   }
   // eslint-disable-next-line no-console
