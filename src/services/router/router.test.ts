@@ -1,8 +1,22 @@
-// import RouterService from "./router";
+import RouterService from "./router";
 
-// describe("RouterService", () => {
-//   it("should instantiate", () => {
-//     const instance = new RouterService(this.container, {});
-//     expect(instance).toBeInstanceOf(RouterService);
-//   });
-// });
+class MockRoute {
+  init() {}
+}
+
+describe("RouterService", () => {
+  let mockContainer: HTMLDivElement;
+  let mockRoutes: Record<string, MockRoute>;
+
+  beforeEach(() => {
+    mockContainer = document.createElement("div");
+    mockRoutes = {
+      "/mock": new MockRoute(),
+    };
+  });
+
+  it("should instantiate", () => {
+    const instance = new RouterService(mockContainer, mockRoutes);
+    expect(instance).toBeInstanceOf(RouterService);
+  });
+});
