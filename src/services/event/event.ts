@@ -1,4 +1,4 @@
-import { EventTypes } from "types/event.enum";
+import { EventTypes } from "@Services/router/router.types";
 
 type EventCallback<T> = (data?: T) => void;
 

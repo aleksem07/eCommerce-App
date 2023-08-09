@@ -36,7 +36,7 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: "[name].[contenthash].css",
     }),
-    new ESLintPlugin({ extensions: "ts" }),
+    new ESLintPlugin({ extensions: "ts", emitWarning: false }),
 
     new StylelintPlugin({
       configFile: "./.stylelintrc",

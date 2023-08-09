@@ -10,15 +10,12 @@ export default class AppComponent {
 
   constructor() {
     this.view = new AppView();
+    this.view.render();
+
     this.router = new RouterService(this.view.element, {
       "/": new MainPage(),
       "/login": new LoginPage(),
-      "/register": new RegistrationPage(),
+      "/registration": new RegistrationPage(),
     });
-  }
-
-  init() {
-    this.view.render();
-    this.router.navigateTo("/");
   }
 }

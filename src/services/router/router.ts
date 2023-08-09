@@ -11,10 +11,9 @@ export default class RouterService {
     this.container = container;
     this.routes = routes;
     this.currentPath = "";
-    // Инициализируйте с первоначальной загрузкой
+
     this.handleRouteChange();
 
-    // Обработка прямых переходов и навигации назад/вперед
     window.addEventListener("popstate", this.handleRouteChange.bind(this));
   }
 
