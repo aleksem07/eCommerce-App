@@ -8,7 +8,6 @@ export default class ValidatorUtil {
     ""
   >;
   emailSchema: yup.ObjectSchema<{ email: string }, yup.AnyObject, { email: undefined }, "">;
-  // passwordSchema: yup.Schema<string>;
 
   constructor() {
     this.emailSchema = yup.object().shape({
