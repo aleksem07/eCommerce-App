@@ -5,9 +5,9 @@ export default class AppView extends ViewBuilder {
 
   constructor() {
     super();
-    this.element = this.createElement("div", {
+    this.element = this.createElement<HTMLDivElement>("div", {
       id: "root",
-    }) as HTMLDivElement;
+    });
   }
 
   render() {

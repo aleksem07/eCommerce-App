@@ -1,16 +1,12 @@
-import { Controller } from "@Interfaces/controller";
-import eventBus from "@Services/event/event";
-import { EventTypes } from "./router.types";
+import { Route } from "./router.types";
 
 export default class RouterService {
-  private routes: Record<string, Controller>;
-  private currentPath: string;
+  private routes: Record<string, Route>;
   private container: HTMLDivElement;
 
-  constructor(container: HTMLDivElement, routes: Record<string, Controller>) {
+  constructor(container: HTMLDivElement, routes: Record<string, Route>) {
     this.container = container;
     this.routes = routes;
-    this.currentPath = "";
 
     this.handleRouteChange();
 
@@ -24,9 +20,7 @@ export default class RouterService {
     const route = this.routes[path];
 
     if (route) {
-      this.currentPath = path;
       route.init();
-      eventBus.publish(EventTypes.urlChanged, path);
     } else {
       global.console.error(`Path '${path}' is not registered in router`);
     }
