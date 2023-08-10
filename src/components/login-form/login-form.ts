@@ -3,34 +3,29 @@ import ValidatorUtil from "@Utils/validator/validator";
 export default class LoginFormComponent {
   private view: LoginFormView;
   private validator: ValidatorUtil;
+
   constructor() {
     this.view = new LoginFormView();
-    this.view.submitFormListener(this.submitFormListener.bind(this));
-    this.view.inputEmailListener(this.inputEmailListener.bind(this));
-    this.view.inputPasswordListener(this.inputPasswordListener.bind(this));
-    this.view.checkboxListener(this.checkboxListener.bind(this));
+    this.view.submitFormListener(this.submitFormHandler.bind(this));
+    this.view.inputEmailListener(this.inputEmailHandler.bind(this));
+    this.view.inputPasswordListener(this.inputPasswordHandler.bind(this));
+    this.view.checkboxListener(this.checkboxHandler.bind(this));
     this.validator = new ValidatorUtil();
   }
-  async submitFormListener(event: SubmitEvent) {
-    event.preventDefault();
-    const email = (this.view.emailInput as HTMLInputElement).value;
-    const password = (this.view.passwordInput as HTMLInputElement).value;
-    const emailChecked = await this.validator.validateEmail(email);
-    const passwordChecked = await this.validator.validatePassword(password);
-    if (emailChecked.result && passwordChecked.result) {
-      alert("Login successful");
+
+  async submitFormHandler(email: string, password: string) {
+    const emailValid = await this.validator.validateEmail(email);
+    const passwordValid = await this.validator.validatePassword(password);
+    if (emailValid.result && passwordValid.result) {
+      //
     } else {
-      alert("Login failed");
+      //
     }
-    // this.view.emailHelp.textContent = emailChecked.message;
-    // this.view.passwordHelp.textContent = passwordChecked.message;
   }
-  async inputEmailListener(event: InputEvent) {
-    event.preventDefault();
-    const email = (this.view.emailInput as HTMLInputElement).value;
-    const emailChecked = await this.validator.validateEmail(email);
-    this.view.emailHelp.textContent = emailChecked.message;
-    if (emailChecked.result) {
+  async inputEmailHandler(email: string) {
+    const emailValid = await this.validator.validateEmail(email);
+    this.view.emailHelp.textContent = emailValid.message;
+    if (emailValid.result) {
       this.view.emailInput.classList.remove("is-invalid");
       this.view.emailInput.classList.add("is-valid");
       this.view.emailHelp.classList.remove("invalid-feedback");
@@ -40,12 +35,10 @@ export default class LoginFormComponent {
       this.view.emailHelp.classList.add("invalid-feedback");
     }
   }
-  async inputPasswordListener(event: InputEvent) {
-    event.preventDefault();
-    const password = (this.view.passwordInput as HTMLInputElement).value;
-    const passwordChecked = await this.validator.validatePassword(password);
-    this.view.passwordHelp.textContent = passwordChecked.message;
-    if (passwordChecked.result) {
+  async inputPasswordHandler(password: string) {
+    const passwordValid = await this.validator.validatePassword(password);
+    this.view.passwordHelp.textContent = passwordValid.message;
+    if (passwordValid.result) {
       this.view.passwordInput.classList.remove("is-invalid");
       this.view.passwordInput.classList.add("is-valid");
       this.view.passwordHelp.classList.remove("invalid-feedback");
@@ -55,25 +48,13 @@ export default class LoginFormComponent {
       this.view.passwordHelp.classList.add("invalid-feedback");
     }
   }
-  async checkboxListener() {
-    if ((this.view.passwordCheckbox as HTMLInputElement).checked) {
-      (this.view.passwordInput as HTMLInputElement).type = "text";
+  async checkboxHandler(status: boolean, input: HTMLInputElement) {
+    if (status) {
+      input.type = "text";
     } else {
-      (this.view.passwordInput as HTMLInputElement).type = "password";
+      input.type = "password";
     }
-    // eslint-disable-next-line no-console
-    console.log((this.view.passwordCheckbox as HTMLInputElement).checked);
   }
-  // eslint-disable-next-line no-console
-  // console.log(emailChecked);
-  // eslint-disable-next-line no-console
-  // console.log(passwordChecked);
-  // const emailInput = this.view.getElement("#login_email-input") as ;
-  // console.log(();
-  // eslint-disable-next-line no-console
-  // console.log((this.view.passwordInput as HTMLInputElement).value);
-  // console.log("submitFormListener");
-
   init() {
     this.view.render();
   }
