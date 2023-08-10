@@ -4,6 +4,7 @@ import LoginPage from "@Pages/login/login";
 import MainPage from "@Pages/main/main";
 import RegistrationPage from "@Pages/registration/registration";
 import NotFoundPage from "@Pages/not-found/not-found";
+import { Routes } from "@Services/router/router.types";
 
 export default class AppComponent {
   private view: AppView;
@@ -14,10 +15,10 @@ export default class AppComponent {
     this.view.render();
 
     this.router = new RouterService(this.view.element, {
-      main: new MainPage(),
-      login: new LoginPage(),
-      registration: new RegistrationPage(),
-      "404": new NotFoundPage(),
+      [Routes.MAIN]: new MainPage(),
+      [Routes.LOGIN]: new LoginPage(),
+      [Routes.REGISTRATION]: new RegistrationPage(),
+      [Routes.NOT_FOUND]: new NotFoundPage(),
     });
   }
 }

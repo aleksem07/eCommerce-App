@@ -55,6 +55,10 @@ module.exports = {
         use: "ts-loader",
       },
       {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: "asset/resource",
+      },
+      {
         test: /\.(scss)$/,
         use: [
           devMode ? "style-loader" : MiniCssExtractPlugin.loader,

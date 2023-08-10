@@ -1,4 +1,5 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
+import notFoundImage from "../../../assets/images/404-image.png";
 
 export default class NotFoundView extends ViewBuilder {
   element: HTMLElement;
@@ -14,20 +15,24 @@ export default class NotFoundView extends ViewBuilder {
   }
 
   private renderLayout() {
-    const h1 = this.createElement("h1", { classes: ["display-1"] });
-    h1.textContent = "404";
+    const image = this.createElement<HTMLImageElement>("img", {
+      classes: ["w-50"],
+    });
+    image.src = notFoundImage;
+    image.alt = "404";
+    image.style.maxWidth = "300px";
 
     const p = this.createElement("p", { classes: ["lead"] });
     p.textContent = "Page not found";
 
     const a = this.createElement<HTMLLinkElement>("a", {
-      classes: ["btn", "btn-success"],
+      classes: ["btn", "btn-primary"],
       id: "return-home-link",
     });
     a.href = "#main";
     a.textContent = "Back to home";
 
-    this.element.append(h1, p, a);
+    this.element.append(image, p, a);
   }
 
   render() {
