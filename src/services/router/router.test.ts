@@ -1,4 +1,5 @@
 import RouterService from "./router";
+import { Routes } from "./router.types";
 
 class MockRoute {
   init() {
@@ -13,7 +14,8 @@ describe("RouterService", () => {
   beforeEach(() => {
     mockContainer = document.createElement("div");
     mockRoutes = {
-      "/mock": new MockRoute(),
+      "#mock": new MockRoute(),
+      [Routes.NOT_FOUND]: new MockRoute(),
     };
   });
 
