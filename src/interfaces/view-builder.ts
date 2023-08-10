@@ -5,7 +5,10 @@ interface ElementOptions {
 }
 
 export class ViewBuilder {
-  createElement(tag: string, { id, classes, dataset }: ElementOptions = {}) {
+  createElement<T extends HTMLElement>(
+    tag: string,
+    { id, classes, dataset }: ElementOptions = {}
+  ): T {
     const element = document.createElement(tag);
 
     if (id) {
@@ -26,7 +29,7 @@ export class ViewBuilder {
       }
     }
 
-    return element;
+    return element as T;
   }
 
   getElement(selector: string) {
