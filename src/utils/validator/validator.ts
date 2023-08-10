@@ -58,20 +58,20 @@ export default class ValidatorUtil {
     }
     return {
       isValid: true,
-      message: "e-mail is valid",
+      message: " ",
     };
   }
 
-  validatePassword(password: string) {
+  validatePassword(password: string): ValidationResult {
     try {
       this.passwordSchema.validateSync({ password });
       return {
-        result: true,
-        message: "Password is valid",
+        isValid: true,
+        message: " ",
       };
     } catch (error) {
       return {
-        result: false,
+        isValid: false,
         message: (error as Error).message,
       };
     }

@@ -16,7 +16,7 @@ export default class LoginFormComponent {
   async submitFormHandler(email: string, password: string) {
     const emailValid = await this.validator.validateEmail(email);
     const passwordValid = await this.validator.validatePassword(password);
-    if (emailValid.result && passwordValid.result) {
+    if (emailValid.isValid && passwordValid.isValid) {
       //
     } else {
       //
@@ -25,7 +25,7 @@ export default class LoginFormComponent {
   async inputEmailHandler(email: string) {
     const emailValid = await this.validator.validateEmail(email);
     this.view.emailHelp.textContent = emailValid.message;
-    if (emailValid.result) {
+    if (emailValid.isValid) {
       this.view.emailInput.classList.remove("is-invalid");
       this.view.emailInput.classList.add("is-valid");
       this.view.emailHelp.classList.remove("invalid-feedback");
@@ -38,7 +38,7 @@ export default class LoginFormComponent {
   async inputPasswordHandler(password: string) {
     const passwordValid = await this.validator.validatePassword(password);
     this.view.passwordHelp.textContent = passwordValid.message;
-    if (passwordValid.result) {
+    if (passwordValid.isValid) {
       this.view.passwordInput.classList.remove("is-invalid");
       this.view.passwordInput.classList.add("is-valid");
       this.view.passwordHelp.classList.remove("invalid-feedback");
