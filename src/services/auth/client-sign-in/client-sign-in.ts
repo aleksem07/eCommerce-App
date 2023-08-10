@@ -11,7 +11,7 @@ export default class ClientSignInService extends ClientBuilderService {
 
   async checkUserLogin(username: string, password: string) {
     try {
-      const data = await this.ctpClient?.execute({
+      const data = await this.commercetoolsClient?.execute({
         method: "POST",
         uri: URI.GET_LOGIN,
         body: {

@@ -7,15 +7,15 @@ export default class ClientBuilderService {
     host: "",
     fetch,
   };
-  protected ctpClient;
+  protected commercetoolsClient;
 
   constructor() {
-    const projectKey = process.env.CTP_PROJECT_KEY;
-    const scopes = process.env.CTP_SCOPES?.split(",").filter(Boolean);
-    const authUrl = process.env.CTP_AUTH_URL;
-    const apiUrl = process.env.CTP_API_URL;
-    const adminID = process.env.CTP_ADMIN_ID;
-    const adminSecret = process.env.CTP_ADMIN_SECRET;
+    const projectKey = process.env.PROJECT_KEY;
+    const scopes = process.env.SCOPES?.split(",").filter(Boolean);
+    const authUrl = process.env.AUTH_URL;
+    const apiUrl = process.env.API_URL;
+    const adminID = process.env.ADMIN_ID;
+    const adminSecret = process.env.ADMIN_SECRET;
 
     if (authUrl && projectKey && adminID && adminSecret && scopes) {
       this.authMiddlewareOptions = {
@@ -38,7 +38,7 @@ export default class ClientBuilderService {
       throw new Error("apiUrl is not defined.");
     }
 
-    this.ctpClient = new ClientBuilder()
+    this.commercetoolsClient = new ClientBuilder()
       .withClientCredentialsFlow(this.authMiddlewareOptions)
       .withHttpMiddleware(this.httpMiddlewareOptions)
       .withLoggerMiddleware()
