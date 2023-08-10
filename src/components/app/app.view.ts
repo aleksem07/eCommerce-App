@@ -1,11 +1,11 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
 
 export default class AppView extends ViewBuilder {
-  element: HTMLElement;
+  element: HTMLDivElement;
 
   constructor() {
     super();
-    this.element = this.createElement("div", {
+    this.element = this.createElement<HTMLDivElement>("div", {
       id: "root",
     });
   }

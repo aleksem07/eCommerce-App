@@ -20,6 +20,7 @@ module.exports = {
     port: 3000,
     open: true,
     hot: true,
+    historyApiFallback: true,
   },
 
   entry: path.resolve(__dirname, "src", "index"),
@@ -35,7 +36,7 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: "[name].[contenthash].css",
     }),
-    new ESLintPlugin({ extensions: "ts" }),
+    new ESLintPlugin({ extensions: "ts", emitWarning: false }),
 
     new StylelintPlugin({
       configFile: "./.stylelintrc",
