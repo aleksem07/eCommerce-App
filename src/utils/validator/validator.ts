@@ -14,7 +14,7 @@ export default class ValidatorUtil {
       email: yup
         .string()
         .trim()
-        .email("Invalid email address(example@gmail.com)")
+        .email("Invalid email address.(example@gmail.com)")
         .required("Email is required"),
     });
     this.passwordSchema = yup.object().shape({
@@ -31,18 +31,43 @@ export default class ValidatorUtil {
   }
 
   validateEmail(email: string) {
-    try {
-      this.emailSchema.validateSync({ email });
-      return {
-        result: true,
-        message: "Email is valid",
-      };
-    } catch (error) {
+    const emailRegex = /^\S+@\S+\.\S+$/;
+
+    if (email.trim() !== email) {
       return {
         result: false,
-        message: (error as Error).message,
+        message: "Email address should not contain leading or trailing whitespace.",
       };
     }
+    if (!email.includes("@")) {
+      return {
+        result: false,
+        message: 'Email address should contain an "@" symbol.',
+      };
+    }
+    if (email.trim().includes(" ")) {
+      return {
+        result: false,
+        message: "Email address should contain whitespace inside.",
+      };
+    }
+    const domain = email.split("@")[1];
+    if (!domain) {
+      return {
+        result: false,
+        message: "Email address is missing domain name.",
+      };
+    }
+    if (!emailRegex.test(email)) {
+      return {
+        result: false,
+        message: "Email address is not properly formatted.",
+      };
+    }
+    return {
+      result: true,
+      message: "e-mail is valid",
+    };
   }
 
   validatePassword(password: string) {
