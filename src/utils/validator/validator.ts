@@ -1,5 +1,9 @@
 import * as yup from "../../../node_modules/yup/index";
-import { PasswordValidationSchema, EmailValidationSchema } from "./validator.types";
+import {
+  PasswordValidationSchema,
+  EmailValidationSchema,
+  ValidationResult,
+} from "./validator.types";
 export default class ValidatorUtil {
   passwordSchema: PasswordValidationSchema;
   emailSchema: EmailValidationSchema;
@@ -24,10 +28,10 @@ export default class ValidatorUtil {
         .required("Password is required"),
     });
   }
-  validateEmail(email: string) {
+  validateEmail(email: string): ValidationResult {
     const [emailname, domain] = email.split("@");
     const emailRegex = /^\S+@\S+\.\S+$/;
-    const invalidAnswer = { result: false, message: "" };
+    const invalidAnswer: ValidationResult = { isValid: false, message: "" };
     if (!emailname) {
       invalidAnswer.message = "Email address is missing username.";
       return invalidAnswer;
@@ -53,7 +57,7 @@ export default class ValidatorUtil {
       return invalidAnswer;
     }
     return {
-      result: true,
+      isValid: true,
       message: "e-mail is valid",
     };
   }
