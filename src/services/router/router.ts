@@ -21,7 +21,7 @@ export default class RouterService {
     if (route) {
       route.init();
     } else {
-      global.console.error(`Path '${path}' is not registered in router`);
+      this.routes["/404"].init();
     }
   }
 

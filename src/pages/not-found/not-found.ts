@@ -1,6 +1,7 @@
+import { Route } from "@Services/router/router.types";
 import NotFoundView from "./not-found.view";
 
-export default class NotFoundPage {
+export default class NotFoundPage implements Route {
   private view: NotFoundView;
 
   constructor() {

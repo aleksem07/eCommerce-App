@@ -3,6 +3,7 @@ import AppView from "./app.view";
 import LoginPage from "@Pages/login/login";
 import MainPage from "@Pages/main/main";
 import RegistrationPage from "@Pages/registration/registration";
+import NotFoundPage from "@Pages/not-found/not-found";
 
 export default class AppComponent {
   private view: AppView;
@@ -16,6 +17,7 @@ export default class AppComponent {
       "/": new MainPage(),
       "/login": new LoginPage(),
       "/registration": new RegistrationPage(),
+      "/404": new NotFoundPage(),
     });
   }
 }
