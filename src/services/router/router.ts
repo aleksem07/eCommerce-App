@@ -10,23 +10,23 @@ export default class RouterService {
 
     this.handleRouteChange();
 
-    window.addEventListener("popstate", this.handleRouteChange.bind(this));
+    window.addEventListener("hashchange", this.handleRouteChange.bind(this));
   }
 
   private handleRouteChange() {
-    const path = window.location.pathname;
+    const hash = window.location.hash;
+    const path = hash.slice(1);
     const route = this.routes[path];
     this.container.innerHTML = "";
 
     if (route) {
       route.init();
     } else {
-      this.routes["/404"].init();
+      this.routes["404"].init();
     }
   }
 
   navigateTo(path: string) {
-    window.history.pushState(null, "", path);
-    this.handleRouteChange();
+    window.location.hash = `#${path}`;
   }
 }

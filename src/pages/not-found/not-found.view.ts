@@ -24,7 +24,7 @@ export default class NotFoundView extends ViewBuilder {
       classes: ["btn", "btn-success"],
       id: "return-home-link",
     });
-    a.href = "/";
+    a.href = "#main";
     a.textContent = "Back to home";
 
     this.element.append(h1, p, a);

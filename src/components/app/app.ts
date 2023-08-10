@@ -14,10 +14,10 @@ export default class AppComponent {
     this.view.render();
 
     this.router = new RouterService(this.view.element, {
-      "/": new MainPage(),
-      "/login": new LoginPage(),
-      "/registration": new RegistrationPage(),
-      "/404": new NotFoundPage(),
+      main: new MainPage(),
+      login: new LoginPage(),
+      registration: new RegistrationPage(),
+      "404": new NotFoundPage(),
     });
   }
 }
