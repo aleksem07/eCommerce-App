@@ -1,7 +1,9 @@
 import RouterService from "./router";
 
 class MockRoute {
-  init() {}
+  init() {
+    return;
+  }
 }
 
 describe("RouterService", () => {

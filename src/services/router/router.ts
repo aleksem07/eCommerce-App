@@ -15,9 +15,8 @@ export default class RouterService {
 
   private handleRouteChange() {
     const path = window.location.pathname;
-
-    this.container.innerHTML = "";
     const route = this.routes[path];
+    this.container.innerHTML = "";
 
     if (route) {
       route.init();

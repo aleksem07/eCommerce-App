@@ -20,7 +20,6 @@
   "rules": {
     "no-plusplus": "off",
     "max-len": ["error", 100],
-    "@typescript-eslint/no-empty-function": "off",
     "no-console": 1,
     "class-methods-use-this": "off",
     "@typescript-eslint/no-explicit-any": "error",
