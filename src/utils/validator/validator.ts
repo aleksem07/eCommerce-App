@@ -1,4 +1,4 @@
-import * as yup from "../../../node_modules/yup/index";
+import * as yup from "yup";
 import { PasswordValidationSchema, ValidationResult } from "./validator.types";
 export default class ValidatorUtil {
   passwordSchema: PasswordValidationSchema;
