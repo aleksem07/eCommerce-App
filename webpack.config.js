@@ -32,7 +32,7 @@ module.exports = {
   },
 
   plugins: [
-    new HtmlWebpackPlugin(),
+    new HtmlWebpackPlugin({ title: "Fishing Hub" }),
     new MiniCssExtractPlugin({
       filename: "[name].[contenthash].css",
     }),
