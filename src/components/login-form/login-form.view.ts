@@ -8,7 +8,7 @@ export default class LoginFormView extends ViewBuilder {
   passwordHelp: HTMLElement;
   loginSubmitButton: HTMLButtonElement;
   passwordCheckbox: HTMLInputElement;
-  // passwordCheckLabel: HTMLLabelElement;
+
   constructor() {
     super();
     this.form = this.createElement("form", { id: "login-form" });
@@ -44,6 +44,7 @@ export default class LoginFormView extends ViewBuilder {
     this.passwordCheckbox.setAttribute("type", "checkbox");
     this.passwordCheckbox.type = "checkbox";
   }
+
   private createEmailWprapper() {
     const emailWrapper = this.createElement("div", {
       id: "login_email-wrapper",
