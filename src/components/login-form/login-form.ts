@@ -1,8 +1,8 @@
 import LoginFormView from "./login-form.view";
 import ValidatorUtil from "@Utils/validator/validator";
 export default class LoginFormComponent {
-  private view: LoginFormView;
-  private validator: ValidatorUtil;
+  view: LoginFormView;
+  validator: ValidatorUtil;
 
   constructor() {
     this.view = new LoginFormView();

@@ -1,32 +1,18 @@
 import * as yup from "../../../node_modules/yup/index";
-import {
-  PasswordValidationSchema,
-  EmailValidationSchema,
-  ValidationResult,
-} from "./validator.types";
+import { PasswordValidationSchema, ValidationResult } from "./validator.types";
 export default class ValidatorUtil {
   passwordSchema: PasswordValidationSchema;
-  emailSchema: EmailValidationSchema;
 
   constructor() {
-    this.emailSchema = yup.object().shape({
-      email: yup
-        .string()
-        .trim()
-        .email("Invalid email address.(example@gmail.com)")
-        .required("Email is required"),
-    });
-    this.passwordSchema = yup.object().shape({
-      password: yup
-        .string()
-        .min(8, "Password must be at least 8 characters long")
-        .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
-        .matches(/[a-z]/, "Password must contain at least one lowercase letter")
-        .matches(/[0-9]/, "Password must contain at least one digit")
-        .matches(/^[^\s]+$/, "Password must not contain leading or trailing whitespace")
-        .matches(/[^A-Za-z0-9]/, "Password must contain at least one special character")
-        .required("Password is required"),
-    });
+    this.passwordSchema = yup
+      .string()
+      .min(8, "Password must be at least 8 characters long")
+      .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+      .matches(/[a-z]/, "Password must contain at least one lowercase letter")
+      .matches(/[0-9]/, "Password must contain at least one digit")
+      .matches(/^[^\s]+$/, "Password must not contain leading or trailing whitespace")
+      .matches(/[^A-Za-z0-9]/, "Password must contain at least one special character")
+      .required("Password is required");
   }
   validateEmail(email: string): ValidationResult {
     const [emailname, domain] = email.split("@");
