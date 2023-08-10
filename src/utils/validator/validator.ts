@@ -29,40 +29,33 @@ export default class ValidatorUtil {
         .required("Password is required"),
     });
   }
-
   validateEmail(email: string) {
+    const [emailname, domain] = email.split("@");
     const emailRegex = /^\S+@\S+\.\S+$/;
-
-    if (email.trim() !== email) {
-      return {
-        result: false,
-        message: "Email address should not contain leading or trailing whitespace.",
-      };
+    const invalidAnswer = { result: false, message: "" };
+    if (!emailname) {
+      invalidAnswer.message = "Email address is missing username.";
+      return invalidAnswer;
     }
     if (!email.includes("@")) {
-      return {
-        result: false,
-        message: 'Email address should contain an "@" symbol.',
-      };
+      invalidAnswer.message = "Email address should contain an '@' symbol.";
+      return invalidAnswer;
     }
-    if (email.trim().includes(" ")) {
-      return {
-        result: false,
-        message: "Email address should contain whitespace inside.",
-      };
-    }
-    const domain = email.split("@")[1];
     if (!domain) {
-      return {
-        result: false,
-        message: "Email address is missing domain name.",
-      };
+      invalidAnswer.message = "Email address is missing domain name.";
+      return invalidAnswer;
+    }
+    if (!email.includes(".")) {
+      invalidAnswer.message = "Email address should contain a '.' symbol.";
+      return invalidAnswer;
+    }
+    if (email.trim() !== email) {
+      invalidAnswer.message = "Email address should not contain leading or trailing whitespace.";
+      return invalidAnswer;
     }
     if (!emailRegex.test(email)) {
-      return {
-        result: false,
-        message: "Email address is not properly formatted.",
-      };
+      invalidAnswer.message = "Email address is not properly formatted.";
+      return invalidAnswer;
     }
     return {
       result: true,

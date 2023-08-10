@@ -30,12 +30,30 @@ export default class LoginFormComponent {
     const email = (this.view.emailInput as HTMLInputElement).value;
     const emailChecked = await this.validator.validateEmail(email);
     this.view.emailHelp.textContent = emailChecked.message;
+    if (emailChecked.result) {
+      this.view.emailInput.classList.remove("is-invalid");
+      this.view.emailInput.classList.add("is-valid");
+      this.view.emailHelp.classList.remove("invalid-feedback");
+    } else {
+      this.view.emailInput.classList.remove("is-valid");
+      this.view.emailInput.classList.add("is-invalid");
+      this.view.emailHelp.classList.add("invalid-feedback");
+    }
   }
   async inputPasswordListener(event: InputEvent) {
     event.preventDefault();
     const password = (this.view.passwordInput as HTMLInputElement).value;
     const passwordChecked = await this.validator.validatePassword(password);
     this.view.passwordHelp.textContent = passwordChecked.message;
+    if (passwordChecked.result) {
+      this.view.passwordInput.classList.remove("is-invalid");
+      this.view.passwordInput.classList.add("is-valid");
+      this.view.passwordHelp.classList.remove("invalid-feedback");
+    } else {
+      this.view.passwordInput.classList.remove("is-valid");
+      this.view.passwordInput.classList.add("is-invalid");
+      this.view.passwordHelp.classList.add("invalid-feedback");
+    }
   }
   async checkboxListener() {
     if ((this.view.passwordCheckbox as HTMLInputElement).checked) {
