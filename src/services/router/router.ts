@@ -1,4 +1,4 @@
-import { Route } from "./router.types";
+import { Route, Routes } from "./router.types";
 
 export default class RouterService {
   private routes: Record<string, Route>;
@@ -22,7 +22,7 @@ export default class RouterService {
     if (route) {
       route.init();
     } else {
-      this.routes["404"].init();
+      this.routes[Routes.NOT_FOUND].init();
     }
   }
 
