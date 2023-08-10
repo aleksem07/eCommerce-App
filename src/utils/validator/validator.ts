@@ -1,13 +1,8 @@
 import * as yup from "../../../node_modules/yup/index";
-
+import { PasswordValidationSchema, EmailValidationSchema } from "./validator.types";
 export default class ValidatorUtil {
-  passwordSchema: yup.ObjectSchema<
-    { password: string },
-    yup.AnyObject,
-    { password: undefined },
-    ""
-  >;
-  emailSchema: yup.ObjectSchema<{ email: string }, yup.AnyObject, { email: undefined }, "">;
+  passwordSchema: PasswordValidationSchema;
+  emailSchema: EmailValidationSchema;
 
   constructor() {
     this.emailSchema = yup.object().shape({
