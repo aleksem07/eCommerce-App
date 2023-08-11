@@ -29,12 +29,14 @@ export default class NotFoundView extends ViewBuilder {
     image.src = notFoundImage;
     image.alt = "404";
     image.style.maxWidth = "500px";
+
     return image;
   }
 
   private createHeading(): HTMLElement {
     const h1 = this.createElement("h1", { classes: ["display-4"] });
     h1.textContent = "Page not found";
+
     return h1;
   }
 
@@ -45,6 +47,7 @@ export default class NotFoundView extends ViewBuilder {
     });
     a.href = "#main";
     a.textContent = "Back to home";
+
     return a;
   }
 

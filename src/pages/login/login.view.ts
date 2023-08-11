@@ -5,8 +5,7 @@ export default class LoginView extends ViewBuilder {
 
   constructor() {
     super();
-    this.element = this.createElement("div", { id: "login-page" });
-    this.element.textContent = "LOGIN PAGE";
+    this.element = this.createElement("section", { id: "login-page" });
   }
 
   render() {
