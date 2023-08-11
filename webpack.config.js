@@ -32,7 +32,7 @@ module.exports = {
   },
 
   plugins: [
-    new HtmlWebpackPlugin(),
+    new HtmlWebpackPlugin({ title: "Fishing Hub" }),
     new MiniCssExtractPlugin({
       filename: "[name].[contenthash].css",
     }),
@@ -53,6 +53,10 @@ module.exports = {
       {
         test: /\.ts$/i,
         use: "ts-loader",
+      },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: "asset/resource",
       },
       {
         test: /\.(scss)$/,

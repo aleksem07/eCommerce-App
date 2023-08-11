@@ -1,4 +1,4 @@
-import { Route } from "./router.types";
+import { Route, Routes } from "./router.types";
 
 export default class RouterService {
   private routes: Record<string, Route>;
@@ -10,23 +10,23 @@ export default class RouterService {
 
     this.handleRouteChange();
 
-    window.addEventListener("popstate", this.handleRouteChange.bind(this));
+    window.addEventListener("hashchange", this.handleRouteChange.bind(this));
   }
 
   private handleRouteChange() {
-    const path = window.location.pathname;
+    const hash = window.location.hash;
+    const path = hash.slice(1);
     const route = this.routes[path];
     this.container.innerHTML = "";
 
     if (route) {
       route.init();
     } else {
-      global.console.error(`Path '${path}' is not registered in router`);
+      this.routes[Routes.NOT_FOUND].init();
     }
   }
 
   navigateTo(path: string) {
-    window.history.pushState(null, "", path);
-    this.handleRouteChange();
+    window.location.hash = `#${path}`;
   }
 }
