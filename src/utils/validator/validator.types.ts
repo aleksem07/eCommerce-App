@@ -4,5 +4,5 @@ export type ValidationSchema = yup.StringSchema<string>;
 
 export interface ValidationResult {
   isValid: boolean;
-  message: string;
+  message?: string;
 }

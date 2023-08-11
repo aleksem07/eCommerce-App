@@ -1,4 +1,4 @@
-import * as yup from "yup";
+import { string, ValidationError } from "yup";
 import { ValidationSchema, ValidationResult } from "./validator.types";
 
 export default class ValidatorUtil {
@@ -6,16 +6,14 @@ export default class ValidatorUtil {
   emailSchema: ValidationSchema;
 
   constructor() {
-    this.emailSchema = yup
-      .string()
+    this.emailSchema = string()
       .trim()
       .matches(/@/, "Email address must contain a period (@)")
       .matches(/\./, "Email address must contain a period (.)")
       .email("Invalid email address(example@gmail.com)")
       .min(3)
       .required("Email is required");
-    this.passwordSchema = yup
-      .string()
+    this.passwordSchema = string()
       .min(8, "Password must be at least 8 characters long")
       .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
       .matches(/[a-z]/, "Password must contain at least one lowercase letter")
@@ -31,19 +29,13 @@ export default class ValidatorUtil {
 
       return {
         isValid: true,
-        message: " ",
       };
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        return {
-          isValid: false,
-          message: error.message,
-        };
-      }
+      const err = error as ValidationError;
 
       return {
         isValid: false,
-        message: " ",
+        message: err.message,
       };
     }
   }
@@ -54,19 +46,13 @@ export default class ValidatorUtil {
 
       return {
         isValid: true,
-        message: " ",
       };
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        return {
-          isValid: false,
-          message: error.message,
-        };
-      }
+      const err = error as ValidationError;
 
       return {
         isValid: false,
-        message: " ",
+        message: err.message,
       };
     }
   }

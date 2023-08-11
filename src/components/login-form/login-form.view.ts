@@ -130,7 +130,7 @@ export default class LoginFormView extends ViewBuilder {
     }
 
     if (input && help) {
-      help.textContent = resultValid.message;
+      help.textContent = resultValid.message || null;
 
       if (resultValid.isValid) {
         input.classList.remove("is-invalid");
