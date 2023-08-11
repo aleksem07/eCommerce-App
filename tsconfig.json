@@ -6,14 +6,15 @@
     "strict": true,
     "noImplicitAny": true,
     "skipLibCheck": true,
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
-      "@Components/*": ["components/*"],
-      "@Pages/*": ["pages/*"],
-      "@Services/*": ["services/*"],
-      "@State/*": ["state/*"],
-      "@Utils/*": ["utils/*"],
-      "@Interfaces/*": ["interfaces/*"]
+      "@Components/*": ["src/components/*"],
+      "@Pages/*": ["src/pages/*"],
+      "@Services/*": ["src/services/*"],
+      "@State/*": ["src/state/*"],
+      "@Utils/*": ["src/utils/*"],
+      "@Interfaces/*": ["src/interfaces/*"],
+      "assets/*": ["assets/*"]
     }
   },
   "exclude": ["node_modules"]
