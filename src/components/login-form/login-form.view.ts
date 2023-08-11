@@ -16,10 +16,10 @@ export default class LoginFormView extends ViewBuilder {
     this.form = this.createElement("form", { id: "login-form" });
     this.container = this.createElement("div", { id: "login-container", classes: ["container"] });
     this.emailInput = this.createElement("input", {
-      id: "login_email-input",
+      id: "login-email-input",
       classes: ["form-control"],
     });
-    this.emailInput.setAttribute("for", "loginInputEmail");
+    this.emailInput.setAttribute("for", "login-Input-Email");
     this.emailHelp = this.createElement("small", {
       id: "email-help",
       classes: ["form-text"],
@@ -35,12 +35,12 @@ export default class LoginFormView extends ViewBuilder {
     });
     this.passwordHelp.textContent = "Must be at least 8 characters";
     this.loginSubmitButton = this.createElement("button", {
-      id: "login_submit-button",
+      id: "login-submit-button",
       classes: ["btn", "btn-primary"],
     });
     this.loginSubmitButton.setAttribute("type", "submit");
     this.passwordCheckbox = this.createElement("input", {
-      id: "login_check-input",
+      id: "logincheck-input",
       classes: ["form-check-input"],
     });
     this.passwordCheckbox.setAttribute("type", "checkbox");
@@ -49,21 +49,21 @@ export default class LoginFormView extends ViewBuilder {
 
   private createEmailWprapper() {
     const emailWrapper = this.createElement("div", {
-      id: "login_email-wrapper",
+      id: "login-email-wrapper",
       classes: ["row"],
     });
     const emailLabel = this.createElement("label", {
-      id: "login_email-label",
+      id: "login-email-label",
       classes: ["col-form-label", "col-sm-2"],
     });
-    emailLabel.setAttribute("for", "login_email-input");
+    emailLabel.setAttribute("for", "login-email-input");
     emailLabel.textContent = "Email address";
     this.emailHelp.textContent = "We'll never share your email with anyone else.";
     this.form.append(emailWrapper);
     emailWrapper.append(emailLabel, this.emailInput, this.emailHelp);
   }
 
-  private createPaswordWrapper() {
+  private createPasswordWrapper() {
     const passwordWrapper = this.createElement("div", {
       id: "password-wrapper",
       classes: ["row", "mb-3"],
@@ -72,7 +72,7 @@ export default class LoginFormView extends ViewBuilder {
       id: "password-label",
       classes: ["col-form-label", "col-sm-2"],
     });
-    passwordLabel.setAttribute("for", "lpassword-input");
+    passwordLabel.setAttribute("for", "password-input");
     passwordLabel.textContent = "Password";
     this.form.append(passwordWrapper);
     passwordWrapper.append(passwordLabel, this.passwordInput, this.passwordHelp);
@@ -86,10 +86,10 @@ export default class LoginFormView extends ViewBuilder {
     const passwordCheckLabel = this.createElement("label", {
       id: "login-check-label",
       classes: ["form-check-label"],
-      dataset: [{ for: "login_check-input" }],
+      dataset: [{ for: "login-check-input" }],
     });
     passwordCheckLabel.textContent = "Show password";
-    passwordCheckLabel.setAttribute("for", "login_check-input");
+    passwordCheckLabel.setAttribute("for", "login-check-input");
     this.form.append(checkboxWrapper);
     checkboxWrapper.append(this.passwordCheckbox, passwordCheckLabel);
   }
@@ -118,31 +118,28 @@ export default class LoginFormView extends ViewBuilder {
   }
 
   handleInputValidationResult(inputName: string, resultValid: ValidationResult) {
-    if (inputName === "email") {
-      this.emailHelp.textContent = resultValid.message;
+    let help;
+    let input;
 
-      if (resultValid.isValid) {
-        this.emailInput.classList.remove("is-invalid");
-        this.emailInput.classList.add("is-valid");
-        this.emailHelp.classList.remove("invalid-feedback");
-      } else {
-        this.emailInput.classList.remove("is-valid");
-        this.emailInput.classList.add("is-invalid");
-        this.emailHelp.classList.add("invalid-feedback");
-      }
+    if (inputName === "email") {
+      help = this.emailHelp;
+      input = this.emailInput;
+    } else if (inputName === "password") {
+      help = this.passwordHelp;
+      input = this.passwordInput;
     }
 
-    if (inputName === "password") {
-      this.passwordHelp.textContent = resultValid.message;
+    if (input && help) {
+      help.textContent = resultValid.message;
 
       if (resultValid.isValid) {
-        this.passwordInput.classList.remove("is-invalid");
-        this.passwordInput.classList.add("is-valid");
-        this.passwordHelp.classList.remove("invalid-feedback");
+        input.classList.remove("is-invalid");
+        input.classList.add("is-valid");
+        help.classList.remove("invalid-feedback");
       } else {
-        this.passwordInput.classList.remove("is-valid");
-        this.passwordInput.classList.add("is-invalid");
-        this.passwordHelp.classList.add("invalid-feedback");
+        input.classList.remove("is-valid");
+        input.classList.add("is-invalid");
+        help.classList.add("invalid-feedback");
       }
     }
   }
@@ -157,7 +154,7 @@ export default class LoginFormView extends ViewBuilder {
 
   render() {
     this.createEmailWprapper();
-    this.createPaswordWrapper();
+    this.createPasswordWrapper();
     this.container.append(this.form);
     this.createCheckbox();
     this.form.append(this.loginSubmitButton);
