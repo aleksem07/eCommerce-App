@@ -7,10 +7,10 @@ export default class LoginFormComponent {
 
   constructor() {
     this.view = new LoginFormView();
+    this.validator = new ValidatorUtil();
     this.view.inputEmailListener(this.inputEmailHandler.bind(this));
     this.view.inputPasswordListener(this.inputPasswordHandler.bind(this));
     this.view.checkboxListener(this.checkboxHandler.bind(this));
-    this.validator = new ValidatorUtil();
   }
 
   async inputEmailHandler(email: string) {

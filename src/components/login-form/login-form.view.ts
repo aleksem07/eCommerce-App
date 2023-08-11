@@ -47,7 +47,7 @@ export default class LoginFormView extends ViewBuilder {
     this.passwordCheckbox.type = "checkbox";
   }
 
-  private createEmailWprapper() {
+  private createEmailWrapper() {
     const emailWrapper = this.createElement("div", {
       id: "login-email-wrapper",
       classes: ["row"],
@@ -153,7 +153,7 @@ export default class LoginFormView extends ViewBuilder {
   }
 
   render() {
-    this.createEmailWprapper();
+    this.createEmailWrapper();
     this.createPasswordWrapper();
     this.container.append(this.form);
     this.createCheckbox();
