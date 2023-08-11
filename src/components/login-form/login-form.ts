@@ -1,13 +1,16 @@
 import LoginFormView from "./login-form.view";
 import ValidatorUtil from "@Utils/validator/validator";
+import Auth from "@Services/auth/auth";
 
 export default class LoginFormComponent {
   view: LoginFormView;
   validator: ValidatorUtil;
+  auth: Auth;
 
   constructor() {
     this.view = new LoginFormView();
     this.validator = new ValidatorUtil();
+    this.auth = new Auth();
     this.view.inputEmailListener(this.inputEmailHandler.bind(this));
     this.view.inputPasswordListener(this.inputPasswordHandler.bind(this));
     this.view.checkboxListener(this.checkboxHandler.bind(this));
@@ -29,5 +32,6 @@ export default class LoginFormComponent {
 
   init() {
     this.view.render();
+    this.auth.check();
   }
 }

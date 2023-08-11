@@ -15,10 +15,12 @@ export default class ClientBuilderService {
       clientSecret: "",
     },
   };
+
   private httpMiddlewareOptions: HttpMiddlewareOptions = {
     host: "",
     fetch,
   };
+
   constructor() {
     this.initAuthMiddlewareOptions();
     this.initHttpMiddlewareOptions();
@@ -31,7 +33,7 @@ export default class ClientBuilderService {
   }
 
   private errorHandler(errorMessage: string) {
-    const errorUtil = new ErrorHandlerUtil();
+    const errorUtil = new ErrorHandlerUtil("body");
     errorUtil.handleResult({ success: false, error: errorMessage });
   }
 
@@ -60,6 +62,7 @@ export default class ClientBuilderService {
 
   private initHttpMiddlewareOptions() {
     const apiUrl = process.env.API_URL;
+
     if (apiUrl) {
       this.httpMiddlewareOptions.host = apiUrl;
     } else {

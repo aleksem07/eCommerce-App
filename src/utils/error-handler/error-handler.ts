@@ -2,14 +2,15 @@ import { Result } from "./error-handler.type";
 import { Popover } from "bootstrap";
 
 export default class ErrorHandlerUtil {
-  constructor() {
-    return;
+  popoverContainer: HTMLElement;
+
+  constructor(tag = "body") {
+    this.popoverContainer = document.querySelector(`.${tag}`) as HTMLElement;
   }
 
   showPopover(content: string, duration: number) {
-    const popoverContainer = document.querySelector("body");
-    if (popoverContainer) {
-      const popover = new Popover(popoverContainer, {
+    if (this.popoverContainer) {
+      const popover = new Popover(this.popoverContainer, {
         content: content,
       });
       popover.show();
