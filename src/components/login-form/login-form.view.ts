@@ -110,10 +110,10 @@ export default class LoginFormView extends ViewBuilder {
     });
   }
 
-  checkboxListener(handler: (status: boolean, input: HTMLInputElement) => void) {
+  checkboxListener(handler: (status: boolean) => void) {
     this.passwordCheckbox.addEventListener("change", (event) => {
       event.preventDefault();
-      handler(this.passwordCheckbox.checked, this.passwordInput);
+      handler(this.passwordCheckbox.checked);
     });
   }
 
@@ -144,6 +144,14 @@ export default class LoginFormView extends ViewBuilder {
         this.passwordInput.classList.add("is-invalid");
         this.passwordHelp.classList.add("invalid-feedback");
       }
+    }
+  }
+
+  handleChecboxResult(status: boolean) {
+    if (status) {
+      this.passwordInput.type = "text";
+    } else {
+      this.passwordInput.type = "password";
     }
   }
 

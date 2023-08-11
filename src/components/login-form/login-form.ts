@@ -23,12 +23,8 @@ export default class LoginFormComponent {
     this.view.handleInputValidationResult("password", passwordValid);
   }
 
-  async checkboxHandler(status: boolean, input: HTMLInputElement) {
-    if (status) {
-      input.type = "text";
-    } else {
-      input.type = "password";
-    }
+  async checkboxHandler(status: boolean) {
+    this.view.handleChecboxResult(status);
   }
 
   init() {
