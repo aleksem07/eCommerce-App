@@ -29,7 +29,7 @@ export class AuthService extends ClientBuilderService {
 
   handleAuthenticationResult(result: Result) {
     const errorHandler = new NotificationHandlerUtil(".btn");
-    errorHandler.handleResult(result, "Successful login");
+    errorHandler.handleResult(result, "Welcome to the 'Fishing Hub'!");
   }
 
   async auth(username: string, password: string) {
@@ -43,17 +43,8 @@ export default class Auth {
     this.check;
   }
 
-  async check() {
-    await this.waitForDomContentLoader();
+  check() {
     this.setupCheckButton();
-  }
-
-  waitForDomContentLoader() {
-    return new Promise((resolve) => {
-      window.addEventListener("DOMContentLoaded", () => {
-        resolve({});
-      });
-    });
   }
 
   setupCheckButton() {
@@ -62,7 +53,8 @@ export default class Auth {
     const inputPassword = document.querySelector("#password-input") as HTMLInputElement;
 
     if (submitLogin && inputEmail && inputPassword) {
-      submitLogin.addEventListener("click", () => {
+      submitLogin.addEventListener("click", (event) => {
+        event.preventDefault();
         const loginUser = new AuthService();
         loginUser.auth(inputEmail.value, inputPassword.value);
       });

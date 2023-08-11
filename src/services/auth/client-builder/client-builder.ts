@@ -2,11 +2,13 @@ import {
   ClientBuilder,
   type AuthMiddlewareOptions,
   type HttpMiddlewareOptions,
+  type Client,
 } from "@commercetools/sdk-client-v2";
 import NotificationHandlerUtil from "@Utils/notification-handler/notification-handler";
 
 export default class ClientBuilderService {
-  private commercetoolsClient;
+  private commercetoolsClient: Client;
+
   private authMiddlewareOptions: AuthMiddlewareOptions = {
     host: "",
     projectKey: "",
@@ -33,7 +35,7 @@ export default class ClientBuilderService {
   }
 
   private errorHandler(errorMessage: string) {
-    const errorUtil = new NotificationHandlerUtil("body");
+    const errorUtil = new NotificationHandlerUtil();
     errorUtil.handleResult({ success: false, error: errorMessage });
   }
 
@@ -66,7 +68,7 @@ export default class ClientBuilderService {
     if (apiUrl) {
       this.httpMiddlewareOptions.host = apiUrl;
     } else {
-      this.errorHandler("apiUrl is not defined.");
+      this.errorHandler("Api Url is not defined.");
     }
   }
 

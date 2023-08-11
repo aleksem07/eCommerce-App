@@ -8,8 +8,9 @@ export default class NotificationHandlerUtil {
     this.popoverContainer = document.querySelector(`${tagName}`) as HTMLElement;
   }
 
-  showPopover(content: string, duration: number) {
+  showPopover(title: string, content: string, duration: number) {
     const popover = new Popover(this.popoverContainer, {
+      title: title,
       content: content,
     });
     popover.show();
@@ -20,11 +21,11 @@ export default class NotificationHandlerUtil {
   }
 
   handleSuccess(successMessage: string) {
-    this.showPopover(successMessage, 1000);
+    this.showPopover("Success", successMessage, 1500);
   }
 
   handleError(errorMessage: string) {
-    this.showPopover(errorMessage, 5000);
+    this.showPopover("Error", errorMessage, 3500);
   }
 
   handleResult(result: Result, successMessage?: string) {
