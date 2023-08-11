@@ -1,14 +1,15 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
+import { ValidationResult } from "@Utils/validator/validator.types";
 
 export default class LoginFormView extends ViewBuilder {
-  form: HTMLFormElement;
-  container: HTMLDivElement;
-  emailInput: HTMLInputElement;
-  emailHelp: HTMLElement;
-  passwordInput: HTMLInputElement;
-  passwordHelp: HTMLElement;
-  loginSubmitButton: HTMLButtonElement;
-  passwordCheckbox: HTMLInputElement;
+  private form: HTMLFormElement;
+  private container: HTMLDivElement;
+  private emailInput: HTMLInputElement;
+  private emailHelp: HTMLElement;
+  private passwordInput: HTMLInputElement;
+  private passwordHelp: HTMLElement;
+  private loginSubmitButton: HTMLButtonElement;
+  private passwordCheckbox: HTMLInputElement;
 
   constructor() {
     super();
@@ -114,6 +115,36 @@ export default class LoginFormView extends ViewBuilder {
       event.preventDefault();
       handler(this.passwordCheckbox.checked, this.passwordInput);
     });
+  }
+
+  handleInputValidationResult(inputName: string, resultValid: ValidationResult) {
+    if (inputName === "email") {
+      this.emailHelp.textContent = resultValid.message;
+
+      if (resultValid.isValid) {
+        this.emailInput.classList.remove("is-invalid");
+        this.emailInput.classList.add("is-valid");
+        this.emailHelp.classList.remove("invalid-feedback");
+      } else {
+        this.emailInput.classList.remove("is-valid");
+        this.emailInput.classList.add("is-invalid");
+        this.emailHelp.classList.add("invalid-feedback");
+      }
+    }
+
+    if (inputName === "password") {
+      this.passwordHelp.textContent = resultValid.message;
+
+      if (resultValid.isValid) {
+        this.passwordInput.classList.remove("is-invalid");
+        this.passwordInput.classList.add("is-valid");
+        this.passwordHelp.classList.remove("invalid-feedback");
+      } else {
+        this.passwordInput.classList.remove("is-valid");
+        this.passwordInput.classList.add("is-invalid");
+        this.passwordHelp.classList.add("invalid-feedback");
+      }
+    }
   }
 
   render() {
