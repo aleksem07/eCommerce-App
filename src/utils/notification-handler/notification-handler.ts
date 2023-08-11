@@ -1,24 +1,22 @@
-import { Result } from "./error-handler.type";
+import { Result } from "./notification-handler.type";
 import { Popover } from "bootstrap";
 
-export default class ErrorHandlerUtil {
+export default class NotificationHandlerUtil {
   popoverContainer: HTMLElement;
 
-  constructor(tag = "body") {
-    this.popoverContainer = document.querySelector(`.${tag}`) as HTMLElement;
+  constructor(tagName = "body") {
+    this.popoverContainer = document.querySelector(`${tagName}`) as HTMLElement;
   }
 
   showPopover(content: string, duration: number) {
-    if (this.popoverContainer) {
-      const popover = new Popover(this.popoverContainer, {
-        content: content,
-      });
-      popover.show();
+    const popover = new Popover(this.popoverContainer, {
+      content: content,
+    });
+    popover.show();
 
-      setTimeout(() => {
-        popover.dispose();
-      }, duration);
-    }
+    setTimeout(() => {
+      popover.dispose();
+    }, duration);
   }
 
   handleSuccess(successMessage: string) {

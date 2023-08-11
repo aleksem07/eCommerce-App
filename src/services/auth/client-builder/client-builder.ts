@@ -3,7 +3,7 @@ import {
   type AuthMiddlewareOptions,
   type HttpMiddlewareOptions,
 } from "@commercetools/sdk-client-v2";
-import ErrorHandlerUtil from "@Utils/error-handler/error-handler";
+import NotificationHandlerUtil from "@Utils/notification-handler/notification-handler";
 
 export default class ClientBuilderService {
   private commercetoolsClient;
@@ -33,7 +33,7 @@ export default class ClientBuilderService {
   }
 
   private errorHandler(errorMessage: string) {
-    const errorUtil = new ErrorHandlerUtil("body");
+    const errorUtil = new NotificationHandlerUtil("body");
     errorUtil.handleResult({ success: false, error: errorMessage });
   }
 

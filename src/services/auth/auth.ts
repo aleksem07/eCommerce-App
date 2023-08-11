@@ -1,8 +1,8 @@
-import { Result } from "@Utils/error-handler/error-handler.type";
+import { Result } from "@Utils/notification-handler/notification-handler.type";
 import ClientBuilderService from "./client-builder/client-builder";
-import ErrorHandlerUtil from "@Utils/error-handler/error-handler";
+import NotificationHandlerUtil from "@Utils/notification-handler/notification-handler";
 
-class AuthService extends ClientBuilderService {
+export class AuthService extends ClientBuilderService {
   constructor() {
     super();
   }
@@ -28,7 +28,7 @@ class AuthService extends ClientBuilderService {
   }
 
   handleAuthenticationResult(result: Result) {
-    const errorHandler = new ErrorHandlerUtil("btn");
+    const errorHandler = new NotificationHandlerUtil(".btn");
     errorHandler.handleResult(result, "Successful login");
   }
 
