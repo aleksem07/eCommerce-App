@@ -7,22 +7,10 @@ export default class LoginFormComponent {
 
   constructor() {
     this.view = new LoginFormView();
-    this.view.submitFormListener(this.submitFormHandler.bind(this));
     this.view.inputEmailListener(this.inputEmailHandler.bind(this));
     this.view.inputPasswordListener(this.inputPasswordHandler.bind(this));
     this.view.checkboxListener(this.checkboxHandler.bind(this));
     this.validator = new ValidatorUtil();
-  }
-
-  async submitFormHandler(email: string, password: string) {
-    const emailValid = await this.validator.validateEmail(email);
-    const passwordValid = await this.validator.validatePassword(password);
-
-    if (emailValid.isValid && passwordValid.isValid) {
-      //
-    } else {
-      //
-    }
   }
 
   async inputEmailHandler(email: string) {

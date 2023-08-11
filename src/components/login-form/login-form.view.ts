@@ -93,15 +93,6 @@ export default class LoginFormView extends ViewBuilder {
     checkboxWrapper.append(this.passwordCheckbox, passwordCheckLabel);
   }
 
-  submitFormListener(handler: (email: string, password: string) => void) {
-    this.form.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const email = this.emailInput.value;
-      const password = this.passwordInput.value;
-      handler(email, password);
-    });
-  }
-
   inputEmailListener(handler: (email: string) => void) {
     this.emailInput.addEventListener("input", (event) => {
       event.preventDefault();
