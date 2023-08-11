@@ -9,6 +9,8 @@ export default class ValidatorUtil {
     this.emailSchema = yup
       .string()
       .trim()
+      .matches(/@/, "Email address must contain a period (@)")
+      .matches(/\./, "Email address must contain a period (.)")
       .email("Invalid email address(example@gmail.com)")
       .min(3)
       .required("Email is required");
@@ -31,10 +33,17 @@ export default class ValidatorUtil {
         isValid: true,
         message: " ",
       };
-    } catch (error) {
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return {
+          isValid: false,
+          message: error.message,
+        };
+      }
+
       return {
         isValid: false,
-        message: (error as Error).message,
+        message: " ",
       };
     }
   }
@@ -47,10 +56,17 @@ export default class ValidatorUtil {
         isValid: true,
         message: " ",
       };
-    } catch (error) {
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return {
+          isValid: false,
+          message: error.message,
+        };
+      }
+
       return {
         isValid: false,
-        message: (error as Error).message,
+        message: " ",
       };
     }
   }
