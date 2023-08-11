@@ -6,7 +6,12 @@ export default class ValidatorUtil {
   emailSchema: ValidationSchema;
 
   constructor() {
-    this.emailSchema = yup.string().trim().email().required().strict(true).defined();
+    this.emailSchema = yup
+      .string()
+      .trim()
+      .email("Invalid email address(example@gmail.com)")
+      .min(3)
+      .required("Email is required");
     this.passwordSchema = yup
       .string()
       .min(8, "Password must be at least 8 characters long")
