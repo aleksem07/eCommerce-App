@@ -1,37 +1,37 @@
 import ValidatorUtil from "./validator";
 
 describe("ValidatorUtil", () => {
-  let validatorUtil: ValidatorUtil;
+  let validator: ValidatorUtil;
 
   beforeEach(() => {
-    validatorUtil = new ValidatorUtil();
+    validator = new ValidatorUtil();
   });
-
-  describe("validateEmail", () => {
-    it("should return true for a valid email", () => {
-      const validEmail = "test@example.com";
-      const isValid = validatorUtil.validateEmail(validEmail);
-      expect(isValid).toBe(true);
-    });
-
-    it("should return false for an invalid email", () => {
-      const invalidEmail = "invalidemail";
-      const isValid = validatorUtil.validateEmail(invalidEmail);
-      expect(isValid).toBe(false);
-    });
-  });
-
   describe("validatePassword", () => {
-    it("should return true for a valid password", () => {
-      const validPassword = "password123";
-      const isValid = validatorUtil.validatePassword(validPassword);
-      expect(isValid).toBe(true);
+    it("should return isValid true for a valid password", () => {
+      const password = "1Abc123!";
+      const result = validator.validatePassword(password);
+      expect(result.isValid).toBe(true);
+      expect(result.message).toBeUndefined();
     });
-
-    it("should return false for an invalid password", () => {
-      const invalidPassword = "pw";
-      const isValid = validatorUtil.validatePassword(invalidPassword);
-      expect(isValid).toBe(false);
+    it("should return isValid false and a message for an invalid password", () => {
+      const password = "abc123";
+      const result = validator.validatePassword(password);
+      expect(result.isValid).toBe(false);
+      expect(result.message).toBe("Password must be at least 8 characters long");
+    });
+  });
+  describe("validateEmail", () => {
+    it("should return isValid true for a valid email", () => {
+      const email = "example@gmail.com";
+      const result = validator.validateEmail(email);
+      expect(result.isValid).toBe(true);
+      expect(result.message).toBeUndefined();
+    });
+    it("should return isValid false and a message for an invalid email", () => {
+      const email = "example";
+      const result = validator.validateEmail(email);
+      expect(result.isValid).toBe(false);
+      expect(result.message).toBe("Email address must contain a period (@)");
     });
   });
 });

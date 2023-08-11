@@ -1,23 +1,29 @@
 import LoginFormComponent from "./login-form";
+import LoginFormView from "./login-form.view";
+import ValidatorUtil from "@Utils/validator/validator";
 
+// Mock the dependencies
+jest.mock("./login-form.view");
+jest.mock("@Utils/validator/validator");
+const status = true;
 describe("LoginFormComponent", () => {
+  let loginFormComponent: LoginFormComponent;
   beforeEach(() => {
-    document.body.innerHTML = '<div id="login-page"></div>';
+    loginFormComponent = new LoginFormComponent();
   });
-
-  it("should instantiate", () => {
-    const instance = new LoginFormComponent();
-    expect(instance).toBeInstanceOf(LoginFormComponent);
+  afterEach(() => {
+    jest.resetAllMocks();
   });
-
-  it("should render", () => {
-    // Arrange
-    const instance = new LoginFormComponent();
-    // Act
-    instance.init();
-    //Assert
-    const loginFormElement = document.querySelector("#login-form");
-    expect(loginFormElement).not.toBeNull();
-    expect(loginFormElement?.textContent).toMatch(/LOGIN FORM/);
+  it("should initialize the view and validator", () => {
+    expect(loginFormComponent.view).toBeInstanceOf(LoginFormView);
+    expect(loginFormComponent.validator).toBeInstanceOf(ValidatorUtil);
+  });
+  it("should call handleChecboxResult with the provided status", () => {
+    loginFormComponent.checkboxHandler(status);
+    expect(loginFormComponent.view.handleChecboxResult).toHaveBeenCalledWith(status);
+  });
+  it("should render the view on init", () => {
+    loginFormComponent.init();
+    expect(loginFormComponent.view.render).toHaveBeenCalled();
   });
 });
