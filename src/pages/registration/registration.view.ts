@@ -1,11 +1,12 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
 
-export default class LoginView extends ViewBuilder {
+export default class RegistrationView extends ViewBuilder {
   element: HTMLElement;
 
   constructor() {
     super();
-    this.element = this.createElement("section", { id: "login-page" });
+    this.element = this.createElement("div");
+    this.element.textContent = "REGISTRATION PAGE";
   }
 
   render() {

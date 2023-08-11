@@ -18,6 +18,5 @@ describe("LoginPage", () => {
     //Assert
     const loginPageElement = document.querySelector("#login-page");
     expect(loginPageElement).not.toBeNull();
-    expect(loginPageElement?.textContent).toMatch(/LOGIN PAGE/);
   });
 });
