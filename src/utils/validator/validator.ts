@@ -1,5 +1,6 @@
 import * as yup from "yup";
 import { ValidationSchema, ValidationResult } from "./validator.types";
+
 export default class ValidatorUtil {
   passwordSchema: ValidationSchema;
   emailSchema: ValidationSchema;
@@ -20,6 +21,7 @@ export default class ValidatorUtil {
   validatePassword(password: string): ValidationResult {
     try {
       this.passwordSchema.validateSync(password);
+
       return {
         isValid: true,
         message: " ",
@@ -35,6 +37,7 @@ export default class ValidatorUtil {
   validateEmail(email: string): ValidationResult {
     try {
       this.emailSchema.validateSync(email);
+
       return {
         isValid: true,
         message: " ",

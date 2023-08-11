@@ -1,4 +1,5 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
+
 export default class LoginFormView extends ViewBuilder {
   form: HTMLFormElement;
   container: HTMLDivElement;
@@ -60,6 +61,7 @@ export default class LoginFormView extends ViewBuilder {
     this.form.append(emailWrapper);
     emailWrapper.append(emailLabel, this.emailInput, this.emailHelp);
   }
+
   private createPaswordWrapper() {
     const passwordWrapper = this.createElement("div", {
       id: "password-wrapper",
@@ -74,6 +76,7 @@ export default class LoginFormView extends ViewBuilder {
     this.form.append(passwordWrapper);
     passwordWrapper.append(passwordLabel, this.passwordInput, this.passwordHelp);
   }
+
   private createCheckbox() {
     const checkboxWrapper = this.createElement("div", {
       id: "checkbox-wrapper",
@@ -89,6 +92,7 @@ export default class LoginFormView extends ViewBuilder {
     this.form.append(checkboxWrapper);
     checkboxWrapper.append(this.passwordCheckbox, passwordCheckLabel);
   }
+
   submitFormListener(handler: (email: string, password: string) => void) {
     this.form.addEventListener("submit", (event) => {
       event.preventDefault();
@@ -97,6 +101,7 @@ export default class LoginFormView extends ViewBuilder {
       handler(email, password);
     });
   }
+
   inputEmailListener(handler: (email: string) => void) {
     this.emailInput.addEventListener("input", (event) => {
       event.preventDefault();
@@ -104,6 +109,7 @@ export default class LoginFormView extends ViewBuilder {
       handler(email);
     });
   }
+
   inputPasswordListener(handler: (password: string) => void) {
     this.passwordInput.addEventListener("input", (event) => {
       event.preventDefault();
@@ -111,12 +117,14 @@ export default class LoginFormView extends ViewBuilder {
       handler(password);
     });
   }
+
   checkboxListener(handler: (status: boolean, input: HTMLInputElement) => void) {
     this.passwordCheckbox.addEventListener("change", (event) => {
       event.preventDefault();
       handler(this.passwordCheckbox.checked, this.passwordInput);
     });
   }
+
   render() {
     this.createEmailWprapper();
     this.createPaswordWrapper();

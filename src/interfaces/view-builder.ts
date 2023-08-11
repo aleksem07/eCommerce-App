@@ -44,6 +44,7 @@ export class ViewBuilder {
 
   appendTo(parentSelector: string, element: HTMLElement) {
     const parent = document.querySelector(parentSelector);
+
     if (parent) {
       parent.appendChild(element);
     }
