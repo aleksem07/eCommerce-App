@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "es2016",
     "esModuleInterop": true,
+    "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitAny": true,
@@ -14,8 +15,7 @@
       "@State/*": ["state/*"],
       "@Utils/*": ["utils/*"],
       "@Interfaces/*": ["interfaces/*"]
-    },
-		"moduleResolution": "node"
+    }
   },
   "exclude": ["node_modules"]
 }
