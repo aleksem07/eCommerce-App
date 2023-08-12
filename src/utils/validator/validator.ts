@@ -56,4 +56,13 @@ export default class ValidatorUtil {
       };
     }
   }
+
+  validate(inputName: string, inputText: string) {
+    switch (inputName) {
+      case "email":
+        return this.validateEmail(inputText);
+      case "password":
+        return this.validatePassword(inputText);
+    }
+  }
 }

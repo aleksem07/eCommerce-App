@@ -1,4 +1,5 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
+import { ValidationResult } from "@Utils/validator/validator.types";
 
 export default class FormInputView extends ViewBuilder {
   formName: string;
@@ -31,6 +32,31 @@ export default class FormInputView extends ViewBuilder {
       classes: ["form-text"],
     });
     this.inputHelp.textContent = helpText;
+  }
+
+  inputListener(handler: (text: string) => void) {
+    this.input.addEventListener("input", (event) => {
+      event.preventDefault();
+      const inputText = this.input.value;
+      handler(inputText);
+    });
+  }
+
+  handleInputValidationResult(resultValid: ValidationResult) {
+    const help = this.inputHelp;
+    const input = this.input;
+
+    help.textContent = resultValid.message || null;
+
+    if (resultValid.isValid) {
+      input.classList.remove("is-invalid");
+      input.classList.add("is-valid");
+      help.classList.remove("invalid-feedback");
+    } else {
+      input.classList.remove("is-valid");
+      input.classList.add("is-invalid");
+      help.classList.add("invalid-feedback");
+    }
   }
 
   render() {
