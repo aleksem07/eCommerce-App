@@ -8,7 +8,8 @@ describe("ErrorHandlingUtil", () => {
 
   it("should show success message popover", () => {
     const instance = new NotificationHandlerUtil();
-    instance.handleSuccess("Success!");
+    const container = document.querySelector("body") as HTMLElement;
+    instance.handleSuccess(container, "Success!");
     const popoverElement = document.querySelector(".popover") as HTMLElement;
     expect(popoverElement).toBeTruthy();
     expect(popoverElement.textContent).toContain("Success!");

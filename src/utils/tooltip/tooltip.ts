@@ -2,14 +2,12 @@ import { Result } from "../../services/auth/auth.types";
 import { Popover } from "bootstrap";
 
 export default class Tooltip {
-  popoverContainer: HTMLElement;
-
-  constructor(tagName = "body") {
-    this.popoverContainer = document.querySelector(`${tagName}`) as HTMLElement;
+  constructor() {
+    return;
   }
 
-  showPopover(title: string, content: string, duration: number) {
-    const popover = new Popover(this.popoverContainer, {
+  showPopover(element: HTMLElement, title: string, content: string, duration: number) {
+    const popover = new Popover(element, {
       title: title,
       content: content,
     });
@@ -20,19 +18,21 @@ export default class Tooltip {
     }, duration);
   }
 
-  handleSuccess(successMessage: string) {
-    this.showPopover("Success", successMessage, 1500);
+  handleSuccess(element: HTMLElement, successMessage: string) {
+    this.showPopover(element, "Success", successMessage, 1500);
   }
 
-  handleError(errorMessage: string) {
-    this.showPopover("Error", errorMessage, 3500);
+  handleError(element: HTMLElement, errorMessage: string) {
+    this.showPopover(element, "Error", errorMessage, 3500);
   }
 
-  init(result: Result, successMessage?: string) {
+  init(element: HTMLElement, result: Result, successMessage: string) {
     if (result.success) {
-      this.handleSuccess(successMessage || "");
+      this.handleSuccess(element, successMessage);
     } else {
-      this.handleError(result.error || "");
+      if (result.error) {
+        this.handleError(element, result.error);
+      }
     }
   }
 }

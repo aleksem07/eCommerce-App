@@ -36,14 +36,12 @@ export default class LoginFormComponent {
     const email = this.view.getEmail();
     const password = this.view.getPassword();
 
-    if (email !== undefined && password !== undefined) {
-      const result = await this.authService.checkClient(email, password);
+    const result = await this.authService.checkClient(email, password);
 
-      if (result.success) {
-        this.view.showNotification(result, "Welcome to the 'Fishing Hub'!");
-      } else {
-        this.view.showNotification(result, result.error || "");
-      }
+    if (result.success) {
+      this.view.showNotification(result, "Welcome to the 'Fishing Hub'!");
+    } else if (result.error) {
+      this.view.showNotification(result, result.error);
     }
   }
 

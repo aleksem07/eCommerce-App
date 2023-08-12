@@ -164,7 +164,7 @@ export default class LoginFormView extends ViewBuilder {
   }
 
   showNotification(result: Result, message: string) {
-    this.tooltip.init(result, message);
+    this.tooltip.init(this.loginSubmitButton, result, message);
   }
 
   getEmail(): string {
