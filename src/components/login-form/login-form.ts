@@ -1,19 +1,21 @@
 import LoginFormView from "./login-form.view";
 import ValidatorUtil from "@Utils/validator/validator";
-import Auth from "@Services/auth/auth";
+import AuthService from "@Services/auth/auth";
 
 export default class LoginFormComponent {
   view: LoginFormView;
   validator: ValidatorUtil;
-  auth: Auth;
+  authService: AuthService;
 
   constructor() {
     this.view = new LoginFormView();
     this.validator = new ValidatorUtil();
-    this.auth = new Auth();
+    this.authService = new AuthService();
+
     this.view.inputEmailListener(this.inputEmailHandler.bind(this));
     this.view.inputPasswordListener(this.inputPasswordHandler.bind(this));
     this.view.checkboxListener(this.checkboxHandler.bind(this));
+    this.view.submitFormListener(this.submitFormHandler.bind(this));
   }
 
   async inputEmailHandler(email: string) {
@@ -30,8 +32,22 @@ export default class LoginFormComponent {
     this.view.handleChecboxResult(status);
   }
 
+  async submitFormHandler() {
+    const email = this.view.getEmail();
+    const password = this.view.getPassword();
+
+    if (email !== undefined && password !== undefined) {
+      const result = await this.authService.checkClient(email, password);
+
+      if (result.success) {
+        this.view.showNotification(result, "Welcome to the 'Fishing Hub'!");
+      } else {
+        this.view.showNotification(result, result.error || "");
+      }
+    }
+  }
+
   init() {
     this.view.render();
-    this.auth.check();
   }
 }

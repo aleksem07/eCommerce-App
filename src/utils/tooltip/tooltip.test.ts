@@ -1,4 +1,4 @@
-import NotificationHandlerUtil from "./notification-handler";
+import NotificationHandlerUtil from "./tooltip";
 
 describe("ErrorHandlingUtil", () => {
   it("should instantiate", () => {

@@ -4,7 +4,6 @@ import {
   type HttpMiddlewareOptions,
   type Client,
 } from "@commercetools/sdk-client-v2";
-import NotificationHandlerUtil from "@Utils/notification-handler/notification-handler";
 
 export default class ClientBuilderService {
   private commercetoolsClient: Client;
@@ -34,11 +33,6 @@ export default class ClientBuilderService {
       .build();
   }
 
-  private errorHandler(errorMessage: string) {
-    const errorUtil = new NotificationHandlerUtil();
-    errorUtil.handleResult({ success: false, error: errorMessage });
-  }
-
   private initAuthMiddlewareOptions() {
     const projectKey = process.env.PROJECT_KEY;
     const scopes = process.env.SCOPES?.split(",").filter(Boolean);
@@ -57,8 +51,6 @@ export default class ClientBuilderService {
         scopes,
         fetch,
       };
-    } else {
-      this.errorHandler("Some required variables are not defined.");
     }
   }
 
@@ -67,8 +59,6 @@ export default class ClientBuilderService {
 
     if (apiUrl) {
       this.httpMiddlewareOptions.host = apiUrl;
-    } else {
-      this.errorHandler("Api Url is not defined.");
     }
   }
 

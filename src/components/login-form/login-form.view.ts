@@ -1,5 +1,7 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
 import { ValidationResult } from "@Utils/validator/validator.types";
+import Tooltip from "@Utils/tooltip/tooltip";
+import { Result } from "@Services/auth/auth.types";
 
 export default class LoginFormView extends ViewBuilder {
   private form: HTMLFormElement;
@@ -10,9 +12,11 @@ export default class LoginFormView extends ViewBuilder {
   private passwordHelp: HTMLElement;
   private loginSubmitButton: HTMLButtonElement;
   private passwordCheckbox: HTMLInputElement;
+  private tooltip: Tooltip;
 
   constructor() {
     super();
+    this.tooltip = new Tooltip();
     this.form = this.createElement("form", { id: "login-form" });
     this.container = this.createElement("div", { id: "login-container", classes: ["container"] });
     this.emailInput = this.createElement("input", {
@@ -117,6 +121,13 @@ export default class LoginFormView extends ViewBuilder {
     });
   }
 
+  submitFormListener(handler: (email: string, password: string) => void) {
+    this.form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      handler(this.getEmail(), this.getPassword());
+    });
+  }
+
   handleInputValidationResult(inputName: string, resultValid: ValidationResult) {
     let help;
     let input;
@@ -150,6 +161,18 @@ export default class LoginFormView extends ViewBuilder {
     } else {
       this.passwordInput.type = "password";
     }
+  }
+
+  showNotification(result: Result, message: string) {
+    this.tooltip.init(result, message);
+  }
+
+  getEmail(): string {
+    return this.emailInput.value;
+  }
+
+  getPassword(): string {
+    return this.passwordInput.value;
   }
 
   render() {

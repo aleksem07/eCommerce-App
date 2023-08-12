@@ -1,13 +1,11 @@
-import { Result } from "@Utils/notification-handler/notification-handler.type";
-import ClientBuilderService from "./client-builder/client-builder";
-import NotificationHandlerUtil from "@Utils/notification-handler/notification-handler";
+import ClientBuilderService from "../client-builder/client-builder";
 
-export class AuthService extends ClientBuilderService {
+export default class AuthService extends ClientBuilderService {
   constructor() {
     super();
   }
 
-  async checkUserLogin(username: string, password: string) {
+  private async checkUserLogin(username: string, password: string) {
     try {
       const data = await this.getClient.execute({
         method: "POST",
@@ -20,40 +18,16 @@ export class AuthService extends ClientBuilderService {
 
       return { success: true, data };
     } catch (error) {
+      const errorMessage = (error as Error).message;
+
       return {
         success: false,
-        error: "An error occurred while entering the email or password. Please, enter correct data",
+        error: errorMessage,
       };
     }
   }
 
-  handleAuthenticationResult(result: Result) {
-    const errorHandler = new NotificationHandlerUtil(".btn");
-    errorHandler.handleResult(result, "Welcome to the 'Fishing Hub'!");
-  }
-
-  async auth(username: string, password: string) {
-    const result = await this.checkUserLogin(username, password);
-    this.handleAuthenticationResult(result);
-  }
-}
-
-export default class Auth {
-  constructor() {
-    this.check;
-  }
-
-  check() {
-    const submitLogin = document.querySelector("#login-submit-button");
-    const inputEmail = document.querySelector("#login-email-input") as HTMLInputElement;
-    const inputPassword = document.querySelector("#password-input") as HTMLInputElement;
-
-    if (submitLogin && inputEmail && inputPassword) {
-      submitLogin.addEventListener("click", (event) => {
-        event.preventDefault();
-        const loginUser = new AuthService();
-        loginUser.auth(inputEmail.value, inputPassword.value);
-      });
-    }
+  get checkClient() {
+    return this.checkUserLogin;
   }
 }

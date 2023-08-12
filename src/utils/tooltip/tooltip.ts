@@ -1,7 +1,7 @@
-import { Result } from "./notification-handler.type";
+import { Result } from "../../services/auth/auth.types";
 import { Popover } from "bootstrap";
 
-export default class NotificationHandlerUtil {
+export default class Tooltip {
   popoverContainer: HTMLElement;
 
   constructor(tagName = "body") {
@@ -28,7 +28,7 @@ export default class NotificationHandlerUtil {
     this.showPopover("Error", errorMessage, 3500);
   }
 
-  handleResult(result: Result, successMessage?: string) {
+  init(result: Result, successMessage?: string) {
     if (result.success) {
       this.handleSuccess(successMessage || "");
     } else {
