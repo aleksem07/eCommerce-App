@@ -44,10 +44,6 @@ export default class Auth {
   }
 
   check() {
-    this.setupCheckButton();
-  }
-
-  setupCheckButton() {
     const submitLogin = document.querySelector("#login-submit-button");
     const inputEmail = document.querySelector("#login-email-input") as HTMLInputElement;
     const inputPassword = document.querySelector("#password-input") as HTMLInputElement;
