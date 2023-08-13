@@ -24,17 +24,17 @@ export default class FormInputView extends ViewBuilder {
     this.inputName = inputName;
     this.inputWrapper = this.createElement("div", {
       id: `${formName}-${inputName}-wrapper`,
-      classes: ["row"],
+      classes: ["form-group", "col-12"],
     });
     this.inputLabel = this.createElement("label", {
       id: "login-email-label",
-      classes: [`col-form-label`, "col-sm-2"],
+      classes: ["col-sm-2", "control-label"],
     });
     this.inputLabel.setAttribute("for", `${formName}-${inputName}-input`);
     this.inputLabel.textContent = labelText;
     this.input = this.createElement("input", {
       id: `${formName}-${inputName}-input`,
-      classes: ["form-control"],
+      classes: ["form-control", "input-xs"],
     });
     this.inputHelp = this.createElement("small", {
       id: `${helpText}-help`,
@@ -77,7 +77,7 @@ export default class FormInputView extends ViewBuilder {
     this.input.type = "password";
     const checkboxWrapper: HTMLDivElement = this.createElement("div", {
       id: "checkbox-wrapper",
-      classes: ["mb-3", "form-check"],
+      classes: ["form-switch", "form-check", "col-6"],
     });
     const passwordCheckLabel: HTMLLabelElement = this.createElement("label", {
       id: "login-check-label",
