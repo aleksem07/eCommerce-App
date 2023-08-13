@@ -1,12 +1,5 @@
 import Tooltip from "./tooltip";
 
-jest.mock("bootstrap", () => ({
-  Popover: jest.fn().mockImplementation(() => ({
-    show: jest.fn(),
-    dispose: jest.fn(),
-  })),
-}));
-
 describe("ErrorHandlingUtil", () => {
   it("should instantiate", () => {
     const instance = new Tooltip();
