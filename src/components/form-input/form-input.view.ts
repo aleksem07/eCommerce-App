@@ -8,9 +8,18 @@ export default class FormInputView extends ViewBuilder {
   inputLabel: HTMLLabelElement;
   input: HTMLInputElement;
   inputHelp: HTMLElement;
+  checkbox = false;
+  passwordCheckbox: HTMLInputElement;
 
-  constructor(formName: string, inputName: string, labelText: string, helpText: string) {
+  constructor(
+    formName: string,
+    inputName: string,
+    labelText: string,
+    helpText: string,
+    checkbox: boolean
+  ) {
     super();
+    this.checkbox = checkbox;
     this.formName = formName;
     this.inputName = inputName;
     this.inputWrapper = this.createElement("div", {
@@ -32,6 +41,11 @@ export default class FormInputView extends ViewBuilder {
       classes: ["form-text"],
     });
     this.inputHelp.textContent = helpText;
+    this.passwordCheckbox = this.createElement("input", {
+      id: `${inputName}-check-input`,
+      classes: ["form-check-input"],
+    });
+    this.passwordCheckbox.setAttribute("type", "checkbox");
   }
 
   inputListener(handler: (text: string) => void) {
@@ -59,8 +73,51 @@ export default class FormInputView extends ViewBuilder {
     }
   }
 
+  private createCheckbox() {
+    this.input.type = "password";
+    const checkboxWrapper: HTMLDivElement = this.createElement("div", {
+      id: "checkbox-wrapper",
+      classes: ["mb-3", "form-check"],
+    });
+    const passwordCheckLabel: HTMLLabelElement = this.createElement("label", {
+      id: "login-check-label",
+      classes: ["form-check-label"],
+      dataset: [{ for: "login-check-input" }],
+    });
+    passwordCheckLabel.textContent = "Show password";
+    passwordCheckLabel.setAttribute("for", "login-check-input");
+    checkboxWrapper.append(this.passwordCheckbox, passwordCheckLabel);
+    this.insertBefore(`#${this.formName}-form`, checkboxWrapper, `#${this.formName}-submit-button`);
+  }
+
+  checkboxListener(handler: (status: boolean) => void) {
+    this.passwordCheckbox.addEventListener("change", (event) => {
+      event.preventDefault();
+      handler(this.passwordCheckbox.checked);
+    });
+  }
+
+  handleChecboxResult(status: boolean) {
+    const passwordInput = this.getElement("#login-password-input");
+
+    if (status) {
+      (passwordInput as HTMLInputElement).type = "text";
+    } else {
+      (passwordInput as HTMLInputElement).type = "password";
+    }
+  }
+
   render() {
     this.inputWrapper.append(this.inputLabel, this.input, this.inputHelp);
     this.appendTo(`#${this.formName}-form`, this.inputWrapper);
+    this.insertBefore(
+      `#${this.formName}-form`,
+      this.inputWrapper,
+      `#${this.formName}-submit-button`
+    );
+
+    if (this.checkbox) {
+      this.createCheckbox();
+    }
   }
 }

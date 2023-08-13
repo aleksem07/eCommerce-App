@@ -49,4 +49,13 @@ export class ViewBuilder {
       parent.appendChild(element);
     }
   }
+
+  insertBefore(parentSelector: string, element: HTMLElement, elem: string) {
+    const parent = document.querySelector(parentSelector);
+    const eleme = document.querySelector(elem);
+
+    if (parent && elem) {
+      parent.insertBefore(element, eleme);
+    }
+  }
 }

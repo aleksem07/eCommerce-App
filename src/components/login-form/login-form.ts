@@ -1,37 +1,36 @@
 import LoginFormView from "./login-form.view";
 import ValidatorUtil from "@Utils/validator/validator";
 import Auth from "@Services/auth/auth";
+import FormInputComponent from "@Components/form-input/form-input";
+import FormComponent from "@Components/form/form";
 
 export default class LoginFormComponent {
+  form: FormComponent;
   view: LoginFormView;
   validator: ValidatorUtil;
   auth: Auth;
+  emailInput: FormInputComponent;
+  passInput: FormInputComponent;
 
   constructor() {
+    this.form = new FormComponent("login");
     this.view = new LoginFormView();
     this.validator = new ValidatorUtil();
     this.auth = new Auth();
-    this.view.inputEmailListener(this.inputEmailHandler.bind(this));
-    this.view.inputPasswordListener(this.inputPasswordHandler.bind(this));
-    this.view.checkboxListener(this.checkboxHandler.bind(this));
-  }
-
-  async inputEmailHandler(email: string) {
-    const emailValid = await this.validator.validateEmail(email);
-    this.view.handleInputValidationResult("email", emailValid);
-  }
-
-  async inputPasswordHandler(password: string) {
-    const passwordValid = await this.validator.validatePassword(password);
-    this.view.handleInputValidationResult("password", passwordValid);
-  }
-
-  async checkboxHandler(status: boolean) {
-    this.view.handleChecboxResult(status);
+    this.emailInput = new FormInputComponent("login", "email", "E-mail", "Write your email", false);
+    this.passInput = new FormInputComponent(
+      "login",
+      "password",
+      "Password",
+      "Write your password",
+      true
+    );
   }
 
   init() {
-    this.view.render();
+    this.form.init();
+    this.emailInput.init();
+    this.passInput.init();
     this.auth.check();
   }
 }
