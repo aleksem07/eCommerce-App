@@ -8,7 +8,7 @@ export default class NotFoundView extends ViewBuilder {
     super();
     this.element = this.createElement("div", {
       id: "not-found",
-      classes: ["d-flex", "justify-content-center", "align-items-center", "flex-column", "vh-100"],
+      classes: ["d-flex", "justify-content-center", "align-items-center", "flex-column"],
     });
 
     this.renderLayout();
