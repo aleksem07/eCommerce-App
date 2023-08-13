@@ -3,7 +3,7 @@ export interface Route {
 }
 
 export enum Routes {
-  MAIN = "#main",
+  MAIN = "",
   LOGIN = "#login",
   REGISTRATION = "#registration",
   NOT_FOUND = "#404",

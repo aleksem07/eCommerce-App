@@ -14,11 +14,12 @@ export default class RouterService {
   }
 
   private handleRouteChange() {
-    const hash = window.location.hash;
+    const { hash, pathname } = window.location;
+    const isRootPath = pathname === "/";
     const route = this.routes[hash];
     this.container.innerHTML = "";
 
-    if (route) {
+    if (route && isRootPath) {
       route.init();
     } else {
       this.routes[Routes.NOT_FOUND].init();
