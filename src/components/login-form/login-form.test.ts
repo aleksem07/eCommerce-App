@@ -1,3 +1,6 @@
+import fetch from "cross-fetch";
+global.fetch = fetch;
+
 import LoginFormComponent from "./login-form";
 import LoginFormView from "./login-form.view";
 import ValidatorUtil from "@Utils/validator/validator";

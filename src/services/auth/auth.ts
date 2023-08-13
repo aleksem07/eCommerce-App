@@ -1,17 +1,17 @@
-import { Result } from "@Utils/notification-handler/notification-handler.type";
-import ClientBuilderService from "./client-builder/client-builder";
-import NotificationHandlerUtil from "@Utils/notification-handler/notification-handler";
+import { HttpErrorType } from "@commercetools/sdk-client-v2";
+import ClientBuilderService from "../client-builder/client-builder";
+import { AuthResult } from "./auth.types";
 
-export class AuthService extends ClientBuilderService {
+export default class AuthService extends ClientBuilderService {
   constructor() {
     super();
   }
 
-  async checkUserLogin(username: string, password: string) {
+  private async login(username: string, password: string): Promise<AuthResult> {
     try {
-      const data = await this.getClient.execute({
+      const data = await this.commercetoolsClient.execute({
         method: "POST",
-        uri: "/random-team-19/login",
+        uri: `/${this.projectKey}/login`,
         body: {
           email: username,
           password: password,
@@ -19,41 +19,17 @@ export class AuthService extends ClientBuilderService {
       });
 
       return { success: true, data };
-    } catch (error) {
+    } catch (error: unknown) {
+      const errorMessage = (error as HttpErrorType).message;
+
       return {
         success: false,
-        error: "An error occurred while entering the email or password. Please, enter correct data",
+        error: errorMessage,
       };
     }
   }
 
-  handleAuthenticationResult(result: Result) {
-    const errorHandler = new NotificationHandlerUtil(".btn");
-    errorHandler.handleResult(result, "Welcome to the 'Fishing Hub'!");
-  }
-
-  async auth(username: string, password: string) {
-    const result = await this.checkUserLogin(username, password);
-    this.handleAuthenticationResult(result);
-  }
-}
-
-export default class Auth {
-  constructor() {
-    this.check;
-  }
-
-  check() {
-    const submitLogin = document.querySelector("#login-submit-button");
-    const inputEmail = document.querySelector("#login-email-input") as HTMLInputElement;
-    const inputPassword = document.querySelector("#login-password-input") as HTMLInputElement;
-
-    if (submitLogin && inputEmail && inputPassword) {
-      submitLogin.addEventListener("click", (event) => {
-        event.preventDefault();
-        const loginUser = new AuthService();
-        loginUser.auth(inputEmail.value, inputPassword.value);
-      });
-    }
+  get checkClient() {
+    return this.login;
   }
 }

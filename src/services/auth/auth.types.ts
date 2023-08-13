@@ -1,4 +1,4 @@
-export interface Result {
+export interface AuthResult {
   success: boolean;
   data?: {
     body: <T>() => Promise<T>;
