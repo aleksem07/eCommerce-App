@@ -43,7 +43,7 @@ export default class NotFoundView extends ViewBuilder {
       classes: ["btn", "btn-primary"],
       id: "return-home-link",
     });
-    a.href = "#main";
+    a.href = "/";
     a.textContent = "Back to home";
     return a;
   }
