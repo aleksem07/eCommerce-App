@@ -1,4 +1,6 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
+import NavbarItemComponent from "./navbar-item/navbar-item";
+import { Routes } from "@Services/router/router.types";
 
 export default class NavbarView extends ViewBuilder {
   element: HTMLElement;
@@ -26,7 +28,7 @@ export default class NavbarView extends ViewBuilder {
     const link = this.createElement<HTMLLinkElement>("a", {
       classes: ["navbar-brand"],
     });
-    link.href = "#";
+    link.href = Routes.MAIN;
     link.textContent = "Fishing Hub";
     return link;
   }
@@ -36,39 +38,32 @@ export default class NavbarView extends ViewBuilder {
       classes: ["d-flex", "align-items-center", "navbar-nav"],
     });
 
-    const userIcon = this.createIcon("bi-person");
-    userIcon.classList.add("me-1", "text-muted");
-
-    const loginLink = this.createElement<HTMLLinkElement>("a", {
-      classes: ["nav-link"],
-    });
-    loginLink.href = "#login";
-    loginLink.textContent = "Log in";
-
-    const loginLinkItem = this.createElement("li", {
-      classes: ["nav-item"],
-    });
-    loginLinkItem.appendChild(loginLink);
-
-    const separator = this.createElement("span", {
-      classes: ["ms-2", "me-2", "text-muted"],
-    });
-    separator.textContent = "|";
-
-    const registerLink = this.createElement<HTMLLinkElement>("a", {
-      classes: ["nav-link"],
-    });
-    registerLink.href = "#register";
-    registerLink.textContent = "Register";
-
-    const registerLinkItem = this.createElement("li", {
-      classes: ["nav-item"],
-    });
-    registerLinkItem.appendChild(registerLink);
+    const userIcon = this.createUserIcon();
+    const separator = this.createSeparator();
+    const loginLinkItem = new NavbarItemComponent(Routes.LOGIN, "Login").init();
+    const registerLinkItem = new NavbarItemComponent(Routes.REGISTRATION, "Register").init();
 
     authLinksContainer.append(userIcon, loginLinkItem, separator, registerLinkItem);
 
     return authLinksContainer;
+  }
+
+  private createSeparator() {
+    const separator = this.createElement("span", {
+      classes: ["ms-2", "me-2", "text-muted"],
+    });
+    separator.textContent = "|";
+    const li = this.createElement("li");
+    li.appendChild(separator);
+    return li;
+  }
+
+  private createUserIcon() {
+    const userIcon = this.createIcon("bi-person");
+    userIcon.classList.add("me-1", "text-muted");
+    const li = this.createElement("li");
+    li.appendChild(userIcon);
+    return li;
   }
 
   render() {

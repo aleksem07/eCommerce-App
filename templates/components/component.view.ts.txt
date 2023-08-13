@@ -1,7 +1,7 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
 
 export default class {{pascalCase name}}View extends ViewBuilder {
-  element: HTMLElement;
+  private element: HTMLElement;
 
   constructor() {
     super();

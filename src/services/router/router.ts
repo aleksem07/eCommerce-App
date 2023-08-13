@@ -15,8 +15,7 @@ export default class RouterService {
 
   private handleRouteChange() {
     const hash = window.location.hash;
-    const path = hash.slice(1);
-    const route = this.routes[path];
+    const route = this.routes[hash];
     this.container.innerHTML = "";
 
     if (route) {
@@ -27,6 +26,6 @@ export default class RouterService {
   }
 
   navigateTo(path: string) {
-    window.location.hash = `#${path}`;
+    window.location.hash = path;
   }
 }
