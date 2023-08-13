@@ -46,7 +46,7 @@ export default class Auth {
   check() {
     const submitLogin = document.querySelector("#login-submit-button");
     const inputEmail = document.querySelector("#login-email-input") as HTMLInputElement;
-    const inputPassword = document.querySelector("#password-input") as HTMLInputElement;
+    const inputPassword = document.querySelector("#login-password-input") as HTMLInputElement;
 
     if (submitLogin && inputEmail && inputPassword) {
       submitLogin.addEventListener("click", (event) => {
