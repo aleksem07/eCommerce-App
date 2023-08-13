@@ -122,9 +122,11 @@ export default class LoginFormView extends ViewBuilder {
   }
 
   submitFormListener(handler: (email: string, password: string) => void) {
-    this.form.addEventListener("submit", async (event) => {
+    this.form.addEventListener("submit", (event) => {
       event.preventDefault();
-      handler(this.getEmail(), this.getPassword());
+      const email = this.emailInput.value;
+      const password = this.passwordInput.value;
+      handler(email, password);
     });
   }
 
@@ -165,14 +167,6 @@ export default class LoginFormView extends ViewBuilder {
 
   showNotification(result: AuthResult, message: string) {
     this.tooltip.init(this.loginSubmitButton, result, message);
-  }
-
-  getEmail(): string {
-    return this.emailInput.value;
-  }
-
-  getPassword(): string {
-    return this.passwordInput.value;
   }
 
   render() {
