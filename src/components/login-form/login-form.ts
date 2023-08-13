@@ -28,6 +28,16 @@ export default class LoginFormComponent {
     this.view.submitFormListener(this.submitFormHandler.bind(this));
   }
 
+  async submitFormHandler(email: string, password: string) {
+    const result = await this.authService.checkClient(email, password);
+
+    if (result.success) {
+      this.view.showNotification(result, "Welcome to the 'Fishing Hub'!");
+    } else if (result.error) {
+      this.view.showNotification(result, result.error);
+    }
+  }
+
   init() {
     this.form.init();
     this.emailInput.init();
