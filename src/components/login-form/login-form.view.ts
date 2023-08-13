@@ -157,7 +157,7 @@ export default class LoginFormView extends ViewBuilder {
     }
   }
 
-  handleChecboxResult(status: boolean) {
+  handleCheckboxResult(status: boolean) {
     if (status) {
       this.passwordInput.type = "text";
     } else {

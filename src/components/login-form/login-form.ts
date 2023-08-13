@@ -29,7 +29,7 @@ export default class LoginFormComponent {
   }
 
   async checkboxHandler(status: boolean) {
-    this.view.handleChecboxResult(status);
+    this.view.handleCheckboxResult(status);
   }
 
   async submitFormHandler(email: string, password: string) {
