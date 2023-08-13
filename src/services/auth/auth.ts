@@ -1,15 +1,17 @@
+import { HttpErrorType } from "@commercetools/sdk-client-v2";
 import ClientBuilderService from "../client-builder/client-builder";
+import { AuthResult } from "./auth.types";
 
 export default class AuthService extends ClientBuilderService {
   constructor() {
     super();
   }
 
-  private async checkUserLogin(username: string, password: string) {
+  private async login(username: string, password: string): Promise<AuthResult> {
     try {
-      const data = await this.getClient.execute({
+      const data = await this.commercetoolsClient.execute({
         method: "POST",
-        uri: "/random-team-19/login",
+        uri: `/${this.projectKey}/login`,
         body: {
           email: username,
           password: password,
@@ -17,8 +19,8 @@ export default class AuthService extends ClientBuilderService {
       });
 
       return { success: true, data };
-    } catch (error) {
-      const errorMessage = (error as Error).message;
+    } catch (error: unknown) {
+      const errorMessage = (error as HttpErrorType).message;
 
       return {
         success: false,
@@ -28,6 +30,6 @@ export default class AuthService extends ClientBuilderService {
   }
 
   get checkClient() {
-    return this.checkUserLogin;
+    return this.login;
   }
 }

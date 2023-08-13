@@ -1,7 +1,7 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
 import { ValidationResult } from "@Utils/validator/validator.types";
-import Tooltip from "@Utils/tooltip/tooltip";
-import { Result } from "@Services/auth/auth.types";
+import Tooltip from "@Components/tooltip/tooltip";
+import { AuthResult } from "@Services/auth/auth.types";
 
 export default class LoginFormView extends ViewBuilder {
   private form: HTMLFormElement;
@@ -163,7 +163,7 @@ export default class LoginFormView extends ViewBuilder {
     }
   }
 
-  showNotification(result: Result, message: string) {
+  showNotification(result: AuthResult, message: string) {
     this.tooltip.init(this.loginSubmitButton, result, message);
   }
 

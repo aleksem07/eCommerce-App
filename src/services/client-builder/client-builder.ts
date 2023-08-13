@@ -6,7 +6,11 @@ import {
 } from "@commercetools/sdk-client-v2";
 
 export default class ClientBuilderService {
-  private commercetoolsClient: Client;
+  protected authUrl?: string;
+  protected apiUrl?: string;
+  protected projectKey?: string;
+
+  protected commercetoolsClient: Client;
 
   private authMiddlewareOptions: AuthMiddlewareOptions = {
     host: "",
@@ -34,16 +38,16 @@ export default class ClientBuilderService {
   }
 
   private initAuthMiddlewareOptions() {
-    const projectKey = process.env.PROJECT_KEY;
+    this.projectKey = process.env.PROJECT_KEY;
+    this.authUrl = process.env.AUTH_URL;
     const scopes = process.env.SCOPES?.split(",").filter(Boolean);
-    const authUrl = process.env.AUTH_URL;
     const adminID = process.env.ADMIN_ID;
     const adminSecret = process.env.ADMIN_SECRET;
 
-    if (authUrl && projectKey && adminID && adminSecret && scopes) {
+    if (this.authUrl && this.projectKey && adminID && adminSecret && scopes) {
       this.authMiddlewareOptions = {
-        host: authUrl,
-        projectKey: projectKey,
+        host: this.authUrl,
+        projectKey: this.projectKey,
         credentials: {
           clientId: adminID,
           clientSecret: adminSecret,
@@ -55,14 +59,10 @@ export default class ClientBuilderService {
   }
 
   private initHttpMiddlewareOptions() {
-    const apiUrl = process.env.API_URL;
+    this.apiUrl = process.env.API_URL;
 
-    if (apiUrl) {
-      this.httpMiddlewareOptions.host = apiUrl;
+    if (this.apiUrl) {
+      this.httpMiddlewareOptions.host = this.apiUrl;
     }
-  }
-
-  get getClient() {
-    return this.commercetoolsClient;
   }
 }

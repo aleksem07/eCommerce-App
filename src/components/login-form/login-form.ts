@@ -32,10 +32,7 @@ export default class LoginFormComponent {
     this.view.handleChecboxResult(status);
   }
 
-  async submitFormHandler() {
-    const email = this.view.getEmail();
-    const password = this.view.getPassword();
-
+  async submitFormHandler(email: string, password: string) {
     const result = await this.authService.checkClient(email, password);
 
     if (result.success) {

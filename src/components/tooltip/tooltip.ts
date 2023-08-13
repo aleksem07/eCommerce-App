@@ -1,4 +1,4 @@
-import { Result } from "../../services/auth/auth.types";
+import { AuthResult } from "../../services/auth/auth.types";
 import { Popover } from "bootstrap";
 
 export default class Tooltip {
@@ -18,15 +18,15 @@ export default class Tooltip {
     }, duration);
   }
 
-  handleSuccess(element: HTMLElement, successMessage: string) {
+  private handleSuccess(element: HTMLElement, successMessage: string) {
     this.showPopover(element, "Success", successMessage, 1500);
   }
 
-  handleError(element: HTMLElement, errorMessage: string) {
+  private handleError(element: HTMLElement, errorMessage: string) {
     this.showPopover(element, "Error", errorMessage, 3500);
   }
 
-  init(element: HTMLElement, result: Result, successMessage: string) {
+  init(element: HTMLElement, result: AuthResult, successMessage: string) {
     if (result.success) {
       this.handleSuccess(element, successMessage);
     } else {
