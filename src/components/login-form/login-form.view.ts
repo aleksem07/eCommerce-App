@@ -1,13 +1,10 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
 
-// import Tooltip from "@Components/tooltip/tooltip";
-// import { AuthResult } from "@Services/auth/auth.types";
-
 export default class LoginFormView extends ViewBuilder {
   private form: HTMLFormElement;
   private container: HTMLDivElement;
   private header: HTMLHeadingElement;
-  private submitButton: HTMLButtonElement;
+  submitButton: HTMLButtonElement;
 
   constructor() {
     super();
@@ -30,6 +27,15 @@ export default class LoginFormView extends ViewBuilder {
     });
     this.submitButton.setAttribute("type", "submit");
     this.submitButton.textContent = "Submit";
+  }
+
+  submitFormListener(handler: (email: string, password: string) => void) {
+    this.form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const email = (this.getElement("#login-email-input") as HTMLInputElement).value;
+      const password = (this.getElement("#login-password-input") as HTMLInputElement).value;
+      handler(email, password);
+    });
   }
 
   render() {
