@@ -1,6 +1,3 @@
-import fetch from "cross-fetch";
-global.fetch = fetch;
-
 import ClientBuilderService from "./client-builder";
 
 describe("ClientBuilderService", () => {
