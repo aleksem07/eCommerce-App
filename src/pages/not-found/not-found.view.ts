@@ -1,4 +1,5 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
+import { Routes } from "@Services/router/router.types";
 import notFoundImage from "assets/images/404-image.png";
 
 export default class NotFoundView extends ViewBuilder {
@@ -43,7 +44,7 @@ export default class NotFoundView extends ViewBuilder {
       classes: ["btn", "btn-primary"],
       id: "return-home-link",
     });
-    a.href = "/";
+    a.href = Routes.MAIN;
     a.textContent = "Back to home";
     return a;
   }
