@@ -14,12 +14,12 @@ export default class RouterService {
   }
 
   private handleRouteChange() {
-    const hash = window.location.hash;
-    const path = hash.slice(1);
-    const route = this.routes[path];
+    const { hash, pathname } = window.location;
+    const isRootPath = pathname === "/";
+    const route = this.routes[hash];
     this.container.innerHTML = "";
 
-    if (route) {
+    if (route && isRootPath) {
       route.init();
     } else {
       this.routes[Routes.NOT_FOUND].init();
@@ -27,6 +27,6 @@ export default class RouterService {
   }
 
   navigateTo(path: string) {
-    window.location.hash = `#${path}`;
+    window.location.hash = path;
   }
 }

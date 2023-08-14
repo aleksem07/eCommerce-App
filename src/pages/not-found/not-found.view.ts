@@ -1,4 +1,5 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
+import { Routes } from "@Services/router/router.types";
 import notFoundImage from "assets/images/404-image.png";
 
 export default class NotFoundView extends ViewBuilder {
@@ -8,7 +9,7 @@ export default class NotFoundView extends ViewBuilder {
     super();
     this.element = this.createElement("div", {
       id: "not-found",
-      classes: ["d-flex", "justify-content-center", "align-items-center", "flex-column", "vh-100"],
+      classes: ["d-flex", "justify-content-center", "align-items-center", "flex-column"],
     });
 
     this.renderLayout();
@@ -45,7 +46,7 @@ export default class NotFoundView extends ViewBuilder {
       classes: ["btn", "btn-primary"],
       id: "return-home-link",
     });
-    a.href = "#main";
+    a.href = Routes.MAIN;
     a.textContent = "Back to home";
 
     return a;

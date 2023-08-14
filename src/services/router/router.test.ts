@@ -20,7 +20,7 @@ describe("RouterService", () => {
   beforeEach(() => {
     mockContainer = document.createElement("div");
     mockRoutes = {
-      mock: new MockRoute(),
+      "#mock": new MockRoute(),
       [Routes.NOT_FOUND]: new NotFoundRoute(),
     };
   });
@@ -30,7 +30,18 @@ describe("RouterService", () => {
     expect(instance).toBeInstanceOf(RouterService);
   });
 
+  it("should redirect to existing route", () => {
+    window.location.pathname = "/";
+    window.location.hash = "#mock";
+    const existingRouterInitSpy = jest.spyOn(MockRoute.prototype, "init");
+
+    new RouterService(mockContainer, mockRoutes);
+
+    expect(existingRouterInitSpy).toHaveBeenCalled();
+  });
+
   it("should redirect to Not Found route", () => {
+    window.location.pathname = "/";
     window.location.hash = "#non-existing-page";
     const notFoundRouteInitSpy = jest.spyOn(NotFoundRoute.prototype, "init");
 
@@ -39,12 +50,23 @@ describe("RouterService", () => {
     expect(notFoundRouteInitSpy).toHaveBeenCalled();
   });
 
-  it("should redirect to existing route", () => {
-    window.location.hash = "#mock";
-    const existingRouterInitSpy = jest.spyOn(MockRoute.prototype, "init");
+  it("should redirect to Not Found route when pathname and hash do not exist", () => {
+    window.location.pathname = "/non-existing-page";
+    window.location.hash = "#non-existing-page";
+    const notFoundRouteInitSpy = jest.spyOn(NotFoundRoute.prototype, "init");
 
     new RouterService(mockContainer, mockRoutes);
 
-    expect(existingRouterInitSpy).toHaveBeenCalled();
+    expect(notFoundRouteInitSpy).toHaveBeenCalled();
+  });
+
+  it("should redirect to Not Found route when pathname does not exist", () => {
+    window.location.pathname = "/non-existing-page";
+    window.location.hash = "#mock";
+    const notFoundRouteInitSpy = jest.spyOn(NotFoundRoute.prototype, "init");
+
+    new RouterService(mockContainer, mockRoutes);
+
+    expect(notFoundRouteInitSpy).toHaveBeenCalled();
   });
 });
