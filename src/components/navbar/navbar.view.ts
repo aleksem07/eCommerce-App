@@ -30,6 +30,7 @@ export default class NavbarView extends ViewBuilder {
     });
     link.href = Routes.MAIN;
     link.textContent = "Fishing Hub";
+
     return link;
   }
 
@@ -55,6 +56,7 @@ export default class NavbarView extends ViewBuilder {
     separator.textContent = "|";
     const li = this.createElement("li");
     li.appendChild(separator);
+
     return li;
   }
 
@@ -63,6 +65,7 @@ export default class NavbarView extends ViewBuilder {
     userIcon.classList.add("me-1", "text-muted");
     const li = this.createElement("li");
     li.appendChild(userIcon);
+
     return li;
   }
 

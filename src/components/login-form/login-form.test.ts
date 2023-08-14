@@ -18,9 +18,9 @@ describe("LoginFormComponent", () => {
     expect(loginFormComponent.view).toBeInstanceOf(LoginFormView);
     expect(loginFormComponent.validator).toBeInstanceOf(ValidatorUtil);
   });
-  it("should call handleChecboxResult with the provided status", () => {
+  it("should call handleCheckboxResult with the provided status", () => {
     loginFormComponent.checkboxHandler(status);
-    expect(loginFormComponent.view.handleChecboxResult).toHaveBeenCalledWith(status);
+    expect(loginFormComponent.view.handleCheckboxResult).toHaveBeenCalledWith(status);
   });
   it("should render the view on init", () => {
     loginFormComponent.init();

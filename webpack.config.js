@@ -5,6 +5,7 @@ const ESLintPlugin = require("eslint-webpack-plugin");
 const StylelintPlugin = require("stylelint-webpack-plugin");
 const autoprefixer = require("autoprefixer");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
+const DotenvWebpackPlugin = require("dotenv-webpack");
 
 const mode = process.env.NODE_ENV || "development";
 const devMode = mode === "development";
@@ -43,6 +44,7 @@ module.exports = {
       files: "**/*.scss",
       fix: true,
     }),
+    new DotenvWebpackPlugin(),
   ],
   resolve: {
     plugins: [new TsconfigPathsPlugin()],

@@ -8,11 +8,12 @@ export default class LoginFormView extends ViewBuilder {
   private emailHelp: HTMLElement;
   private passwordInput: HTMLInputElement;
   private passwordHelp: HTMLElement;
-  private loginSubmitButton: HTMLButtonElement;
+  loginSubmitButton: HTMLButtonElement;
   private passwordCheckbox: HTMLInputElement;
 
   constructor() {
     super();
+
     this.form = this.createElement("form", { id: "login-form" });
     this.container = this.createElement("div", { id: "login-container", classes: ["container"] });
     this.emailInput = this.createElement("input", {
@@ -117,6 +118,15 @@ export default class LoginFormView extends ViewBuilder {
     });
   }
 
+  submitFormListener(handler: (email: string, password: string) => void) {
+    this.form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const email = this.emailInput.value;
+      const password = this.passwordInput.value;
+      handler(email, password);
+    });
+  }
+
   handleInputValidationResult(inputName: string, resultValid: ValidationResult) {
     let help;
     let input;
@@ -144,7 +154,7 @@ export default class LoginFormView extends ViewBuilder {
     }
   }
 
-  handleChecboxResult(status: boolean) {
+  handleCheckboxResult(status: boolean) {
     if (status) {
       this.passwordInput.type = "text";
     } else {
