@@ -19,7 +19,7 @@ export default class FormControlComponent {
     const inputValid = await this.validator.validate(this.inputName, inputText);
 
     if (inputValid) {
-      this.view.handleInputValidationResult(inputValid);
+      this.view.showValidation(inputValid);
     }
   }
 

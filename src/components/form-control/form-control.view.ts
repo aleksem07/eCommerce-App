@@ -43,26 +43,22 @@ export default class FormControlView extends ViewBuilder {
     });
   }
 
-  handleInputValidationResult(resultValid: ValidationResult) {
-    const help = this.inputHelp;
-    const input = this.input;
-
-    help.textContent = resultValid.message || null;
+  showValidation(resultValid: ValidationResult) {
+    this.inputHelp.textContent = resultValid.message || null;
 
     if (resultValid.isValid) {
-      input.classList.remove("is-invalid");
-      input.classList.add("is-valid");
-      help.classList.remove("invalid-feedback");
+      this.input.classList.remove("is-invalid");
+      this.input.classList.add("is-valid");
+      this.inputHelp.classList.remove("invalid-feedback");
     } else {
-      input.classList.remove("is-valid");
-      input.classList.add("is-invalid");
-      help.classList.add("invalid-feedback");
+      this.input.classList.remove("is-valid");
+      this.input.classList.add("is-invalid");
+      this.inputHelp.classList.add("invalid-feedback");
     }
   }
 
   render() {
     this.inputWrapper.append(this.inputLabel, this.input, this.inputHelp);
-    // this.appendTo(`#${this.formName}-form`, this.inputWrapper);
     this.insertBefore(
       `#${this.formName}-form`,
       this.inputWrapper,
