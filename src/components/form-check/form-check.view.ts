@@ -48,11 +48,11 @@ export default class FormCheckView extends ViewBuilder {
   }
 
   render() {
-    const input = this.getElement("#login-password-input");
+    const input = this.getElement(`#${this.formName}-${this.inputName}-input`);
 
     if (input) {
       (input as HTMLInputElement).type = "password";
     }
-    this.appendTo(`#${this.formName}-wrapper`, this.checkboxWrapper);
+    this.appendTo(`#${this.formName}-${this.inputName}-wrapper`, this.checkboxWrapper);
   }
 }

@@ -1,43 +1,40 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
 
-import Tooltip from "@Components/tooltip/tooltip";
-import { AuthResult } from "@Services/auth/auth.types";
+// import Tooltip from "@Components/tooltip/tooltip";
+// import { AuthResult } from "@Services/auth/auth.types";
 
 export default class LoginFormView extends ViewBuilder {
-  private tooltip: Tooltip;
-  loginSubmitButton: Element | null;
+  private form: HTMLFormElement;
+  private container: HTMLDivElement;
+  private header: HTMLHeadingElement;
+  private submitButton: HTMLButtonElement;
+
   constructor() {
     super();
-    this.tooltip = new Tooltip();
-    this.loginSubmitButton = this.getElement("#login-submit-button");
-
+    this.form = this.createElement("form", {
+      id: `login-form`,
+      classes: ["form-group", "col-6", "justify-content-between", "flex-column"],
+    });
+    this.container = this.createElement("div", {
+      id: `login-container`,
+      classes: ["container", "justify-content-center", "row"],
+    });
+    this.header = this.createElement("h1", {
+      id: `login-header`,
+      classes: ["text-center"],
+    });
+    this.header.textContent = `Login`;
+    this.submitButton = this.createElement("button", {
+      id: `login-submit-button`,
+      classes: ["btn", "btn-primary", "col-12"],
+    });
+    this.submitButton.setAttribute("type", "submit");
+    this.submitButton.textContent = "Submit";
   }
 
-  submitFormListener(handler: (email: string, password: string) => void) {
-    const form = this.getElement("#login-form");
-
-    if (form) {
-      form.addEventListener("submit", (event) => {
-        event.preventDefault();
-        const email = this.getElement("#login-email-input");
-        const password = this.getElement("#login-password-input");
-        let emailValue = "";
-        let passwordValue = "";
-
-        if (email instanceof HTMLInputElement) {
-          emailValue = email.value;
-        }
-
-        if (password instanceof HTMLInputElement) {
-          passwordValue = password.value;
-        }
-        handler(emailValue, passwordValue);
-      });
-    }
-  }
-
-
-  showNotification(result: AuthResult, message: string) {
-    this.tooltip.init(this.loginSubmitButton as HTMLElement, result, message);
+  render() {
+    this.form.append(this.submitButton);
+    this.container.append(this.header, this.form);
+    this.appendTo("#login-page", this.container);
   }
 }
