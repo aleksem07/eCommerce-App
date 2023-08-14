@@ -7,7 +7,7 @@ export default class AuthService extends ClientBuilderService {
     super();
   }
 
-  private async login(username: string, password: string): Promise<AuthResult> {
+  async login(username: string, password: string): Promise<AuthResult> {
     try {
       const data = await this.commercetoolsClient.execute({
         method: "POST",
@@ -27,9 +27,5 @@ export default class AuthService extends ClientBuilderService {
         error: errorMessage,
       };
     }
-  }
-
-  get checkClient() {
-    return this.login;
   }
 }

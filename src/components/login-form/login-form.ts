@@ -33,12 +33,12 @@ export default class LoginFormComponent {
   }
 
   async submitFormHandler(email: string, password: string) {
-    const result = await this.authService.checkClient(email, password);
+    const result = await this.authService.login(email, password);
 
-    if (result.success) {
-      this.view.showNotification(result, "Welcome to the 'Fishing Hub'!");
-    } else if (result.error) {
+    if (!result.success && result.error) {
       this.view.showNotification(result, result.error);
+    } else {
+      this.view.showNotification(result, "Welcome to the 'Fishing Hub'!");
     }
   }
 
