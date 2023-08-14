@@ -1,14 +1,29 @@
-import TooltipView from "./tooltip.view";
-import { AuthResult } from "../../services/auth/auth.types";
+import { Popover } from "bootstrap";
 
 export default class TooltipComponent {
-  private view: TooltipView;
+  private element?: HTMLElement;
+  private popover?: Popover;
 
-  constructor() {
-    this.view = new TooltipView();
+  duration = 3000;
+
+  show(title: string, content: string) {
+    if (this.element) {
+      this.popover = new Popover(this.element, {
+        title,
+        content,
+      });
+      this.popover.show();
+      this.hide();
+    }
   }
 
-  init(element: HTMLElement, result: AuthResult, successMessage: string) {
-    this.view.render(element, result, successMessage);
+  hide() {
+    setTimeout(() => {
+      this.popover?.dispose();
+    }, this.duration);
+  }
+
+  init(element: HTMLElement) {
+    this.element = element;
   }
 }

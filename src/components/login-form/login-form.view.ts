@@ -1,7 +1,5 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
 import { ValidationResult } from "@Utils/validator/validator.types";
-import TooltipComponent from "@Components/tooltip/tooltip";
-import { AuthResult } from "@Services/auth/auth.types";
 
 export default class LoginFormView extends ViewBuilder {
   private form: HTMLFormElement;
@@ -10,13 +8,12 @@ export default class LoginFormView extends ViewBuilder {
   private emailHelp: HTMLElement;
   private passwordInput: HTMLInputElement;
   private passwordHelp: HTMLElement;
-  private loginSubmitButton: HTMLButtonElement;
+  loginSubmitButton: HTMLButtonElement;
   private passwordCheckbox: HTMLInputElement;
-  private tooltip: TooltipComponent;
 
   constructor() {
     super();
-    this.tooltip = new TooltipComponent();
+
     this.form = this.createElement("form", { id: "login-form" });
     this.container = this.createElement("div", { id: "login-container", classes: ["container"] });
     this.emailInput = this.createElement("input", {
@@ -163,10 +160,6 @@ export default class LoginFormView extends ViewBuilder {
     } else {
       this.passwordInput.type = "password";
     }
-  }
-
-  showNotification(result: AuthResult, message: string) {
-    this.tooltip.init(this.loginSubmitButton, result, message);
   }
 
   render() {
