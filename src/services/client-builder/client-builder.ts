@@ -5,12 +5,16 @@ import {
   type Client,
 } from "@commercetools/sdk-client-v2";
 
+import { ApiRoot, createApiBuilderFromCtpClient } from "@commercetools/platform-sdk";
+
 export default class ClientBuilderService {
-  protected authUrl?: string;
-  protected apiUrl?: string;
-  protected projectKey?: string;
+  protected authUrl!: string;
+  protected apiUrl!: string;
+  protected projectKey!: string;
 
   protected commercetoolsClient: Client;
+
+  protected apiRoot: ApiRoot;
 
   private authMiddlewareOptions: AuthMiddlewareOptions = {
     host: "",
@@ -35,11 +39,13 @@ export default class ClientBuilderService {
       .withHttpMiddleware(this.httpMiddlewareOptions)
       .withLoggerMiddleware()
       .build();
+
+    this.apiRoot = createApiBuilderFromCtpClient(this.commercetoolsClient);
   }
 
   private initAuthMiddlewareOptions() {
-    this.projectKey = process.env.PROJECT_KEY;
-    this.authUrl = process.env.AUTH_URL;
+    this.projectKey = process.env.PROJECT_KEY || "";
+    this.authUrl = process.env.AUTH_URL || "";
     const scopes = process.env.SCOPES?.split(",").filter(Boolean);
     const adminID = process.env.ADMIN_ID;
     const adminSecret = process.env.ADMIN_SECRET;
@@ -59,7 +65,7 @@ export default class ClientBuilderService {
   }
 
   private initHttpMiddlewareOptions() {
-    this.apiUrl = process.env.API_URL;
+    this.apiUrl = process.env.API_URL || "";
 
     if (this.apiUrl) {
       this.httpMiddlewareOptions.host = this.apiUrl;
