@@ -1,4 +1,5 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
+
 import Tooltip from "@Components/tooltip/tooltip";
 import { AuthResult } from "@Services/auth/auth.types";
 
@@ -9,6 +10,7 @@ export default class LoginFormView extends ViewBuilder {
     super();
     this.tooltip = new Tooltip();
     this.loginSubmitButton = this.getElement("#login-submit-button");
+
   }
 
   submitFormListener(handler: (email: string, password: string) => void) {
@@ -33,6 +35,7 @@ export default class LoginFormView extends ViewBuilder {
       });
     }
   }
+
 
   showNotification(result: AuthResult, message: string) {
     this.tooltip.init(this.loginSubmitButton as HTMLElement, result, message);

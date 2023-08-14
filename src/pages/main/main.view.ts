@@ -5,7 +5,9 @@ export default class MainView extends ViewBuilder {
 
   constructor() {
     super();
-    this.element = this.createElement("div");
+    this.element = this.createElement("div", {
+      id: "main",
+    });
     this.element.textContent = "MAIN PAGE";
   }
 

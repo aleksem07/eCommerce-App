@@ -20,4 +20,5 @@ module.exports = {
   transform: {
     ".+\\.(png|svg|jpg|jpeg|gif)$": "jest-transform-stub",
   },
+  setupFilesAfterEnv: ["./jest/jest-setup.js"],
 };
