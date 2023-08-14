@@ -5,14 +5,18 @@ import MainPage from "@Pages/main/main";
 import RegistrationPage from "@Pages/registration/registration";
 import NotFoundPage from "@Pages/not-found/not-found";
 import { Routes } from "@Services/router/router.types";
+import HeaderComponent from "@Components/header/header";
 
 export default class AppComponent {
   private view: AppView;
   private router: RouterService;
+  private header: HeaderComponent;
 
   constructor() {
     this.view = new AppView();
     this.view.render();
+    this.header = new HeaderComponent();
+    this.header.init();
 
     this.router = new RouterService(this.view.element, {
       [Routes.MAIN]: new MainPage(),
