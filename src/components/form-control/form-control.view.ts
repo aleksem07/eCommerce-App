@@ -13,20 +13,25 @@ export default class FormControlView extends ViewBuilder {
     super();
 
     this.formName = formName;
+
     this.inputName = inputName;
+
     this.inputWrapper = this.createElement("div", {
       id: `${formName}-${inputName}-wrapper`,
     });
+
     this.inputLabel = this.createElement("label", {
       id: "login-email-label",
       classes: ["form-label"],
     });
     this.inputLabel.setAttribute("for", `${formName}-${inputName}-input`);
     this.inputLabel.textContent = labelText;
+
     this.input = this.createElement("input", {
       id: `${formName}-${inputName}-input`,
       classes: ["form-control"],
     });
+
     this.inputHelp = this.createElement("small", {
       id: `${helpText}-help`,
       classes: ["form-text"],
@@ -58,10 +63,7 @@ export default class FormControlView extends ViewBuilder {
 
   render() {
     this.inputWrapper.append(this.inputLabel, this.input, this.inputHelp);
-    this.insertBefore(
-      `#${this.formName}-form`,
-      this.inputWrapper,
-      `#${this.formName}-submit-button`
-    );
+
+    return this.inputWrapper;
   }
 }
