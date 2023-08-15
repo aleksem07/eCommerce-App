@@ -3,7 +3,7 @@ import { ValidationResult } from "@Utils/validator/validator.types";
 
 export default class LoginFormView extends ViewBuilder {
   private form: HTMLFormElement;
-  private container: HTMLDivElement;
+  container: HTMLDivElement;
   private emailInput: HTMLInputElement;
   private emailHelp: HTMLElement;
   private passwordInput: HTMLInputElement;

@@ -2,6 +2,8 @@ import LoginFormView from "./login-form.view";
 import ValidatorUtil from "@Utils/validator/validator";
 import AuthService from "@Services/auth/auth";
 import TooltipComponent from "@Components/tooltip/tooltip";
+import RouterService from "@Services/router/router";
+import { Routes } from "@Services/router/router.types";
 
 export default class LoginFormComponent {
   view: LoginFormView;
@@ -41,7 +43,7 @@ export default class LoginFormComponent {
     if (!result.success && result.error) {
       this.tooltip.show("Error", result.error);
     } else {
-      this.tooltip.show("Success", "Welcome to the 'Fishing Hub'!");
+      RouterService.navigateTo(Routes.MAIN);
     }
   }
 

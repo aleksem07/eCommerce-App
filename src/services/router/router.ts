@@ -35,7 +35,7 @@ export default class RouterService {
     }
   }
 
-  navigateTo(path: string) {
+  static navigateTo(path: string) {
     window.location.hash = path;
   }
 }
