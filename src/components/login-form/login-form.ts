@@ -38,7 +38,10 @@ export default class LoginFormComponent {
   }
 
   init() {
-    this.view.render();
+    const email = this.emailInput.init();
+    const password = this.passwordInput.init();
+    const showPassword = this.passwordCheck.init();
+    this.view.render(email, password, showPassword);
     this.emailInput.init();
     this.passwordInput.init();
     this.passwordCheck.init();

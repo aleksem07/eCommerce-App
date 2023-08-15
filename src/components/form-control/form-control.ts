@@ -8,10 +8,12 @@ export default class FormControlComponent {
   inputName: string;
 
   constructor(formName: string, inputName: string, labelText: string, helpText: string) {
-    this.form = formName;
-    this.inputName = inputName;
     this.view = new FormControlView(formName, inputName, labelText, helpText);
     this.validator = new ValidatorUtil();
+
+    this.form = formName;
+    this.inputName = inputName;
+
     this.view.inputListener(this.inputHandler.bind(this));
   }
 
@@ -24,6 +26,6 @@ export default class FormControlComponent {
   }
 
   init() {
-    this.view.render();
+    return this.view.render();
   }
 }

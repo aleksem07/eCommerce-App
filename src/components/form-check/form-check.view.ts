@@ -53,6 +53,7 @@ export default class FormCheckView extends ViewBuilder {
     if (input) {
       (input as HTMLInputElement).type = "password";
     }
-    this.appendTo(`#${this.formName}-${this.inputName}-wrapper`, this.checkboxWrapper);
+
+    return this.checkboxWrapper;
   }
 }

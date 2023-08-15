@@ -13,6 +13,6 @@ export default class FormCheckComponent {
   }
 
   init() {
-    this.view.render();
+    return this.view.render();
   }
 }

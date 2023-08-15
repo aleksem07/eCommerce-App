@@ -37,8 +37,8 @@ export default class LoginFormView extends ViewBuilder {
     });
   }
 
-  render() {
-    this.form.append(this.submitButton);
+  render(...elements: HTMLElement[]) {
+    this.form.append(...elements, this.submitButton);
     this.container.append(this.header, this.form);
     this.appendTo("#login-page", this.container);
   }
