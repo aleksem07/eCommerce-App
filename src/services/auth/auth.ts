@@ -38,15 +38,15 @@ export default class AuthService extends ClientBuilderService {
         body: params.toString(),
       });
 
-      const data: TokenInfo = await response.json();
-
-      if (data.access_token) {
-        localStorage.setItem("authToken", data.access_token);
-
-        return { success: true, data };
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message);
       }
 
-      return { success: false, error: "Login failed" };
+      const data: TokenInfo = await response.json();
+      localStorage.setItem("authToken", data.access_token);
+
+      return { success: true, data };
     } catch (error: unknown) {
       const errorMessage = (error as Error).message;
 
