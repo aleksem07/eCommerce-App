@@ -38,7 +38,7 @@ export default class LoginFormComponent {
   }
 
   async submitFormHandler(email: string, password: string) {
-    const result = await this.authService.login(email, password);
+    const result = await this.authService.signIn(email, password);
 
     if (!result.success && result.error) {
       this.tooltip.show("Error", result.error);

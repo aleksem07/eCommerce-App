@@ -21,4 +21,5 @@ module.exports = {
     ".+\\.(png|svg|jpg|jpeg|gif)$": "jest-transform-stub",
   },
   setupFilesAfterEnv: ["./jest/jest-setup.js"],
+  setupFiles: ["dotenv/config"],
 };
