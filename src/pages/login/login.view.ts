@@ -5,7 +5,10 @@ export default class LoginView extends ViewBuilder {
 
   constructor() {
     super();
-    this.element = this.createElement("section", { id: "login-page" });
+    this.element = this.createElement("section", {
+      id: "login-page",
+      classes: ["d-flex", "align-items-center", "py-4"],
+    });
   }
 
   render() {

@@ -32,8 +32,10 @@ export class ViewBuilder {
     return element as T;
   }
 
-  getElement(selector: string) {
-    return document.querySelector(selector);
+  getElement<T extends HTMLElement>(selector: string) {
+    const element = document.querySelector(selector);
+
+    return element as T;
   }
 
   createIcon(name: string) {
