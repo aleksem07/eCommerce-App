@@ -52,7 +52,7 @@ export default class LoginFormView extends ViewBuilder {
     }
   }
 
-  handleChecboxResult(status: boolean) {
+  handleCheckboxResult(status: boolean) {
     const passwordInput = this.getElement("#login-password-input");
 
     if (status) {

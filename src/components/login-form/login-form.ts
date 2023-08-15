@@ -27,14 +27,14 @@ export default class LoginFormComponent {
       formName: "login",
       inputName: "email",
       labelText: "Email",
-      helpText: "Invalid email",
+      helpText: "Write your email",
     });
 
     this.passwordInput = new FormControlComponent({
       formName: "login",
       inputName: "password",
       labelText: "Password",
-      helpText: "Invalid password",
+      helpText: "Write your password",
     });
 
     this.passwordCheck = new FormCheckComponent({ formName: "login", inputName: "password" });
@@ -58,7 +58,7 @@ export default class LoginFormComponent {
   }
 
   async checkboxHandler(status: boolean) {
-    this.view.handleChecboxResult(status);
+    this.view.handleCheckboxResult(status);
   }
 
   init() {
@@ -66,9 +66,6 @@ export default class LoginFormComponent {
     const password = this.passwordInput.init();
     const showPassword = this.passwordCheck.init();
     this.view.render(email, password, showPassword);
-    this.emailInput.init();
-    this.passwordInput.init();
-    this.passwordCheck.init();
     this.view.checkboxListener(this.checkboxHandler.bind(this));
     this.tooltip.init(this.view.submitButton as HTMLButtonElement);
   }
