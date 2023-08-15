@@ -26,7 +26,7 @@ describe("RouterService", () => {
   });
 
   it("should instantiate", () => {
-    const instance = RouterService.getInstance(mockContainer, mockRoutes);
+    const instance = new RouterService(mockContainer, mockRoutes);
     expect(instance).toBeInstanceOf(RouterService);
   });
 
@@ -34,7 +34,9 @@ describe("RouterService", () => {
     window.location.pathname = "/";
     window.location.hash = "#mock";
     const existingRouterInitSpy = jest.spyOn(MockRoute.prototype, "init");
-    RouterService.getInstance(mockContainer, mockRoutes);
+
+    new RouterService(mockContainer, mockRoutes);
+
     expect(existingRouterInitSpy).toHaveBeenCalled();
   });
 
@@ -42,7 +44,9 @@ describe("RouterService", () => {
     window.location.pathname = "/";
     window.location.hash = "#non-existing-page";
     const notFoundRouteInitSpy = jest.spyOn(NotFoundRoute.prototype, "init");
-    RouterService.getInstance(mockContainer, mockRoutes);
+
+    new RouterService(mockContainer, mockRoutes);
+
     expect(notFoundRouteInitSpy).toHaveBeenCalled();
   });
 
@@ -50,7 +54,9 @@ describe("RouterService", () => {
     window.location.pathname = "/non-existing-page";
     window.location.hash = "#non-existing-page";
     const notFoundRouteInitSpy = jest.spyOn(NotFoundRoute.prototype, "init");
-    RouterService.getInstance(mockContainer, mockRoutes);
+
+    new RouterService(mockContainer, mockRoutes);
+
     expect(notFoundRouteInitSpy).toHaveBeenCalled();
   });
 
@@ -58,7 +64,9 @@ describe("RouterService", () => {
     window.location.pathname = "/non-existing-page";
     window.location.hash = "#mock";
     const notFoundRouteInitSpy = jest.spyOn(NotFoundRoute.prototype, "init");
-    RouterService.getInstance(mockContainer, mockRoutes);
+
+    new RouterService(mockContainer, mockRoutes);
+
     expect(notFoundRouteInitSpy).toHaveBeenCalled();
   });
 });
