@@ -28,6 +28,10 @@ export default class LoginFormView extends ViewBuilder {
     this.submitButton.textContent = "Submit";
   }
 
+  /**
+   * Attaches a submit event listener to the form.
+   * @param {Function} handler - The handler function to be called when the form is submitted.
+   */
   submitFormListener(handler: (email: string, password: string) => void) {
     this.form.addEventListener("submit", (event) => {
       event.preventDefault();
@@ -37,6 +41,10 @@ export default class LoginFormView extends ViewBuilder {
     });
   }
 
+  /**
+   * Attaches a change event listener to the password checkbox.
+   * @param {Function} handler - The handler function to be called when the checkbox is changed.
+   */
   checkboxListener(handler: (status: boolean) => void) {
     const passwordInput = this.getElement("#login-password-input");
     const passwordCheckbox = this.getElement("#password-checkbox-input");
@@ -52,6 +60,10 @@ export default class LoginFormView extends ViewBuilder {
     }
   }
 
+  /**
+   * Handles the result of the checkbox change event.
+   * @param {boolean} status - The status of the checkbox (checked or unchecked).
+   */
   handleCheckboxResult(status: boolean) {
     const passwordInput = this.getElement("#login-password-input");
 
@@ -62,6 +74,10 @@ export default class LoginFormView extends ViewBuilder {
     }
   }
 
+  /**
+   * Renders the login form view.
+   * @param {...HTMLElement} elements - The elements to be appended to the form.
+   */
   render(...elements: HTMLElement[]) {
     this.form.append(...elements, this.submitButton);
     this.container.append(this.header, this.form);
