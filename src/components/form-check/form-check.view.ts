@@ -15,7 +15,7 @@ export default class FormCheckView extends ViewBuilder {
 
     this.checkboxWrapper = this.createElement("div", {
       id: "checkbox-wrapper",
-      classes: ["form-switch", "form-check", "col-6"],
+      classes: ["form-switch", "form-check"],
     });
 
     this.checkbox = this.createElement("input", {

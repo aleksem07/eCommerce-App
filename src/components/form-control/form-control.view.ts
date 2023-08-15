@@ -19,6 +19,7 @@ export default class FormControlView extends ViewBuilder {
 
     this.inputWrapper = this.createElement("div", {
       id: `${formName}-${inputName}-wrapper`,
+      classes: ["mt-3"],
     });
 
     this.inputLabel = this.createElement("label", {
@@ -32,10 +33,11 @@ export default class FormControlView extends ViewBuilder {
       id: `${formName}-${inputName}-input`,
       classes: ["form-control"],
     });
+    this.input.placeholder = inputName[0].toUpperCase() + inputName.slice(1);
 
     this.inputHelp = this.createElement("small", {
       id: `${helpText}-help`,
-      classes: ["form-text"],
+      classes: ["form-text", "h6"],
     });
     this.inputHelp.textContent = helpText;
   }

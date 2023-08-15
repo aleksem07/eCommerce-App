@@ -13,16 +13,16 @@ export default class LoginFormView extends ViewBuilder {
     });
     this.container = this.createElement("div", {
       id: `login-container`,
-      classes: ["form-signin", "w-50", "m-auto"],
+      classes: ["col-md-3", "m-auto", "container"],
     });
     this.header = this.createElement("h1", {
       id: `login-header`,
-      classes: ["h3", "mb-3", "fw-normal", "text-center"],
+      classes: ["h3", "mb-3", "fw-normal", "text-center", "py-5"],
     });
     this.header.textContent = `Login`;
     this.submitButton = this.createElement("button", {
       id: `login-submit-button`,
-      classes: ["btn", "btn-primary", "col-12"],
+      classes: ["btn", "btn-primary", "mt-4", "col-12"],
     });
     this.submitButton.setAttribute("type", "submit");
     this.submitButton.textContent = "Submit";
