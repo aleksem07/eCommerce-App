@@ -9,6 +9,8 @@ export default class RouterService {
     this.container = container;
     this.routes = routes;
 
+    RouterService.navigateTo(Routes.MAIN);
+
     this.handleRouteChange();
 
     window.addEventListener("hashchange", this.handleRouteChange.bind(this));
