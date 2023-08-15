@@ -11,7 +11,7 @@ describe("AuthService", () => {
     process.env.PROJECT_KEY = "project_key";
     const mockResponse = { someData: "example" };
     instance["commercetoolsClient"].execute = jest.fn().mockResolvedValue(mockResponse);
-    const result = await instance.checkClient("example@example.com", "password");
+    const result = await instance.login("example@example.com", "password");
     expect(result.success).toBe(true);
     expect(result.data).toEqual(mockResponse);
     delete process.env.PROJECT_KEY;
@@ -23,7 +23,7 @@ describe("AuthService", () => {
     const errorMessage = "Some error message";
     const mockError = { message: errorMessage };
     instance["commercetoolsClient"].execute = jest.fn().mockRejectedValue(mockError);
-    const result = await instance.checkClient("example@example.com", "password");
+    const result = await instance.login("example@example.com", "password");
     expect(result.success).toBe(false);
     expect(result.error).toBe(errorMessage);
     delete process.env.PROJECT_KEY;
