@@ -22,7 +22,7 @@ export default class FormControlView extends ViewBuilder {
     });
 
     this.inputLabel = this.createElement("label", {
-      id: "login-email-label",
+      id: `${formName}-${inputName}-label`,
       classes: ["form-label"],
     });
     this.inputLabel.setAttribute("for", `${formName}-${inputName}-input`);
