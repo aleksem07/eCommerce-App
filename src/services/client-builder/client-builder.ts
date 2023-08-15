@@ -43,12 +43,12 @@ export default class ClientBuilderService {
     this.projectKey = process.env.PROJECT_KEY || "";
     this.authUrl = process.env.AUTH_URL || "";
     this.scopes = process.env.SCOPES || "";
-    this.adminID = process.env.ADMIN_ID;
-    this.adminSecret = process.env.ADMIN_SECRET;
-    this.clientID = process.env.CLIENT_ID;
-    this.clientSecret = process.env.CLIENT_SECRET;
-    this.customersApiID = process.env.CUSTOMERS_API_ID;
-    this.customersApiSecret = process.env.CUSTOMERS_API_SECRET;
+    this.adminID = process.env.ADMIN_ID || "";
+    this.adminSecret = process.env.ADMIN_SECRET || "";
+    this.clientID = process.env.CLIENT_ID || "";
+    this.clientSecret = process.env.CLIENT_SECRET || "";
+    this.customersApiID = process.env.CUSTOMERS_API_ID || "";
+    this.customersApiSecret = process.env.CUSTOMERS_API_SECRET || "";
     this.customersApiScope = process.env.CUSTOMERS_API_SCOPE || "";
   }
 

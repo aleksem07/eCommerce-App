@@ -8,3 +8,5 @@ export interface AuthResult<T> {
   data?: T;
   error?: string;
 }
+
+export const AUTH_TOKEN_LS = "authToken";

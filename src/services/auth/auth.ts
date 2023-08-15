@@ -1,6 +1,6 @@
 import { HttpErrorType, TokenInfo } from "@commercetools/sdk-client-v2";
 import ClientBuilderService from "../client-builder/client-builder";
-import { AuthResult, DataInfo } from "./auth.types";
+import { AUTH_TOKEN_LS, AuthResult, DataInfo } from "./auth.types";
 
 export default class AuthService extends ClientBuilderService {
   constructor() {
@@ -44,7 +44,7 @@ export default class AuthService extends ClientBuilderService {
       }
 
       const data: TokenInfo = await response.json();
-      localStorage.setItem("authToken", data.access_token);
+      localStorage.setItem(AUTH_TOKEN_LS, data.access_token);
 
       return { success: true, data };
     } catch (error: unknown) {
