@@ -7,6 +7,7 @@ describe("Form Control", () => {
       inputName: "testInput",
       labelText: "testLabel",
       helpText: "testHelp",
+      placeholderText: "testPlaceholder",
     });
     expect(instance).toBeInstanceOf(FormControlComponent);
   });

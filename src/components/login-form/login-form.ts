@@ -28,6 +28,7 @@ export default class LoginFormComponent {
       inputName: "email",
       labelText: "Email",
       helpText: "Write your email",
+      placeholderText: "user@exapmle.com",
     });
 
     this.passwordInput = new FormControlComponent({
@@ -35,6 +36,7 @@ export default class LoginFormComponent {
       inputName: "password",
       labelText: "Password",
       helpText: "Write your password",
+      placeholderText: "Example1#",
     });
 
     this.passwordCheck = new FormCheckComponent({ formName: "login", inputName: "password" });

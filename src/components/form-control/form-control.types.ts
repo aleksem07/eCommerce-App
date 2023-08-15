@@ -3,4 +3,5 @@ export interface FormControlProps {
   inputName: string;
   labelText: string;
   helpText: string;
+  placeholderText: string;
 }
