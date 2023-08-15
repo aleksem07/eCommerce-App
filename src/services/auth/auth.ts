@@ -25,9 +25,9 @@ export default class AuthService extends ClientBuilderService {
       params.append("grant_type", "password");
       params.append("username", username);
       params.append("password", password);
-      params.append("scopes", this.scopes);
+      params.append("scopes", this.customersApiScope);
 
-      const encodedCredentials = btoa(`${this.clientID}:${this.clientSecret}`);
+      const encodedCredentials = btoa(`${this.customersApiID}:${this.customersApiSecret}`);
 
       const response = await fetch(authUrl, {
         method: "POST",

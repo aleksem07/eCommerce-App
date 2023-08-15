@@ -7,16 +7,20 @@ import {
 import { ApiRoot, createApiBuilderFromCtpClient } from "@commercetools/platform-sdk";
 
 export default class ClientBuilderService {
-  protected authUrl?: string;
-  protected apiUrl?: string;
-  protected projectKey?: string;
   protected commercetoolsClient: Client;
   protected apiRoot: ApiRoot;
+
+  protected authUrl?: string = "";
+  protected apiUrl?: string = "";
+  protected projectKey?: string = "";
   protected scopes = "";
-  protected adminID?: string;
-  protected adminSecret?: string;
-  protected clientID?: string;
-  protected clientSecret?: string;
+  protected adminID?: string = "";
+  protected adminSecret?: string = "";
+  protected clientID?: string = "";
+  protected clientSecret?: string = "";
+  protected customersApiSecret?: string = "";
+  protected customersApiID?: string = "";
+  protected customersApiScope = "";
 
   private httpMiddlewareOptions: HttpMiddlewareOptions = {
     host: "",
@@ -24,14 +28,7 @@ export default class ClientBuilderService {
   };
 
   constructor() {
-    this.projectKey = process.env.PROJECT_KEY || "";
-    this.authUrl = process.env.AUTH_URL || "";
-    this.scopes = process.env.SCOPES || "";
-    this.adminID = process.env.ADMIN_ID;
-    this.adminSecret = process.env.ADMIN_SECRET;
-    this.clientID = process.env.CLIENT_ID;
-    this.clientSecret = process.env.CLIENT_SECRET;
-
+    this.init();
     this.initHttpMiddlewareOptions();
 
     this.commercetoolsClient = new ClientBuilder()
@@ -40,6 +37,19 @@ export default class ClientBuilderService {
       .build();
 
     this.apiRoot = createApiBuilderFromCtpClient(this.commercetoolsClient);
+  }
+
+  private init() {
+    this.projectKey = process.env.PROJECT_KEY || "";
+    this.authUrl = process.env.AUTH_URL || "";
+    this.scopes = process.env.SCOPES || "";
+    this.adminID = process.env.ADMIN_ID;
+    this.adminSecret = process.env.ADMIN_SECRET;
+    this.clientID = process.env.CLIENT_ID;
+    this.clientSecret = process.env.CLIENT_SECRET;
+    this.customersApiID = process.env.CUSTOMERS_API_ID;
+    this.customersApiSecret = process.env.CUSTOMERS_API_SECRET;
+    this.customersApiScope = process.env.CUSTOMERS_API_SCOPE || "";
   }
 
   private initHttpMiddlewareOptions() {
