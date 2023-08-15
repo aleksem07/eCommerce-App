@@ -5,7 +5,6 @@ describe("FormCheckComponent", () => {
   let formCheckComponent: FormCheckComponent;
 
   beforeEach(() => {
-    // Create a new instance of FormCheckComponent before each test
     formCheckComponent = new FormCheckComponent({ formName: "testForm", inputName: "testInput" });
   });
 

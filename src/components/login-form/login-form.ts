@@ -23,7 +23,6 @@ export default class LoginFormComponent {
 
     this.view = new LoginFormView();
 
-    // Initialize email input control
     this.emailInput = new FormControlComponent({
       formName: "login",
       inputName: "email",
@@ -31,7 +30,6 @@ export default class LoginFormComponent {
       helpText: "Write your email",
     });
 
-    // Initialize password input control
     this.passwordInput = new FormControlComponent({
       formName: "login",
       inputName: "password",
@@ -39,18 +37,11 @@ export default class LoginFormComponent {
       helpText: "Write your password",
     });
 
-    // Initialize password check control
     this.passwordCheck = new FormCheckComponent({ formName: "login", inputName: "password" });
 
-    // Bind submit form handler to the view
     this.view.submitFormListener(this.submitFormHandler.bind(this));
   }
 
-  /**
-   * Handles form submission.
-   * @param email - The email input value.
-   * @param password - The password input value.
-   */
   async submitFormHandler(email: string, password: string) {
     const emailValid = await this.validator.validate("email", email);
     const passwordValid = await this.validator.validate("password", password);
@@ -66,17 +57,10 @@ export default class LoginFormComponent {
     }
   }
 
-  /**
-   * Handles checkbox state change.
-   * @param status - The new checkbox state.
-   */
   async checkboxHandler(status: boolean) {
     this.view.handleCheckboxResult(status);
   }
 
-  /**
-   * Initializes the login form component.
-   */
   init() {
     const email = this.emailInput.init();
     const password = this.passwordInput.init();
