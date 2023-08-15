@@ -49,6 +49,11 @@ export default class LoginFormView extends ViewBuilder {
   }
 
   private createEmailWrapper() {
+    const existEmailTitle = this.getElement("#login-email-wrapper");
+
+    if (existEmailTitle) {
+      this.form.removeChild(existEmailTitle);
+    }
     const emailWrapper = this.createElement("div", {
       id: "login-email-wrapper",
       classes: ["row"],
@@ -65,6 +70,11 @@ export default class LoginFormView extends ViewBuilder {
   }
 
   private createPasswordWrapper() {
+    const existPasswordTitle = this.getElement("#password-wrapper");
+
+    if (existPasswordTitle) {
+      this.form.removeChild(existPasswordTitle);
+    }
     const passwordWrapper = this.createElement("div", {
       id: "password-wrapper",
       classes: ["row", "mb-3"],
@@ -80,6 +90,11 @@ export default class LoginFormView extends ViewBuilder {
   }
 
   private createCheckbox() {
+    const existCheckboxTitle = this.getElement("#checkbox-wrapper");
+
+    if (existCheckboxTitle) {
+      this.form.removeChild(existCheckboxTitle);
+    }
     const checkboxWrapper = this.createElement("div", {
       id: "checkbox-wrapper",
       classes: ["mb-3", "form-check"],
