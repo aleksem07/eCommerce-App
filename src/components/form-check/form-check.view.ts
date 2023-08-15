@@ -27,10 +27,9 @@ export default class FormCheckView extends ViewBuilder {
     this.checkboxLabel = this.createElement("label", {
       id: `${inputName}-checkbox-label`,
       classes: ["form-check-label"],
-      dataset: [{ for: "login-checkbox-input" }],
     });
     this.checkboxLabel.textContent = "Show password";
-    this.checkboxLabel.setAttribute("for", "login-checkbox-input");
+    this.checkboxLabel.setAttribute("for", `${inputName}-checkbox-input`);
 
     this.checkboxWrapper.append(this.checkbox, this.checkboxLabel);
   }
