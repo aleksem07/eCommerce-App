@@ -67,6 +67,6 @@ export default class LoginFormComponent {
     const showPassword = this.passwordCheck.init();
     this.view.render(email, password, showPassword);
     this.view.checkboxListener(this.checkboxHandler.bind(this));
-    this.tooltip.init(this.view.submitButton as HTMLButtonElement);
+    this.tooltip.init(this.view.submitButton);
   }
 }

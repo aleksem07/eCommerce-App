@@ -31,34 +31,36 @@ export default class LoginFormView extends ViewBuilder {
   submitFormListener(handler: (email: string, password: string) => void) {
     this.form.addEventListener("submit", (event) => {
       event.preventDefault();
-      const email = (this.getElement("#login-email-input") as HTMLInputElement).value;
-      const password = (this.getElement("#login-password-input") as HTMLInputElement).value;
+      const emailInput: HTMLInputElement = this.getElement("#login-email-input");
+      const email = emailInput.value;
+      const passwordInput: HTMLInputElement = this.getElement("#login-password-input");
+      const password = passwordInput.value;
       handler(email, password);
     });
   }
 
   checkboxListener(handler: (status: boolean) => void) {
-    const passwordInput = this.getElement("#login-password-input");
-    const passwordCheckbox = this.getElement("#password-checkbox-input");
+    const passwordInput: HTMLInputElement = this.getElement("#login-password-input");
+    const passwordCheckbox: HTMLInputElement = this.getElement("#password-checkbox-input");
 
-    if (passwordInput) passwordInput?.setAttribute("type", "password");
+    if (passwordInput) passwordInput.setAttribute("type", "password");
 
     if (passwordCheckbox) {
       passwordCheckbox.addEventListener("change", (event) => {
         event.preventDefault();
 
-        handler((passwordCheckbox as HTMLInputElement).checked);
+        handler(passwordCheckbox.checked);
       });
     }
   }
 
   handleCheckboxResult(status: boolean) {
-    const passwordInput = this.getElement("#login-password-input");
+    const passwordInput: HTMLInputElement = this.getElement("#login-password-input");
 
     if (status) {
-      (passwordInput as HTMLInputElement).type = "text";
+      passwordInput.type = "text";
     } else {
-      (passwordInput as HTMLInputElement).type = "password";
+      passwordInput.type = "password";
     }
   }
 
