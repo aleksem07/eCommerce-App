@@ -20,7 +20,6 @@ export default class LoginFormView extends ViewBuilder {
     this.header = this.createElement("h1", {
       id: `login-header`,
       classes: ["h3", "mb-3", "fw-normal", "text-center", "py-5"],
-
     });
     this.header.textContent = `Login`;
     this.submitButton = this.createElement("button", {
