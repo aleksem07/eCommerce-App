@@ -1,6 +1,5 @@
 import {
   ClientBuilder,
-  type AuthMiddlewareOptions,
   type HttpMiddlewareOptions,
   type Client,
 } from "@commercetools/sdk-client-v2";
@@ -8,22 +7,16 @@ import {
 import { ApiRoot, createApiBuilderFromCtpClient } from "@commercetools/platform-sdk";
 
 export default class ClientBuilderService {
-  protected authUrl!: string;
-  protected apiUrl!: string;
-  protected projectKey!: string;
-
+  protected authUrl?: string;
+  protected apiUrl?: string;
+  protected projectKey?: string;
   protected commercetoolsClient: Client;
-
   protected apiRoot: ApiRoot;
-
-  private authMiddlewareOptions: AuthMiddlewareOptions = {
-    host: "",
-    projectKey: "",
-    credentials: {
-      clientId: "",
-      clientSecret: "",
-    },
-  };
+  protected scopes = "";
+  protected adminID?: string;
+  protected adminSecret?: string;
+  protected clientID?: string;
+  protected clientSecret?: string;
 
   private httpMiddlewareOptions: HttpMiddlewareOptions = {
     host: "",
@@ -31,37 +24,22 @@ export default class ClientBuilderService {
   };
 
   constructor() {
-    this.initAuthMiddlewareOptions();
+    this.projectKey = process.env.PROJECT_KEY || "";
+    this.authUrl = process.env.AUTH_URL || "";
+    this.scopes = process.env.SCOPES || "";
+    this.adminID = process.env.ADMIN_ID;
+    this.adminSecret = process.env.ADMIN_SECRET;
+    this.clientID = process.env.CLIENT_ID;
+    this.clientSecret = process.env.CLIENT_SECRET;
+
     this.initHttpMiddlewareOptions();
 
     this.commercetoolsClient = new ClientBuilder()
-      .withClientCredentialsFlow(this.authMiddlewareOptions)
       .withHttpMiddleware(this.httpMiddlewareOptions)
       .withLoggerMiddleware()
       .build();
 
     this.apiRoot = createApiBuilderFromCtpClient(this.commercetoolsClient);
-  }
-
-  private initAuthMiddlewareOptions() {
-    this.projectKey = process.env.PROJECT_KEY || "";
-    this.authUrl = process.env.AUTH_URL || "";
-    const scopes = process.env.SCOPES?.split(",").filter(Boolean);
-    const adminID = process.env.ADMIN_ID;
-    const adminSecret = process.env.ADMIN_SECRET;
-
-    if (this.authUrl && this.projectKey && adminID && adminSecret && scopes) {
-      this.authMiddlewareOptions = {
-        host: this.authUrl,
-        projectKey: this.projectKey,
-        credentials: {
-          clientId: adminID,
-          clientSecret: adminSecret,
-        },
-        scopes,
-        fetch,
-      };
-    }
   }
 
   private initHttpMiddlewareOptions() {
