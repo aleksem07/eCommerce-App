@@ -11,7 +11,6 @@ export default class ValidatorUtil {
       .matches(/\./, "Email address must contain a period (.)")
       .matches(/^[^\s]+$/, "Password must not contain leading or trailing whitespace")
       .email("Invalid email address(example@gmail.com)")
-
       .min(3)
       .required("Email is required");
     this.passwordSchema = string()
