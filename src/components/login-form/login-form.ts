@@ -51,6 +51,7 @@ export default class LoginFormComponent {
     if (emailValid?.isValid && passwordValid?.isValid) {
       const result = await this.authService.login(email, password);
 
+
       if (!result.success && result.error) {
         this.tooltip.show("Error", result.error);
       } else {

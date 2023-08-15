@@ -8,6 +8,7 @@ export default class LoginFormView extends ViewBuilder {
 
   constructor() {
     super();
+
     this.form = this.createElement("form", {
       id: `login-form`,
     });
@@ -15,9 +16,11 @@ export default class LoginFormView extends ViewBuilder {
       id: `login-container`,
       classes: ["col-md-3", "m-auto", "container"],
     });
+
     this.header = this.createElement("h1", {
       id: `login-header`,
       classes: ["h3", "mb-3", "fw-normal", "text-center", "py-5"],
+
     });
     this.header.textContent = `Login`;
     this.submitButton = this.createElement("button", {
