@@ -17,8 +17,7 @@ export default class AppComponent {
     this.view.render();
     this.header = new HeaderComponent();
     this.header.init();
-
-    this.router = new RouterService(this.view.element, {
+    this.router = RouterService.getInstance(this.view.element, {
       [Routes.MAIN]: new MainPage(),
       [Routes.LOGIN]: new LoginPage(),
       [Routes.REGISTRATION]: new RegistrationPage(),

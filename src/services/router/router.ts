@@ -1,6 +1,7 @@
 import { Route, Routes } from "./router.types";
 
 export default class RouterService {
+  private static instance: RouterService;
   private routes: Record<string, Route>;
   private container: HTMLDivElement;
 
@@ -11,6 +12,14 @@ export default class RouterService {
     this.handleRouteChange();
 
     window.addEventListener("hashchange", this.handleRouteChange.bind(this));
+  }
+
+  static getInstance(container: HTMLDivElement, routes: Record<string, Route>): RouterService {
+    if (!RouterService.instance) {
+      RouterService.instance = new RouterService(container, routes);
+    }
+
+    return RouterService.instance;
   }
 
   private handleRouteChange() {
