@@ -38,17 +38,14 @@ export default class LoginFormView extends ViewBuilder {
   }
 
   checkboxListener(handler: (status: boolean) => void) {
+    const passwordInput = this.getElement("#login-password-input");
     const passwordCheckbox = this.getElement("#password-checkbox-input");
+
+    if (passwordInput) passwordInput?.setAttribute("type", "password");
 
     if (passwordCheckbox) {
       passwordCheckbox.addEventListener("change", (event) => {
         event.preventDefault();
-
-        const input = this.getElement(`login-password-input`);
-
-        if (input) {
-          (input as HTMLInputElement).type = "password";
-        }
 
         handler((passwordCheckbox as HTMLInputElement).checked);
       });

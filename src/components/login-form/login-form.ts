@@ -3,6 +3,7 @@ import FormControlComponent from "@Components/form-control/form-control";
 import FormCheckComponent from "@Components/form-check/form-check";
 import AuthService from "@Services/auth/auth";
 import TooltipComponent from "@Components/tooltip/tooltip";
+import ValidatorUtil from "@Utils/validator/validator";
 
 export default class LoginFormComponent {
   emailInput: FormControlComponent;
@@ -11,8 +12,11 @@ export default class LoginFormComponent {
   private view: LoginFormView;
   authService: AuthService;
   tooltip: TooltipComponent;
+  validator: ValidatorUtil;
 
   constructor() {
+    this.validator = new ValidatorUtil();
+
     this.authService = new AuthService();
 
     this.tooltip = new TooltipComponent();
@@ -36,16 +40,20 @@ export default class LoginFormComponent {
     this.passwordCheck = new FormCheckComponent({ formName: "login", inputName: "password" });
 
     this.view.submitFormListener(this.submitFormHandler.bind(this));
-    this.view.checkboxListener(this.checkboxHandler.bind(this));
   }
 
   async submitFormHandler(email: string, password: string) {
-    const result = await this.authService.login(email, password);
+    const emailValid = await this.validator.validate("email", email);
+    const passwordValid = await this.validator.validate("password", password);
 
-    if (!result.success && result.error) {
-      this.tooltip.show("Error", result.error);
-    } else {
-      this.tooltip.show("Success", "Welcome to the 'Fishing Hub'!");
+    if (emailValid?.isValid && passwordValid?.isValid) {
+      const result = await this.authService.login(email, password);
+
+      if (!result.success && result.error) {
+        this.tooltip.show("Error", result.error);
+      } else {
+        this.tooltip.show("Success", "Welcome to the 'Fishing Hub'!");
+      }
     }
   }
 
@@ -61,6 +69,7 @@ export default class LoginFormComponent {
     this.emailInput.init();
     this.passwordInput.init();
     this.passwordCheck.init();
+    this.view.checkboxListener(this.checkboxHandler.bind(this));
     this.tooltip.init(this.view.submitButton as HTMLButtonElement);
   }
 }
