@@ -4,9 +4,9 @@ import { FormCheckProps } from "./form-check.types";
 export default class FormCheckView extends ViewBuilder {
   inputName: string;
   formName: string;
-  passwordCheckbox: HTMLInputElement;
+  checkbox: HTMLInputElement;
   checkboxWrapper: HTMLDivElement;
-  passwordCheckLabel: HTMLLabelElement;
+  checkboxLabel: HTMLLabelElement;
 
   constructor({ formName, inputName }: FormCheckProps) {
     super();
@@ -18,21 +18,21 @@ export default class FormCheckView extends ViewBuilder {
       classes: ["form-switch", "form-check", "col-6"],
     });
 
-    this.passwordCheckbox = this.createElement("input", {
+    this.checkbox = this.createElement("input", {
       id: `${inputName}-checkbox-input`,
       classes: ["form-check-input"],
     });
-    this.passwordCheckbox.setAttribute("type", "checkbox");
+    this.checkbox.setAttribute("type", "checkbox");
 
-    this.passwordCheckLabel = this.createElement("label", {
+    this.checkboxLabel = this.createElement("label", {
       id: `${inputName}-checkbox-label`,
       classes: ["form-check-label"],
       dataset: [{ for: "login-checkbox-input" }],
     });
-    this.passwordCheckLabel.textContent = "Show password";
-    this.passwordCheckLabel.setAttribute("for", "login-checkbox-input");
+    this.checkboxLabel.textContent = "Show password";
+    this.checkboxLabel.setAttribute("for", "login-checkbox-input");
 
-    this.checkboxWrapper.append(this.passwordCheckbox, this.passwordCheckLabel);
+    this.checkboxWrapper.append(this.checkbox, this.checkboxLabel);
   }
 
   render() {
