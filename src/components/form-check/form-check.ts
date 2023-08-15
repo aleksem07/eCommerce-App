@@ -1,10 +1,11 @@
+import { FormCheckProps } from "./form-check.types";
 import FormCheckView from "./form-check.view";
 
 export default class FormCheckComponent {
   private view: FormCheckView;
 
-  constructor(login: string, password: string) {
-    this.view = new FormCheckView(login, password);
+  constructor({ formName, inputName }: FormCheckProps) {
+    this.view = new FormCheckView({ formName, inputName });
     this.view.checkboxListener(this.checkboxHandler.bind(this));
   }
 

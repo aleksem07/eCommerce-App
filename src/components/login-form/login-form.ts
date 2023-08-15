@@ -16,14 +16,19 @@ export default class LoginFormComponent {
     this.authService = new AuthService();
     this.tooltip = new TooltipComponent();
     this.view = new LoginFormView();
-    this.emailInput = new FormControlComponent("login", "email", "Email", "Invalid email");
-    this.passwordInput = new FormControlComponent(
-      "login",
-      "password",
-      "Password",
-      "Invalid password"
-    );
-    this.passwordCheck = new FormCheckComponent("login", "password");
+    this.emailInput = new FormControlComponent({
+      formName: "login",
+      inputName: "email",
+      labelText: "Email",
+      helpText: "Invalid email",
+    });
+    this.passwordInput = new FormControlComponent({
+      formName: "login",
+      inputName: "password",
+      labelText: "Password",
+      helpText: "Invalid password",
+    });
+    this.passwordCheck = new FormCheckComponent({ formName: "login", inputName: "password" });
     this.view.submitFormListener(this.submitFormHandler.bind(this));
   }
 

@@ -1,5 +1,6 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
 import { ValidationResult } from "@Utils/validator/validator.types";
+import { FormControlProps } from "./form-control.types";
 
 export default class FormControlView extends ViewBuilder {
   formName: string;
@@ -9,7 +10,7 @@ export default class FormControlView extends ViewBuilder {
   input: HTMLInputElement;
   inputHelp: HTMLElement;
 
-  constructor(formName: string, inputName: string, labelText: string, helpText: string) {
+  constructor({ formName, inputName, labelText, helpText }: FormControlProps) {
     super();
 
     this.formName = formName;

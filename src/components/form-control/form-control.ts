@@ -1,4 +1,5 @@
 import FormControlView from "./form-control.view";
+import { FormControlProps } from "./form-control.types";
 import ValidatorUtil from "@Utils/validator/validator";
 
 export default class FormControlComponent {
@@ -7,8 +8,8 @@ export default class FormControlComponent {
   form: string;
   inputName: string;
 
-  constructor(formName: string, inputName: string, labelText: string, helpText: string) {
-    this.view = new FormControlView(formName, inputName, labelText, helpText);
+  constructor({ formName, inputName, labelText, helpText }: FormControlProps) {
+    this.view = new FormControlView({ formName, inputName, labelText, helpText });
     this.validator = new ValidatorUtil();
 
     this.form = formName;

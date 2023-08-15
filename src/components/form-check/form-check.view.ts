@@ -1,4 +1,5 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
+import { FormCheckProps } from "./form-check.types";
 
 export default class FormCheckView extends ViewBuilder {
   inputName: string;
@@ -7,7 +8,7 @@ export default class FormCheckView extends ViewBuilder {
   checkboxWrapper: HTMLDivElement;
   passwordCheckLabel: HTMLLabelElement;
 
-  constructor(formName: string, inputName: string) {
+  constructor({ formName, inputName }: FormCheckProps) {
     super();
     this.formName = formName;
     this.inputName = inputName;
