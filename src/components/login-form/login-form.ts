@@ -1,54 +1,74 @@
 import LoginFormView from "./login-form.view";
-import ValidatorUtil from "@Utils/validator/validator";
+import FormControlComponent from "@Components/form-control/form-control";
+import FormCheckComponent from "@Components/form-check/form-check";
 import AuthService from "@Services/auth/auth";
 import TooltipComponent from "@Components/tooltip/tooltip";
-import RouterService from "@Services/router/router";
-import { Routes } from "@Services/router/router.types";
+import ValidatorUtil from "@Utils/validator/validator";
 
 export default class LoginFormComponent {
-  view: LoginFormView;
-  validator: ValidatorUtil;
+  emailInput: FormControlComponent;
+  passwordInput: FormControlComponent;
+  passwordCheck: FormCheckComponent;
+  private view: LoginFormView;
   authService: AuthService;
   tooltip: TooltipComponent;
+  validator: ValidatorUtil;
 
   constructor() {
-    this.view = new LoginFormView();
     this.validator = new ValidatorUtil();
+
     this.authService = new AuthService();
+
     this.tooltip = new TooltipComponent();
 
-    this.view.inputEmailListener(this.inputEmailHandler.bind(this));
-    this.view.inputPasswordListener(this.inputPasswordHandler.bind(this));
-    this.view.checkboxListener(this.checkboxHandler.bind(this));
+    this.view = new LoginFormView();
+
+    this.emailInput = new FormControlComponent({
+      formName: "login",
+      inputName: "email",
+      labelText: "Email",
+      helpText: "Write your email",
+      placeholderText: "user@exapmle.com",
+    });
+
+    this.passwordInput = new FormControlComponent({
+      formName: "login",
+      inputName: "password",
+      labelText: "Password",
+      helpText: "Write your password",
+      placeholderText: "Example1#",
+    });
+
+    this.passwordCheck = new FormCheckComponent({ formName: "login", inputName: "password" });
+
     this.view.submitFormListener(this.submitFormHandler.bind(this));
   }
 
-  async inputEmailHandler(email: string) {
-    const emailValid = await this.validator.validateEmail(email);
-    this.view.handleInputValidationResult("email", emailValid);
-  }
+  async submitFormHandler(email: string, password: string) {
+    const emailValid = await this.validator.validate("email", email);
+    const passwordValid = await this.validator.validate("password", password);
 
-  async inputPasswordHandler(password: string) {
-    const passwordValid = await this.validator.validatePassword(password);
-    this.view.handleInputValidationResult("password", passwordValid);
+    if (emailValid?.isValid && passwordValid?.isValid) {
+      const result = await this.authService.signIn(email, password);
+
+      if (!result.success && result.error) {
+        this.tooltip.show("Error", result.error);
+      } else {
+        this.tooltip.show("Success", "Welcome to the 'Fishing Hub'!");
+      }
+    }
   }
 
   async checkboxHandler(status: boolean) {
     this.view.handleCheckboxResult(status);
   }
 
-  async submitFormHandler(email: string, password: string) {
-    const result = await this.authService.signIn(email, password);
-
-    if (!result.success && result.error) {
-      this.tooltip.show("Error", result.error);
-    } else {
-      RouterService.navigateTo(Routes.MAIN);
-    }
-  }
-
   init() {
-    this.view.render();
-    this.tooltip.init(this.view.loginSubmitButton);
+    const email = this.emailInput.init();
+    const password = this.passwordInput.init();
+    const showPassword = this.passwordCheck.init();
+    this.view.render(email, password, showPassword);
+    this.view.checkboxListener(this.checkboxHandler.bind(this));
+    this.tooltip.init(this.view.submitButton);
   }
 }

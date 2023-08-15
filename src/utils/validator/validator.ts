@@ -7,9 +7,9 @@ export default class ValidatorUtil {
 
   constructor() {
     this.emailSchema = string()
-      .trim()
       .matches(/@/, "Email address must contain a period (@)")
       .matches(/\./, "Email address must contain a period (.)")
+      .matches(/^[^\s]+$/, "Password must not contain leading or trailing whitespace")
       .email("Invalid email address(example@gmail.com)")
       .min(3)
       .required("Email is required");
@@ -54,6 +54,15 @@ export default class ValidatorUtil {
         isValid: false,
         message: err.message,
       };
+    }
+  }
+
+  validate(inputName: string, inputText: string) {
+    switch (inputName) {
+      case "email":
+        return this.validateEmail(inputText);
+      case "password":
+        return this.validatePassword(inputText);
     }
   }
 }
