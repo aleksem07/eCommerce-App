@@ -10,15 +10,14 @@ export default class LoginFormView extends ViewBuilder {
     super();
     this.form = this.createElement("form", {
       id: `login-form`,
-      classes: ["form-group", "col-6", "justify-content-between", "flex-column"],
     });
     this.container = this.createElement("div", {
       id: `login-container`,
-      classes: ["container", "justify-content-center", "row"],
+      classes: ["form-signin", "w-50", "m-auto"],
     });
     this.header = this.createElement("h1", {
       id: `login-header`,
-      classes: ["text-center"],
+      classes: ["h3", "mb-3", "fw-normal", "text-center"],
     });
     this.header.textContent = `Login`;
     this.submitButton = this.createElement("button", {

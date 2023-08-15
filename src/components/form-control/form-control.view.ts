@@ -16,17 +16,17 @@ export default class FormControlView extends ViewBuilder {
     this.inputName = inputName;
     this.inputWrapper = this.createElement("div", {
       id: `${formName}-${inputName}-wrapper`,
-      classes: ["form-group", "col-12"],
+      classes: ["form-floating"],
     });
     this.inputLabel = this.createElement("label", {
       id: "login-email-label",
-      classes: ["col-sm-2", "control-label"],
+      classes: ["control-label"],
     });
     this.inputLabel.setAttribute("for", `${formName}-${inputName}-input`);
     this.inputLabel.textContent = labelText;
     this.input = this.createElement("input", {
       id: `${formName}-${inputName}-input`,
-      classes: ["form-control", "input-xs"],
+      classes: ["form-control"],
     });
     this.inputHelp = this.createElement("small", {
       id: `${helpText}-help`,
