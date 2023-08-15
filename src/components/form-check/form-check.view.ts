@@ -31,30 +31,7 @@ export default class FormCheckView extends ViewBuilder {
     this.checkboxWrapper.append(this.passwordCheckbox, this.passwordCheckLabel);
   }
 
-  checkboxListener(handler: (status: boolean) => void) {
-    this.passwordCheckbox.addEventListener("change", (event) => {
-      event.preventDefault();
-      handler(this.passwordCheckbox.checked);
-    });
-  }
-
-  handleChecboxResult(status: boolean) {
-    const passwordInput = this.getElement("#login-password-input");
-
-    if (status) {
-      (passwordInput as HTMLInputElement).type = "text";
-    } else {
-      (passwordInput as HTMLInputElement).type = "password";
-    }
-  }
-
   render() {
-    const input = this.getElement(`#${this.formName}-${this.inputName}-input`);
-
-    if (input) {
-      (input as HTMLInputElement).type = "password";
-    }
-
     return this.checkboxWrapper;
   }
 }

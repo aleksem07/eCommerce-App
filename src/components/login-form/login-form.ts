@@ -14,22 +14,29 @@ export default class LoginFormComponent {
 
   constructor() {
     this.authService = new AuthService();
+
     this.tooltip = new TooltipComponent();
+
     this.view = new LoginFormView();
+
     this.emailInput = new FormControlComponent({
       formName: "login",
       inputName: "email",
       labelText: "Email",
       helpText: "Invalid email",
     });
+
     this.passwordInput = new FormControlComponent({
       formName: "login",
       inputName: "password",
       labelText: "Password",
       helpText: "Invalid password",
     });
+
     this.passwordCheck = new FormCheckComponent({ formName: "login", inputName: "password" });
+
     this.view.submitFormListener(this.submitFormHandler.bind(this));
+    this.view.checkboxListener(this.checkboxHandler.bind(this));
   }
 
   async submitFormHandler(email: string, password: string) {
@@ -40,6 +47,10 @@ export default class LoginFormComponent {
     } else {
       this.tooltip.show("Success", "Welcome to the 'Fishing Hub'!");
     }
+  }
+
+  async checkboxHandler(status: boolean) {
+    this.view.handleChecboxResult(status);
   }
 
   init() {

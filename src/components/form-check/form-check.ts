@@ -6,11 +6,6 @@ export default class FormCheckComponent {
 
   constructor({ formName, inputName }: FormCheckProps) {
     this.view = new FormCheckView({ formName, inputName });
-    this.view.checkboxListener(this.checkboxHandler.bind(this));
-  }
-
-  async checkboxHandler(status: boolean) {
-    this.view.handleChecboxResult(status);
   }
 
   init() {

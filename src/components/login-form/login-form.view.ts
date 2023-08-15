@@ -37,6 +37,34 @@ export default class LoginFormView extends ViewBuilder {
     });
   }
 
+  checkboxListener(handler: (status: boolean) => void) {
+    const passwordCheckbox = this.getElement("#password-checkbox-input");
+
+    if (passwordCheckbox) {
+      passwordCheckbox.addEventListener("change", (event) => {
+        event.preventDefault();
+
+        const input = this.getElement(`login-password-input`);
+
+        if (input) {
+          (input as HTMLInputElement).type = "password";
+        }
+
+        handler((passwordCheckbox as HTMLInputElement).checked);
+      });
+    }
+  }
+
+  handleChecboxResult(status: boolean) {
+    const passwordInput = this.getElement("#login-password-input");
+
+    if (status) {
+      (passwordInput as HTMLInputElement).type = "text";
+    } else {
+      (passwordInput as HTMLInputElement).type = "password";
+    }
+  }
+
   render(...elements: HTMLElement[]) {
     this.form.append(...elements, this.submitButton);
     this.container.append(this.header, this.form);
