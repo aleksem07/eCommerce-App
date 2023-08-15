@@ -49,7 +49,7 @@ export default class LoginFormView extends ViewBuilder {
   }
 
   private createEmailWrapper() {
-    const existEmailTitle = this.form.querySelector("#login-email-wrapper");
+    const existEmailTitle = this.getElement("#login-email-wrapper");
 
     if (existEmailTitle) {
       this.form.removeChild(existEmailTitle);
@@ -70,7 +70,7 @@ export default class LoginFormView extends ViewBuilder {
   }
 
   private createPasswordWrapper() {
-    const existPasswordTitle = this.form.querySelector("#password-wrapper");
+    const existPasswordTitle = this.getElement("#password-wrapper");
 
     if (existPasswordTitle) {
       this.form.removeChild(existPasswordTitle);
@@ -90,7 +90,7 @@ export default class LoginFormView extends ViewBuilder {
   }
 
   private createCheckbox() {
-    const existCheckboxTitle = this.form.querySelector("#checkbox-wrapper");
+    const existCheckboxTitle = this.getElement("#checkbox-wrapper");
 
     if (existCheckboxTitle) {
       this.form.removeChild(existCheckboxTitle);
