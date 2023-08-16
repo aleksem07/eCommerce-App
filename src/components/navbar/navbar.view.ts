@@ -111,7 +111,7 @@ export default class NavbarView extends ViewBuilder {
   }
 
   private createLogoutIcon() {
-    const userIcon = this.createIcon("bi-door-open-fill");
+    const userIcon = this.createIcon("bi-box-arrow-in-left");
     userIcon.classList.add("me-1", "text-muted");
     const li = this.createElement("li");
     li.appendChild(userIcon);
