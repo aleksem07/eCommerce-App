@@ -40,8 +40,8 @@ export default class NavbarView extends ViewBuilder {
       classes: ["d-flex", "align-items-center", "navbar-nav"],
     });
 
-    const userIcon = this.createUserIcon();
-    const logoutIcon = this.createLogoutIcon();
+    const userIcon = this.createUserIcon("person");
+    const logoutIcon = this.createUserIcon("box-arrow-in-left");
     const loginLinkItem = new NavbarItemComponent(Routes.LOGIN, "Login").init();
     loginLinkItem.addEventListener("click", this.loginLinkHandler.bind(this));
     const registerLinkItem = new NavbarItemComponent(Routes.REGISTRATION, "Register").init();
@@ -101,17 +101,8 @@ export default class NavbarView extends ViewBuilder {
     return li;
   }
 
-  private createUserIcon() {
-    const userIcon = this.createIcon("bi-person");
-    userIcon.classList.add("me-1", "text-muted");
-    const li = this.createElement("li");
-    li.appendChild(userIcon);
-
-    return li;
-  }
-
-  private createLogoutIcon() {
-    const userIcon = this.createIcon("bi-box-arrow-in-left");
+  private createUserIcon(iconName: string) {
+    const userIcon = this.createIcon(`bi-${iconName}`);
     userIcon.classList.add("me-1", "text-muted");
     const li = this.createElement("li");
     li.appendChild(userIcon);
