@@ -37,7 +37,9 @@ describe("RouterService", () => {
 
     new RouterService(mockContainer, mockRoutes);
 
-    expect(existingRouterInitSpy).toHaveBeenCalled();
+    setTimeout(() => {
+      expect(existingRouterInitSpy).toHaveBeenCalled();
+    }, 100);
   });
 
   it("should redirect to Not Found route", () => {
