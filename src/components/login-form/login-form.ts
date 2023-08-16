@@ -59,11 +59,16 @@ export default class LoginFormComponent {
     }
   }
 
+  async reg(email: string, password: string, firsName: string, lastName: string) {
+    await this.authService.signUp(email, password, firsName, lastName);
+  }
+
   async checkboxHandler(status: boolean) {
     this.view.handleCheckboxResult(status);
   }
 
   init() {
+    this.reg("test@st.com", "Password1!", "a1", "a2");
     const email = this.emailInput.init();
     const password = this.passwordInput.init();
     const showPassword = this.passwordCheck.init();
