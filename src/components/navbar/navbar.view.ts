@@ -2,6 +2,7 @@ import { ViewBuilder } from "@Interfaces/view-builder";
 import NavbarItemComponent from "./navbar-item/navbar-item";
 import { Routes } from "@Services/router/router.types";
 import { AUTH_TOKEN_LS } from "@Services/auth/auth.types";
+import RouterService from "@Services/router/router";
 
 export default class NavbarView extends ViewBuilder {
   element: HTMLElement;
@@ -67,7 +68,7 @@ export default class NavbarView extends ViewBuilder {
 
   private logoutLinkHandler() {
     localStorage.removeItem(AUTH_TOKEN_LS);
-    window.location.href = Routes.LOGIN;
+    RouterService.navigateTo(Routes.LOGIN);
     this.refreshAuthLinks();
   }
 
@@ -84,9 +85,9 @@ export default class NavbarView extends ViewBuilder {
     event.preventDefault();
 
     if (localStorage.getItem(AUTH_TOKEN_LS)) {
-      window.location.href = Routes.MAIN;
+      RouterService.navigateTo(Routes.MAIN);
     } else {
-      window.location.href = Routes.LOGIN;
+      RouterService.navigateTo(Routes.LOGIN);
     }
   }
 
