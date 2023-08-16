@@ -41,6 +41,7 @@ export default class NavbarView extends ViewBuilder {
     });
 
     const userIcon = this.createUserIcon();
+    const logoutIcon = this.createLogoutIcon();
     const loginLinkItem = new NavbarItemComponent(Routes.LOGIN, "Login").init();
     loginLinkItem.addEventListener("click", this.loginLinkHandler.bind(this));
     const registerLinkItem = new NavbarItemComponent(Routes.REGISTRATION, "Register").init();
@@ -54,6 +55,7 @@ export default class NavbarView extends ViewBuilder {
         this.createSeparator(),
         registerLinkItem,
         this.createSeparator(),
+        logoutIcon,
         logoutLinkItem
       );
     } else {
@@ -101,6 +103,15 @@ export default class NavbarView extends ViewBuilder {
 
   private createUserIcon() {
     const userIcon = this.createIcon("bi-person");
+    userIcon.classList.add("me-1", "text-muted");
+    const li = this.createElement("li");
+    li.appendChild(userIcon);
+
+    return li;
+  }
+
+  private createLogoutIcon() {
+    const userIcon = this.createIcon("bi-door-open-fill");
     userIcon.classList.add("me-1", "text-muted");
     const li = this.createElement("li");
     li.appendChild(userIcon);
