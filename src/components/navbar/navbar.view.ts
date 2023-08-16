@@ -41,21 +41,47 @@ export default class NavbarView extends ViewBuilder {
     });
 
     const userIcon = this.createUserIcon();
-    const separator = this.createSeparator();
     const loginLinkItem = new NavbarItemComponent(Routes.LOGIN, "Login").init();
     loginLinkItem.addEventListener("click", this.loginLinkHandler.bind(this));
     const registerLinkItem = new NavbarItemComponent(Routes.REGISTRATION, "Register").init();
+    const logoutLinkItem = new NavbarItemComponent(Routes.LOGIN, "Logout").init();
+    logoutLinkItem.addEventListener("click", this.logoutLinkHandler.bind(this));
 
-    authLinksContainer.append(userIcon, loginLinkItem, separator, registerLinkItem);
+    if (localStorage.getItem(AUTH_TOKEN_LS)) {
+      authLinksContainer.append(
+        userIcon,
+        loginLinkItem,
+        this.createSeparator(),
+        registerLinkItem,
+        this.createSeparator(),
+        logoutLinkItem
+      );
+    } else {
+      authLinksContainer.append(userIcon, loginLinkItem, this.createSeparator(), registerLinkItem);
+    }
 
     return authLinksContainer;
   }
 
+  private logoutLinkHandler() {
+    localStorage.removeItem(AUTH_TOKEN_LS);
+    window.location.href = Routes.LOGIN;
+    this.refreshAuthLinks();
+  }
+
+  refreshAuthLinks() {
+    const authLinksContainer = this.getElement(".navbar-nav");
+    while (authLinksContainer.firstChild) {
+      authLinksContainer.removeChild(authLinksContainer.firstChild);
+    }
+    const newAuthLinks = this.createAuthLinks();
+    authLinksContainer.appendChild(newAuthLinks);
+  }
+
   private loginLinkHandler(event: Event) {
     event.preventDefault();
-    const authToken = localStorage.getItem(AUTH_TOKEN_LS);
 
-    if (authToken) {
+    if (localStorage.getItem(AUTH_TOKEN_LS)) {
       window.location.href = Routes.MAIN;
     } else {
       window.location.href = Routes.LOGIN;

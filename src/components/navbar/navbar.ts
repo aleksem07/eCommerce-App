@@ -7,6 +7,10 @@ export default class NavbarComponent {
     this.view = new NavbarView();
   }
 
+  refreshAuthLinks() {
+    this.view.refreshAuthLinks();
+  }
+
   init() {
     this.view.render();
   }

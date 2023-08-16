@@ -6,6 +6,7 @@ import TooltipComponent from "@Components/tooltip/tooltip";
 import ValidatorUtil from "@Utils/validator/validator";
 import RouterService from "@Services/router/router";
 import { Routes } from "@Services/router/router.types";
+import NavbarComponent from "@Components/navbar/navbar";
 
 export default class LoginFormComponent {
   emailInput: FormControlComponent;
@@ -15,6 +16,7 @@ export default class LoginFormComponent {
   authService: AuthService;
   tooltip: TooltipComponent;
   validator: ValidatorUtil;
+  navbar: NavbarComponent;
 
   constructor() {
     this.validator = new ValidatorUtil();
@@ -24,6 +26,8 @@ export default class LoginFormComponent {
     this.tooltip = new TooltipComponent();
 
     this.view = new LoginFormView();
+
+    this.navbar = new NavbarComponent();
 
     this.emailInput = new FormControlComponent({
       formName: "login",
@@ -56,6 +60,7 @@ export default class LoginFormComponent {
       if (!result.success && result.error) {
         this.tooltip.show("Error", result.error);
       } else {
+        this.navbar.refreshAuthLinks();
         RouterService.navigateTo(Routes.MAIN);
       }
     }
