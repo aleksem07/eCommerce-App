@@ -1,14 +1,14 @@
 import { Route } from "@Services/router/router.types";
 import RegistrationView from "./registration.view";
-import LoginFormComponent from "@Components/login-form/login-form";
+import RegistrationFormComponent from "@Components/registration-form/registration-form";
 
 export default class RegistrationPage implements Route {
   private view: RegistrationView;
-  registrationForm: LoginFormComponent;
+  registrationForm: RegistrationFormComponent;
 
   constructor() {
     this.view = new RegistrationView();
-    this.registrationForm = new LoginFormComponent();
+    this.registrationForm = new RegistrationFormComponent();
   }
 
   init() {
