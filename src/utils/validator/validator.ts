@@ -1,6 +1,9 @@
 import { date, string, ValidationError } from "yup";
 import { ValidationSchema, ValidationResult } from "./validator.types";
 import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+
+dayjs.extend(customParseFormat);
 
 export default class ValidatorUtil {
   passwordSchema: ValidationSchema;
@@ -63,9 +66,25 @@ export default class ValidatorUtil {
     const now = dayjs();
     const maxDate = now.subtract(13, "year").toISOString();
 
-    return date()
-      .max(maxDate, "You must be 13 years old or older")
-      .required("Date of birth is required");
+    return (
+      date()
+        // .transform(function (value, originalValue) {
+        //   const transformedDate = dayjs(originalValue, "MM/DD/YYYY");
+
+        //   if (transformedDate.isValid()) {
+        //     return transformedDate.toISOString();
+        //   }
+
+        //   if (this.isType(value)) {
+        //     return value;
+        //   }
+
+        //   return null;
+        // })
+        // .test("valid-format", "Invalid date format", (value) => value !== null)
+        .max(maxDate, "You must be 13 years old or older")
+        .required("Date of birth is required")
+    );
   }
 
   validatePassword(password: string): ValidationResult {
