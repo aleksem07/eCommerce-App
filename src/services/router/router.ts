@@ -9,11 +9,17 @@ export default class RouterService {
     this.container = container;
     this.routes = routes;
 
-    RouterService.navigateTo(Routes.MAIN);
+    this.handleRouteInitial();
 
     this.handleRouteChange();
 
     window.addEventListener("hashchange", this.handleRouteChange.bind(this));
+  }
+
+  private handleRouteInitial() {
+    const { hash } = window.location;
+    const initialRoute = hash || Routes.MAIN;
+    RouterService.navigateTo(initialRoute);
   }
 
   static getInstance(container: HTMLDivElement, routes: Record<string, Route>): RouterService {
