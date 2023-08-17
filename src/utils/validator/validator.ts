@@ -1,5 +1,6 @@
 import { date, string, ValidationError } from "yup";
 import { ValidationSchema, ValidationResult } from "./validator.types";
+import dayjs from "dayjs";
 
 export default class ValidatorUtil {
   passwordSchema: ValidationSchema;
@@ -59,18 +60,11 @@ export default class ValidatorUtil {
   }
 
   dateOfBirthSchemaCheck(): ValidationSchema {
-    return string()
-      .matches(/^\d{2}\/\d{2}\/\d{4}$/, "You must be older then 13 years old")
-      .test("date-of-birth", "Date of birth is not valid", (value) => {
-        if (value) {
-          const dateParts = value.split("/");
-          const dateValue = new Date(+dateParts[2], +dateParts[0] - 1, +dateParts[1]);
-          const minDate = new Date(new Date().setFullYear(new Date().getFullYear() - 100));
-          const maxDate = new Date(new Date().setFullYear(new Date().getFullYear() - 13));
+    const now = dayjs();
+    const maxDate = now.subtract(13, "year").toISOString();
 
-          return dateValue >= minDate && dateValue <= maxDate;
-        }
-      })
+    return date()
+      .max(maxDate, "You must be 13 years old or older")
       .required("Date of birth is required");
   }
 

@@ -2,7 +2,6 @@ import FormControlComponent from "@Components/form-control/form-control";
 import RegistrationFormView from "./registration-form.view";
 import { FormInput } from "./registration-form.types";
 import ValidatorUtil from "@Utils/validator/validator";
-import { FormCheckProps } from "@Components/form-check/form-check.types";
 import FormCheckComponent from "@Components/form-check/form-check";
 
 export default class RegistrationFormComponent {
