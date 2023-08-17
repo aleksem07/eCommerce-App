@@ -7,9 +7,8 @@ export default class RegistrationView extends ViewBuilder {
     super();
     this.element = this.createElement("div", {
       id: "registration-page",
-      classes: ["d-flex", "justify-content-center", "align-items-center", "flex-column", "py-4"],
+      classes: ["d-flex", "align-items-center", "flex-column", "py-4"],
     });
-    this.element.textContent = "REGISTRATION PAGE";
   }
 
   render() {

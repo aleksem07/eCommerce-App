@@ -14,17 +14,17 @@ export default class RegistrationFormView extends ViewBuilder {
       id: `registration-form`,
     });
     this.container = this.createElement("div", {
-      id: `login-container`,
+      id: `registration-container`,
       classes: ["col-md-3", "m-auto", "container"],
     });
 
     this.header = this.createElement("h1", {
-      id: `login-header`,
+      id: `registration-header`,
       classes: ["h3", "mb-3", "fw-normal", "text-center", "py-5"],
     });
     this.header.textContent = `Register`;
     this.submitButton = this.createElement("button", {
-      id: `login-submit-button`,
+      id: `registration-submit-button`,
       classes: ["btn", "btn-primary", "mt-4", "col-12"],
     });
     this.submitButton.setAttribute("type", "submit");
