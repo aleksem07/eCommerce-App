@@ -1,4 +1,4 @@
-import { date, string, StringSchema, ValidationError } from "yup";
+import { date, string, ValidationError } from "yup";
 import { ValidationSchema, ValidationResult } from "./validator.types";
 
 export default class ValidatorUtil {
@@ -8,6 +8,8 @@ export default class ValidatorUtil {
   postalCodeSchema: ValidationSchema;
   dateOfBirthSchema: ValidationSchema;
   streetSchema: ValidationSchema;
+  countrySchema: ValidationSchema;
+  validCountries = ["CA", "US", "GB", "USA", "GBR", "CANADA", "UNITED STATES OF AMERICA"];
 
   constructor() {
     this.emailSchema = string()
@@ -27,25 +29,44 @@ export default class ValidatorUtil {
       .required("Password is required");
 
     this.nameSchema = string()
+      .transform((value) => value.trim().toUpperCase())
       .min(1, "At least one character is required")
+      .matches(/^[^\s]+$/, "Name must not contain leading or trailing whitespace")
       .matches(/^[a-zA-Z]+$/, "Only alphabetic characters are allowed")
       .required("This field is required");
 
-    this.postalCodeSchema = string()
-      .matches(/[0-9A-Za-z -]+/, "Invalid postal code format")
-      .required("Postal code is required");
+    this.postalCodeSchema = this.postalCodeSchemaCheck();
 
-    this.dateOfBirthSchema = date()
+    this.dateOfBirthSchema = this.dateOfBirthSchemaCheck();
+
+    this.countrySchema = string()
+      .transform((value) => value.toUpperCase())
+      .oneOf(this.validCountries, "Please select a valid country")
+      .required("Country is required");
+
+    this.streetSchema = string()
+      .matches(/^[A-Za-z0-9\s\-.,]+$/, "Invalid characters in street address")
+      .min(1, "At least one character is required")
+      .required("Street address is required");
+  }
+
+  postalCodeSchemaCheck(): ValidationSchema {
+    return string()
+      .matches(
+        /(^[A-Za-z]\d[A-Za-z][-]?\d[A-Za-z]\d$)|(^\d{5}(-\d{4})?$)/,
+        "Invalid postal code format"
+      )
+      .required("Postal code is required");
+  }
+
+  dateOfBirthSchemaCheck(): ValidationSchema {
+    return date()
       .min(new Date(new Date().setFullYear(new Date().getFullYear() - 100)), "Invalid date")
       .max(
         new Date(new Date().setFullYear(new Date().getFullYear() - 13)),
         "You must be 13 years old or older"
       )
       .required("Date of birth is required");
-
-    this.streetSchema = string()
-      .min(1, "At least one character is required")
-      .required("Street address is required");
   }
 
   validatePassword(password: string): ValidationResult {
@@ -103,6 +124,10 @@ export default class ValidatorUtil {
     return this.validateField(this.nameSchema, name);
   }
 
+  validateCountry(country: string): ValidationResult {
+    return this.validateField(this.countrySchema, country);
+  }
+
   validatePostalCode(postalCode: string): ValidationResult {
     return this.validateField(this.postalCodeSchema, postalCode);
   }
@@ -125,6 +150,8 @@ export default class ValidatorUtil {
       case "last_name":
       case "city":
         return this.validateName(inputText);
+      case "country":
+        return this.validateCountry(inputText);
       case "postal_code":
         return this.validatePostalCode(inputText);
       case "date_of_birth":
