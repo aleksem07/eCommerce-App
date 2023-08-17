@@ -1,4 +1,5 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
+import { FormInput } from "./registration-form.types";
 
 export default class RegistrationFormView extends ViewBuilder {
   private form!: HTMLFormElement;
@@ -16,7 +17,7 @@ export default class RegistrationFormView extends ViewBuilder {
     });
     this.container = this.createElement("div", {
       id: `registration-container`,
-      classes: ["col-md-6", "m-auto", "container"],
+      classes: ["col-md-4", "m-auto", "container"],
     });
 
     this.header = this.createElement("h1", {
@@ -39,23 +40,43 @@ export default class RegistrationFormView extends ViewBuilder {
     this.confirmPasswordInput.placeholder = "Confirm Password";
   }
 
-  submitFormListener(
-    handler: (username: string, email: string, password: string, confirmPassword: string) => void
-  ) {
+  submitFormListener(handler: (inputValues: FormInput[]) => void) {
     this.form.addEventListener("submit", (event) => {
       event.preventDefault();
-      const usernameInput = this.getElement<HTMLInputElement>("#registration-username-input");
-      const emailInput = this.getElement<HTMLInputElement>("#registration-email-input");
-      const passwordInput = this.getElement<HTMLInputElement>("#registration-password-input");
-      const confirmPasswordInput = this.getElement<HTMLInputElement>(
-        "#registration-confirm-password-input"
-      );
-      const username = usernameInput.value;
-      const email = emailInput.value;
-      const password = passwordInput.value;
-      const confirmPassword = confirmPasswordInput.value;
-      handler(username, email, password, confirmPassword);
+      const formData = new FormData(event.target as HTMLFormElement);
+
+      const inputValues: FormInput[] = [...formData.entries()].map(([key, value]) => ({
+        key,
+        value: value.toString(),
+      }));
+
+      handler(inputValues);
     });
+  }
+
+  checkboxListener(handler: (status: boolean) => void) {
+    const passwordInput: HTMLInputElement = this.getElement("#registration-password-input");
+    const passwordCheckbox: HTMLInputElement = this.getElement("#password-checkbox-input");
+
+    if (passwordInput) passwordInput.setAttribute("type", "password");
+
+    if (passwordCheckbox) {
+      passwordCheckbox.addEventListener("change", (event) => {
+        event.preventDefault();
+
+        handler(passwordCheckbox.checked);
+      });
+    }
+  }
+
+  handleCheckboxResult(status: boolean) {
+    const passwordInput: HTMLInputElement = this.getElement("#registration-password-input");
+
+    if (status) {
+      passwordInput.type = "text";
+    } else {
+      passwordInput.type = "password";
+    }
   }
 
   render(...elements: HTMLElement[]) {

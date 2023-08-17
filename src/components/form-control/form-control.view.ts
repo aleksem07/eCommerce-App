@@ -34,6 +34,7 @@ export default class FormControlView extends ViewBuilder {
       classes: ["form-control"],
     });
     this.input.placeholder = placeholderText;
+    this.input.name = inputName;
 
     this.inputHelp = this.createElement("small", {
       id: `${helpText}-help`,

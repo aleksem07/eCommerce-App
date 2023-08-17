@@ -9,7 +9,7 @@ export default class ValidatorUtil {
   dateOfBirthSchema: ValidationSchema;
   streetSchema: ValidationSchema;
   countrySchema: ValidationSchema;
-  validCountries = ["CA", "US", "GB", "USA", "GBR", "CANADA", "UNITED STATES OF AMERICA"];
+  validCountries = ["CA", "US", "GB", "USA", "GBR", "CANADA", "THE UNITED STATES OF AMERICA"];
 
   constructor() {
     this.emailSchema = string()
@@ -19,6 +19,7 @@ export default class ValidatorUtil {
       .email("Invalid email address(example@gmail.com)")
       .min(3)
       .required("Email is required");
+
     this.passwordSchema = string()
       .min(8, "Password must be at least 8 characters long")
       .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
@@ -31,12 +32,10 @@ export default class ValidatorUtil {
     this.nameSchema = string()
       .transform((value) => value.trim().toUpperCase())
       .min(1, "At least one character is required")
-      .matches(/^[^\s]+$/, "Name must not contain leading or trailing whitespace")
-      .matches(/^[a-zA-Z]+$/, "Only alphabetic characters are allowed")
+      .matches(/^[a-zA-Z\s]+$/, "Only alphabetic characters and spaces are allowed")
       .required("This field is required");
 
     this.postalCodeSchema = this.postalCodeSchemaCheck();
-
     this.dateOfBirthSchema = this.dateOfBirthSchemaCheck();
 
     this.countrySchema = string()
