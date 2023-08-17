@@ -146,15 +146,15 @@ export default class ValidatorUtil {
         return this.validateEmail(inputText);
       case "password":
         return this.validatePassword(inputText);
-      case "first_name":
-      case "last_name":
+      case "first-name":
+      case "last-name":
       case "city":
         return this.validateName(inputText);
       case "country":
         return this.validateCountry(inputText);
-      case "postal_code":
+      case "postal-code":
         return this.validatePostalCode(inputText);
-      case "date_of_birth":
+      case "date-of-birth":
         return this.validateDateOfBirth(inputText);
       case "street":
         return this.validateStreet(inputText);

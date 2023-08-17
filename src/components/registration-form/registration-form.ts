@@ -32,7 +32,7 @@ export default class RegistrationFormComponent {
   private createPostalCodeInputComponent() {
     return new FormControlComponent({
       formName: "registration",
-      inputName: "postal_code",
+      inputName: "postal-code",
       labelText: "Postal Code",
       helpText: "Follow the format for your country (e.g., 12345 or A1B 2C3)",
       placeholderText: "12345",
@@ -42,7 +42,7 @@ export default class RegistrationFormComponent {
   private createConfirmPasswordInputComponent() {
     return new FormControlComponent({
       formName: "registration",
-      inputName: "confirm_password",
+      inputName: "confirm-password",
       labelText: "Confirm Password",
       helpText: "Write your password again",
       placeholderText: "Example1#",
@@ -82,7 +82,7 @@ export default class RegistrationFormComponent {
   private createFirstNameInputComponent() {
     return new FormControlComponent({
       formName: "registration",
-      inputName: "first_name",
+      inputName: "first-name",
       labelText: "First Name",
       helpText: "At least one character, no special characters or numbers",
       placeholderText: "John",
@@ -92,7 +92,7 @@ export default class RegistrationFormComponent {
   private createLastNameInputComponent() {
     return new FormControlComponent({
       formName: "registration",
-      inputName: "last_name",
+      inputName: "last-name",
       labelText: "Last Name",
       helpText: "At least one character, no special characters or numbers",
       placeholderText: "Doe",
@@ -102,7 +102,7 @@ export default class RegistrationFormComponent {
   private createDateOfBirthInputComponent() {
     return new FormControlComponent({
       formName: "registration",
-      inputName: "date_of_birth",
+      inputName: "date-of-birth",
       labelText: "Date of Birth",
       helpText: "You must be 13 years old or older",
       placeholderText: "MM/DD/YYYY",

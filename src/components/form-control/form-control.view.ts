@@ -51,7 +51,7 @@ export default class FormControlView extends ViewBuilder {
   }
 
   showValidation(resultValid: ValidationResult) {
-    this.inputHelp.textContent = resultValid.message || null;
+    this.inputHelp.textContent = resultValid.message || "\u00A0";
 
     if (resultValid.isValid) {
       this.input.classList.remove("is-invalid");

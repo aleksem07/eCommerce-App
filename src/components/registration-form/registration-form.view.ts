@@ -12,10 +12,11 @@ export default class RegistrationFormView extends ViewBuilder {
 
     this.form = this.createElement("form", {
       id: `registration-form`,
+      classes: ["d-flex", "flex-column"],
     });
     this.container = this.createElement("div", {
       id: `registration-container`,
-      classes: ["col-md-3", "m-auto", "container"],
+      classes: ["col-md-6", "m-auto", "container"],
     });
 
     this.header = this.createElement("h1", {
@@ -25,7 +26,7 @@ export default class RegistrationFormView extends ViewBuilder {
     this.header.textContent = `Register`;
     this.submitButton = this.createElement("button", {
       id: `registration-submit-button`,
-      classes: ["btn", "btn-primary", "mt-4", "col-12"],
+      classes: ["btn", "btn-primary", "mt-4", "align-self-center"],
     });
     this.submitButton.setAttribute("type", "submit");
     this.submitButton.textContent = "Submit";
