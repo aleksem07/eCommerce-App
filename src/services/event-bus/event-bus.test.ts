@@ -6,12 +6,14 @@ describe("EventBusService", () => {
     const instance = new EventBusService();
     expect(instance).toBeInstanceOf(EventBusService);
   });
-
-  it("should subscribe and publish events", () => {
-    const eventBus = new EventBusService();
-    const mockCallback = jest.fn();
-    eventBus.subscribe(Events.userLogin, mockCallback);
-    eventBus.publish(Events.userLogin, "someData");
-    expect(mockCallback).toHaveBeenCalledWith("someData");
+  it("should support multiple subscribers and publish events", () => {
+    const eventBusService = EventBusService.getInstance();
+    const mockCallback1 = jest.fn();
+    const mockCallback2 = jest.fn();
+    eventBusService.subscribe(Events.userLogin, mockCallback1);
+    eventBusService.subscribe(Events.userLogin, mockCallback2);
+    eventBusService.publish(Events.userLogin, "user123");
+    expect(mockCallback1).toHaveBeenCalledWith("user123");
+    expect(mockCallback2).toHaveBeenCalledWith("user123");
   });
 });

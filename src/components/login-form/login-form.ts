@@ -6,7 +6,7 @@ import TooltipComponent from "@Components/tooltip/tooltip";
 import ValidatorUtil from "@Utils/validator/validator";
 import RouterService from "@Services/router/router";
 import { Routes } from "@Services/router/router.types";
-import eventBus from "@Services/event-bus/event-bus";
+import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
 
 export default class LoginFormComponent {
@@ -58,7 +58,7 @@ export default class LoginFormComponent {
       if (!result.success && result.error) {
         this.tooltip.show("Error", result.error);
       } else {
-        eventBus.publish(Events.userLogin);
+        eventBusService.publish(Events.userLogin);
         RouterService.navigateTo(Routes.MAIN);
       }
     }

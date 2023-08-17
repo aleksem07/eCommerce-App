@@ -1,13 +1,22 @@
-import { Events, EventCallback } from "./event-bus.types";
+import { Events, EventCallback, EventContract } from "./event-bus.types";
 
-export class EventBusService<T> {
-  private events: { [event: string]: EventCallback<T>[] } = {};
+export class EventBusService {
+  private static instance: EventBusService;
+  private events: { [event: string]: EventCallback<keyof EventContract>[] } = {};
 
   constructor() {
     this.events = {};
   }
 
-  subscribe(event: Events, callback: EventCallback<T>) {
+  static getInstance(): EventBusService {
+    if (!EventBusService.instance) {
+      EventBusService.instance = new EventBusService();
+    }
+
+    return EventBusService.instance;
+  }
+
+  subscribe(event: Events, callback: EventCallback<keyof EventContract>) {
     if (!this.events[event]) {
       this.events[event] = [];
     }
@@ -15,7 +24,7 @@ export class EventBusService<T> {
     eventCallback.push(callback);
   }
 
-  publish(event: Events, data?: T) {
+  publish(event: Events, data?: keyof EventContract) {
     const eventCallback = this.events[event];
 
     if (eventCallback) {
@@ -24,6 +33,6 @@ export class EventBusService<T> {
   }
 }
 
-const eventBus = new EventBusService();
+const eventBusService = EventBusService.getInstance();
 
-export default eventBus;
+export default eventBusService;

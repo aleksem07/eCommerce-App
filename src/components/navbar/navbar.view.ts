@@ -103,10 +103,10 @@ export default class NavbarView extends ViewBuilder {
   }
 
   private createLinkIcon(iconName: string) {
-    const userIcon = this.createIcon(`bi-${iconName}`);
-    userIcon.classList.add("me-1", "text-muted");
+    const linkIcon = this.createIcon(`bi-${iconName}`);
+    linkIcon.classList.add("me-1", "text-muted");
     const li = this.createElement("li");
-    li.appendChild(userIcon);
+    li.appendChild(linkIcon);
 
     return li;
   }

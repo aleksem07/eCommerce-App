@@ -1,5 +1,5 @@
 import NavbarView from "./navbar.view";
-import eventBus from "@Services/event-bus/event-bus";
+import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
 
 export default class NavbarComponent {
@@ -7,7 +7,7 @@ export default class NavbarComponent {
 
   constructor() {
     this.view = new NavbarView();
-    eventBus.subscribe(Events.userLogin, this.refreshAuthLinks.bind(this));
+    eventBusService.subscribe(Events.userLogin, this.refreshAuthLinks.bind(this));
   }
 
   refreshAuthLinks() {
