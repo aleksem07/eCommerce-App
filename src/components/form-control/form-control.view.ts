@@ -19,7 +19,7 @@ export default class FormControlView extends ViewBuilder {
 
     this.inputWrapper = this.createElement("div", {
       id: `${formName}-${inputName}-wrapper`,
-      classes: ["mt-3"],
+      classes: ["mt-2"],
     });
 
     this.inputLabel = this.createElement("label", {

@@ -1,4 +1,4 @@
-import { date, string, ValidationError } from "yup";
+import { string, ValidationError } from "yup";
 import { ValidationSchema, ValidationResult } from "./validator.types";
 
 export default class ValidatorUtil {
@@ -52,19 +52,25 @@ export default class ValidatorUtil {
   postalCodeSchemaCheck(): ValidationSchema {
     return string()
       .matches(
-        /(^[A-Za-z]\d[A-Za-z][-]?\d[A-Za-z]\d$)|(^\d{5}(-\d{4})?$)/,
-        "Invalid postal code format"
+        /^(?:\d{5}(-\d{4})?|[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d)$/,
+        "Invalid postal code(12345 or 12345-6789 For the U.S., A1B 2C3 or A1B2C3 for Canada)"
       )
       .required("Postal code is required");
   }
 
   dateOfBirthSchemaCheck(): ValidationSchema {
-    return date()
-      .min(new Date(new Date().setFullYear(new Date().getFullYear() - 100)), "Invalid date")
-      .max(
-        new Date(new Date().setFullYear(new Date().getFullYear() - 13)),
-        "You must be 13 years old or older"
-      )
+    return string()
+      .matches(/^\d{2}\/\d{2}\/\d{4}$/, "You must be older then 13 years old")
+      .test("date-of-birth", "Date of birth is not valid", (value) => {
+        if (value) {
+          const dateParts = value.split("/");
+          const dateValue = new Date(+dateParts[2], +dateParts[0] - 1, +dateParts[1]);
+          const minDate = new Date(new Date().setFullYear(new Date().getFullYear() - 100));
+          const maxDate = new Date(new Date().setFullYear(new Date().getFullYear() - 13));
+
+          return dateValue >= minDate && dateValue <= maxDate;
+        }
+      })
       .required("Date of birth is required");
   }
 

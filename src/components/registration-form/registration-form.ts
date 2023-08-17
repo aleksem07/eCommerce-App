@@ -49,7 +49,6 @@ export default class RegistrationFormComponent {
     });
 
     if (isValidValues) {
-      console.log("VALIDATED");
       //call register method of auth service here
     }
   }
