@@ -1,6 +1,6 @@
 import { HttpErrorType, TokenInfo } from "@commercetools/sdk-client-v2";
 import ClientBuilderService from "../client-builder/client-builder";
-import { AUTH_TOKEN_LS, AuthResult, DataInfo } from "./auth.types";
+import { AUTH_TOKEN_LS, AuthResult, DataInfo, ParamsProps } from "./auth.types";
 
 export default class AuthService extends ClientBuilderService {
   constructor() {
@@ -8,7 +8,12 @@ export default class AuthService extends ClientBuilderService {
   }
 
   async signIn(username: string, password: string): Promise<AuthResult<DataInfo | TokenInfo>> {
-    const result = await this.getToken(username, password);
+    const result = await this.getToken("/customers/token", {
+      grant_type: "password",
+      username: username,
+      password: password,
+      scopes: this.customersApiScope,
+    });
 
     if (result.success && result.data?.access_token) {
       return await this.login(username, password, result.data?.access_token);
@@ -23,7 +28,12 @@ export default class AuthService extends ClientBuilderService {
     firsName: string,
     lastName: string
   ): Promise<AuthResult<DataInfo | TokenInfo>> {
-    const result = await this.getAnonToken();
+    const result = await this.getToken("/anonymous/token", {
+      grant_type: "client_credentials",
+      username: username,
+      password: password,
+      scopes: this.customersApiScope,
+    });
 
     if (result.data?.access_token) {
       return await this.register(username, password, firsName, lastName, result.data?.access_token);
@@ -32,18 +42,19 @@ export default class AuthService extends ClientBuilderService {
     return result;
   }
 
-  private async getToken(username: string, password: string): Promise<AuthResult<TokenInfo>> {
+  private async getToken(url: string, paramsProps: ParamsProps): Promise<AuthResult<TokenInfo>> {
     try {
-      const authUrl = `${this.authUrl}/oauth/${this.projectKey}/customers/token`;
-
+      const authUrl = `${this.authUrl}/oauth/${this.projectKey}${url}`;
       const params = new URLSearchParams();
-      params.append("grant_type", "password");
-      params.append("username", username);
-      params.append("password", password);
-      params.append("scopes", this.customersApiScope);
+      let key: keyof ParamsProps;
+      for (key in paramsProps) {
+        const value = paramsProps[key];
 
+        if (value) {
+          params.append(key, value);
+        }
+      }
       const encodedCredentials = btoa(`${this.customersApiID}:${this.customersApiSecret}`);
-
       const response = await fetch(authUrl, {
         method: "POST",
         headers: {
@@ -60,43 +71,6 @@ export default class AuthService extends ClientBuilderService {
 
       const data: TokenInfo = await response.json();
       localStorage.setItem(AUTH_TOKEN_LS, data.access_token);
-
-      return { success: true, data };
-    } catch (error: unknown) {
-      const errorMessage = (error as Error).message;
-
-      return {
-        success: false,
-        error: errorMessage,
-      };
-    }
-  }
-
-  private async getAnonToken(): Promise<AuthResult<TokenInfo>> {
-    try {
-      const authUrl = `${this.authUrl}/oauth/${this.projectKey}/anonymous/token`;
-
-      const params = new URLSearchParams();
-      params.append("grant_type", "client_credentials");
-      params.append("scopes", this.customerAnonApiScope);
-
-      const encodedCredentials = btoa(`${this.customerAnonApiID}:${this.customerAnonApiSecret}`);
-      const response = await fetch(authUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          Authorization: `Basic ${encodedCredentials}`,
-        },
-        body: params.toString(),
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message);
-      }
-
-      const data: TokenInfo = await response.json();
-      // localStorage.setItem(AUTH_TOKEN_LS, data.access_token);
 
       return { success: true, data };
     } catch (error: unknown) {
