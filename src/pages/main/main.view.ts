@@ -1,17 +1,23 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
+import MainNavComponent from "@Components/main-nav/main-nav";
 
 export default class MainView extends ViewBuilder {
-  element: HTMLElement;
-
+  container: HTMLElement;
+  component: MainNavComponent;
+  mainNavComponent: HTMLUListElement;
   constructor() {
     super();
-    this.element = this.createElement("div", {
+    this.container = this.createElement("div", {
       id: "main",
+      classes: ["container"],
     });
-    this.element.textContent = "MAIN PAGE";
+    this.component = new MainNavComponent();
+    this.mainNavComponent = this.component.init();
+
+    this.container.append(this.mainNavComponent);
   }
 
   render() {
-    this.appendTo("#root", this.element);
+    this.appendTo("#root", this.container);
   }
 }
