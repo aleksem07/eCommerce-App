@@ -2,6 +2,8 @@ import FormControlComponent from "@Components/form-control/form-control";
 import RegistrationFormView from "./registration-form.view";
 import { FormInput } from "./registration-form.types";
 import ValidatorUtil from "@Utils/validator/validator";
+import { FormCheckProps } from "@Components/form-check/form-check.types";
+import FormCheckComponent from "@Components/form-check/form-check";
 
 export default class RegistrationFormComponent {
   view: RegistrationFormView;
@@ -15,6 +17,7 @@ export default class RegistrationFormComponent {
   postalCodeInput: FormControlComponent;
   cityInput: FormControlComponent;
   validator: ValidatorUtil;
+  passwordCheck: FormCheckComponent;
 
   constructor() {
     this.view = new RegistrationFormView();
@@ -31,6 +34,11 @@ export default class RegistrationFormComponent {
     this.postalCodeInput = this.createPostalCodeInputComponent();
 
     this.view.submitFormListener(this.submitFormHandler.bind(this));
+
+    this.passwordCheck = new FormCheckComponent({
+      formName: "registration",
+      inputName: "password",
+    });
   }
 
   submitFormHandler(inputValues: FormInput[]) {
@@ -143,6 +151,7 @@ export default class RegistrationFormComponent {
   init() {
     const email = this.emailInput.init();
     const password = this.passwordInput.init();
+    const passwordCheck = this.passwordCheck.init();
     const firstName = this.firstNameInput.init();
     const lastName = this.lastNameInput.init();
     const dateOfBirth = this.dateOfBirthInput.init();
@@ -153,6 +162,7 @@ export default class RegistrationFormComponent {
     this.view.render(
       email,
       password,
+      passwordCheck,
       firstName,
       lastName,
       dateOfBirth,
@@ -161,5 +171,6 @@ export default class RegistrationFormComponent {
       street,
       postalCode
     );
+    this.view.checkboxListener(this.checkboxHandler.bind(this));
   }
 }
