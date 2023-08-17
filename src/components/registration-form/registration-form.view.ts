@@ -57,7 +57,6 @@ export default class RegistrationFormView extends ViewBuilder {
   checkboxListener(handler: (status: boolean) => void) {
     const passwordInput = this.getElement<HTMLInputElement>("#registration-password-input");
     const passwordCheckbox = this.getElement<HTMLInputElement>("#password-checkbox-input");
-    console.log(passwordInput, passwordCheckbox);
 
     if (passwordInput) passwordInput.setAttribute("type", "password");
 

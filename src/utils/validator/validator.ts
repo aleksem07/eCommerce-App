@@ -1,4 +1,4 @@
-import { string, ValidationError } from "yup";
+import { date, string, ValidationError } from "yup";
 import { ValidationSchema, ValidationResult } from "./validator.types";
 
 export default class ValidatorUtil {

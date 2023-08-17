@@ -139,7 +139,7 @@ export default class RegistrationFormComponent {
       inputName: "country",
       labelText: "Country",
       helpText: "Select a valid country from the list",
-      placeholderText: "United States",
+      placeholderText: "US",
     });
   }
 
