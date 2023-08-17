@@ -1,8 +1,8 @@
-import { Events, EventCallback, EventContract } from "./event-bus.types";
+import { Events, EventCallback, EventData } from "./event-bus.types";
 
 export class EventBusService {
   private static instance: EventBusService;
-  private events: { [event: string]: EventCallback<keyof EventContract>[] } = {};
+  private events: { [event: string]: EventCallback<EventData>[] } = {};
 
   constructor() {
     this.events = {};
@@ -16,7 +16,7 @@ export class EventBusService {
     return EventBusService.instance;
   }
 
-  subscribe(event: Events, callback: EventCallback<keyof EventContract>) {
+  subscribe(event: Events, callback: EventCallback<EventData>) {
     if (!this.events[event]) {
       this.events[event] = [];
     }
@@ -24,7 +24,7 @@ export class EventBusService {
     eventCallback.push(callback);
   }
 
-  publish(event: Events, data?: keyof EventContract) {
+  publish(event: Events, data?: EventData) {
     const eventCallback = this.events[event];
 
     if (eventCallback) {
