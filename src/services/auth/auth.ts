@@ -1,6 +1,13 @@
 import { HttpErrorType, TokenInfo } from "@commercetools/sdk-client-v2";
 import ClientBuilderService from "../client-builder/client-builder";
-import { AUTH_TOKEN_LS, AuthResult, DataInfo, ParamsProps } from "./auth.types";
+import {
+  AUTH_TOKEN_LS,
+  AuthResult,
+  DataInfo,
+  LoginProps,
+  RegistrationProps,
+  TokenProps,
+} from "./auth.types";
 
 export default class AuthService extends ClientBuilderService {
   constructor() {
@@ -16,7 +23,11 @@ export default class AuthService extends ClientBuilderService {
     });
 
     if (result.success && result.data?.access_token) {
-      return await this.login(username, password, result.data?.access_token);
+      return await this.login({
+        username: username,
+        password: password,
+        token: result.data?.access_token,
+      });
     }
 
     return result;
@@ -25,7 +36,7 @@ export default class AuthService extends ClientBuilderService {
   async signUp(
     username: string,
     password: string,
-    firsName: string,
+    firstName: string,
     lastName: string
   ): Promise<AuthResult<DataInfo | TokenInfo>> {
     const result = await this.getToken("/anonymous/token", {
@@ -36,17 +47,23 @@ export default class AuthService extends ClientBuilderService {
     });
 
     if (result.data?.access_token) {
-      return await this.register(username, password, firsName, lastName, result.data?.access_token);
+      return await this.registration({
+        username: username,
+        password: password,
+        firstName: firstName,
+        lastName: lastName,
+        token: result.data?.access_token,
+      });
     }
 
     return result;
   }
 
-  private async getToken(url: string, paramsProps: ParamsProps): Promise<AuthResult<TokenInfo>> {
+  private async getToken(url: string, paramsProps: TokenProps): Promise<AuthResult<TokenInfo>> {
     try {
       const authUrl = `${this.authUrl}/oauth/${this.projectKey}${url}`;
       const params = new URLSearchParams();
-      let key: keyof ParamsProps;
+      let key: keyof TokenProps;
       for (key in paramsProps) {
         const value = paramsProps[key];
 
@@ -83,22 +100,18 @@ export default class AuthService extends ClientBuilderService {
     }
   }
 
-  private async login(
-    username: string,
-    password: string,
-    token: string
-  ): Promise<AuthResult<DataInfo>> {
+  private async login(loginProps: LoginProps): Promise<AuthResult<DataInfo>> {
     try {
       const data = await this.commercetoolsClient.execute({
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${loginProps.token}`,
           "Content-Type": "application/json",
         },
         uri: `/${this.projectKey}/login`,
         body: {
-          email: username,
-          password: password,
+          email: loginProps.username,
+          password: loginProps.password,
         },
       });
 
@@ -113,26 +126,20 @@ export default class AuthService extends ClientBuilderService {
     }
   }
 
-  async register(
-    username: string,
-    password: string,
-    firstName: string,
-    lastName: string,
-    token: string
-  ) {
+  async registration(registrationProps: RegistrationProps) {
     try {
       const data = await this.commercetoolsClient.execute({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${registrationProps.token}`,
         },
         uri: `/${this.projectKey}/customers`,
         body: {
-          firstName: firstName,
-          lastName: lastName,
-          email: username,
-          password: password,
+          firstName: registrationProps.firstName,
+          lastName: registrationProps.lastName,
+          email: registrationProps.username,
+          password: registrationProps.password,
         },
       });
 
