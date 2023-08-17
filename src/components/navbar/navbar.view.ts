@@ -2,7 +2,8 @@ import { ViewBuilder } from "@Interfaces/view-builder";
 import NavbarItemComponent from "./navbar-item/navbar-item";
 import { Routes } from "@Services/router/router.types";
 import { AUTH_TOKEN_LS } from "@Services/auth/auth.types";
-import RouterService from "@Services/router/router";
+import eventBusService from "@Services/event-bus/event-bus";
+import { Events } from "@Services/event-bus/event-bus.types";
 
 export default class NavbarView extends ViewBuilder {
   element: HTMLElement;
@@ -44,10 +45,14 @@ export default class NavbarView extends ViewBuilder {
     const userIcon = this.createLinkIcon("person");
     const logoutIcon = this.createLinkIcon("box-arrow-in-left");
     const loginLinkItem = new NavbarItemComponent(Routes.LOGIN, "Login").init();
-    loginLinkItem.addEventListener("click", this.loginLinkHandler.bind(this));
+    loginLinkItem.addEventListener("click", (event) => {
+      event.preventDefault(), eventBusService.publish(Events.loginLinkClicked);
+    });
     const registerLinkItem = new NavbarItemComponent(Routes.REGISTRATION, "Register").init();
     const logoutLinkItem = new NavbarItemComponent(Routes.LOGIN, "Logout").init();
-    logoutLinkItem.addEventListener("click", this.logoutLinkHandler.bind(this));
+    logoutLinkItem.addEventListener("click", (event) => {
+      event.preventDefault(), eventBusService.publish(Events.logoutLinkClicked);
+    });
 
     if (localStorage.getItem(AUTH_TOKEN_LS)) {
       authLinksContainer.append(
@@ -66,12 +71,6 @@ export default class NavbarView extends ViewBuilder {
     return authLinksContainer;
   }
 
-  private logoutLinkHandler() {
-    localStorage.removeItem(AUTH_TOKEN_LS);
-    RouterService.navigateTo(Routes.LOGIN);
-    this.refreshAuthLinks();
-  }
-
   refreshAuthLinks() {
     const authLinksContainer = this.getElement(".navbar-nav");
     while (authLinksContainer.firstChild) {
@@ -79,16 +78,6 @@ export default class NavbarView extends ViewBuilder {
     }
     const newAuthLinks = this.createAuthLinks();
     authLinksContainer.appendChild(newAuthLinks);
-  }
-
-  private loginLinkHandler(event: Event) {
-    event.preventDefault();
-
-    if (localStorage.getItem(AUTH_TOKEN_LS)) {
-      RouterService.navigateTo(Routes.MAIN);
-    } else {
-      RouterService.navigateTo(Routes.LOGIN);
-    }
   }
 
   private createSeparator() {

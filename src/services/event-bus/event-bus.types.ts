@@ -1,5 +1,7 @@
 export enum Events {
   userLogin = "userLogin",
+  loginLinkClicked = "loginLinkClicked",
+  logoutLinkClicked = "logoutLinkClicked",
 }
 
 export type EventCallback<T> = (data?: T) => void;
