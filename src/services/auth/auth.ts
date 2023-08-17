@@ -78,10 +78,9 @@ export default class AuthService extends ClientBuilderService {
 
       const params = new URLSearchParams();
       params.append("grant_type", "client_credentials");
-      params.append("scopes", this.customersApiScope);
+      params.append("scopes", this.customerAnonApiScope);
 
-      const encodedCredentials = btoa(`${this.customersApiID}:${this.customersApiSecret}`);
-
+      const encodedCredentials = btoa(`${this.customerAnonApiID}:${this.customerAnonApiSecret}`);
       const response = await fetch(authUrl, {
         method: "POST",
         headers: {
@@ -97,7 +96,7 @@ export default class AuthService extends ClientBuilderService {
       }
 
       const data: TokenInfo = await response.json();
-      localStorage.setItem(AUTH_TOKEN_LS, data.access_token);
+      // localStorage.setItem(AUTH_TOKEN_LS, data.access_token);
 
       return { success: true, data };
     } catch (error: unknown) {
@@ -154,7 +153,7 @@ export default class AuthService extends ClientBuilderService {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        uri: `/${this.projectKey}/me/signup`,
+        uri: `/${this.projectKey}/customers`,
         body: {
           firstName: firstName,
           lastName: lastName,

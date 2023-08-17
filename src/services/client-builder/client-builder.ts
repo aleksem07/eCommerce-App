@@ -21,6 +21,9 @@ export default class ClientBuilderService {
   protected customersApiSecret?: string = "";
   protected customersApiID?: string = "";
   protected customersApiScope = "";
+  protected customerAnonApiID = "";
+  protected customerAnonApiSecret = "";
+  protected customerAnonApiScope = "";
 
   private httpMiddlewareOptions: HttpMiddlewareOptions = {
     host: "",
@@ -50,6 +53,9 @@ export default class ClientBuilderService {
     this.customersApiID = process.env.CUSTOMERS_API_ID || "";
     this.customersApiSecret = process.env.CUSTOMERS_API_SECRET || "";
     this.customersApiScope = process.env.CUSTOMERS_API_SCOPE || "";
+    this.customerAnonApiID = process.env.CTP_CLIENT_ID || "";
+    this.customerAnonApiSecret = process.env.CTP_CLIENT_SECRET || "";
+    this.customerAnonApiScope = process.env.CTP_SCOPE || "";
   }
 
   private initHttpMiddlewareOptions() {
