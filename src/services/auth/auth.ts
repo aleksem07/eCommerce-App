@@ -100,18 +100,18 @@ export default class AuthService extends ClientBuilderService {
     }
   }
 
-  private async login(loginProps: LoginProps): Promise<AuthResult<DataInfo>> {
+  private async login({ username, password, token }: LoginProps): Promise<AuthResult<DataInfo>> {
     try {
       const data = await this.commercetoolsClient.execute({
         method: "POST",
         headers: {
-          Authorization: `Bearer ${loginProps.token}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         uri: `/${this.projectKey}/login`,
         body: {
-          email: loginProps.username,
-          password: loginProps.password,
+          email: username,
+          password,
         },
       });
 
@@ -126,20 +126,20 @@ export default class AuthService extends ClientBuilderService {
     }
   }
 
-  async registration(registrationProps: RegistrationProps) {
+  async registration({ firstName, lastName, password, token, username }: RegistrationProps) {
     try {
       const data = await this.commercetoolsClient.execute({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${registrationProps.token}`,
+          Authorization: `Bearer ${token}`,
         },
         uri: `/${this.projectKey}/customers`,
         body: {
-          firstName: registrationProps.firstName,
-          lastName: registrationProps.lastName,
-          email: registrationProps.username,
-          password: registrationProps.password,
+          firstName,
+          lastName,
+          email: username,
+          password,
         },
       });
 
