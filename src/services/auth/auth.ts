@@ -84,7 +84,10 @@ export default class AuthService extends ClientBuilderService {
       }
 
       const data: TokenInfo = await response.json();
-      localStorage.setItem(AUTH_TOKEN_LS, data.access_token);
+
+      if (paramsProps.username) {
+        localStorage.setItem(AUTH_TOKEN_LS, data.access_token);
+      }
 
       return { success: true, data };
     } catch (error: unknown) {
