@@ -1,6 +1,7 @@
 import { Route, Routes } from "./router.types";
 
 export default class RouterService {
+  private static instance: RouterService;
   private routes: Record<string, Route>;
   private container: HTMLDivElement;
 
@@ -8,9 +9,25 @@ export default class RouterService {
     this.container = container;
     this.routes = routes;
 
+    this.handleRouteInitial();
+
     this.handleRouteChange();
 
     window.addEventListener("hashchange", this.handleRouteChange.bind(this));
+  }
+
+  private handleRouteInitial() {
+    const { hash } = window.location;
+    const initialRoute = hash || Routes.MAIN;
+    RouterService.navigateTo(initialRoute);
+  }
+
+  static getInstance(container: HTMLDivElement, routes: Record<string, Route>): RouterService {
+    if (!RouterService.instance) {
+      RouterService.instance = new RouterService(container, routes);
+    }
+
+    return RouterService.instance;
   }
 
   private handleRouteChange() {
@@ -26,7 +43,7 @@ export default class RouterService {
     }
   }
 
-  navigateTo(path: string) {
+  static navigateTo(path: string) {
     window.location.hash = path;
   }
 }

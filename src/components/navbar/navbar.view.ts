@@ -1,9 +1,15 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
-import NavbarItemComponent from "./navbar-item/navbar-item";
 import { Routes } from "@Services/router/router.types";
+import { AUTH_TOKEN_LS } from "@Services/auth/auth.types";
+import eventBusService from "@Services/event-bus/event-bus";
+import { Events } from "@Services/event-bus/event-bus.types";
 
 export default class NavbarView extends ViewBuilder {
   element: HTMLElement;
+  authLinksContainer: HTMLElement;
+  private loginLinkItem!: HTMLElement;
+  private registerLinkItem!: HTMLElement;
+  private logoutLinkItem!: HTMLElement;
 
   constructor() {
     super();
@@ -20,8 +26,49 @@ export default class NavbarView extends ViewBuilder {
     });
 
     const brandLink = this.createBrandLink();
-    const authLinks = this.createAuthLinks();
-    this.element.append(brandLink, authLinks);
+    this.authLinksContainer = this.createAuthLinksContainer();
+    this.element.append(brandLink, this.authLinksContainer);
+  }
+
+  initAuthLinks(
+    loginLinkItem: HTMLElement,
+    registerLinkItem: HTMLElement,
+    logoutLinkItem: HTMLElement
+  ) {
+    this.loginLinkItem = loginLinkItem;
+    this.registerLinkItem = registerLinkItem;
+    this.logoutLinkItem = logoutLinkItem;
+    const userIcon = this.createLinkIcon("person");
+    const logoutIcon = this.createLinkIcon("box-arrow-in-left");
+    this.loginLinkItem.addEventListener("click", (event: Event) => {
+      event.preventDefault();
+      eventBusService.publish(Events.loginLinkClicked);
+    });
+    this.logoutLinkItem.addEventListener("click", (event: Event) => {
+      event.preventDefault();
+      eventBusService.publish(Events.logoutLinkClicked);
+    });
+
+    if (localStorage.getItem(AUTH_TOKEN_LS)) {
+      const authLinks = [
+        userIcon,
+        this.loginLinkItem,
+        this.createSeparator(),
+        this.registerLinkItem,
+        this.createSeparator(),
+        logoutIcon,
+        this.logoutLinkItem,
+      ];
+      this.setAuthLinks(authLinks);
+    } else {
+      const authLinks = [
+        userIcon,
+        this.loginLinkItem,
+        this.createSeparator(),
+        this.registerLinkItem,
+      ];
+      this.setAuthLinks(authLinks);
+    }
   }
 
   private createBrandLink(): HTMLLinkElement {
@@ -34,19 +81,19 @@ export default class NavbarView extends ViewBuilder {
     return link;
   }
 
-  private createAuthLinks(): HTMLElement {
+  private createAuthLinksContainer(): HTMLElement {
     const authLinksContainer = this.createElement("ul", {
       classes: ["d-flex", "align-items-center", "navbar-nav"],
     });
 
-    const userIcon = this.createUserIcon();
-    const separator = this.createSeparator();
-    const loginLinkItem = new NavbarItemComponent(Routes.LOGIN, "Login").init();
-    const registerLinkItem = new NavbarItemComponent(Routes.REGISTRATION, "Register").init();
-
-    authLinksContainer.append(userIcon, loginLinkItem, separator, registerLinkItem);
-
     return authLinksContainer;
+  }
+
+  setAuthLinks(authLinks: HTMLElement[]) {
+    this.authLinksContainer.innerHTML = "";
+    authLinks.forEach((link) => {
+      this.authLinksContainer.appendChild(link);
+    });
   }
 
   private createSeparator() {
@@ -60,11 +107,11 @@ export default class NavbarView extends ViewBuilder {
     return li;
   }
 
-  private createUserIcon() {
-    const userIcon = this.createIcon("bi-person");
-    userIcon.classList.add("me-1", "text-muted");
+  private createLinkIcon(iconName: string) {
+    const linkIcon = this.createIcon(`bi-${iconName}`);
+    linkIcon.classList.add("me-1", "text-muted");
     const li = this.createElement("li");
-    li.appendChild(userIcon);
+    li.appendChild(linkIcon);
 
     return li;
   }
