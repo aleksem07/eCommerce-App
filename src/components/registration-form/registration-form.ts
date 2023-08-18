@@ -119,6 +119,7 @@ export default class RegistrationFormComponent {
       labelText: "Date of Birth",
       helpText: "You must be 13 years old or older",
       placeholderText: "Type your date of birth",
+      type: "date",
     });
   }
 
