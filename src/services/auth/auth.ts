@@ -1,6 +1,13 @@
 import { HttpErrorType, TokenInfo } from "@commercetools/sdk-client-v2";
 import ClientBuilderService from "../client-builder/client-builder";
-import { AUTH_TOKEN_LS, AuthResult, DataInfo } from "./auth.types";
+import {
+  AUTH_TOKEN_LS,
+  AuthResult,
+  DataInfo,
+  LoginProps,
+  RegistrationProps,
+  TokenProps,
+} from "./auth.types";
 
 export default class AuthService extends ClientBuilderService {
   constructor() {
@@ -8,27 +15,60 @@ export default class AuthService extends ClientBuilderService {
   }
 
   async signIn(username: string, password: string): Promise<AuthResult<DataInfo | TokenInfo>> {
-    const result = await this.getToken(username, password);
+    const result = await this.getToken("/customers/token", {
+      grant_type: "password",
+      username,
+      password,
+      scopes: this.customersApiScope,
+    });
 
     if (result.success && result.data?.access_token) {
-      return await this.login(username, password, result.data?.access_token);
+      return await this.login({
+        username,
+        password,
+        token: result.data?.access_token,
+      });
     }
 
     return result;
   }
 
-  private async getToken(username: string, password: string): Promise<AuthResult<TokenInfo>> {
+  async signUp(
+    username: string,
+    password: string,
+    firstName: string,
+    lastName: string
+  ): Promise<AuthResult<DataInfo | TokenInfo>> {
+    const result = await this.getToken("/anonymous/token", {
+      grant_type: "client_credentials",
+      username,
+      password,
+      scopes: this.customersApiScope,
+    });
+
+    if (result.data?.access_token) {
+      return await this.registration({
+        username,
+        password,
+        firstName,
+        lastName,
+        token: result.data?.access_token,
+      });
+    }
+
+    return result;
+  }
+
+  private async getToken(url: string, paramsProps: TokenProps): Promise<AuthResult<TokenInfo>> {
     try {
-      const authUrl = `${this.authUrl}/oauth/${this.projectKey}/customers/token`;
-
+      const authUrl = `${this.authUrl}/oauth/${this.projectKey}${url}`;
       const params = new URLSearchParams();
-      params.append("grant_type", "password");
-      params.append("username", username);
-      params.append("password", password);
-      params.append("scopes", this.customersApiScope);
-
+      for (const [key, value] of Object.entries(paramsProps)) {
+        if (value) {
+          params.append(key, value);
+        }
+      }
       const encodedCredentials = btoa(`${this.customersApiID}:${this.customersApiSecret}`);
-
       const response = await fetch(authUrl, {
         method: "POST",
         headers: {
@@ -44,7 +84,10 @@ export default class AuthService extends ClientBuilderService {
       }
 
       const data: TokenInfo = await response.json();
-      localStorage.setItem(AUTH_TOKEN_LS, data.access_token);
+
+      if (paramsProps.username) {
+        localStorage.setItem(AUTH_TOKEN_LS, data.access_token);
+      }
 
       return { success: true, data };
     } catch (error: unknown) {
@@ -57,11 +100,7 @@ export default class AuthService extends ClientBuilderService {
     }
   }
 
-  private async login(
-    username: string,
-    password: string,
-    token: string
-  ): Promise<AuthResult<DataInfo>> {
+  private async login({ username, password, token }: LoginProps): Promise<AuthResult<DataInfo>> {
     try {
       const data = await this.commercetoolsClient.execute({
         method: "POST",
@@ -72,7 +111,35 @@ export default class AuthService extends ClientBuilderService {
         uri: `/${this.projectKey}/login`,
         body: {
           email: username,
-          password: password,
+          password,
+        },
+      });
+
+      return { success: true, data };
+    } catch (error: unknown) {
+      const errorMessage = (error as HttpErrorType).message;
+
+      return {
+        success: false,
+        error: errorMessage,
+      };
+    }
+  }
+
+  async registration({ firstName, lastName, password, token, username }: RegistrationProps) {
+    try {
+      const data = await this.commercetoolsClient.execute({
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        uri: `/${this.projectKey}/customers`,
+        body: {
+          firstName,
+          lastName,
+          email: username,
+          password,
         },
       });
 
