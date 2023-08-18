@@ -50,12 +50,9 @@ export default class ClientBuilderService {
     this.adminSecret = process.env.ADMIN_SECRET || "";
     this.clientID = process.env.CLIENT_ID || "";
     this.clientSecret = process.env.CLIENT_SECRET || "";
-    // this.customersApiID = process.env.CUSTOMERS_API_ID || "";
-    // this.customersApiSecret = process.env.CUSTOMERS_API_SECRET || "";
+    this.customersApiID = process.env.CUSTOMERS_API_ID || "";
+    this.customersApiSecret = process.env.CUSTOMERS_API_SECRET || "";
     this.customersApiScope = process.env.CUSTOMERS_API_SCOPE || "";
-    this.customersApiID = process.env.CTP_CLIENT_ID || "";
-    this.customersApiSecret = process.env.CTP_CLIENT_SECRET || "";
-    this.customersApiScope = process.env.CTP_SCOPE || "";
   }
 
   private initHttpMiddlewareOptions() {

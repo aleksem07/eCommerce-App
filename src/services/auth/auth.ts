@@ -17,15 +17,15 @@ export default class AuthService extends ClientBuilderService {
   async signIn(username: string, password: string): Promise<AuthResult<DataInfo | TokenInfo>> {
     const result = await this.getToken("/customers/token", {
       grant_type: "password",
-      username: username,
-      password: password,
+      username,
+      password,
       scopes: this.customersApiScope,
     });
 
     if (result.success && result.data?.access_token) {
       return await this.login({
-        username: username,
-        password: password,
+        username,
+        password,
         token: result.data?.access_token,
       });
     }
@@ -41,17 +41,17 @@ export default class AuthService extends ClientBuilderService {
   ): Promise<AuthResult<DataInfo | TokenInfo>> {
     const result = await this.getToken("/anonymous/token", {
       grant_type: "client_credentials",
-      username: username,
-      password: password,
+      username,
+      password,
       scopes: this.customersApiScope,
     });
 
     if (result.data?.access_token) {
       return await this.registration({
-        username: username,
-        password: password,
-        firstName: firstName,
-        lastName: lastName,
+        username,
+        password,
+        firstName,
+        lastName,
         token: result.data?.access_token,
       });
     }
@@ -63,10 +63,7 @@ export default class AuthService extends ClientBuilderService {
     try {
       const authUrl = `${this.authUrl}/oauth/${this.projectKey}${url}`;
       const params = new URLSearchParams();
-      let key: keyof TokenProps;
-      for (key in paramsProps) {
-        const value = paramsProps[key];
-
+      for (const [key, value] of Object.entries(paramsProps)) {
         if (value) {
           params.append(key, value);
         }
