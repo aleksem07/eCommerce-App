@@ -21,9 +21,6 @@ export default class ClientBuilderService {
   protected customersApiSecret?: string = "";
   protected customersApiID?: string = "";
   protected customersApiScope = "";
-  // protected customerAnonApiID = "";
-  // protected customerAnonApiSecret = "";
-  protected customerAnonApiScope = "";
 
   private httpMiddlewareOptions: HttpMiddlewareOptions = {
     host: "",
