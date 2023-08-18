@@ -32,6 +32,7 @@ export default class FormSelectView extends ViewBuilder {
       id: `${formName}-${inputName}-input`,
       classes: ["form-select"],
     });
+    this.select.name = inputName;
 
     const optionElements = options.map((option) => {
       const optionElement = this.createElement<HTMLOptionElement>("option");

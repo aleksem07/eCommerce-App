@@ -1,3 +1,4 @@
+import { FormSelectProps } from "./form-select.types";
 import FormSelectView from "./form-select.view";
 import ValidatorUtil from "@Utils/validator/validator";
 
@@ -7,13 +8,7 @@ export default class FormSelectComponent {
   form: string;
   inputName: string;
 
-  constructor(
-    formName: string,
-    inputName: string,
-    labelText: string,
-    helpText: string,
-    options: { label: string; value: string }[]
-  ) {
+  constructor({ formName, inputName, labelText, helpText, options }: FormSelectProps) {
     this.view = new FormSelectView({
       formName,
       inputName,
