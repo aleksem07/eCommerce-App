@@ -1,27 +1,19 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
 import { ValidationResult } from "@Utils/validator/validator.types";
-import { FormControlProps } from "./form-control.types";
+import { FormSelectProps } from "./form-select.types";
 
-export default class FormControlView extends ViewBuilder {
+export default class FormSelectView extends ViewBuilder {
   formName: string;
   inputName: string;
   inputWrapper: HTMLElement;
   inputLabel: HTMLLabelElement;
-  input: HTMLInputElement;
+  select: HTMLSelectElement;
   inputHelp: HTMLElement;
 
-  constructor({
-    formName,
-    inputName,
-    labelText,
-    helpText,
-    placeholderText,
-    type,
-  }: FormControlProps) {
+  constructor({ formName, inputName, labelText, helpText, options }: FormSelectProps) {
     super();
 
     this.formName = formName;
-
     this.inputName = inputName;
 
     this.inputWrapper = this.createElement("div", {
@@ -36,13 +28,21 @@ export default class FormControlView extends ViewBuilder {
     this.inputLabel.setAttribute("for", `${formName}-${inputName}-input`);
     this.inputLabel.textContent = labelText;
 
-    this.input = this.createElement("input", {
+    this.select = this.createElement<HTMLSelectElement>("select", {
       id: `${formName}-${inputName}-input`,
-      classes: ["form-control"],
+      classes: ["form-select"],
     });
-    this.input.placeholder = placeholderText;
-    this.input.name = inputName;
-    this.input.type = type || "text";
+    this.select.name = inputName;
+
+    const optionElements = options.map((option) => {
+      const optionElement = this.createElement<HTMLOptionElement>("option");
+      optionElement.value = option.value;
+      optionElement.textContent = option.label;
+
+      return optionElement;
+    });
+
+    this.select.append(...optionElements);
 
     this.inputHelp = this.createElement("small", {
       id: `${helpText}-help`,
@@ -52,9 +52,8 @@ export default class FormControlView extends ViewBuilder {
   }
 
   inputListener(handler: (text: string) => void) {
-    this.input.addEventListener("input", (event) => {
-      event.preventDefault();
-      const inputText = this.input.value;
+    this.select.addEventListener("change", (event) => {
+      const inputText = (event.target as HTMLSelectElement).value;
       handler(inputText);
     });
   }
@@ -63,18 +62,18 @@ export default class FormControlView extends ViewBuilder {
     this.inputHelp.textContent = resultValid.message || "\u00A0";
 
     if (resultValid.isValid) {
-      this.input.classList.remove("is-invalid");
-      this.input.classList.add("is-valid");
+      this.select.classList.remove("is-invalid");
+      this.select.classList.add("is-valid");
       this.inputHelp.classList.remove("invalid-feedback");
     } else {
-      this.input.classList.remove("is-valid");
-      this.input.classList.add("is-invalid");
+      this.select.classList.remove("is-valid");
+      this.select.classList.add("is-invalid");
       this.inputHelp.classList.add("invalid-feedback");
     }
   }
 
   render() {
-    this.inputWrapper.append(this.inputLabel, this.input, this.inputHelp);
+    this.inputWrapper.append(this.inputLabel, this.select, this.inputHelp);
 
     return this.inputWrapper;
   }

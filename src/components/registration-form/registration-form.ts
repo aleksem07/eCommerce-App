@@ -3,6 +3,7 @@ import RegistrationFormView from "./registration-form.view";
 import { FormInput } from "./registration-form.types";
 import ValidatorUtil from "@Utils/validator/validator";
 import FormCheckComponent from "@Components/form-check/form-check";
+import FormSelectComponent from "@Components/form-select/form-select";
 
 export default class RegistrationFormComponent {
   view: RegistrationFormView;
@@ -12,7 +13,7 @@ export default class RegistrationFormComponent {
   lastNameInput: FormControlComponent;
   dateOfBirthInput: FormControlComponent;
   streetInput: FormControlComponent;
-  countryInput: FormControlComponent;
+  countryInput: FormSelectComponent;
   postalCodeInput: FormControlComponent;
   cityInput: FormControlComponent;
   validator: ValidatorUtil;
@@ -119,6 +120,7 @@ export default class RegistrationFormComponent {
       labelText: "Date of Birth",
       helpText: "You must be 13 years old or older",
       placeholderText: "Type your date of birth",
+      type: "date",
     });
   }
 
@@ -133,12 +135,16 @@ export default class RegistrationFormComponent {
   }
 
   private createCountryInputComponent() {
-    return new FormControlComponent({
+    return new FormSelectComponent({
       formName: "registration",
       inputName: "country",
       labelText: "Country",
       helpText: "Select a valid country from the list",
-      placeholderText: "US",
+      options: [
+        { label: "Select a country", value: "" },
+        { label: "United States", value: "US" },
+        { label: "Canada", value: "CA" },
+      ],
     });
   }
 

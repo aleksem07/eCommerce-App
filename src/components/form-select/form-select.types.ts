@@ -1,8 +1,7 @@
-export interface FormControlProps {
+export interface FormSelectProps {
   formName: string;
   inputName: string;
   labelText: string;
   helpText: string;
-  placeholderText: string;
-  type?: string;
+  options: { label: string; value: string }[];
 }
