@@ -10,16 +10,16 @@ export default class ClientBuilderService {
   protected commercetoolsClient: Client;
   protected apiRoot: ApiRoot;
 
-  protected authUrl?: string = "";
-  protected apiUrl?: string = "";
-  protected projectKey?: string = "";
+  protected authUrl = "";
+  protected apiUrl = "";
+  protected projectKey = "";
   protected scopes = "";
-  protected adminID?: string = "";
-  protected adminSecret?: string = "";
-  protected clientID?: string = "";
-  protected clientSecret?: string = "";
-  protected customersApiSecret?: string = "";
-  protected customersApiID?: string = "";
+  protected adminID = "";
+  protected adminSecret = "";
+  protected clientID = "";
+  protected clientSecret = "";
+  protected customersApiSecret = "";
+  protected customersApiID = "";
   protected customersApiScope = "";
 
   private httpMiddlewareOptions: HttpMiddlewareOptions = {

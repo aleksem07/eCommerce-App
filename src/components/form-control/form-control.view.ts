@@ -19,7 +19,7 @@ export default class FormControlView extends ViewBuilder {
 
     this.inputWrapper = this.createElement("div", {
       id: `${formName}-${inputName}-wrapper`,
-      classes: ["mt-3"],
+      classes: ["mt-2"],
     });
 
     this.inputLabel = this.createElement("label", {
@@ -34,6 +34,7 @@ export default class FormControlView extends ViewBuilder {
       classes: ["form-control"],
     });
     this.input.placeholder = placeholderText;
+    this.input.name = inputName;
 
     this.inputHelp = this.createElement("small", {
       id: `${helpText}-help`,
@@ -51,7 +52,7 @@ export default class FormControlView extends ViewBuilder {
   }
 
   showValidation(resultValid: ValidationResult) {
-    this.inputHelp.textContent = resultValid.message || null;
+    this.inputHelp.textContent = resultValid.message || "\u00A0";
 
     if (resultValid.isValid) {
       this.input.classList.remove("is-invalid");
