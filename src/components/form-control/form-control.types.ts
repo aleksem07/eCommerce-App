@@ -4,4 +4,5 @@ export interface FormControlProps {
   labelText: string;
   helpText: string;
   placeholderText: string;
+  type?: string;
 }

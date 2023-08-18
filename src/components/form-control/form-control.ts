@@ -8,8 +8,22 @@ export default class FormControlComponent {
   form: string;
   inputName: string;
 
-  constructor({ formName, inputName, labelText, helpText, placeholderText }: FormControlProps) {
-    this.view = new FormControlView({ formName, inputName, labelText, helpText, placeholderText });
+  constructor({
+    formName,
+    inputName,
+    labelText,
+    helpText,
+    placeholderText,
+    type,
+  }: FormControlProps) {
+    this.view = new FormControlView({
+      formName,
+      inputName,
+      labelText,
+      helpText,
+      placeholderText,
+      type,
+    });
     this.validator = new ValidatorUtil();
 
     this.form = formName;
