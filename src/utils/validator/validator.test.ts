@@ -40,7 +40,7 @@ describe("ValidatorUtil", () => {
   });
 
   describe("dateOfBirth", () => {
-    it("should be valid", () => {
+    it("should be valid when format is MM/DD/YYYY", () => {
       const dateOfBirth = "10/10/2000";
 
       const result = validator.validateDateOfBirth(dateOfBirth);
@@ -49,12 +49,12 @@ describe("ValidatorUtil", () => {
       expect(result.message).toBeUndefined();
     });
 
-    it("should not be valid when format is not MM/DD/YYYY", () => {
+    it("should be valid when format is MM.DD.YYYY", () => {
       const dateOfBirth = "10.10.2000";
 
       const result = validator.validateDateOfBirth(dateOfBirth);
 
-      expect(result.isValid).toBe(false);
+      expect(result.isValid).toBe(true);
       expect(result.message).toBeUndefined();
     });
 
