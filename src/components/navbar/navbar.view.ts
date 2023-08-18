@@ -1,5 +1,4 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
-import NavbarItemComponent from "./navbar-item/navbar-item";
 import { Routes } from "@Services/router/router.types";
 import { AUTH_TOKEN_LS } from "@Services/auth/auth.types";
 import eventBusService from "@Services/event-bus/event-bus";
@@ -7,6 +6,10 @@ import { Events } from "@Services/event-bus/event-bus.types";
 
 export default class NavbarView extends ViewBuilder {
   element: HTMLElement;
+  authLinksContainer: HTMLElement;
+  private loginLinkItem!: HTMLElement;
+  private registerLinkItem!: HTMLElement;
+  private logoutLinkItem!: HTMLElement;
 
   constructor() {
     super();
@@ -23,8 +26,49 @@ export default class NavbarView extends ViewBuilder {
     });
 
     const brandLink = this.createBrandLink();
-    const authLinks = this.createAuthLinks();
-    this.element.append(brandLink, authLinks);
+    this.authLinksContainer = this.createAuthLinksContainer();
+    this.element.append(brandLink, this.authLinksContainer);
+  }
+
+  initAuthLinks(
+    loginLinkItem: HTMLElement,
+    registerLinkItem: HTMLElement,
+    logoutLinkItem: HTMLElement
+  ) {
+    this.loginLinkItem = loginLinkItem;
+    this.registerLinkItem = registerLinkItem;
+    this.logoutLinkItem = logoutLinkItem;
+    const userIcon = this.createLinkIcon("person");
+    const logoutIcon = this.createLinkIcon("box-arrow-in-left");
+    this.loginLinkItem.addEventListener("click", (event: Event) => {
+      event.preventDefault();
+      eventBusService.publish(Events.loginLinkClicked);
+    });
+    this.logoutLinkItem.addEventListener("click", (event: Event) => {
+      event.preventDefault();
+      eventBusService.publish(Events.logoutLinkClicked);
+    });
+
+    if (localStorage.getItem(AUTH_TOKEN_LS)) {
+      const authLinks = [
+        userIcon,
+        this.loginLinkItem,
+        this.createSeparator(),
+        this.registerLinkItem,
+        this.createSeparator(),
+        logoutIcon,
+        this.logoutLinkItem,
+      ];
+      this.setAuthLinks(authLinks);
+    } else {
+      const authLinks = [
+        userIcon,
+        this.loginLinkItem,
+        this.createSeparator(),
+        this.registerLinkItem,
+      ];
+      this.setAuthLinks(authLinks);
+    }
   }
 
   private createBrandLink(): HTMLLinkElement {
@@ -37,47 +81,19 @@ export default class NavbarView extends ViewBuilder {
     return link;
   }
 
-  private createAuthLinks(): HTMLElement {
+  private createAuthLinksContainer(): HTMLElement {
     const authLinksContainer = this.createElement("ul", {
       classes: ["d-flex", "align-items-center", "navbar-nav"],
     });
 
-    const userIcon = this.createLinkIcon("person");
-    const logoutIcon = this.createLinkIcon("box-arrow-in-left");
-    const loginLinkItem = new NavbarItemComponent(Routes.LOGIN, "Login").init();
-    loginLinkItem.addEventListener("click", (event) => {
-      event.preventDefault(), eventBusService.publish(Events.loginLinkClicked);
-    });
-    const registerLinkItem = new NavbarItemComponent(Routes.REGISTRATION, "Register").init();
-    const logoutLinkItem = new NavbarItemComponent(Routes.LOGIN, "Logout").init();
-    logoutLinkItem.addEventListener("click", (event) => {
-      event.preventDefault(), eventBusService.publish(Events.logoutLinkClicked);
-    });
-
-    if (localStorage.getItem(AUTH_TOKEN_LS)) {
-      authLinksContainer.append(
-        userIcon,
-        loginLinkItem,
-        this.createSeparator(),
-        registerLinkItem,
-        this.createSeparator(),
-        logoutIcon,
-        logoutLinkItem
-      );
-    } else {
-      authLinksContainer.append(userIcon, loginLinkItem, this.createSeparator(), registerLinkItem);
-    }
-
     return authLinksContainer;
   }
 
-  refreshAuthLinks() {
-    const authLinksContainer = this.getElement(".navbar-nav");
-    while (authLinksContainer.firstChild) {
-      authLinksContainer.removeChild(authLinksContainer.firstChild);
-    }
-    const newAuthLinks = this.createAuthLinks();
-    authLinksContainer.appendChild(newAuthLinks);
+  setAuthLinks(authLinks: HTMLElement[]) {
+    this.authLinksContainer.innerHTML = "";
+    authLinks.forEach((link) => {
+      this.authLinksContainer.appendChild(link);
+    });
   }
 
   private createSeparator() {
