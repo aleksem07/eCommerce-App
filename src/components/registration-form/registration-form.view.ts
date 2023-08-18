@@ -2,11 +2,11 @@ import { ViewBuilder } from "@Interfaces/view-builder";
 import { FormInput } from "./registration-form.types";
 
 export default class RegistrationFormView extends ViewBuilder {
-  private form!: HTMLFormElement;
-  private container!: HTMLDivElement;
-  private header!: HTMLHeadingElement;
-  submitButton!: HTMLButtonElement;
-  confirmPasswordInput!: HTMLInputElement;
+  private form: HTMLFormElement;
+  private container: HTMLDivElement;
+  private header: HTMLHeadingElement;
+  submitButton: HTMLButtonElement;
+  confirmPasswordInput: HTMLInputElement;
 
   constructor() {
     super();
