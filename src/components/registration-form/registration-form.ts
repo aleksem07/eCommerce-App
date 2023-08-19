@@ -10,7 +10,6 @@ import { Events } from "@Services/event-bus/event-bus.types";
 import AuthService from "@Services/auth/auth";
 import RouterService from "@Services/router/router";
 import { Routes } from "@Services/router/router.types";
-import { AUTH_TOKEN_LS, CUSTOMER_ID_SS, ADDRESS_ID_SS } from "@Services/auth/auth.types";
 
 export default class RegistrationFormComponent {
   view: RegistrationFormView;
@@ -28,8 +27,12 @@ export default class RegistrationFormComponent {
   tooltip: TooltipComponent;
   authService: AuthService;
   defaultAddressCheck: FormCheckComponent;
+  isDefaultAddress: boolean;
+  isDefaultBilling: boolean;
 
   constructor() {
+    this.isDefaultAddress = false;
+    this.isDefaultBilling = false;
     this.view = new RegistrationFormView();
     this.validator = new ValidatorUtil();
     this.tooltip = new TooltipComponent();
@@ -75,13 +78,16 @@ export default class RegistrationFormComponent {
           postalCode: registrationData.postalCode,
         },
       ];
+
       const result = await this.authService.signUp(
         registrationData.email,
         registrationData.password,
         registrationData.firstName,
         registrationData.lastName,
         registrationData.dateOfBirth,
-        addresses
+        addresses,
+        [0],
+        this.isDefaultAddress ? 0 : undefined
       );
 
       if (!result.success && result.error) {
@@ -89,7 +95,6 @@ export default class RegistrationFormComponent {
       } else {
         eventBusService.publish(Events.userLogin);
         RouterService.navigateTo(Routes.MAIN);
-        this.defaultAddressHandler(true);
       }
     } else {
       this.tooltip.show("Error", "Please fill in all fields correctly");
@@ -196,15 +201,7 @@ export default class RegistrationFormComponent {
   }
 
   async defaultAddressHandler(status: boolean) {
-    if (status) {
-      const customerId = sessionStorage.getItem(CUSTOMER_ID_SS);
-      const addressId = sessionStorage.getItem(ADDRESS_ID_SS);
-      const token = localStorage.getItem(AUTH_TOKEN_LS);
-
-      if (customerId && addressId && token) {
-        this.authService.setDefaultAddress(customerId, addressId, token);
-      }
-    }
+    this.isDefaultAddress = this.view.checkboxDefaultAddressResult(status);
   }
 
   init() {
@@ -238,6 +235,7 @@ export default class RegistrationFormComponent {
       billingAddressTitle
     );
     this.view.checkboxListener(this.checkboxHandler.bind(this));
+    this.view.checkboxDefaultAddressListener(this.defaultAddressHandler.bind(this));
     this.tooltip.init(this.view.submitButton);
   }
 }

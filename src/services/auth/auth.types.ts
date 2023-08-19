@@ -27,6 +27,10 @@ export interface RegistrationProps extends LoginProps {
   lastName: string;
   dateOfBirth: string;
   addresses: Address[];
+  shippingAddresses?: [number];
+  defaultShippingAddress?: number;
+  billingAddresses?: [number];
+  defaultBillingAddress?: number;
 }
 
 export interface Address {
@@ -43,7 +47,3 @@ export interface AddressIDProps {
 }
 
 export const AUTH_TOKEN_LS = "authToken";
-
-export const ADDRESS_ID_SS = "addressId";
-
-export const CUSTOMER_ID_SS = "customerId";

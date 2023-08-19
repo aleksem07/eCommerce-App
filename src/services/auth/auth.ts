@@ -2,8 +2,6 @@ import { HttpErrorType, TokenInfo } from "@commercetools/sdk-client-v2";
 import ClientBuilderService from "../client-builder/client-builder";
 import {
   AUTH_TOKEN_LS,
-  ADDRESS_ID_SS,
-  CUSTOMER_ID_SS,
   AuthResult,
   Address,
   DataInfo,
@@ -42,7 +40,11 @@ export default class AuthService extends ClientBuilderService {
     firstName: string,
     lastName: string,
     dateOfBirth: string,
-    addresses: Address[]
+    addresses: Address[],
+    shippingAddresses?: [number],
+    defaultShippingAddress?: number,
+    billingAddresses?: [number],
+    defaultBillingAddress?: number
   ): Promise<AuthResult<DataInfo | TokenInfo>> {
     const result = await this.getToken("/anonymous/token", {
       grant_type: "client_credentials",
@@ -59,6 +61,10 @@ export default class AuthService extends ClientBuilderService {
         lastName,
         dateOfBirth,
         addresses,
+        shippingAddresses,
+        defaultShippingAddress,
+        billingAddresses,
+        defaultBillingAddress,
         token: result.data?.access_token,
       });
     }
@@ -133,6 +139,7 @@ export default class AuthService extends ClientBuilderService {
     }
   }
 
+  // eslint-disable-next-line max-lines-per-function
   async registration({
     firstName,
     lastName,
@@ -141,6 +148,10 @@ export default class AuthService extends ClientBuilderService {
     username,
     dateOfBirth,
     addresses,
+    shippingAddresses,
+    defaultShippingAddress,
+    billingAddresses,
+    defaultBillingAddress,
   }: RegistrationProps) {
     try {
       const data = await this.commercetoolsClient.execute({
@@ -157,44 +168,10 @@ export default class AuthService extends ClientBuilderService {
           password,
           dateOfBirth,
           addresses,
-        },
-      });
-
-      sessionStorage.setItem(CUSTOMER_ID_SS, data.body.customer.id);
-      sessionStorage.setItem(ADDRESS_ID_SS, data.body.customer.addresses[0].id);
-
-      return { success: true, data };
-    } catch (error: unknown) {
-      const errorMessage = (error as HttpErrorType).message;
-
-      return {
-        success: false,
-        error: errorMessage,
-      };
-    }
-  }
-
-  async setDefaultAddress(
-    customerId: string,
-    addressId: string,
-    token: string
-  ): Promise<AuthResult<DataInfo>> {
-    try {
-      const data = await this.commercetoolsClient.execute({
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        uri: `/${this.projectKey}/customers/${customerId}`,
-        body: {
-          version: 1,
-          actions: [
-            {
-              action: "setDefaultShippingAddress",
-              addressId,
-            },
-          ],
+          shippingAddresses,
+          defaultShippingAddress,
+          billingAddresses,
+          defaultBillingAddress,
         },
       });
 

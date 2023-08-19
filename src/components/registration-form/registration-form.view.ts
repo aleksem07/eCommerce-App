@@ -123,6 +123,10 @@ export default class RegistrationFormView extends ViewBuilder {
     }
   }
 
+  checkboxDefaultAddressResult(status: boolean) {
+    return status;
+  }
+
   render(...elements: HTMLElement[]) {
     this.form.append(...elements, this.submitButton);
     this.container.append(this.header, this.form);
