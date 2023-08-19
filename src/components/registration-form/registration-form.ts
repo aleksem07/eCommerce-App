@@ -4,6 +4,13 @@ import { FormInput } from "./registration-form.types";
 import ValidatorUtil from "@Utils/validator/validator";
 import FormCheckComponent from "@Components/form-check/form-check";
 import FormSelectComponent from "@Components/form-select/form-select";
+import TooltipComponent from "@Components/tooltip/tooltip";
+import eventBusService from "@Services/event-bus/event-bus";
+import { Events } from "@Services/event-bus/event-bus.types";
+import AuthService from "@Services/auth/auth";
+import LoginFormComponent from "@Components/login-form/login-form";
+import RouterService from "@Services/router/router";
+import { Routes } from "@Services/router/router.types";
 
 export default class RegistrationFormComponent {
   view: RegistrationFormView;
@@ -18,10 +25,14 @@ export default class RegistrationFormComponent {
   cityInput: FormControlComponent;
   validator: ValidatorUtil;
   passwordCheck: FormCheckComponent;
+  tooltip: TooltipComponent;
+  authService: AuthService;
 
   constructor() {
     this.view = new RegistrationFormView();
     this.validator = new ValidatorUtil();
+    this.tooltip = new TooltipComponent();
+    this.authService = new AuthService();
 
     this.emailInput = this.createEmailInputComponent();
     this.passwordInput = this.createPasswordInputComponent();
@@ -41,7 +52,7 @@ export default class RegistrationFormComponent {
     });
   }
 
-  submitFormHandler(inputValues: FormInput[]) {
+  async submitFormHandler(inputValues: FormInput[], registrationData: Record<string, string>) {
     const isValidValues = inputValues.every((inputValue) => {
       const result = this.validator.validate(inputValue.key, inputValue.value);
 
@@ -49,7 +60,31 @@ export default class RegistrationFormComponent {
     });
 
     if (isValidValues) {
-      //call register method of auth service here
+      const addresses = [
+        {
+          country: registrationData.country,
+          city: registrationData.city,
+          streetName: registrationData.streetName,
+          postalCode: registrationData.postalCode,
+        },
+      ];
+      const result = await this.authService.signUp(
+        registrationData.email,
+        registrationData.password,
+        registrationData.firstName,
+        registrationData.lastName,
+        registrationData.dateOfBirth,
+        addresses
+      );
+
+      if (!result.success && result.error) {
+        this.tooltip.show("Error", result.error);
+      } else {
+        eventBusService.publish(Events.userLogin);
+        RouterService.navigateTo(Routes.MAIN);
+      }
+    } else {
+      this.tooltip.show("Error", "Please fill in all fields correctly");
     }
   }
 
@@ -176,5 +211,6 @@ export default class RegistrationFormComponent {
       postalCode
     );
     this.view.checkboxListener(this.checkboxHandler.bind(this));
+    this.tooltip.init(this.view.submitButton);
   }
 }

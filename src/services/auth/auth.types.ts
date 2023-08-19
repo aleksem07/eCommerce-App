@@ -25,6 +25,15 @@ export interface LoginProps {
 export interface RegistrationProps extends LoginProps {
   firstName: string;
   lastName: string;
+  dateOfBirth: string;
+  addresses: Address[];
+}
+
+export interface Address {
+  country: string;
+  city: string;
+  streetName: string;
+  postalCode: string;
 }
 
 export const AUTH_TOKEN_LS = "authToken";

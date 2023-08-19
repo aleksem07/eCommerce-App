@@ -40,7 +40,21 @@ export default class RegistrationFormView extends ViewBuilder {
     this.confirmPasswordInput.placeholder = "Confirm Password";
   }
 
-  submitFormListener(handler: (inputValues: FormInput[]) => void) {
+  submitFormListener(
+    handler: (inputValues: FormInput[], registrationData: Record<string, string>) => void
+  ) {
+    const inputSelectors = {
+      email: "#registration-email-input",
+      password: "#registration-password-input",
+      firstName: "#registration-first-name-input",
+      lastName: "#registration-last-name-input",
+      dateOfBirth: "#registration-date-of-birth-input",
+      country: "#registration-country-input",
+      city: "#registration-city-input",
+      streetName: "#registration-street-input",
+      postalCode: "#registration-postal-code-input",
+    };
+
     this.form.addEventListener("submit", (event) => {
       event.preventDefault();
       const formData = new FormData(event.target as HTMLFormElement);
@@ -50,7 +64,14 @@ export default class RegistrationFormView extends ViewBuilder {
         value: value.toString(),
       }));
 
-      handler(inputValues);
+      const registrationData = Object.fromEntries(
+        Object.entries(inputSelectors).map(([name, selector]) => [
+          name,
+          (this.getElement(selector) as HTMLInputElement).value,
+        ])
+      );
+
+      handler(inputValues, registrationData);
     });
   }
 

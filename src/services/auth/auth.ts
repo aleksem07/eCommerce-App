@@ -3,6 +3,7 @@ import ClientBuilderService from "../client-builder/client-builder";
 import {
   AUTH_TOKEN_LS,
   AuthResult,
+  Address,
   DataInfo,
   LoginProps,
   RegistrationProps,
@@ -37,7 +38,9 @@ export default class AuthService extends ClientBuilderService {
     username: string,
     password: string,
     firstName: string,
-    lastName: string
+    lastName: string,
+    dateOfBirth: string,
+    addresses: Address[]
   ): Promise<AuthResult<DataInfo | TokenInfo>> {
     const result = await this.getToken("/anonymous/token", {
       grant_type: "client_credentials",
@@ -52,6 +55,8 @@ export default class AuthService extends ClientBuilderService {
         password,
         firstName,
         lastName,
+        dateOfBirth,
+        addresses,
         token: result.data?.access_token,
       });
     }
@@ -126,7 +131,15 @@ export default class AuthService extends ClientBuilderService {
     }
   }
 
-  async registration({ firstName, lastName, password, token, username }: RegistrationProps) {
+  async registration({
+    firstName,
+    lastName,
+    password,
+    token,
+    username,
+    dateOfBirth,
+    addresses,
+  }: RegistrationProps) {
     try {
       const data = await this.commercetoolsClient.execute({
         method: "POST",
@@ -140,6 +153,8 @@ export default class AuthService extends ClientBuilderService {
           lastName,
           email: username,
           password,
+          dateOfBirth,
+          addresses,
         },
       });
 
