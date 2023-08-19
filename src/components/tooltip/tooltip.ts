@@ -7,20 +7,26 @@ export default class TooltipComponent {
   duration = 3000;
 
   show(title: string, content: string) {
+    let popoverElement = document.querySelector(".popover");
+
+    if (popoverElement) popoverElement.remove();
+
+    this.showPop(title, content);
+    setTimeout(() => {
+      popoverElement = document.querySelector(".popover");
+
+      if (popoverElement) popoverElement.remove();
+    }, this.duration);
+  }
+
+  showPop(title: string, content: string) {
     if (this.element) {
       this.popover = new Popover(this.element, {
         title,
         content,
       });
       this.popover.show();
-      this.hide();
     }
-  }
-
-  hide() {
-    setTimeout(() => {
-      this.popover?.dispose();
-    }, this.duration);
   }
 
   init(element: HTMLElement) {

@@ -22,9 +22,20 @@ export interface LoginProps {
   token: string;
 }
 
-export interface RegistrationProps extends LoginProps {
+export interface RegistrationProps extends SignUpProps {
+  token: string;
+}
+
+export interface SignUpProps {
+  username: string;
+  password: string;
   firstName: string;
   lastName: string;
+  dateBirth: string;
+  country: string;
+  city: string;
+  street: string;
+  postalCode: string;
 }
 
 export const AUTH_TOKEN_LS = "authToken";

@@ -7,6 +7,7 @@ import {
   LoginProps,
   RegistrationProps,
   TokenProps,
+  SignUpProps,
 } from "./auth.types";
 
 export default class AuthService extends ClientBuilderService {
@@ -33,12 +34,17 @@ export default class AuthService extends ClientBuilderService {
     return result;
   }
 
-  async signUp(
-    username: string,
-    password: string,
-    firstName: string,
-    lastName: string
-  ): Promise<AuthResult<DataInfo | TokenInfo>> {
+  async signUp({
+    username,
+    password,
+    firstName,
+    lastName,
+    dateBirth,
+    country,
+    city,
+    street,
+    postalCode,
+  }: SignUpProps): Promise<AuthResult<DataInfo | TokenInfo>> {
     const result = await this.getToken("/anonymous/token", {
       grant_type: "client_credentials",
       username,
@@ -52,6 +58,11 @@ export default class AuthService extends ClientBuilderService {
         password,
         firstName,
         lastName,
+        dateBirth,
+        country,
+        city,
+        street,
+        postalCode,
         token: result.data?.access_token,
       });
     }

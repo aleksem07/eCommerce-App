@@ -4,8 +4,13 @@ import { FormInput } from "./registration-form.types";
 import ValidatorUtil from "@Utils/validator/validator";
 import FormCheckComponent from "@Components/form-check/form-check";
 import FormSelectComponent from "@Components/form-select/form-select";
+import AuthService from "@Services/auth/auth";
+import TooltipComponent from "@Components/tooltip/tooltip";
+import { SignUpProps } from "@Services/auth/auth.types";
 
 export default class RegistrationFormComponent {
+  authService: AuthService;
+  tooltip: TooltipComponent;
   view: RegistrationFormView;
   emailInput: FormControlComponent;
   passwordInput: FormControlComponent;
@@ -22,6 +27,8 @@ export default class RegistrationFormComponent {
   constructor() {
     this.view = new RegistrationFormView();
     this.validator = new ValidatorUtil();
+    this.authService = new AuthService();
+    this.tooltip = new TooltipComponent();
 
     this.emailInput = this.createEmailInputComponent();
     this.passwordInput = this.createPasswordInputComponent();
@@ -41,15 +48,34 @@ export default class RegistrationFormComponent {
     });
   }
 
-  submitFormHandler(inputValues: FormInput[]) {
+  async submitFormHandler(inputValues: FormInput[]) {
     const isValidValues = inputValues.every((inputValue) => {
       const result = this.validator.validate(inputValue.key, inputValue.value);
+
+      if (!result?.isValid) {
+        this.tooltip.show("Error", result?.message as string);
+      }
 
       return result?.isValid;
     });
 
     if (isValidValues) {
-      //call register method of auth service here
+      const values = {
+        username: inputValues[0].value,
+        password: inputValues[1].value,
+        firstName: inputValues[2].value,
+        lastName: inputValues[3].value,
+        dateBirth: inputValues[4].value,
+        country: inputValues[5].value,
+        city: inputValues[6].value,
+        street: inputValues[7].value,
+        postalCode: inputValues[8].value,
+      };
+      const result = await this.authService.signUp(values as SignUpProps);
+
+      if (!result.success && result.error) {
+        this.tooltip.show("Error", result.error);
+      }
     }
   }
 
@@ -175,6 +201,8 @@ export default class RegistrationFormComponent {
       street,
       postalCode
     );
+
+    this.tooltip.init(this.view.submitButton);
     this.view.checkboxListener(this.checkboxHandler.bind(this));
   }
 }

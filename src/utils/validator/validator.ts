@@ -35,8 +35,8 @@ export default class ValidatorUtil {
 
     this.nameSchema = string()
       .transform((value) => value.trim().toUpperCase())
-      .min(1, "At least one character is required")
-      .matches(/^[a-zA-Z\s]+$/, "Only alphabetic characters and spaces are allowed")
+      .min(1, "At least one character is required in the name")
+      .matches(/^[a-zA-Z\s]+$/, "Only Latin letters and spaces are allowed in the name.")
       .required("This field is required");
 
     this.postalCodeSchema = this.postalCodeSchemaCheck();
@@ -49,7 +49,7 @@ export default class ValidatorUtil {
 
     this.streetSchema = string()
       .matches(/^[A-Za-z0-9\s\-.,]+$/, "Invalid characters in street address")
-      .min(1, "At least one character is required")
+      .min(1, "At least one character is required in the street address")
       .required("Street address is required");
   }
 
