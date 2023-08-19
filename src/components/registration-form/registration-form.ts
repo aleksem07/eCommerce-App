@@ -8,7 +8,6 @@ import TooltipComponent from "@Components/tooltip/tooltip";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
 import AuthService from "@Services/auth/auth";
-import LoginFormComponent from "@Components/login-form/login-form";
 import RouterService from "@Services/router/router";
 import { Routes } from "@Services/router/router.types";
 
