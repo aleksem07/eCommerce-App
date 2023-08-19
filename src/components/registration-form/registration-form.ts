@@ -10,6 +10,7 @@ import { Events } from "@Services/event-bus/event-bus.types";
 import AuthService from "@Services/auth/auth";
 import RouterService from "@Services/router/router";
 import { Routes } from "@Services/router/router.types";
+import { AUTH_TOKEN_LS, CUSTOMER_ID_SS, ADDRESS_ID_SS } from "@Services/auth/auth.types";
 
 export default class RegistrationFormComponent {
   view: RegistrationFormView;
@@ -26,6 +27,7 @@ export default class RegistrationFormComponent {
   passwordCheck: FormCheckComponent;
   tooltip: TooltipComponent;
   authService: AuthService;
+  defaultAddressCheck: FormCheckComponent;
 
   constructor() {
     this.view = new RegistrationFormView();
@@ -46,8 +48,14 @@ export default class RegistrationFormComponent {
     this.view.submitFormListener(this.submitFormHandler.bind(this));
 
     this.passwordCheck = new FormCheckComponent({
+      inputTitle: "Show password",
       formName: "registration",
       inputName: "password",
+    });
+    this.defaultAddressCheck = new FormCheckComponent({
+      inputTitle: "Set as default address",
+      formName: "registration",
+      inputName: "default-address",
     });
   }
 
@@ -81,6 +89,7 @@ export default class RegistrationFormComponent {
       } else {
         eventBusService.publish(Events.userLogin);
         RouterService.navigateTo(Routes.MAIN);
+        this.defaultAddressHandler(true);
       }
     } else {
       this.tooltip.show("Error", "Please fill in all fields correctly");
@@ -186,6 +195,18 @@ export default class RegistrationFormComponent {
     this.view.handleCheckboxResult(status);
   }
 
+  async defaultAddressHandler(status: boolean) {
+    if (status) {
+      const customerId = sessionStorage.getItem(CUSTOMER_ID_SS);
+      const addressId = sessionStorage.getItem(ADDRESS_ID_SS);
+      const token = localStorage.getItem(AUTH_TOKEN_LS);
+
+      if (customerId && addressId && token) {
+        this.authService.setDefaultAddress(customerId, addressId, token);
+      }
+    }
+  }
+
   init() {
     const email = this.emailInput.init();
     const password = this.passwordInput.init();
@@ -193,10 +214,14 @@ export default class RegistrationFormComponent {
     const firstName = this.firstNameInput.init();
     const lastName = this.lastNameInput.init();
     const dateOfBirth = this.dateOfBirthInput.init();
+    const shippingAddressTitle = this.view.addressShippingTitle;
     const country = this.countryInput.init();
     const city = this.cityInput.init();
     const street = this.streetInput.init();
     const postalCode = this.postalCodeInput.init();
+    const setDefaultAddress = this.defaultAddressCheck.init();
+
+    const billingAddressTitle = this.view.addressBillingTitle;
     this.view.render(
       email,
       password,
@@ -204,10 +229,13 @@ export default class RegistrationFormComponent {
       firstName,
       lastName,
       dateOfBirth,
+      shippingAddressTitle,
+      setDefaultAddress,
       country,
       city,
       street,
-      postalCode
+      postalCode,
+      billingAddressTitle
     );
     this.view.checkboxListener(this.checkboxHandler.bind(this));
     this.tooltip.init(this.view.submitButton);

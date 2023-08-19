@@ -2,6 +2,8 @@ import { HttpErrorType, TokenInfo } from "@commercetools/sdk-client-v2";
 import ClientBuilderService from "../client-builder/client-builder";
 import {
   AUTH_TOKEN_LS,
+  ADDRESS_ID_SS,
+  CUSTOMER_ID_SS,
   AuthResult,
   Address,
   DataInfo,
@@ -155,6 +157,44 @@ export default class AuthService extends ClientBuilderService {
           password,
           dateOfBirth,
           addresses,
+        },
+      });
+
+      sessionStorage.setItem(CUSTOMER_ID_SS, data.body.customer.id);
+      sessionStorage.setItem(ADDRESS_ID_SS, data.body.customer.addresses[0].id);
+
+      return { success: true, data };
+    } catch (error: unknown) {
+      const errorMessage = (error as HttpErrorType).message;
+
+      return {
+        success: false,
+        error: errorMessage,
+      };
+    }
+  }
+
+  async setDefaultAddress(
+    customerId: string,
+    addressId: string,
+    token: string
+  ): Promise<AuthResult<DataInfo>> {
+    try {
+      const data = await this.commercetoolsClient.execute({
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        uri: `/${this.projectKey}/customers/${customerId}`,
+        body: {
+          version: 1,
+          actions: [
+            {
+              action: "setDefaultShippingAddress",
+              addressId,
+            },
+          ],
         },
       });
 

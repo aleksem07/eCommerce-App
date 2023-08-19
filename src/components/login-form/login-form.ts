@@ -43,7 +43,11 @@ export default class LoginFormComponent {
       placeholderText: "Example1#",
     });
 
-    this.passwordCheck = new FormCheckComponent({ formName: "login", inputName: "password" });
+    this.passwordCheck = new FormCheckComponent({
+      inputTitle: "Show password",
+      formName: "login",
+      inputName: "password",
+    });
 
     this.view.submitFormListener(this.submitFormHandler.bind(this));
   }

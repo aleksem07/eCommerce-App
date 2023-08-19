@@ -7,6 +7,8 @@ export default class RegistrationFormView extends ViewBuilder {
   private header: HTMLHeadingElement;
   submitButton: HTMLButtonElement;
   confirmPasswordInput: HTMLInputElement;
+  addressShippingTitle: HTMLHeadingElement;
+  addressBillingTitle: HTMLHeadingElement;
 
   constructor() {
     super();
@@ -19,12 +21,21 @@ export default class RegistrationFormView extends ViewBuilder {
       id: `registration-container`,
       classes: ["col-md-4", "m-auto", "container"],
     });
-
     this.header = this.createElement("h1", {
       id: `registration-header`,
       classes: ["h3", "mb-3", "fw-normal", "text-center", "py-5"],
     });
     this.header.textContent = `Register`;
+    this.addressShippingTitle = this.createElement("h2", {
+      id: `address-default-title`,
+      classes: ["h4", "fw-normal", "text-center", "py-3"],
+    });
+    this.addressShippingTitle.textContent = `Shipping Address`;
+    this.addressBillingTitle = this.createElement("h2", {
+      id: `address-default-billing-title`,
+      classes: ["h4", "fw-normal", "text-center", "py-5"],
+    });
+    this.addressBillingTitle.textContent = `Billing Address`;
     this.submitButton = this.createElement("button", {
       id: `registration-submit-button`,
       classes: ["btn", "btn-primary", "mt-4", "align-self-center"],
@@ -97,6 +108,18 @@ export default class RegistrationFormView extends ViewBuilder {
       passwordInput.type = "text";
     } else {
       passwordInput.type = "password";
+    }
+  }
+
+  checkboxDefaultAddressListener(handler: (status: boolean) => void) {
+    const addressCheckbox = this.getElement<HTMLInputElement>("#default-address-checkbox-input");
+
+    if (addressCheckbox) {
+      addressCheckbox.addEventListener("change", (event) => {
+        event.preventDefault();
+
+        handler(addressCheckbox.checked);
+      });
     }
   }
 

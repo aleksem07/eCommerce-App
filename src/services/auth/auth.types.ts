@@ -36,4 +36,14 @@ export interface Address {
   postalCode: string;
 }
 
+export interface AddressIDProps {
+  customerId: string;
+  addressId: string;
+  token: string;
+}
+
 export const AUTH_TOKEN_LS = "authToken";
+
+export const ADDRESS_ID_SS = "addressId";
+
+export const CUSTOMER_ID_SS = "customerId";
