@@ -5,6 +5,8 @@ export default class LoginFormView extends ViewBuilder {
   private container: HTMLDivElement;
   private header: HTMLHeadingElement;
   submitButton: HTMLButtonElement;
+  paragraph: HTMLParagraphElement;
+  registrationLinkWrapper: HTMLDivElement;
 
   constructor() {
     super();
@@ -19,15 +21,28 @@ export default class LoginFormView extends ViewBuilder {
 
     this.header = this.createElement("h1", {
       id: `login-header`,
-      classes: ["h3", "mb-3", "fw-normal", "text-center", "py-5"],
+      classes: ["h3", "my-3", "fw-normal", "text-center"],
     });
-    this.header.textContent = `Login`;
+    this.header.textContent = `Sign in`;
+
+    this.paragraph = this.createElement("p", {
+      id: `login-paragraph`,
+      classes: ["text-center", "mb-3", "text-muted"],
+    });
+    this.paragraph.textContent =
+      "Sign in to your account using email and password provided during registration.";
+
     this.submitButton = this.createElement("button", {
       id: `login-submit-button`,
       classes: ["btn", "btn-primary", "mt-4", "col-12"],
     });
     this.submitButton.setAttribute("type", "submit");
-    this.submitButton.textContent = "Submit";
+    this.submitButton.textContent = "Sign in";
+
+    this.registrationLinkWrapper = this.createElement("div", {
+      classes: ["mt-3", "text-muted"],
+    });
+    this.registrationLinkWrapper.textContent = "Don't have an account?";
   }
 
   submitFormListener(handler: (email: string, password: string) => void) {
@@ -66,9 +81,21 @@ export default class LoginFormView extends ViewBuilder {
     }
   }
 
-  render(...elements: HTMLElement[]) {
-    this.form.append(...elements, this.submitButton);
-    this.container.append(this.header, this.form);
+  render(
+    email: HTMLElement,
+    password: HTMLElement,
+    showPassword: HTMLElement,
+    registrationLink: HTMLElement
+  ) {
+    this.registrationLinkWrapper.append(registrationLink);
+    this.form.append(
+      email,
+      password,
+      showPassword,
+      this.submitButton,
+      this.registrationLinkWrapper
+    );
+    this.container.append(this.header, this.paragraph, this.form);
     this.appendTo("#login-page", this.container);
   }
 }
