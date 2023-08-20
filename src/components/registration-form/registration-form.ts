@@ -29,10 +29,15 @@ export default class RegistrationFormComponent {
   defaultAddressCheck: FormCheckComponent;
   defaultBillingAddressCheck: FormCheckComponent;
   sameAddressCheck: FormCheckComponent;
+  streetBillingInput: FormControlComponent;
+  cityBillingInput: FormControlComponent;
+  countryBillingInput: FormSelectComponent;
+  postalCodeBillingInput: FormControlComponent;
 
   isDefaultAddress: boolean;
   isDefaultBilling: boolean;
 
+  // eslint-disable-next-line max-lines-per-function
   constructor() {
     this.isDefaultAddress = false;
     this.isDefaultBilling = false;
@@ -50,6 +55,10 @@ export default class RegistrationFormComponent {
     this.streetInput = this.createStreetInputComponent();
     this.postalCodeInput = this.createPostalCodeInputComponent();
     this.view.submitFormListener(this.submitFormHandler.bind(this));
+    this.countryBillingInput = this.createCountryBillingInputComponent();
+    this.cityBillingInput = this.createCityBillingInputComponent();
+    this.streetBillingInput = this.createStreetBillingInputComponent();
+    this.postalCodeBillingInput = this.createPostalCodeBillingInputComponent();
 
     this.passwordCheck = new FormCheckComponent({
       inputTitle: "Show password",
@@ -67,7 +76,7 @@ export default class RegistrationFormComponent {
       inputName: "same-address",
     });
     this.defaultBillingAddressCheck = new FormCheckComponent({
-      inputTitle: "Set as default billing address",
+      inputTitle: "Set as default address",
       formName: "registration",
       inputName: "default-billing-address",
     });
@@ -207,6 +216,50 @@ export default class RegistrationFormComponent {
     });
   }
 
+  private createStreetBillingInputComponent() {
+    return new FormControlComponent({
+      formName: "registration",
+      inputName: "street-billing",
+      labelText: "Street billing",
+      helpText: "At least one character",
+      placeholderText: "123 Main St",
+    });
+  }
+
+  private createCountryBillingInputComponent() {
+    return new FormSelectComponent({
+      formName: "registration",
+      inputName: "country-billing",
+      labelText: "Country billing",
+      helpText: "Select a valid country from the list",
+      options: [
+        { label: "Select a country", value: "" },
+        { label: "United States", value: "US" },
+        { label: "Canada", value: "CA" },
+      ],
+    });
+  }
+
+  private createPostalCodeBillingInputComponent() {
+    return new FormControlComponent({
+      formName: "registration",
+      inputName: "postal-code-billing",
+      labelText: "Postal Code billing",
+      helpText: "Follow the format for your country (e.g., 12345 or A1B 2C3)",
+      placeholderText: "12345",
+    });
+  }
+
+  private createCityBillingInputComponent() {
+    return new FormControlComponent({
+      formName: "registration",
+      inputName: "city-billing",
+      labelText: "City billing",
+      helpText: "At least one character, no special characters or numbers",
+      placeholderText: "New York",
+    });
+  }
+
   async checkboxHandler(status: boolean) {
     this.view.handleCheckboxResult(status);
   }
@@ -215,6 +268,7 @@ export default class RegistrationFormComponent {
     this.isDefaultAddress = this.view.checkboxDefaultAddressResult(status);
   }
 
+  // eslint-disable-next-line max-lines-per-function
   init() {
     const email = this.emailInput.init();
     const password = this.passwordInput.init();
@@ -231,6 +285,10 @@ export default class RegistrationFormComponent {
     const postalCode = this.postalCodeInput.init();
     const billingAddressTitle = this.view.addressBillingTitle;
     const setDefaultBillingAddress = this.defaultBillingAddressCheck.init();
+    const countryBilling = this.countryBillingInput.init();
+    const cityBilling = this.cityBillingInput.init();
+    const streetBilling = this.streetBillingInput.init();
+    const postalCodeBilling = this.postalCodeBillingInput.init();
 
     this.view.render(
       email,
@@ -247,7 +305,11 @@ export default class RegistrationFormComponent {
       street,
       postalCode,
       billingAddressTitle,
-      setDefaultBillingAddress
+      setDefaultBillingAddress,
+      countryBilling,
+      cityBilling,
+      streetBilling,
+      postalCodeBilling
     );
     this.view.checkboxListener(this.checkboxHandler.bind(this));
     this.view.checkboxDefaultAddressListener(this.defaultAddressHandler.bind(this));

@@ -151,14 +151,18 @@ export default class ValidatorUtil {
       case "first-name":
       case "last-name":
       case "city":
+      case "city-billing":
         return this.validateName(inputText);
       case "country":
+      case "country-billing":
         return this.validateCountry(inputText);
       case "postal-code":
+      case "postal-code-billing":
         return this.validatePostalCode(inputText);
       case "date-of-birth":
         return this.validateDateOfBirth(inputText);
       case "street":
+      case "street-billing":
         return this.validateStreet(inputText);
     }
   }
