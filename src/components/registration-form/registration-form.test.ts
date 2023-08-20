@@ -16,7 +16,7 @@ describe("RegistrationFormComponent", () => {
     // Act
     instance.init();
     //Assert
-    const loginPageElement = document.querySelector("#login-link-wrapper");
-    expect(loginPageElement).not.toBeNull();
+    const loginLinkElement = document.querySelector("#login-link-wrapper");
+    expect(loginLinkElement).not.toBeNull();
   });
 });
