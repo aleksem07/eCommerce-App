@@ -29,10 +29,10 @@ export default class RegistrationFormView extends ViewBuilder {
     this.header.textContent = `Sign up`;
     this.submitButton = this.createElement("button", {
       id: `registration-submit-button`,
-      classes: ["btn", "btn-primary", "mt-4", "align-self-center"],
+      classes: ["btn", "btn-primary", "mt-4"],
     });
     this.submitButton.setAttribute("type", "submit");
-    this.submitButton.textContent = "Submit";
+    this.submitButton.textContent = "Sign up";
 
     this.confirmPasswordInput = this.createElement("input", {
       id: `registration-confirm-password-input`,
