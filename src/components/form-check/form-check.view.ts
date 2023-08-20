@@ -2,16 +2,16 @@ import { ViewBuilder } from "@Interfaces/view-builder";
 import { FormCheckProps } from "./form-check.types";
 
 export default class FormCheckView extends ViewBuilder {
-  inputTitle: string;
+  labelText: string;
   inputName: string;
   formName: string;
   checkbox: HTMLInputElement;
   checkboxWrapper: HTMLDivElement;
   checkboxLabel: HTMLLabelElement;
 
-  constructor({ inputTitle, formName, inputName }: FormCheckProps) {
+  constructor({ labelText, formName, inputName }: FormCheckProps) {
     super();
-    this.inputTitle = inputTitle;
+    this.labelText = labelText;
     this.formName = formName;
     this.inputName = inputName;
 
@@ -30,7 +30,7 @@ export default class FormCheckView extends ViewBuilder {
       id: `${inputName}-checkbox-label`,
       classes: ["form-check-label"],
     });
-    this.checkboxLabel.textContent = `${inputTitle}`;
+    this.checkboxLabel.textContent = labelText;
     this.checkboxLabel.setAttribute("for", `${inputName}-checkbox-input`);
 
     this.checkboxWrapper.append(this.checkbox, this.checkboxLabel);

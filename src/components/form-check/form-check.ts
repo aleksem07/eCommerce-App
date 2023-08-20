@@ -4,8 +4,8 @@ import FormCheckView from "./form-check.view";
 export default class FormCheckComponent {
   private view: FormCheckView;
 
-  constructor({ inputTitle, formName, inputName }: FormCheckProps) {
-    this.view = new FormCheckView({ inputTitle, formName, inputName });
+  constructor({ labelText, formName, inputName }: FormCheckProps) {
+    this.view = new FormCheckView({ labelText, formName, inputName });
   }
 
   init(): HTMLElement {

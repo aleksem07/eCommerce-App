@@ -63,22 +63,22 @@ export default class RegistrationFormComponent {
     this.postalCodeBillingInput = this.createPostalCodeBillingInputComponent();
 
     this.passwordCheck = new FormCheckComponent({
-      inputTitle: "Show password",
+      labelText: "Show password",
       formName: "registration",
       inputName: "password",
     });
     this.defaultAddressCheck = new FormCheckComponent({
-      inputTitle: "Set as default address",
+      labelText: "Set as default address",
       formName: "registration",
       inputName: "default-address",
     });
     this.sameAddressCheck = new FormCheckComponent({
-      inputTitle: "Use the same address for both billing and shipping",
+      labelText: "Use the same address for both billing and shipping",
       formName: "registration",
       inputName: "same-address",
     });
     this.defaultBillingAddressCheck = new FormCheckComponent({
-      inputTitle: "Set as default address",
+      labelText: "Set as default address",
       formName: "registration",
       inputName: "default-billing-address",
     });

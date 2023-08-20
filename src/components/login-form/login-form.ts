@@ -44,7 +44,7 @@ export default class LoginFormComponent {
     });
 
     this.passwordCheck = new FormCheckComponent({
-      inputTitle: "Show password",
+      labelText: "Show password",
       formName: "login",
       inputName: "password",
     });

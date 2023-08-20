@@ -1,5 +1,5 @@
 export interface FormCheckProps {
-  inputTitle: string;
+  labelText: string;
   formName: string;
   inputName: string;
 }
