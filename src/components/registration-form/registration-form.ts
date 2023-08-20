@@ -27,6 +27,9 @@ export default class RegistrationFormComponent {
   tooltip: TooltipComponent;
   authService: AuthService;
   defaultAddressCheck: FormCheckComponent;
+  defaultBillingAddressCheck: FormCheckComponent;
+  sameAddressCheck: FormCheckComponent;
+
   isDefaultAddress: boolean;
   isDefaultBilling: boolean;
 
@@ -37,7 +40,6 @@ export default class RegistrationFormComponent {
     this.validator = new ValidatorUtil();
     this.tooltip = new TooltipComponent();
     this.authService = new AuthService();
-
     this.emailInput = this.createEmailInputComponent();
     this.passwordInput = this.createPasswordInputComponent();
     this.firstNameInput = this.createFirstNameInputComponent();
@@ -47,7 +49,6 @@ export default class RegistrationFormComponent {
     this.cityInput = this.createCityInputComponent();
     this.streetInput = this.createStreetInputComponent();
     this.postalCodeInput = this.createPostalCodeInputComponent();
-
     this.view.submitFormListener(this.submitFormHandler.bind(this));
 
     this.passwordCheck = new FormCheckComponent({
@@ -59,6 +60,16 @@ export default class RegistrationFormComponent {
       inputTitle: "Set as default address",
       formName: "registration",
       inputName: "default-address",
+    });
+    this.sameAddressCheck = new FormCheckComponent({
+      inputTitle: "Use the same address for both billing and shipping",
+      formName: "registration",
+      inputName: "same-address",
+    });
+    this.defaultBillingAddressCheck = new FormCheckComponent({
+      inputTitle: "Set as default billing address",
+      formName: "registration",
+      inputName: "default-billing-address",
     });
   }
 
@@ -211,14 +222,16 @@ export default class RegistrationFormComponent {
     const firstName = this.firstNameInput.init();
     const lastName = this.lastNameInput.init();
     const dateOfBirth = this.dateOfBirthInput.init();
+    const setSameAddress = this.sameAddressCheck.init();
     const shippingAddressTitle = this.view.addressShippingTitle;
+    const setDefaultAddress = this.defaultAddressCheck.init();
     const country = this.countryInput.init();
     const city = this.cityInput.init();
     const street = this.streetInput.init();
     const postalCode = this.postalCodeInput.init();
-    const setDefaultAddress = this.defaultAddressCheck.init();
-
     const billingAddressTitle = this.view.addressBillingTitle;
+    const setDefaultBillingAddress = this.defaultBillingAddressCheck.init();
+
     this.view.render(
       email,
       password,
@@ -226,13 +239,15 @@ export default class RegistrationFormComponent {
       firstName,
       lastName,
       dateOfBirth,
+      setSameAddress,
       shippingAddressTitle,
       setDefaultAddress,
       country,
       city,
       street,
       postalCode,
-      billingAddressTitle
+      billingAddressTitle,
+      setDefaultBillingAddress
     );
     this.view.checkboxListener(this.checkboxHandler.bind(this));
     this.view.checkboxDefaultAddressListener(this.defaultAddressHandler.bind(this));

@@ -33,7 +33,7 @@ export default class RegistrationFormView extends ViewBuilder {
     this.addressShippingTitle.textContent = `Shipping Address`;
     this.addressBillingTitle = this.createElement("h2", {
       id: `address-default-billing-title`,
-      classes: ["h4", "fw-normal", "text-center", "py-5"],
+      classes: ["h4", "fw-normal", "text-center", "py-3"],
     });
     this.addressBillingTitle.textContent = `Billing Address`;
     this.submitButton = this.createElement("button", {
