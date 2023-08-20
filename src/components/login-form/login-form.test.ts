@@ -4,7 +4,18 @@ describe("LoginFormComponent", () => {
   let loginFormComponent: LoginFormComponent;
 
   beforeEach(() => {
+    document.body.innerHTML = '<div id="login-page"></div>';
     loginFormComponent = new LoginFormComponent();
+  });
+
+  it("should render registration link", () => {
+    // Arrange
+    const instance = new LoginFormComponent();
+    // Act
+    instance.init();
+    //Assert
+    const registrationLinkElement = document.querySelector("#registration-link-wrapper");
+    expect(registrationLinkElement).not.toBeNull();
   });
 
   describe("init", () => {
