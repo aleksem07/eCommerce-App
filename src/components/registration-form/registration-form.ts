@@ -224,7 +224,7 @@ export default class RegistrationFormComponent {
       inputName: "street-billing",
       labelText: "Street billing",
       helpText: "At least one character",
-      placeholderText: "123 Main St",
+      placeholderText: "123 Billing St",
     });
   }
 
@@ -276,6 +276,8 @@ export default class RegistrationFormComponent {
 
   async defaultAddressSameHandler(status: boolean) {
     this.isDefaultAddressSame = this.view.checkboxDefaultAddressResult(status);
+    this.view.clearFormContent();
+    this.init();
   }
 
   // eslint-disable-next-line max-lines-per-function
@@ -300,27 +302,45 @@ export default class RegistrationFormComponent {
     const streetBilling = this.streetBillingInput.init();
     const postalCodeBilling = this.postalCodeBillingInput.init();
 
-    this.view.render(
-      email,
-      password,
-      passwordCheck,
-      firstName,
-      lastName,
-      dateOfBirth,
-      setSameAddress,
-      shippingAddressTitle,
-      setDefaultAddress,
-      country,
-      city,
-      street,
-      postalCode,
-      billingAddressTitle,
-      setDefaultBillingAddress,
-      countryBilling,
-      cityBilling,
-      streetBilling,
-      postalCodeBilling
-    );
+    if (this.isDefaultAddressSame) {
+      this.view.render(
+        email,
+        password,
+        passwordCheck,
+        firstName,
+        lastName,
+        dateOfBirth,
+        setSameAddress,
+        shippingAddressTitle,
+        setDefaultAddress,
+        country,
+        city,
+        street,
+        postalCode
+      );
+    } else {
+      this.view.render(
+        email,
+        password,
+        passwordCheck,
+        firstName,
+        lastName,
+        dateOfBirth,
+        setSameAddress,
+        shippingAddressTitle,
+        setDefaultAddress,
+        country,
+        city,
+        street,
+        postalCode,
+        billingAddressTitle,
+        setDefaultBillingAddress,
+        countryBilling,
+        cityBilling,
+        streetBilling,
+        postalCodeBilling
+      );
+    }
     this.view.checkboxListener(this.checkboxHandler.bind(this));
     this.view.checkboxAddressListener(
       "same-address-checkbox-input",
