@@ -51,6 +51,11 @@ export default class RegistrationFormView extends ViewBuilder {
     this.confirmPasswordInput.placeholder = "Confirm Password";
   }
 
+  clearFormContent() {
+    // this.form.textContent = "";
+    this.form.innerHTML = "";
+  }
+
   submitFormListener(
     handler: (inputValues: FormInput[], registrationData: Record<string, string>) => void
   ) {
@@ -80,18 +85,15 @@ export default class RegistrationFormView extends ViewBuilder {
       }));
 
       const registrationData = Object.fromEntries(
-        Object.entries(inputSelectors).map(([name, selector]) => [
-          name,
-          (this.getElement(selector) as HTMLInputElement).value,
-        ])
+        Object.entries(inputSelectors).map(([name, selector]) => {
+          const element = this.getElement(selector) as HTMLInputElement;
+
+          return [name, element ? element.value : ""];
+        })
       );
 
       handler(inputValues, registrationData);
     });
-  }
-
-  clearFormContent() {
-    this.form.innerHTML = "";
   }
 
   checkboxListener(handler: (status: boolean) => void) {

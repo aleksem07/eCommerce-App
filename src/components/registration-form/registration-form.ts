@@ -43,6 +43,11 @@ export default class RegistrationFormComponent {
     this.isDefaultAddress = false;
     this.isDefaultAddressBilling = false;
     this.isDefaultAddressSame = false;
+    const checked = localStorage.getItem("defaultAddressSameCheckboxStatus");
+
+    if (checked === "true") {
+      this.isDefaultAddressSame = true;
+    }
     this.view = new RegistrationFormView();
     this.validator = new ValidatorUtil();
     this.tooltip = new TooltipComponent();
@@ -76,6 +81,7 @@ export default class RegistrationFormComponent {
       labelText: "Use the same address for both billing and shipping",
       formName: "registration",
       inputName: "same-address",
+      checked: this.isDefaultAddressSame,
     });
     this.defaultBillingAddressCheck = new FormCheckComponent({
       labelText: "Set as default address",
@@ -125,6 +131,8 @@ export default class RegistrationFormComponent {
         !this.isDefaultAddressSame ? [billingAddressStorage] : [shippingAddressStorage],
         !this.isDefaultAddressSame && this.isDefaultAddressBilling
           ? billingAddressStorage
+          : this.isDefaultAddressSame && this.isDefaultAddress
+          ? shippingAddressStorage
           : undefined
       );
 
@@ -292,6 +300,9 @@ export default class RegistrationFormComponent {
 
   async defaultAddressSameHandler(status: boolean) {
     this.isDefaultAddressSame = this.view.checkboxDefaultAddressResult(status);
+    localStorage.setItem("defaultAddressSameCheckboxStatus", status.toString());
+    this.view.clearFormContent();
+    this.init();
   }
 
   // eslint-disable-next-line max-lines-per-function
