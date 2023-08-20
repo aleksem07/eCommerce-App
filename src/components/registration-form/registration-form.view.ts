@@ -48,6 +48,7 @@ export default class RegistrationFormView extends ViewBuilder {
   private createLoginLinkWrapper() {
     this.loginLinkWrapper = this.createElement("div", {
       classes: ["mt-3", "text-muted"],
+      id: `login-link-wrapper`,
     });
     this.loginLinkWrapper.textContent = "Already have an account?";
 
