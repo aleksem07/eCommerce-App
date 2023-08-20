@@ -111,8 +111,8 @@ export default class RegistrationFormView extends ViewBuilder {
     }
   }
 
-  checkboxDefaultAddressListener(handler: (status: boolean) => void) {
-    const addressCheckbox = this.getElement<HTMLInputElement>("#default-address-checkbox-input");
+  checkboxAddressListener(elementId: string, handler: (status: boolean) => void) {
+    const addressCheckbox = this.getElement<HTMLInputElement>(`#${elementId}`);
 
     if (addressCheckbox) {
       addressCheckbox.addEventListener("change", (event) => {

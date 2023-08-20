@@ -35,12 +35,14 @@ export default class RegistrationFormComponent {
   postalCodeBillingInput: FormControlComponent;
 
   isDefaultAddress: boolean;
-  isDefaultBilling: boolean;
+  isDefaultAddressBilling: boolean;
+  isDefaultAddressSame: boolean;
 
   // eslint-disable-next-line max-lines-per-function
   constructor() {
     this.isDefaultAddress = false;
-    this.isDefaultBilling = false;
+    this.isDefaultAddressBilling = false;
+    this.isDefaultAddressSame = false;
     this.view = new RegistrationFormView();
     this.validator = new ValidatorUtil();
     this.tooltip = new TooltipComponent();
@@ -268,6 +270,14 @@ export default class RegistrationFormComponent {
     this.isDefaultAddress = this.view.checkboxDefaultAddressResult(status);
   }
 
+  async defaultAddressBillingHandler(status: boolean) {
+    this.isDefaultAddressBilling = this.view.checkboxDefaultAddressResult(status);
+  }
+
+  async defaultAddressSameHandler(status: boolean) {
+    this.isDefaultAddressSame = this.view.checkboxDefaultAddressResult(status);
+  }
+
   // eslint-disable-next-line max-lines-per-function
   init() {
     const email = this.emailInput.init();
@@ -312,7 +322,18 @@ export default class RegistrationFormComponent {
       postalCodeBilling
     );
     this.view.checkboxListener(this.checkboxHandler.bind(this));
-    this.view.checkboxDefaultAddressListener(this.defaultAddressHandler.bind(this));
+    this.view.checkboxAddressListener(
+      "same-address-checkbox-input",
+      this.defaultAddressSameHandler.bind(this)
+    );
+    this.view.checkboxAddressListener(
+      "default-address-checkbox-input",
+      this.defaultAddressHandler.bind(this)
+    );
+    this.view.checkboxAddressListener(
+      "default-billing-address-checkbox-input",
+      this.defaultAddressBillingHandler.bind(this)
+    );
     this.tooltip.init(this.view.submitButton);
   }
 }
