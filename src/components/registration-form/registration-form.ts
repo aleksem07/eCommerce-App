@@ -84,6 +84,7 @@ export default class RegistrationFormComponent {
     });
   }
 
+  // eslint-disable-next-line max-lines-per-function
   async submitFormHandler(inputValues: FormInput[], registrationData: Record<string, string>) {
     const isValidValues = inputValues.every((inputValue) => {
       const result = this.validator.validate(inputValue.key, inputValue.value);
@@ -92,6 +93,8 @@ export default class RegistrationFormComponent {
     });
 
     if (isValidValues) {
+      const shippingAddressStorage = 0;
+      const billingAddressStorage = 1;
       const addresses = [
         {
           country: registrationData.country,
@@ -101,6 +104,15 @@ export default class RegistrationFormComponent {
         },
       ];
 
+      if (!this.isDefaultAddressSame) {
+        addresses.push({
+          country: registrationData.countryBilling,
+          city: registrationData.cityBilling,
+          streetName: registrationData.streetNameBilling,
+          postalCode: registrationData.postalCodeBilling,
+        });
+      }
+
       const result = await this.authService.signUp(
         registrationData.email,
         registrationData.password,
@@ -108,8 +120,12 @@ export default class RegistrationFormComponent {
         registrationData.lastName,
         registrationData.dateOfBirth,
         addresses,
-        [0],
-        this.isDefaultAddress ? 0 : undefined
+        [shippingAddressStorage],
+        this.isDefaultAddress ? shippingAddressStorage : undefined,
+        !this.isDefaultAddressSame ? [billingAddressStorage] : [shippingAddressStorage],
+        !this.isDefaultAddressSame && this.isDefaultAddressBilling
+          ? billingAddressStorage
+          : undefined
       );
 
       if (!result.success && result.error) {
@@ -276,8 +292,6 @@ export default class RegistrationFormComponent {
 
   async defaultAddressSameHandler(status: boolean) {
     this.isDefaultAddressSame = this.view.checkboxDefaultAddressResult(status);
-    this.view.clearFormContent();
-    this.init();
   }
 
   // eslint-disable-next-line max-lines-per-function

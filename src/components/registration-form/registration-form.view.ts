@@ -64,6 +64,10 @@ export default class RegistrationFormView extends ViewBuilder {
       city: "#registration-city-input",
       streetName: "#registration-street-input",
       postalCode: "#registration-postal-code-input",
+      countryBilling: "#registration-country-billing-input",
+      cityBilling: "#registration-city-billing-input",
+      streetNameBilling: "#registration-street-billing-input",
+      postalCodeBilling: "#registration-postal-code-billing-input",
     };
 
     this.form.addEventListener("submit", (event) => {
