@@ -83,7 +83,7 @@ export default class RegistrationFormComponent {
         password: this.getValueByKey(inputValues, "password"),
         firstName: this.getValueByKey(inputValues, "first-name"),
         lastName: this.getValueByKey(inputValues, "last-name"),
-        dateBirth: this.getValueByKey(inputValues, "date-birth"),
+        dateBirth: this.getValueByKey(inputValues, "date-of-birth"),
         country: this.getValueByKey(inputValues, "country"),
         city: this.getValueByKey(inputValues, "city"),
         street: this.getValueByKey(inputValues, "street"),
@@ -93,6 +93,8 @@ export default class RegistrationFormComponent {
 
       if (!result.success && result.error) {
         this.tooltip.show("Error", result.error);
+      } else {
+        this.tooltip.show("Success", "Registration successful");
       }
     }
   }
