@@ -3,23 +3,24 @@
 by **random team #19**
 
 ## Table of Contents
+
 1. [Description](#Description)
 2. [Install](#install)
-3. [Avilable scripts](#Avilable-scripts)
+3. [Available scripts](#Available-scripts)
 4. [Code Guide](#Code-Guide)
 5. [Contribute](#Contribute)
 6. [Tools / Plugins](#Tools-/-Plugins)
-   * [Bootstrap](#Bootstrap)
-   * [Husky](#Husky)
-   * [Jest](#Jest)
-   * [Plugins](#VS-Code-Plugins)
+   - [Bootstrap](#Bootstrap)
+   - [Husky](#Husky)
+   - [Jest](#Jest)
+   - [Plugins](#VS-Code-Plugins)
 7. [Modules](#Modules)
-   * [Components](#Components)
-   * [Pages](#Pages)
-   * [Services](#Services)
-   * [Utilities](#Utilities)
-   * [State](#State)
-   
+   - [Components](#Components)
+   - [Pages](#Pages)
+   - [Services](#Services)
+   - [Utilities](#Utilities)
+   - [State](#State)
+
 ## Description
 
 The app is a Single Page Application (SPA) powered by CommerceTools, a leading provider of commercial solutions for B2C and B2B businesses.
@@ -32,7 +33,7 @@ cd project
 npm install
 ```
 
-## Avilable scripts
+## Available scripts
 
 ### Running the Development Server
 
@@ -100,46 +101,62 @@ npm run format
 
 Runs Prettier to format the code according to defined rules.
 
+### Gh-pages
+
+```shell
+npm run gh-pages
+```
+
+Deploys to https://johngaalt.github.io/
+
+### Deploy
+
+```shell
+npm run deploy
+```
+
+First builds an application in production mode and then deploys to https://johngaalt.github.io/
+
 ## Code Guide
 
 ### Name conventions
 
 #### Cody style
 
-* Typescript usage is required
-* Use class oriented code style
-* Follow eslint recommended rules
-* Follow stylelint recommended rules
+- Typescript usage is required
+- Use class oriented code style
+- Follow eslint recommended rules
+- Follow stylelint recommended rules
 
 #### Files
 
-* Use dash-case for file and folder names, e.g. auth, product-card
-* Locate folders and files appropriately according to [Folder Structure](#Folder-Structure)
-* Use `generate` command to follow this convention easily
-* Add new modules if necessary
-* Follow folder aliases approach, see tsconfig.json for examples
-* Edit file generation templates if necessary
+- Use dash-case for file and folder names, e.g. auth, product-card
+- Locate folders and files appropriately according to [Folder Structure](#Folder-Structure)
+- Use `generate` command to follow this convention easily
+- Add new modules if necessary
+- Follow folder aliases approach, see tsconfig.json for examples
+- Edit file generation templates if necessary
 
 #### Classes
 
-* Each class in specific module has suffix with module name, e.g. AuthService, ProductCardComponent, LoginPage, DOMUtil
+- Each class in specific module has suffix with module name, e.g. AuthService, ProductCardComponent, LoginPage, DOMUtil
 
 ### Folder Structure
 
 Follow agreed folder structure:
 
-* [components: Reusable interface elements.](#Components)
-* [pages: Separate app pages and routes.](#Pages)
-* [services: Logic and data interaction.](#Services)
-* [utilities: Helper functions and tools.](#Utilities)
-* [state: Application state management.](#State)
+- [components: Reusable interface elements.](#Components)
+- [pages: Separate app pages and routes.](#Pages)
+- [services: Logic and data interaction.](#Services)
+- [utilities: Helper functions and tools.](#Utilities)
+- [state: Application state management.](#State)
 
 ### Code Review
 
 Follow Google recommendations for Code Review:
 
-* <https://habr.com/ru/articles/473308/>
-* <https://habr.com/ru/articles/474334/>
+- <https://habr.com/ru/articles/473308/>
+- <https://habr.com/ru/articles/474334/>
 
 ## Contribute
 
@@ -148,16 +165,20 @@ Follow Google recommendations for Code Review:
 3. Run development service `npm run start`
 4. Make changes
 5. Verify your changes:
-  * Build is successful `npm run build:dev` or `npm run build:prod`
-  * There are no eslint errors `npm run lint`
-  * Code is formatted `npm run format`
-  * Tests are passed successfully `npm run test`
-  * Test coverage is not less than 35% `npm run test:coverage`
+
+- Build is successful `npm run build:dev` or `npm run build:prod`
+- There are no eslint errors `npm run lint`
+- Code is formatted `npm run format`
+- Tests are passed successfully `npm run test`
+- Test coverage is not less than 35% `npm run test:coverage`
+
 6. Create pull request to `develop`
 7. Pass code review
-  * Fix comments
-  * Refactor
-  * Get approvals from team
+
+- Fix comments
+- Refactor
+- Get approvals from team
+
 8. Merge pull request
 9. Wait for deploy and release
 
@@ -202,8 +223,8 @@ Then, you can use the icons in your HTML code as follows:
 <i class="bi bi-icon-name">
 ```
 
-where `.bi` is the class used for all Bootstrap icons, and 
-`.bi-icon-name` is the specific icon's name. 
+where `.bi` is the class used for all Bootstrap icons, and
+`.bi-icon-name` is the specific icon's name.
 By default, the icon size is set to `1em`. It is recommended to use `width: 1em` (and optionally `height: 1em`) to easily adjust the icon's size using the `font-size` property.
 
 ### Husky
@@ -252,10 +273,10 @@ npm run generate component ComponentName
 
 #### Structure
 
-* `component-name.view.ts`: This file contains the component's layout, creation of DOM elements, and event binding.
-* `component-name.ts`: This file contains the component's data, methods, and event handlers.
-* `component-name.test.ts`: contains tests for the component
-* `component-name.scss`: component styles (optional)
+- `component-name.view.ts`: This file contains the component's layout, creation of DOM elements, and event binding.
+- `component-name.ts`: This file contains the component's data, methods, and event handlers.
+- `component-name.test.ts`: contains tests for the component
+- `component-name.scss`: component styles (optional)
 
 ### Example
 
