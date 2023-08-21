@@ -266,7 +266,6 @@ export default class RegistrationFormComponent {
       options: [
         { label: "Select a country", value: "" },
         { label: "United States", value: "US" },
-        { label: "Canada", value: "CA" },
       ],
     });
   }
@@ -290,7 +289,6 @@ export default class RegistrationFormComponent {
       options: [
         { label: "Select a country", value: "" },
         { label: "United States", value: "US" },
-        { label: "Canada", value: "CA" },
       ],
     });
   }
