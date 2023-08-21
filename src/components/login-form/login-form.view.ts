@@ -1,4 +1,5 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
+import { FormInput } from "./login-form.types";
 
 export default class LoginFormView extends ViewBuilder {
   private form: HTMLFormElement;
@@ -46,14 +47,17 @@ export default class LoginFormView extends ViewBuilder {
     this.registrationLinkWrapper.textContent = "Don't have an account?";
   }
 
-  submitFormListener(handler: (email: string, password: string) => void) {
+  submitFormListener(handler: (inputValues: FormInput[]) => void) {
     this.form.addEventListener("submit", (event) => {
       event.preventDefault();
-      const emailInput: HTMLInputElement = this.getElement("#login-email-input");
-      const email = emailInput.value;
-      const passwordInput: HTMLInputElement = this.getElement("#login-password-input");
-      const password = passwordInput.value;
-      handler(email, password);
+      const formData = new FormData(event.target as HTMLFormElement);
+
+      const inputValues: FormInput[] = [...formData.entries()].map(([key, value]) => ({
+        key,
+        value: value.toString(),
+      }));
+
+      handler(inputValues);
     });
   }
 
