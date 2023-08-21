@@ -4,16 +4,22 @@ export default class TooltipComponent {
   private element?: HTMLElement;
   private popover?: Popover;
 
+  timeout: NodeJS.Timeout | null = null;
   duration = 3000;
 
   show(title: string, content: string) {
-    let popoverElement = document.querySelector(".popover");
+    const popoverElement = document.querySelector(".popover");
 
     if (popoverElement) popoverElement.remove();
 
     this.showPop(title, content);
-    setTimeout(() => {
-      popoverElement = document.querySelector(".popover");
+    this.hide();
+  }
+
+  hide() {
+    if (this.timeout) clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      const popoverElement = document.querySelector(".popover");
 
       if (popoverElement) popoverElement.remove();
     }, this.duration);

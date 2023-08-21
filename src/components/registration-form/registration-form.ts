@@ -6,7 +6,7 @@ import FormCheckComponent from "@Components/form-check/form-check";
 import FormSelectComponent from "@Components/form-select/form-select";
 import AuthService from "@Services/auth/auth";
 import TooltipComponent from "@Components/tooltip/tooltip";
-import { SignUpProps } from "@Services/auth/auth.types";
+import { SignUpParams } from "@Services/auth/auth.types";
 
 export default class RegistrationFormComponent {
   authService: AuthService;
@@ -48,6 +48,16 @@ export default class RegistrationFormComponent {
     });
   }
 
+  private getValueByKey(inputs: FormInput[], key: string): string {
+    const input = inputs.find((input) => input.key === key);
+
+    if (!input) {
+      throw new Error(`Value for key ${key} was not found`);
+    }
+
+    return input.value;
+  }
+
   async submitFormHandler(inputValues: FormInput[]) {
     const isValidValues = inputValues.every((inputValue) => {
       const result = this.validator.validate(inputValue.key, inputValue.value);
@@ -61,17 +71,17 @@ export default class RegistrationFormComponent {
 
     if (isValidValues) {
       const values = {
-        username: inputValues[0].value,
-        password: inputValues[1].value,
-        firstName: inputValues[2].value,
-        lastName: inputValues[3].value,
-        dateBirth: inputValues[4].value,
-        country: inputValues[5].value,
-        city: inputValues[6].value,
-        street: inputValues[7].value,
-        postalCode: inputValues[8].value,
+        username: this.getValueByKey(inputValues, "email"),
+        password: this.getValueByKey(inputValues, "password"),
+        firstName: this.getValueByKey(inputValues, "first-name"),
+        lastName: this.getValueByKey(inputValues, "last-name"),
+        dateBirth: this.getValueByKey(inputValues, "date-birth"),
+        country: this.getValueByKey(inputValues, "country"),
+        city: this.getValueByKey(inputValues, "city"),
+        street: this.getValueByKey(inputValues, "street"),
+        postalCode: this.getValueByKey(inputValues, "postal-code"),
       };
-      const result = await this.authService.signUp(values as SignUpProps);
+      const result = await this.authService.signUp(values);
 
       if (!result.success && result.error) {
         this.tooltip.show("Error", result.error);
