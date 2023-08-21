@@ -8,7 +8,6 @@ import LinkComponent from "@Components/link/link";
 import { Routes } from "@Services/router/router.types";
 import AuthService from "@Services/auth/auth";
 import TooltipComponent from "@Components/tooltip/tooltip";
-import { SignUpParams } from "@Services/auth/auth.types";
 
 export default class RegistrationFormComponent {
   authService: AuthService;
