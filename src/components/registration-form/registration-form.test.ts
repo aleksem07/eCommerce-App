@@ -11,11 +11,10 @@ describe("RegistrationFormComponent", () => {
   });
 
   it("should render login link", () => {
-    // Arrange
     const instance = new RegistrationFormComponent();
-    // Act
+
     instance.init();
-    //Assert
+
     const loginLinkElement = document.querySelector("#login-link-wrapper");
     expect(loginLinkElement).not.toBeNull();
   });
