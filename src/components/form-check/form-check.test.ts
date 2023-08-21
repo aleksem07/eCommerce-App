@@ -7,6 +7,7 @@ describe("FormCheckComponent", () => {
 
   beforeEach(() => {
     const props = {
+      labelText: "yourInputTitle",
       formName: "yourFormName",
       inputName: "yourInputName",
     };

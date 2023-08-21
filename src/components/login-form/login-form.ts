@@ -45,13 +45,17 @@ export default class LoginFormComponent {
       placeholderText: "Example1#",
     });
 
+    this.passwordCheck = new FormCheckComponent({
+      labelText: "Show password",
+      formName: "login",
+      inputName: "password",
+    });
+
     this.registrationLink = new LinkComponent({
       href: Routes.REGISTRATION,
       text: "Sign up",
       classes: ["ms-2"],
     });
-
-    this.passwordCheck = new FormCheckComponent({ formName: "login", inputName: "password" });
 
     this.view.submitFormListener(this.submitFormHandler.bind(this));
   }

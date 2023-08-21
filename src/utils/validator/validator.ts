@@ -64,10 +64,12 @@ export default class ValidatorUtil {
 
   dateOfBirthSchemaCheck(): ValidationSchema {
     const now = dayjs();
+    const minDate = dayjs("1900-01-01");
     const maxDate = now.subtract(13, "year").toISOString();
 
     return date()
       .max(maxDate, "You must be 13 years old or older")
+      .min(minDate.toISOString(), "Date must not be earlier than January 1, 1900")
       .required("Date of birth is required");
   }
 
@@ -151,14 +153,18 @@ export default class ValidatorUtil {
       case "first-name":
       case "last-name":
       case "city":
+      case "city-billing":
         return this.validateName(inputText);
       case "country":
+      case "country-billing":
         return this.validateCountry(inputText);
       case "postal-code":
+      case "postal-code-billing":
         return this.validatePostalCode(inputText);
       case "date-of-birth":
         return this.validateDateOfBirth(inputText);
       case "street":
+      case "street-billing":
         return this.validateStreet(inputText);
     }
   }

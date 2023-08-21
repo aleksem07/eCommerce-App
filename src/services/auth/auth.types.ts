@@ -31,11 +31,25 @@ export interface SignUpParams {
   password: string;
   firstName: string;
   lastName: string;
-  dateBirth: string;
+  dateOfBirth: string;
+  addresses: Address[];
+  shippingAddresses?: number[];
+  defaultShippingAddress?: number;
+  billingAddresses?: number[];
+  defaultBillingAddress?: number;
+}
+
+export interface Address {
   country: string;
   city: string;
-  street: string;
+  streetName: string;
   postalCode: string;
+}
+
+export interface AddressIDProps {
+  customerId: string;
+  addressId: string;
+  token: string;
 }
 
 export const AUTH_TOKEN_LS = "authToken";

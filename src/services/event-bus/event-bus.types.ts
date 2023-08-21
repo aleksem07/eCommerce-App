@@ -1,5 +1,6 @@
 export enum Events {
   userLogin = "userLogin",
+  userRegistered = "userRegistered",
   loginLinkClicked = "loginLinkClicked",
   logoutLinkClicked = "logoutLinkClicked",
 }

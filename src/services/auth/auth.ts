@@ -39,11 +39,12 @@ export default class AuthService extends ClientBuilderService {
     password,
     firstName,
     lastName,
-    dateBirth,
-    country,
-    city,
-    street,
-    postalCode,
+    dateOfBirth,
+    addresses,
+    shippingAddresses,
+    defaultShippingAddress,
+    billingAddresses,
+    defaultBillingAddress,
   }: SignUpParams): Promise<AuthResult<DataInfo | TokenInfo>> {
     const result = await this.getToken("/anonymous/token", {
       grant_type: "client_credentials",
@@ -58,11 +59,12 @@ export default class AuthService extends ClientBuilderService {
         password,
         firstName,
         lastName,
-        dateBirth,
-        country,
-        city,
-        street,
-        postalCode,
+        dateOfBirth,
+        addresses,
+        shippingAddresses,
+        defaultShippingAddress,
+        billingAddresses,
+        defaultBillingAddress,
         token: result.data?.access_token,
       });
     }
@@ -137,7 +139,20 @@ export default class AuthService extends ClientBuilderService {
     }
   }
 
-  async registration({ firstName, lastName, password, token, username }: RegistrationParams) {
+  // eslint-disable-next-line max-lines-per-function
+  async registration({
+    firstName,
+    lastName,
+    password,
+    token,
+    username,
+    dateOfBirth,
+    addresses,
+    shippingAddresses,
+    defaultShippingAddress,
+    billingAddresses,
+    defaultBillingAddress,
+  }: RegistrationParams) {
     try {
       const data = await this.commercetoolsClient.execute({
         method: "POST",
@@ -151,6 +166,12 @@ export default class AuthService extends ClientBuilderService {
           lastName,
           email: username,
           password,
+          dateOfBirth,
+          addresses,
+          shippingAddresses,
+          defaultShippingAddress,
+          billingAddresses,
+          defaultBillingAddress,
         },
       });
 
@@ -158,10 +179,7 @@ export default class AuthService extends ClientBuilderService {
     } catch (error: unknown) {
       const errorMessage = (error as HttpErrorType).message;
 
-      return {
-        success: false,
-        error: errorMessage,
-      };
+      return { success: false, error: errorMessage };
     }
   }
 }

@@ -7,12 +7,13 @@ export default class RegistrationFormView extends ViewBuilder {
   private header: HTMLHeadingElement;
   submitButton: HTMLButtonElement;
   confirmPasswordInput: HTMLInputElement;
+  addressShippingTitle: HTMLHeadingElement;
+  addressBillingTitle: HTMLHeadingElement;
   loginLinkWrapper: HTMLDivElement;
   paragraph: HTMLParagraphElement;
 
   constructor() {
     super();
-
     this.form = this.createElement("form", {
       id: `registration-form`,
       classes: ["d-flex", "flex-column"],
@@ -21,26 +22,33 @@ export default class RegistrationFormView extends ViewBuilder {
       id: `registration-container`,
       classes: ["col-md-4", "m-auto", "container"],
     });
-
     this.header = this.createElement("h1", {
       id: `registration-header`,
       classes: ["h3", "my-3", "fw-normal", "text-center"],
     });
     this.header.textContent = `Sign up`;
+    this.addressShippingTitle = this.createElement("h2", {
+      id: `address-default-title`,
+      classes: ["h4", "fw-normal", "text-center", "py-3"],
+    });
+    this.addressShippingTitle.textContent = `Shipping Address`;
+    this.addressBillingTitle = this.createElement("h2", {
+      id: `address-default-billing-title`,
+      classes: ["h4", "fw-normal", "text-center", "py-3"],
+    });
+    this.addressBillingTitle.textContent = `Billing Address`;
     this.submitButton = this.createElement("button", {
       id: `registration-submit-button`,
       classes: ["btn", "btn-primary", "mt-4"],
     });
     this.submitButton.setAttribute("type", "submit");
     this.submitButton.textContent = "Sign up";
-
     this.confirmPasswordInput = this.createElement("input", {
       id: `registration-confirm-password-input`,
       classes: ["form-control"],
     });
     this.confirmPasswordInput.type = "password";
     this.confirmPasswordInput.placeholder = "Confirm Password";
-
     this.loginLinkWrapper = this.createLoginLinkWrapper();
     this.paragraph = this.createRegistrationParagraph();
   }
@@ -64,6 +72,10 @@ export default class RegistrationFormView extends ViewBuilder {
       "Registration takes less than a minute but gives you full control over your orders.";
 
     return this.paragraph;
+  }
+
+  clearFormContent() {
+    this.form.innerHTML = "";
   }
 
   submitFormListener(handler: (inputValues: FormInput[]) => void) {
@@ -105,34 +117,25 @@ export default class RegistrationFormView extends ViewBuilder {
     }
   }
 
-  render(
-    email: HTMLElement,
-    password: HTMLElement,
-    passwordCheck: HTMLElement,
-    firstName: HTMLElement,
-    lastName: HTMLElement,
-    dateOfBirth: HTMLElement,
-    country: HTMLElement,
-    city: HTMLElement,
-    street: HTMLElement,
-    postalCode: HTMLElement,
-    loginLink: HTMLElement
-  ) {
+  checkboxAddressListener(elementId: string, handler: (status: boolean) => void) {
+    const addressCheckbox = this.getElement<HTMLInputElement>(`#${elementId}`);
+
+    if (addressCheckbox) {
+      addressCheckbox.addEventListener("change", (event) => {
+        event.preventDefault();
+
+        handler(addressCheckbox.checked);
+      });
+    }
+  }
+
+  checkboxDefaultAddressResult(status: boolean) {
+    return status;
+  }
+
+  render(loginLink: HTMLElement, ...elements: HTMLElement[]) {
     this.loginLinkWrapper.append(loginLink);
-    this.form.append(
-      email,
-      password,
-      passwordCheck,
-      firstName,
-      lastName,
-      dateOfBirth,
-      country,
-      city,
-      street,
-      postalCode,
-      this.submitButton,
-      this.loginLinkWrapper
-    );
+    this.form.append(...elements, this.submitButton, this.loginLinkWrapper);
     this.container.append(this.header, this.paragraph, this.form);
     this.appendTo("#registration-page", this.container);
   }
