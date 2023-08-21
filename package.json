@@ -17,7 +17,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "deploy": "gh-pages -d dist -r https://github.com/johngaalt/ecommerce-application-deploy"
+    "deploy": "gh-pages -d dist -r https://github.com/johngaalt/johngaalt.github.io"
   },
   "keywords": [],
   "author": "",
