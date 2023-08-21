@@ -179,10 +179,7 @@ export default class AuthService extends ClientBuilderService {
     } catch (error: unknown) {
       const errorMessage = (error as HttpErrorType).message;
 
-      return {
-        success: false,
-        error: errorMessage,
-      };
+      return { success: false, error: errorMessage };
     }
   }
 }

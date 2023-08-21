@@ -52,7 +52,6 @@ export default class RegistrationFormView extends ViewBuilder {
   }
 
   clearFormContent() {
-    // this.form.textContent = "";
     this.form.innerHTML = "";
   }
 
