@@ -6,8 +6,12 @@ import FormCheckComponent from "@Components/form-check/form-check";
 import FormSelectComponent from "@Components/form-select/form-select";
 import LinkComponent from "@Components/link/link";
 import { Routes } from "@Services/router/router.types";
+import AuthService from "@Services/auth/auth";
+import TooltipComponent from "@Components/tooltip/tooltip";
 
 export default class RegistrationFormComponent {
+  authService: AuthService;
+  tooltip: TooltipComponent;
   view: RegistrationFormView;
   emailInput: FormControlComponent;
   passwordInput: FormControlComponent;
@@ -25,6 +29,8 @@ export default class RegistrationFormComponent {
   constructor() {
     this.view = new RegistrationFormView();
     this.validator = new ValidatorUtil();
+    this.authService = new AuthService();
+    this.tooltip = new TooltipComponent();
 
     this.emailInput = this.createEmailInputComponent();
     this.passwordInput = this.createPasswordInputComponent();
@@ -50,15 +56,46 @@ export default class RegistrationFormComponent {
     });
   }
 
-  submitFormHandler(inputValues: FormInput[]) {
+  private getValueByKey(inputs: FormInput[], key: string): string {
+    const input = inputs.find((input) => input.key === key);
+
+    if (!input) {
+      throw new Error(`Value for key ${key} was not found`);
+    }
+
+    return input.value;
+  }
+
+  async submitFormHandler(inputValues: FormInput[]) {
     const isValidValues = inputValues.every((inputValue) => {
       const result = this.validator.validate(inputValue.key, inputValue.value);
+
+      if (!result?.isValid) {
+        this.tooltip.show("Error", result?.message as string);
+      }
 
       return result?.isValid;
     });
 
     if (isValidValues) {
-      //call register method of auth service here
+      const values = {
+        username: this.getValueByKey(inputValues, "email"),
+        password: this.getValueByKey(inputValues, "password"),
+        firstName: this.getValueByKey(inputValues, "first-name"),
+        lastName: this.getValueByKey(inputValues, "last-name"),
+        dateBirth: this.getValueByKey(inputValues, "date-of-birth"),
+        country: this.getValueByKey(inputValues, "country"),
+        city: this.getValueByKey(inputValues, "city"),
+        street: this.getValueByKey(inputValues, "street"),
+        postalCode: this.getValueByKey(inputValues, "postal-code"),
+      };
+      const result = await this.authService.signUp(values);
+
+      if (!result.success && result.error) {
+        this.tooltip.show("Error", result.error);
+      } else {
+        this.tooltip.show("Success", "Registration successful");
+      }
     }
   }
 
@@ -186,6 +223,8 @@ export default class RegistrationFormComponent {
       postalCode,
       loginLink
     );
+
+    this.tooltip.init(this.view.submitButton);
     this.view.checkboxListener(this.checkboxHandler.bind(this));
   }
 }
