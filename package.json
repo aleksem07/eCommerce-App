@@ -16,7 +16,8 @@
     "prepare": "husky install",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "deploy": "gh-pages -d dist -r https://github.com/johngaalt/ecommerce-application-deploy"
   },
   "keywords": [],
   "author": "",
@@ -49,6 +50,7 @@
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-webpack-plugin": "^4.0.1",
+    "gh-pages": "^6.0.0",
     "group-css-media-queries-loader": "^4.3.0",
     "html-webpack-plugin": "^5.5.0",
     "husky": "^8.0.0",
