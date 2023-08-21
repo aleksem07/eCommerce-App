@@ -20,7 +20,7 @@ export default class RegistrationFormView extends ViewBuilder {
     });
     this.container = this.createElement("div", {
       id: `registration-container`,
-      classes: ["col-md-4", "m-auto", "container"],
+      classes: ["col-10", "col-md-7", "col-lg-5", "col-xl-4", "m-auto", "container"],
     });
     this.header = this.createElement("h1", {
       id: `registration-header`,

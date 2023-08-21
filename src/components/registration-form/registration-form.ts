@@ -111,15 +111,9 @@ export default class RegistrationFormComponent {
 
   // eslint-disable-next-line max-lines-per-function
   async submitFormHandler(inputValues: FormInput[]) {
-    const isValidValues = inputValues.every((inputValue) => {
-      const result = this.validator.validate(inputValue.key, inputValue.value);
-
-      if (!result?.isValid) {
-        this.tooltip.show("Error", result?.message as string);
-      }
-
-      return result?.isValid;
-    });
+    const isValidValues = inputValues.every(
+      (inputValue) => this.validator.validate(inputValue.key, inputValue.value)?.isValid
+    );
 
     if (isValidValues) {
       const shippingAddressStorage = 0;
@@ -172,8 +166,24 @@ export default class RegistrationFormComponent {
         RouterService.navigateTo(Routes.MAIN);
       }
     } else {
-      this.tooltip.show("Error", "Please fill in all fields correctly");
+      this.validateAllInputs();
     }
+  }
+
+  private validateAllInputs() {
+    this.emailInput.validate();
+    this.passwordInput.validate();
+    this.firstNameInput.validate();
+    this.lastNameInput.validate();
+    this.dateOfBirthInput.validate();
+    this.countryInput.validate();
+    this.cityInput.validate();
+    this.streetInput.validate();
+    this.postalCodeInput.validate();
+    this.countryBillingInput.validate();
+    this.cityBillingInput.validate();
+    this.streetBillingInput.validate();
+    this.postalCodeBillingInput.validate();
   }
 
   private createPostalCodeInputComponent() {
@@ -266,7 +276,6 @@ export default class RegistrationFormComponent {
       options: [
         { label: "Select a country", value: "" },
         { label: "United States", value: "US" },
-        { label: "Canada", value: "CA" },
       ],
     });
   }
@@ -290,7 +299,6 @@ export default class RegistrationFormComponent {
       options: [
         { label: "Select a country", value: "" },
         { label: "United States", value: "US" },
-        { label: "Canada", value: "CA" },
       ],
     });
   }

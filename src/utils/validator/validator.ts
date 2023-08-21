@@ -13,7 +13,7 @@ export default class ValidatorUtil {
   dateOfBirthSchema: ValidationSchema;
   streetSchema: ValidationSchema;
   countrySchema: ValidationSchema;
-  validCountries = ["CA", "US", "GB", "USA", "GBR", "CANADA", "THE UNITED STATES OF AMERICA"];
+  validCountries = ["US"];
 
   constructor() {
     this.emailSchema = string()

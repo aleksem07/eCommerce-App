@@ -32,6 +32,10 @@ export default class FormControlComponent {
     this.view.inputListener(this.inputHandler.bind(this));
   }
 
+  validate() {
+    this.inputHandler(this.view.input.value);
+  }
+
   async inputHandler(inputText: string) {
     const inputValid = await this.validator.validate(this.inputName, inputText);
 

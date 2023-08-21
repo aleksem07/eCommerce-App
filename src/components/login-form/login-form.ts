@@ -9,6 +9,7 @@ import { Routes } from "@Services/router/router.types";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
 import LinkComponent from "@Components/link/link";
+import { FormInput } from "./login-form.types";
 
 export default class LoginFormComponent {
   emailInput: FormControlComponent;
@@ -60,12 +61,26 @@ export default class LoginFormComponent {
     this.view.submitFormListener(this.submitFormHandler.bind(this));
   }
 
-  async submitFormHandler(email: string, password: string) {
-    const emailValid = await this.validator.validate("email", email);
-    const passwordValid = await this.validator.validate("password", password);
+  private getValueByKey(inputs: FormInput[], key: string): string {
+    const input = inputs.find((input) => input.key === key);
 
-    if (emailValid?.isValid && passwordValid?.isValid) {
-      const result = await this.authService.signIn(email, password);
+    if (!input) {
+      throw new Error(`Value for key ${key} was not found`);
+    }
+
+    return input.value;
+  }
+
+  async submitFormHandler(inputValues: FormInput[]) {
+    const isValidValues = inputValues.every(
+      (inputValue) => this.validator.validate(inputValue.key, inputValue.value)?.isValid
+    );
+
+    if (isValidValues) {
+      const result = await this.authService.signIn(
+        this.getValueByKey(inputValues, "email"),
+        this.getValueByKey(inputValues, "password")
+      );
 
       if (!result.success && result.error) {
         this.tooltip.show("Error", result.error);
@@ -73,6 +88,9 @@ export default class LoginFormComponent {
         eventBusService.publish(Events.userLogin);
         RouterService.navigateTo(Routes.MAIN);
       }
+    } else {
+      this.emailInput.validate();
+      this.passwordInput.validate();
     }
   }
 
