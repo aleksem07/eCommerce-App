@@ -8,6 +8,7 @@ import RouterService from "@Services/router/router";
 import { Routes } from "@Services/router/router.types";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
+import LinkComponent from "@Components/link/link";
 
 export default class LoginFormComponent {
   emailInput: FormControlComponent;
@@ -17,6 +18,7 @@ export default class LoginFormComponent {
   authService: AuthService;
   tooltip: TooltipComponent;
   validator: ValidatorUtil;
+  registrationLink: LinkComponent;
 
   constructor() {
     this.validator = new ValidatorUtil();
@@ -49,6 +51,12 @@ export default class LoginFormComponent {
       inputName: "password",
     });
 
+    this.registrationLink = new LinkComponent({
+      href: Routes.REGISTRATION,
+      text: "Sign up",
+      classes: ["ms-2"],
+    });
+
     this.view.submitFormListener(this.submitFormHandler.bind(this));
   }
 
@@ -76,7 +84,8 @@ export default class LoginFormComponent {
     const email = this.emailInput.init();
     const password = this.passwordInput.init();
     const showPassword = this.passwordCheck.init();
-    this.view.render(email, password, showPassword);
+    const registrationLink = this.registrationLink.init();
+    this.view.render(email, password, showPassword, registrationLink);
     this.view.checkboxListener(this.checkboxHandler.bind(this));
     this.tooltip.init(this.view.submitButton);
   }

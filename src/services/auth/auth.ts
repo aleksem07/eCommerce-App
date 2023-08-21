@@ -3,11 +3,11 @@ import ClientBuilderService from "../client-builder/client-builder";
 import {
   AUTH_TOKEN_LS,
   AuthResult,
-  Address,
   DataInfo,
-  LoginProps,
-  RegistrationProps,
-  TokenProps,
+  LoginParams,
+  RegistrationParams,
+  TokenParams,
+  SignUpParams,
 } from "./auth.types";
 
 export default class AuthService extends ClientBuilderService {
@@ -34,18 +34,18 @@ export default class AuthService extends ClientBuilderService {
     return result;
   }
 
-  async signUp(
-    username: string,
-    password: string,
-    firstName: string,
-    lastName: string,
-    dateOfBirth: string,
-    addresses: Address[],
-    shippingAddresses?: [number],
-    defaultShippingAddress?: number,
-    billingAddresses?: [number],
-    defaultBillingAddress?: number
-  ): Promise<AuthResult<DataInfo | TokenInfo>> {
+  async signUp({
+    username,
+    password,
+    firstName,
+    lastName,
+    dateOfBirth,
+    addresses,
+    shippingAddresses,
+    defaultShippingAddress,
+    billingAddresses,
+    defaultBillingAddress,
+  }: SignUpParams): Promise<AuthResult<DataInfo | TokenInfo>> {
     const result = await this.getToken("/anonymous/token", {
       grant_type: "client_credentials",
       username,
@@ -72,11 +72,11 @@ export default class AuthService extends ClientBuilderService {
     return result;
   }
 
-  private async getToken(url: string, paramsProps: TokenProps): Promise<AuthResult<TokenInfo>> {
+  private async getToken(url: string, requestParams: TokenParams): Promise<AuthResult<TokenInfo>> {
     try {
       const authUrl = `${this.authUrl}/oauth/${this.projectKey}${url}`;
       const params = new URLSearchParams();
-      for (const [key, value] of Object.entries(paramsProps)) {
+      for (const [key, value] of Object.entries(requestParams)) {
         if (value) {
           params.append(key, value);
         }
@@ -98,7 +98,7 @@ export default class AuthService extends ClientBuilderService {
 
       const data: TokenInfo = await response.json();
 
-      if (paramsProps.username) {
+      if (requestParams.username) {
         localStorage.setItem(AUTH_TOKEN_LS, data.access_token);
       }
 
@@ -113,7 +113,7 @@ export default class AuthService extends ClientBuilderService {
     }
   }
 
-  private async login({ username, password, token }: LoginProps): Promise<AuthResult<DataInfo>> {
+  private async login({ username, password, token }: LoginParams): Promise<AuthResult<DataInfo>> {
     try {
       const data = await this.commercetoolsClient.execute({
         method: "POST",
@@ -152,7 +152,7 @@ export default class AuthService extends ClientBuilderService {
     defaultShippingAddress,
     billingAddresses,
     defaultBillingAddress,
-  }: RegistrationProps) {
+  }: RegistrationParams) {
     try {
       const data = await this.commercetoolsClient.execute({
         method: "POST",

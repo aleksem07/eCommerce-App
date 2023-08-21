@@ -10,8 +10,11 @@ import { Events } from "@Services/event-bus/event-bus.types";
 import AuthService from "@Services/auth/auth";
 import RouterService from "@Services/router/router";
 import { Routes } from "@Services/router/router.types";
+import LinkComponent from "@Components/link/link";
 
 export default class RegistrationFormComponent {
+  authService: AuthService;
+  tooltip: TooltipComponent;
   view: RegistrationFormView;
   emailInput: FormControlComponent;
   passwordInput: FormControlComponent;
@@ -24,8 +27,6 @@ export default class RegistrationFormComponent {
   cityInput: FormControlComponent;
   validator: ValidatorUtil;
   passwordCheck: FormCheckComponent;
-  tooltip: TooltipComponent;
-  authService: AuthService;
   defaultAddressCheck: FormCheckComponent;
   defaultBillingAddressCheck: FormCheckComponent;
   sameAddressCheck: FormCheckComponent;
@@ -33,6 +34,7 @@ export default class RegistrationFormComponent {
   cityBillingInput: FormControlComponent;
   countryBillingInput: FormSelectComponent;
   postalCodeBillingInput: FormControlComponent;
+  loginLink: LinkComponent;
 
   isDefaultAddress: boolean;
   isDefaultAddressBilling: boolean;
@@ -50,8 +52,9 @@ export default class RegistrationFormComponent {
     }
     this.view = new RegistrationFormView();
     this.validator = new ValidatorUtil();
-    this.tooltip = new TooltipComponent();
     this.authService = new AuthService();
+    this.tooltip = new TooltipComponent();
+
     this.emailInput = this.createEmailInputComponent();
     this.passwordInput = this.createPasswordInputComponent();
     this.firstNameInput = this.createFirstNameInputComponent();
@@ -88,12 +91,32 @@ export default class RegistrationFormComponent {
       formName: "registration",
       inputName: "default-billing-address",
     });
+
+    this.loginLink = new LinkComponent({
+      href: Routes.LOGIN,
+      text: "Sign in",
+      classes: ["ms-2"],
+    });
+  }
+
+  private getValueByKey(inputs: FormInput[], key: string): string {
+    const input = inputs.find((input) => input.key === key);
+
+    if (!input) {
+      throw new Error(`Value for key ${key} was not found`);
+    }
+
+    return input.value;
   }
 
   // eslint-disable-next-line max-lines-per-function
-  async submitFormHandler(inputValues: FormInput[], registrationData: Record<string, string>) {
+  async submitFormHandler(inputValues: FormInput[]) {
     const isValidValues = inputValues.every((inputValue) => {
       const result = this.validator.validate(inputValue.key, inputValue.value);
+
+      if (!result?.isValid) {
+        this.tooltip.show("Error", result?.message as string);
+      }
 
       return result?.isValid;
     });
@@ -103,42 +126,48 @@ export default class RegistrationFormComponent {
       const billingAddressStorage = 1;
       const addresses = [
         {
-          country: registrationData.country,
-          city: registrationData.city,
-          streetName: registrationData.streetName,
-          postalCode: registrationData.postalCode,
+          country: this.getValueByKey(inputValues, "country"),
+          city: this.getValueByKey(inputValues, "city"),
+          streetName: this.getValueByKey(inputValues, "street"),
+          postalCode: this.getValueByKey(inputValues, "postal-code"),
         },
       ];
 
       if (!this.isDefaultAddressSame) {
         addresses.push({
-          country: registrationData.countryBilling,
-          city: registrationData.cityBilling,
-          streetName: registrationData.streetNameBilling,
-          postalCode: registrationData.postalCodeBilling,
+          country: this.getValueByKey(inputValues, "country-billing"),
+          city: this.getValueByKey(inputValues, "city-billing"),
+          streetName: this.getValueByKey(inputValues, "street-billing"),
+          postalCode: this.getValueByKey(inputValues, "postal-code-billing"),
         });
       }
 
-      const result = await this.authService.signUp(
-        registrationData.email,
-        registrationData.password,
-        registrationData.firstName,
-        registrationData.lastName,
-        registrationData.dateOfBirth,
+      const values = {
+        username: this.getValueByKey(inputValues, "email"),
+        password: this.getValueByKey(inputValues, "password"),
+        firstName: this.getValueByKey(inputValues, "first-name"),
+        lastName: this.getValueByKey(inputValues, "last-name"),
+        dateOfBirth: this.getValueByKey(inputValues, "date-of-birth"),
         addresses,
-        [shippingAddressStorage],
-        this.isDefaultAddress ? shippingAddressStorage : undefined,
-        !this.isDefaultAddressSame ? [billingAddressStorage] : [shippingAddressStorage],
-        !this.isDefaultAddressSame && this.isDefaultAddressBilling
-          ? billingAddressStorage
-          : this.isDefaultAddressSame && this.isDefaultAddress
-          ? shippingAddressStorage
-          : undefined
-      );
+        shippingAddresses: [shippingAddressStorage],
+        defaultShippingAddress: this.isDefaultAddress ? shippingAddressStorage : undefined,
+        billingAddresses: !this.isDefaultAddressSame
+          ? [billingAddressStorage]
+          : [shippingAddressStorage],
+        defaultBillingAddress:
+          !this.isDefaultAddressSame && this.isDefaultAddressBilling
+            ? billingAddressStorage
+            : this.isDefaultAddressSame && this.isDefaultAddress
+            ? shippingAddressStorage
+            : undefined,
+      };
+
+      const result = await this.authService.signUp(values);
 
       if (!result.success && result.error) {
         this.tooltip.show("Error", result.error);
       } else {
+        this.tooltip.show("Success", "Registration successful");
         eventBusService.publish(Events.userLogin);
         RouterService.navigateTo(Routes.MAIN);
       }
@@ -313,22 +342,24 @@ export default class RegistrationFormComponent {
     const firstName = this.firstNameInput.init();
     const lastName = this.lastNameInput.init();
     const dateOfBirth = this.dateOfBirthInput.init();
-    const setSameAddress = this.sameAddressCheck.init();
-    const shippingAddressTitle = this.view.addressShippingTitle;
-    const setDefaultAddress = this.defaultAddressCheck.init();
     const country = this.countryInput.init();
     const city = this.cityInput.init();
     const street = this.streetInput.init();
     const postalCode = this.postalCodeInput.init();
-    const billingAddressTitle = this.view.addressBillingTitle;
-    const setDefaultBillingAddress = this.defaultBillingAddressCheck.init();
     const countryBilling = this.countryBillingInput.init();
     const cityBilling = this.cityBillingInput.init();
     const streetBilling = this.streetBillingInput.init();
     const postalCodeBilling = this.postalCodeBillingInput.init();
+    const setSameAddress = this.sameAddressCheck.init();
+    const shippingAddressTitle = this.view.addressShippingTitle;
+    const setDefaultAddress = this.defaultAddressCheck.init();
+    const billingAddressTitle = this.view.addressBillingTitle;
+    const setDefaultBillingAddress = this.defaultBillingAddressCheck.init();
+    const loginLink = this.loginLink.init();
 
     if (this.isDefaultAddressSame) {
       this.view.render(
+        loginLink,
         email,
         password,
         passwordCheck,
@@ -345,6 +376,7 @@ export default class RegistrationFormComponent {
       );
     } else {
       this.view.render(
+        loginLink,
         email,
         password,
         passwordCheck,
@@ -366,7 +398,6 @@ export default class RegistrationFormComponent {
         postalCodeBilling
       );
     }
-    this.view.checkboxListener(this.checkboxHandler.bind(this));
     this.view.checkboxAddressListener(
       "same-address-checkbox-input",
       this.defaultAddressSameHandler.bind(this)
@@ -380,5 +411,6 @@ export default class RegistrationFormComponent {
       this.defaultAddressBillingHandler.bind(this)
     );
     this.tooltip.init(this.view.submitButton);
+    this.view.checkboxListener(this.checkboxHandler.bind(this));
   }
 }

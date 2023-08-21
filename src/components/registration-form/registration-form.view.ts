@@ -9,10 +9,11 @@ export default class RegistrationFormView extends ViewBuilder {
   confirmPasswordInput: HTMLInputElement;
   addressShippingTitle: HTMLHeadingElement;
   addressBillingTitle: HTMLHeadingElement;
+  loginLinkWrapper: HTMLDivElement;
+  paragraph: HTMLParagraphElement;
 
   constructor() {
     super();
-
     this.form = this.createElement("form", {
       id: `registration-form`,
       classes: ["d-flex", "flex-column"],
@@ -23,9 +24,9 @@ export default class RegistrationFormView extends ViewBuilder {
     });
     this.header = this.createElement("h1", {
       id: `registration-header`,
-      classes: ["h3", "mb-3", "fw-normal", "text-center", "py-5"],
+      classes: ["h3", "my-3", "fw-normal", "text-center"],
     });
-    this.header.textContent = `Register`;
+    this.header.textContent = `Sign up`;
     this.addressShippingTitle = this.createElement("h2", {
       id: `address-default-title`,
       classes: ["h4", "fw-normal", "text-center", "py-3"],
@@ -38,42 +39,46 @@ export default class RegistrationFormView extends ViewBuilder {
     this.addressBillingTitle.textContent = `Billing Address`;
     this.submitButton = this.createElement("button", {
       id: `registration-submit-button`,
-      classes: ["btn", "btn-primary", "mt-4", "align-self-center"],
+      classes: ["btn", "btn-primary", "mt-4"],
     });
     this.submitButton.setAttribute("type", "submit");
-    this.submitButton.textContent = "Submit";
-
+    this.submitButton.textContent = "Sign up";
     this.confirmPasswordInput = this.createElement("input", {
       id: `registration-confirm-password-input`,
       classes: ["form-control"],
     });
     this.confirmPasswordInput.type = "password";
     this.confirmPasswordInput.placeholder = "Confirm Password";
+    this.loginLinkWrapper = this.createLoginLinkWrapper();
+    this.paragraph = this.createRegistrationParagraph();
+  }
+
+  private createLoginLinkWrapper() {
+    this.loginLinkWrapper = this.createElement("div", {
+      classes: ["mt-3", "text-muted"],
+      id: `login-link-wrapper`,
+    });
+    this.loginLinkWrapper.textContent = "Already have an account?";
+
+    return this.loginLinkWrapper;
+  }
+
+  private createRegistrationParagraph() {
+    this.paragraph = this.createElement("p", {
+      id: `registration-paragraph`,
+      classes: ["text-center", "mb-3", "text-muted"],
+    });
+    this.paragraph.textContent =
+      "Registration takes less than a minute but gives you full control over your orders.";
+
+    return this.paragraph;
   }
 
   clearFormContent() {
     this.form.innerHTML = "";
   }
 
-  submitFormListener(
-    handler: (inputValues: FormInput[], registrationData: Record<string, string>) => void
-  ) {
-    const inputSelectors = {
-      email: "#registration-email-input",
-      password: "#registration-password-input",
-      firstName: "#registration-first-name-input",
-      lastName: "#registration-last-name-input",
-      dateOfBirth: "#registration-date-of-birth-input",
-      country: "#registration-country-input",
-      city: "#registration-city-input",
-      streetName: "#registration-street-input",
-      postalCode: "#registration-postal-code-input",
-      countryBilling: "#registration-country-billing-input",
-      cityBilling: "#registration-city-billing-input",
-      streetNameBilling: "#registration-street-billing-input",
-      postalCodeBilling: "#registration-postal-code-billing-input",
-    };
-
+  submitFormListener(handler: (inputValues: FormInput[]) => void) {
     this.form.addEventListener("submit", (event) => {
       event.preventDefault();
       const formData = new FormData(event.target as HTMLFormElement);
@@ -83,15 +88,7 @@ export default class RegistrationFormView extends ViewBuilder {
         value: value.toString(),
       }));
 
-      const registrationData = Object.fromEntries(
-        Object.entries(inputSelectors).map(([name, selector]) => {
-          const element = this.getElement(selector) as HTMLInputElement;
-
-          return [name, element ? element.value : ""];
-        })
-      );
-
-      handler(inputValues, registrationData);
+      handler(inputValues);
     });
   }
 
@@ -136,9 +133,10 @@ export default class RegistrationFormView extends ViewBuilder {
     return status;
   }
 
-  render(...elements: HTMLElement[]) {
-    this.form.append(...elements, this.submitButton);
-    this.container.append(this.header, this.form);
+  render(loginLink: HTMLElement, ...elements: HTMLElement[]) {
+    this.loginLinkWrapper.append(loginLink);
+    this.form.append(...elements, this.submitButton, this.loginLinkWrapper);
+    this.container.append(this.header, this.paragraph, this.form);
     this.appendTo("#registration-page", this.container);
   }
 }

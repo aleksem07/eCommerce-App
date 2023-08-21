@@ -9,27 +9,33 @@ export interface AuthResult<T> {
   error?: string;
 }
 
-export interface TokenProps {
+export interface TokenParams {
   grant_type: string;
   scopes: string;
   username?: string;
   password?: string;
 }
 
-export interface LoginProps {
+export interface LoginParams {
   username: string;
   password: string;
   token: string;
 }
 
-export interface RegistrationProps extends LoginProps {
+export interface RegistrationParams extends SignUpParams {
+  token: string;
+}
+
+export interface SignUpParams {
+  username: string;
+  password: string;
   firstName: string;
   lastName: string;
   dateOfBirth: string;
   addresses: Address[];
-  shippingAddresses?: [number];
+  shippingAddresses?: number[];
   defaultShippingAddress?: number;
-  billingAddresses?: [number];
+  billingAddresses?: number[];
   defaultBillingAddress?: number;
 }
 
