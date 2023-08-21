@@ -24,6 +24,10 @@ export default class FormSelectComponent {
     this.view.inputListener(this.inputHandler.bind(this));
   }
 
+  validate() {
+    this.inputHandler(this.view.select.value);
+  }
+
   async inputHandler(inputText: string) {
     const inputValid = await this.validator.validate(this.inputName, inputText);
 
