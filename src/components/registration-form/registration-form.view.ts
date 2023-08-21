@@ -7,6 +7,8 @@ export default class RegistrationFormView extends ViewBuilder {
   private header: HTMLHeadingElement;
   submitButton: HTMLButtonElement;
   confirmPasswordInput: HTMLInputElement;
+  loginLinkWrapper: HTMLDivElement;
+  paragraph: HTMLParagraphElement;
 
   constructor() {
     super();
@@ -22,15 +24,15 @@ export default class RegistrationFormView extends ViewBuilder {
 
     this.header = this.createElement("h1", {
       id: `registration-header`,
-      classes: ["h3", "mb-3", "fw-normal", "text-center", "py-5"],
+      classes: ["h3", "my-3", "fw-normal", "text-center"],
     });
-    this.header.textContent = `Register`;
+    this.header.textContent = `Sign up`;
     this.submitButton = this.createElement("button", {
       id: `registration-submit-button`,
-      classes: ["btn", "btn-primary", "mt-4", "align-self-center"],
+      classes: ["btn", "btn-primary", "mt-4"],
     });
     this.submitButton.setAttribute("type", "submit");
-    this.submitButton.textContent = "Submit";
+    this.submitButton.textContent = "Sign up";
 
     this.confirmPasswordInput = this.createElement("input", {
       id: `registration-confirm-password-input`,
@@ -38,6 +40,30 @@ export default class RegistrationFormView extends ViewBuilder {
     });
     this.confirmPasswordInput.type = "password";
     this.confirmPasswordInput.placeholder = "Confirm Password";
+
+    this.loginLinkWrapper = this.createLoginLinkWrapper();
+    this.paragraph = this.createRegistrationParagraph();
+  }
+
+  private createLoginLinkWrapper() {
+    this.loginLinkWrapper = this.createElement("div", {
+      classes: ["mt-3", "text-muted"],
+      id: `login-link-wrapper`,
+    });
+    this.loginLinkWrapper.textContent = "Already have an account?";
+
+    return this.loginLinkWrapper;
+  }
+
+  private createRegistrationParagraph() {
+    this.paragraph = this.createElement("p", {
+      id: `registration-paragraph`,
+      classes: ["text-center", "mb-3", "text-muted"],
+    });
+    this.paragraph.textContent =
+      "Registration takes less than a minute but gives you full control over your orders.";
+
+    return this.paragraph;
   }
 
   submitFormListener(handler: (inputValues: FormInput[]) => void) {
@@ -79,9 +105,35 @@ export default class RegistrationFormView extends ViewBuilder {
     }
   }
 
-  render(...elements: HTMLElement[]) {
-    this.form.append(...elements, this.submitButton);
-    this.container.append(this.header, this.form);
+  render(
+    email: HTMLElement,
+    password: HTMLElement,
+    passwordCheck: HTMLElement,
+    firstName: HTMLElement,
+    lastName: HTMLElement,
+    dateOfBirth: HTMLElement,
+    country: HTMLElement,
+    city: HTMLElement,
+    street: HTMLElement,
+    postalCode: HTMLElement,
+    loginLink: HTMLElement
+  ) {
+    this.loginLinkWrapper.append(loginLink);
+    this.form.append(
+      email,
+      password,
+      passwordCheck,
+      firstName,
+      lastName,
+      dateOfBirth,
+      country,
+      city,
+      street,
+      postalCode,
+      this.submitButton,
+      this.loginLinkWrapper
+    );
+    this.container.append(this.header, this.paragraph, this.form);
     this.appendTo("#registration-page", this.container);
   }
 }

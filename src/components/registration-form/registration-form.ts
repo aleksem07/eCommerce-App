@@ -4,6 +4,8 @@ import { FormInput } from "./registration-form.types";
 import ValidatorUtil from "@Utils/validator/validator";
 import FormCheckComponent from "@Components/form-check/form-check";
 import FormSelectComponent from "@Components/form-select/form-select";
+import LinkComponent from "@Components/link/link";
+import { Routes } from "@Services/router/router.types";
 import AuthService from "@Services/auth/auth";
 import TooltipComponent from "@Components/tooltip/tooltip";
 import { SignUpParams } from "@Services/auth/auth.types";
@@ -23,6 +25,7 @@ export default class RegistrationFormComponent {
   cityInput: FormControlComponent;
   validator: ValidatorUtil;
   passwordCheck: FormCheckComponent;
+  loginLink: LinkComponent;
 
   constructor() {
     this.view = new RegistrationFormView();
@@ -45,6 +48,12 @@ export default class RegistrationFormComponent {
     this.passwordCheck = new FormCheckComponent({
       formName: "registration",
       inputName: "password",
+    });
+
+    this.loginLink = new LinkComponent({
+      href: Routes.LOGIN,
+      text: "Sign in",
+      classes: ["ms-2"],
     });
   }
 
@@ -199,6 +208,7 @@ export default class RegistrationFormComponent {
     const city = this.cityInput.init();
     const street = this.streetInput.init();
     const postalCode = this.postalCodeInput.init();
+    const loginLink = this.loginLink.init();
     this.view.render(
       email,
       password,
@@ -209,7 +219,8 @@ export default class RegistrationFormComponent {
       country,
       city,
       street,
-      postalCode
+      postalCode,
+      loginLink
     );
 
     this.tooltip.init(this.view.submitButton);
