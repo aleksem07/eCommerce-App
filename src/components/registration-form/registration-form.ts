@@ -36,15 +36,12 @@ export default class RegistrationFormComponent {
   postalCodeBillingInput: FormControlComponent;
   loginLink: LinkComponent;
 
-  isDefaultAddress: boolean;
-  isDefaultAddressBilling: boolean;
-  isDefaultAddressSame: boolean;
+  isDefaultAddress = false;
+  isDefaultAddressBilling = false;
+  isDefaultAddressSame = false;
 
   // eslint-disable-next-line max-lines-per-function
   constructor() {
-    this.isDefaultAddress = false;
-    this.isDefaultAddressBilling = false;
-    this.isDefaultAddressSame = false;
     this.view = new RegistrationFormView();
     this.validator = new ValidatorUtil();
     this.authService = new AuthService();
@@ -142,13 +139,16 @@ export default class RegistrationFormComponent {
         billingAddresses: !this.isDefaultAddressSame
           ? [billingAddressStorage]
           : [shippingAddressStorage],
-        defaultBillingAddress:
-          !this.isDefaultAddressSame && this.isDefaultAddressBilling
-            ? billingAddressStorage
-            : this.isDefaultAddressSame && this.isDefaultAddress
-            ? shippingAddressStorage
-            : undefined,
+        defaultBillingAddress: this.isDefaultAddressBilling ? billingAddressStorage : undefined,
       };
+
+      if (!this.isDefaultAddressSame && this.isDefaultAddressBilling) {
+        values.defaultBillingAddress = billingAddressStorage;
+      } else if (this.isDefaultAddressSame && this.isDefaultAddress) {
+        values.defaultBillingAddress = shippingAddressStorage;
+      } else {
+        values.defaultBillingAddress = undefined;
+      }
 
       const result = await this.authService.signUp(values);
 

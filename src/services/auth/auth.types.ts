@@ -36,7 +36,7 @@ export interface SignUpParams {
   shippingAddresses?: number[];
   defaultShippingAddress?: number;
   billingAddresses?: number[];
-  defaultBillingAddress?: number;
+  defaultBillingAddress?: number | undefined;
 }
 
 export interface Address {
