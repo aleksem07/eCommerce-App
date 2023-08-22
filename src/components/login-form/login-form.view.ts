@@ -87,16 +87,15 @@ export default class LoginFormView extends ViewBuilder {
     }
   }
 
-  render(element: LoginPageElements) {
+  render({ email, password, showPassword, registrationLink }: LoginPageElements) {
     this.form.append(
-      element.email,
-      element.password,
-      element.showPassword,
-      element.registrationLink,
+      email,
+      password,
+      showPassword,
       this.submitButton,
       this.registrationLinkWrapper
     );
-    this.registrationLinkWrapper.append(element.registrationLink);
+    this.registrationLinkWrapper.append(registrationLink);
     this.container.append(this.header, this.paragraph, this.form);
     this.appendTo("#login-page", this.container);
   }

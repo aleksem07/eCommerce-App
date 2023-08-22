@@ -345,6 +345,21 @@ export default class RegistrationFormComponent {
     this.init();
   }
 
+  attachComponentEventListeners() {
+    this.view.checkboxAddressListener(
+      "same-address-checkbox-input",
+      this.defaultAddressSameHandler.bind(this)
+    );
+    this.view.checkboxAddressListener(
+      "default-address-checkbox-input",
+      this.defaultAddressHandler.bind(this)
+    );
+    this.view.checkboxAddressListener(
+      "default-billing-address-checkbox-input",
+      this.defaultAddressBillingHandler.bind(this)
+    );
+  }
+
   // eslint-disable-next-line max-lines-per-function
   init() {
     const email = this.emailInput.init();
@@ -409,18 +424,8 @@ export default class RegistrationFormComponent {
         postalCodeBilling
       );
     }
-    this.view.checkboxAddressListener(
-      "same-address-checkbox-input",
-      this.defaultAddressSameHandler.bind(this)
-    );
-    this.view.checkboxAddressListener(
-      "default-address-checkbox-input",
-      this.defaultAddressHandler.bind(this)
-    );
-    this.view.checkboxAddressListener(
-      "default-billing-address-checkbox-input",
-      this.defaultAddressBillingHandler.bind(this)
-    );
+
+    this.attachComponentEventListeners();
     this.tooltip.init(this.view.submitButton);
     this.view.checkboxListener(this.checkboxHandler.bind(this));
   }
