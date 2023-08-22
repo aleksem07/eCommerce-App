@@ -360,70 +360,36 @@ export default class RegistrationFormComponent {
     );
   }
 
-  // eslint-disable-next-line max-lines-per-function
   init() {
-    const email = this.emailInput.init();
-    const password = this.passwordInput.init();
-    const passwordCheck = this.passwordCheck.init();
-    const firstName = this.firstNameInput.init();
-    const lastName = this.lastNameInput.init();
-    const dateOfBirth = this.dateOfBirthInput.init();
-    const country = this.countryInput.init();
-    const city = this.cityInput.init();
-    const street = this.streetInput.init();
-    const postalCode = this.postalCodeInput.init();
-    const countryBilling = this.countryBillingInput.init();
-    const cityBilling = this.cityBillingInput.init();
-    const streetBilling = this.streetBillingInput.init();
-    const postalCodeBilling = this.postalCodeBillingInput.init();
-    const setSameAddress = this.sameAddressCheck.init();
-    const shippingAddressTitle = this.view.addressShippingTitle;
-    const setDefaultAddress = this.defaultAddressCheck.init();
-    const billingAddressTitle = this.view.addressBillingTitle;
-    const setDefaultBillingAddress = this.defaultBillingAddressCheck.init();
     const loginLink = this.loginLink.init();
+    const components: HTMLElement[] = [
+      this.emailInput.init(),
+      this.passwordInput.init(),
+      this.passwordCheck.init(),
+      this.firstNameInput.init(),
+      this.lastNameInput.init(),
+      this.dateOfBirthInput.init(),
+      this.sameAddressCheck.init(),
+      this.view.addressShippingTitle,
+      this.defaultAddressCheck.init(),
+      this.countryInput.init(),
+      this.cityInput.init(),
+      this.streetInput.init(),
+      this.postalCodeInput.init(),
+    ];
 
-    if (this.isDefaultAddressSame) {
-      this.view.render(
-        loginLink,
-        email,
-        password,
-        passwordCheck,
-        firstName,
-        lastName,
-        dateOfBirth,
-        setSameAddress,
-        shippingAddressTitle,
-        setDefaultAddress,
-        country,
-        city,
-        street,
-        postalCode
-      );
-    } else {
-      this.view.render(
-        loginLink,
-        email,
-        password,
-        passwordCheck,
-        firstName,
-        lastName,
-        dateOfBirth,
-        setSameAddress,
-        shippingAddressTitle,
-        setDefaultAddress,
-        country,
-        city,
-        street,
-        postalCode,
-        billingAddressTitle,
-        setDefaultBillingAddress,
-        countryBilling,
-        cityBilling,
-        streetBilling,
-        postalCodeBilling
+    if (!this.isDefaultAddressSame) {
+      components.push(
+        this.view.addressBillingTitle,
+        this.defaultBillingAddressCheck.init(),
+        this.countryBillingInput.init(),
+        this.cityBillingInput.init(),
+        this.streetBillingInput.init(),
+        this.postalCodeBillingInput.init()
       );
     }
+
+    this.view.render(loginLink, ...components);
 
     this.attachComponentEventListeners();
     this.tooltip.init(this.view.submitButton);
