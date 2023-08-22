@@ -9,6 +9,6 @@ export default class CatalogView extends ViewBuilder {
   }
 
   render() {
-    this.appendTo("", this.element);
+    this.appendTo("#root", this.element);
   }
 }

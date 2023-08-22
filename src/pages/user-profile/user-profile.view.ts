@@ -1,6 +1,6 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
 
-export default class ProductView extends ViewBuilder {
+export default class UserProfileView extends ViewBuilder {
   private element: HTMLElement;
 
   constructor() {

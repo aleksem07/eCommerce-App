@@ -7,4 +7,7 @@ export enum Routes {
   LOGIN = "#login",
   REGISTRATION = "#registration",
   NOT_FOUND = "#404",
+  USER_PROFILE = "#profile",
+  CATALOG = "#catalog",
+  PRODUCT = "#product",
 }
