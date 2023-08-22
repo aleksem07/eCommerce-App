@@ -22,8 +22,6 @@ export default class MainNavComponent {
   }
 
   init() {
-    this.view.initLinks(this.loginLinkItem, this.registrationLinkItem);
-
-    return this.view.render();
+    return this.view.render(this.loginLinkItem, this.registrationLinkItem);
   }
 }

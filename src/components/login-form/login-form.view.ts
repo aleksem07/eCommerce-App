@@ -1,5 +1,5 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
-import { FormInput } from "./login-form.types";
+import { FormInput, LoginPageElements } from "./login-form.types";
 
 export default class LoginFormView extends ViewBuilder {
   private form: HTMLFormElement;
@@ -87,20 +87,16 @@ export default class LoginFormView extends ViewBuilder {
     }
   }
 
-  render(
-    email: HTMLElement,
-    password: HTMLElement,
-    showPassword: HTMLElement,
-    registrationLink: HTMLElement
-  ) {
-    this.registrationLinkWrapper.append(registrationLink);
+  render(element: LoginPageElements) {
     this.form.append(
-      email,
-      password,
-      showPassword,
+      element.email,
+      element.password,
+      element.showPassword,
+      element.registrationLink,
       this.submitButton,
       this.registrationLinkWrapper
     );
+    this.registrationLinkWrapper.append(element.registrationLink);
     this.container.append(this.header, this.paragraph, this.form);
     this.appendTo("#login-page", this.container);
   }

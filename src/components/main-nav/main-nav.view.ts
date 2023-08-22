@@ -11,10 +11,6 @@ export default class MainNavView extends ViewBuilder {
     });
   }
 
-  initLinks(loginLinkItem: HTMLElement, registrationLinkItem: HTMLElement) {
-    this.linksContainer.append(loginLinkItem, registrationLinkItem);
-  }
-
   loginLinkListener(loginLinkItem: HTMLElement, handler: () => void) {
     loginLinkItem.addEventListener("click", (event) => {
       event.preventDefault();
@@ -22,7 +18,9 @@ export default class MainNavView extends ViewBuilder {
     });
   }
 
-  render() {
+  render(loginLinkItem: HTMLElement, registrationLinkItem: HTMLElement) {
+    this.linksContainer.append(loginLinkItem, registrationLinkItem);
+
     return this.linksContainer;
   }
 }
