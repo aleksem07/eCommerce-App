@@ -5,7 +5,10 @@ interface ElementOptions {
 }
 
 export class ViewBuilder {
-  createElement(tag: string, { id, classes, dataset }: ElementOptions = {}) {
+  createElement<T extends HTMLElement>(
+    tag: string,
+    { id, classes, dataset }: ElementOptions = {}
+  ): T {
     const element = document.createElement(tag);
 
     if (id) {
@@ -26,11 +29,13 @@ export class ViewBuilder {
       }
     }
 
-    return element;
+    return element as T;
   }
 
-  getElement(selector: string) {
-    return document.querySelector(selector);
+  getElement<T extends HTMLElement>(selector: string) {
+    const element = document.querySelector(selector);
+
+    return element as T;
   }
 
   createIcon(name: string) {
@@ -41,6 +46,7 @@ export class ViewBuilder {
 
   appendTo(parentSelector: string, element: HTMLElement) {
     const parent = document.querySelector(parentSelector);
+
     if (parent) {
       parent.appendChild(element);
     }

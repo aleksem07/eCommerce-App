@@ -17,4 +17,9 @@ module.exports = {
   roots: ["<rootDir>"],
   modulePaths: [compilerOptions.baseUrl],
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
+  transform: {
+    ".+\\.(png|svg|jpg|jpeg|gif)$": "jest-transform-stub",
+  },
+  setupFilesAfterEnv: ["./jest/jest-setup.js"],
+  setupFiles: ["dotenv/config"],
 };
