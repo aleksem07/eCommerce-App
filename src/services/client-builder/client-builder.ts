@@ -1,5 +1,6 @@
 import {
   ClientBuilder,
+  HttpErrorType,
   type HttpMiddlewareOptions,
   type Client,
 } from "@commercetools/sdk-client-v2";
@@ -57,6 +58,26 @@ export default class ClientBuilderService {
 
     if (this.apiUrl) {
       this.httpMiddlewareOptions.host = this.apiUrl;
+    }
+  }
+
+  protected async execute<T>(uri: string, token: string, body: Record<string, T>) {
+    try {
+      const data = await this.commercetoolsClient.execute({
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        uri,
+        body,
+      });
+
+      return { success: true, data };
+    } catch (error: unknown) {
+      const errorMessage = (error as HttpErrorType).message;
+
+      return { success: false, error: errorMessage };
     }
   }
 }
