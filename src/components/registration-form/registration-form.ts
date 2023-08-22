@@ -45,11 +45,6 @@ export default class RegistrationFormComponent {
     this.isDefaultAddress = false;
     this.isDefaultAddressBilling = false;
     this.isDefaultAddressSame = false;
-    const checked = localStorage.getItem("defaultAddressSameCheckboxStatus");
-
-    if (checked === "true") {
-      this.isDefaultAddressSame = true;
-    }
     this.view = new RegistrationFormView();
     this.validator = new ValidatorUtil();
     this.authService = new AuthService();
@@ -84,7 +79,6 @@ export default class RegistrationFormComponent {
       labelText: "Use the same address for both billing and shipping",
       formName: "registration",
       inputName: "same-address",
-      checked: this.isDefaultAddressSame,
     });
     this.defaultBillingAddressCheck = new FormCheckComponent({
       labelText: "Set as default address",
