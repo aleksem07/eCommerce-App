@@ -6,7 +6,7 @@ export default class CatalogView extends ViewBuilder {
   constructor() {
     super();
     this.element = this.createElement("div", {
-      classes: ["container"],
+      classes: ["container", "mt-5"],
     });
   }
 

@@ -6,12 +6,22 @@ export default class ProductListView extends ViewBuilder {
   constructor() {
     super();
     this.element = this.createElement("div", {
-      classes: ["row"],
+      classes: ["row", "g-3"],
     });
   }
 
+  createColumn(element: HTMLElement) {
+    const column = this.createElement("div", {
+      classes: ["col-4"],
+    });
+    column.append(element);
+
+    return column;
+  }
+
   render(...elements: HTMLElement[]) {
-    this.element.append(...elements);
+    const columns = elements.map((element) => this.createColumn(element));
+    this.element.append(...columns);
 
     return this.element;
   }
