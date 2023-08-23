@@ -64,12 +64,12 @@ export default class ValidatorUtil {
 
   dateOfBirthSchemaCheck(): ValidationSchema {
     const now = dayjs();
-    const minDate = dayjs("1900-01-01");
+    const minDate = dayjs("1900-01-01").toISOString();
     const maxDate = now.subtract(13, "year").toISOString();
 
     return date()
       .max(maxDate, "You must be 13 years old or older")
-      .min(minDate.toISOString(), "Date must not be earlier than January 1, 1900")
+      .min(minDate, "Date must not be earlier than January 1, 1900")
       .required("Date of birth is required");
   }
 

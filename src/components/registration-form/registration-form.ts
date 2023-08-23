@@ -11,6 +11,7 @@ import AuthService from "@Services/auth/auth";
 import RouterService from "@Services/router/router";
 import { Routes } from "@Services/router/router.types";
 import LinkComponent from "@Components/link/link";
+import { Address } from "@Services/auth/auth.types";
 
 export default class RegistrationFormComponent {
   authService: AuthService;
@@ -36,20 +37,12 @@ export default class RegistrationFormComponent {
   postalCodeBillingInput: FormControlComponent;
   loginLink: LinkComponent;
 
-  isDefaultAddress: boolean;
-  isDefaultAddressBilling: boolean;
-  isDefaultAddressSame: boolean;
+  isDefaultAddress = false;
+  isDefaultAddressBilling = false;
+  isDefaultAddressSame = false;
 
   // eslint-disable-next-line max-lines-per-function
   constructor() {
-    this.isDefaultAddress = false;
-    this.isDefaultAddressBilling = false;
-    this.isDefaultAddressSame = false;
-    const checked = localStorage.getItem("defaultAddressSameCheckboxStatus");
-
-    if (checked === "true") {
-      this.isDefaultAddressSame = true;
-    }
     this.view = new RegistrationFormView();
     this.validator = new ValidatorUtil();
     this.authService = new AuthService();
@@ -84,7 +77,6 @@ export default class RegistrationFormComponent {
       labelText: "Use the same address for both billing and shipping",
       formName: "registration",
       inputName: "same-address",
-      checked: this.isDefaultAddressSame,
     });
     this.defaultBillingAddressCheck = new FormCheckComponent({
       labelText: "Set as default address",
@@ -109,53 +101,14 @@ export default class RegistrationFormComponent {
     return input.value;
   }
 
-  // eslint-disable-next-line max-lines-per-function
   async submitFormHandler(inputValues: FormInput[]) {
     const isValidValues = inputValues.every(
       (inputValue) => this.validator.validate(inputValue.key, inputValue.value)?.isValid
     );
 
     if (isValidValues) {
-      const shippingAddressStorage = 0;
-      const billingAddressStorage = 1;
-      const addresses = [
-        {
-          country: this.getValueByKey(inputValues, "country"),
-          city: this.getValueByKey(inputValues, "city"),
-          streetName: this.getValueByKey(inputValues, "street"),
-          postalCode: this.getValueByKey(inputValues, "postal-code"),
-        },
-      ];
-
-      if (!this.isDefaultAddressSame) {
-        addresses.push({
-          country: this.getValueByKey(inputValues, "country-billing"),
-          city: this.getValueByKey(inputValues, "city-billing"),
-          streetName: this.getValueByKey(inputValues, "street-billing"),
-          postalCode: this.getValueByKey(inputValues, "postal-code-billing"),
-        });
-      }
-
-      const values = {
-        username: this.getValueByKey(inputValues, "email"),
-        password: this.getValueByKey(inputValues, "password"),
-        firstName: this.getValueByKey(inputValues, "first-name"),
-        lastName: this.getValueByKey(inputValues, "last-name"),
-        dateOfBirth: this.getValueByKey(inputValues, "date-of-birth"),
-        addresses,
-        shippingAddresses: [shippingAddressStorage],
-        defaultShippingAddress: this.isDefaultAddress ? shippingAddressStorage : undefined,
-        billingAddresses: !this.isDefaultAddressSame
-          ? [billingAddressStorage]
-          : [shippingAddressStorage],
-        defaultBillingAddress:
-          !this.isDefaultAddressSame && this.isDefaultAddressBilling
-            ? billingAddressStorage
-            : this.isDefaultAddressSame && this.isDefaultAddress
-            ? shippingAddressStorage
-            : undefined,
-      };
-
+      const addresses: Address[] = await this.createUserAddress(inputValues);
+      const values = await this.createUserData(inputValues, addresses);
       const result = await this.authService.signUp(values);
 
       if (!result.success && result.error) {
@@ -323,6 +276,57 @@ export default class RegistrationFormComponent {
     });
   }
 
+  async createUserAddress(inputValues: FormInput[]) {
+    const addresses = [
+      {
+        country: this.getValueByKey(inputValues, "country"),
+        city: this.getValueByKey(inputValues, "city"),
+        streetName: this.getValueByKey(inputValues, "street"),
+        postalCode: this.getValueByKey(inputValues, "postal-code"),
+      },
+    ];
+
+    if (!this.isDefaultAddressSame) {
+      addresses.push({
+        country: this.getValueByKey(inputValues, "country-billing"),
+        city: this.getValueByKey(inputValues, "city-billing"),
+        streetName: this.getValueByKey(inputValues, "street-billing"),
+        postalCode: this.getValueByKey(inputValues, "postal-code-billing"),
+      });
+    }
+
+    return addresses;
+  }
+
+  async createUserData(inputValues: FormInput[], addresses: Address[]) {
+    const shippingAddressStorage = 0;
+    const billingAddressStorage = 1;
+    const values = {
+      username: this.getValueByKey(inputValues, "email"),
+      password: this.getValueByKey(inputValues, "password"),
+      firstName: this.getValueByKey(inputValues, "first-name"),
+      lastName: this.getValueByKey(inputValues, "last-name"),
+      dateOfBirth: this.getValueByKey(inputValues, "date-of-birth"),
+      addresses,
+      shippingAddresses: [shippingAddressStorage],
+      defaultShippingAddress: this.isDefaultAddress ? shippingAddressStorage : undefined,
+      billingAddresses: !this.isDefaultAddressSame
+        ? [billingAddressStorage]
+        : [shippingAddressStorage],
+      defaultBillingAddress: this.isDefaultAddressBilling ? billingAddressStorage : undefined,
+    };
+
+    if (!this.isDefaultAddressSame && this.isDefaultAddressBilling) {
+      values.defaultBillingAddress = billingAddressStorage;
+    } else if (this.isDefaultAddressSame && this.isDefaultAddress) {
+      values.defaultBillingAddress = shippingAddressStorage;
+    } else {
+      values.defaultBillingAddress = undefined;
+    }
+
+    return values;
+  }
+
   async checkboxHandler(status: boolean) {
     this.view.handleCheckboxResult(status);
   }
@@ -337,75 +341,11 @@ export default class RegistrationFormComponent {
 
   async defaultAddressSameHandler(status: boolean) {
     this.isDefaultAddressSame = this.view.checkboxDefaultAddressResult(status);
-    localStorage.setItem("defaultAddressSameCheckboxStatus", status.toString());
     this.view.clearFormContent();
     this.init();
   }
 
-  // eslint-disable-next-line max-lines-per-function
-  init() {
-    const email = this.emailInput.init();
-    const password = this.passwordInput.init();
-    const passwordCheck = this.passwordCheck.init();
-    const firstName = this.firstNameInput.init();
-    const lastName = this.lastNameInput.init();
-    const dateOfBirth = this.dateOfBirthInput.init();
-    const country = this.countryInput.init();
-    const city = this.cityInput.init();
-    const street = this.streetInput.init();
-    const postalCode = this.postalCodeInput.init();
-    const countryBilling = this.countryBillingInput.init();
-    const cityBilling = this.cityBillingInput.init();
-    const streetBilling = this.streetBillingInput.init();
-    const postalCodeBilling = this.postalCodeBillingInput.init();
-    const setSameAddress = this.sameAddressCheck.init();
-    const shippingAddressTitle = this.view.addressShippingTitle;
-    const setDefaultAddress = this.defaultAddressCheck.init();
-    const billingAddressTitle = this.view.addressBillingTitle;
-    const setDefaultBillingAddress = this.defaultBillingAddressCheck.init();
-    const loginLink = this.loginLink.init();
-
-    if (this.isDefaultAddressSame) {
-      this.view.render(
-        loginLink,
-        email,
-        password,
-        passwordCheck,
-        firstName,
-        lastName,
-        dateOfBirth,
-        setSameAddress,
-        shippingAddressTitle,
-        setDefaultAddress,
-        country,
-        city,
-        street,
-        postalCode
-      );
-    } else {
-      this.view.render(
-        loginLink,
-        email,
-        password,
-        passwordCheck,
-        firstName,
-        lastName,
-        dateOfBirth,
-        setSameAddress,
-        shippingAddressTitle,
-        setDefaultAddress,
-        country,
-        city,
-        street,
-        postalCode,
-        billingAddressTitle,
-        setDefaultBillingAddress,
-        countryBilling,
-        cityBilling,
-        streetBilling,
-        postalCodeBilling
-      );
-    }
+  attachComponentEventListeners() {
     this.view.checkboxAddressListener(
       "same-address-checkbox-input",
       this.defaultAddressSameHandler.bind(this)
@@ -418,6 +358,40 @@ export default class RegistrationFormComponent {
       "default-billing-address-checkbox-input",
       this.defaultAddressBillingHandler.bind(this)
     );
+  }
+
+  init() {
+    const loginLink = this.loginLink.init();
+    const components: HTMLElement[] = [
+      this.emailInput.init(),
+      this.passwordInput.init(),
+      this.passwordCheck.init(),
+      this.firstNameInput.init(),
+      this.lastNameInput.init(),
+      this.dateOfBirthInput.init(),
+      this.sameAddressCheck.init(),
+      this.view.addressShippingTitle,
+      this.defaultAddressCheck.init(),
+      this.countryInput.init(),
+      this.cityInput.init(),
+      this.streetInput.init(),
+      this.postalCodeInput.init(),
+    ];
+
+    if (!this.isDefaultAddressSame) {
+      components.push(
+        this.view.addressBillingTitle,
+        this.defaultBillingAddressCheck.init(),
+        this.countryBillingInput.init(),
+        this.cityBillingInput.init(),
+        this.streetBillingInput.init(),
+        this.postalCodeBillingInput.init()
+      );
+    }
+
+    this.view.render(loginLink, ...components);
+
+    this.attachComponentEventListeners();
     this.tooltip.init(this.view.submitButton);
     this.view.checkboxListener(this.checkboxHandler.bind(this));
   }
