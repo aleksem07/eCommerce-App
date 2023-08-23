@@ -10,7 +10,7 @@ export default class ProductListView extends ViewBuilder {
     });
   }
 
-  createColumn(element: HTMLElement) {
+  private createColumn(element: HTMLElement) {
     const column = this.createElement("div", {
       classes: ["col-4"],
     });
