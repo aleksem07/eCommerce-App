@@ -20,7 +20,7 @@ export default class ProductCardView extends ViewBuilder {
 
   createCard() {
     this.card = this.createElement<HTMLDivElement>("div", {
-      classes: ["card", "mb-3"],
+      classes: ["card", "mb-3", "col-4"],
     });
 
     return this.card;
