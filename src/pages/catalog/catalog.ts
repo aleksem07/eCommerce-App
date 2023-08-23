@@ -12,7 +12,7 @@ export default class CatalogPage {
   }
 
   private async fetchProducts() {
-    const products = await this.productService.getAll();
+    await this.productService.getAll();
     // Здесь можно посмотреть товары через console.log()
   }
 
