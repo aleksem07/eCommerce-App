@@ -18,7 +18,7 @@ export default class ProductCardView extends ViewBuilder {
     this.descriptionElement = this.createDescriptionElement(description);
   }
 
-  createCard() {
+  private createCard() {
     this.card = this.createElement<HTMLDivElement>("div", {
       classes: ["card"],
     });
@@ -26,7 +26,7 @@ export default class ProductCardView extends ViewBuilder {
     return this.card;
   }
 
-  createCardBody() {
+  private createCardBody() {
     this.cardBody = this.createElement<HTMLDivElement>("div", {
       classes: ["card-body"],
     });
@@ -34,7 +34,7 @@ export default class ProductCardView extends ViewBuilder {
     return this.cardBody;
   }
 
-  createImageElement(imageUrl: string) {
+  private createImageElement(imageUrl: string) {
     this.imageElement = this.createElement<HTMLImageElement>("img", {
       classes: ["card-img-top"],
     });
@@ -49,7 +49,7 @@ export default class ProductCardView extends ViewBuilder {
     return this.imageElement;
   }
 
-  createTitleElement(title: string) {
+  private createTitleElement(title: string) {
     this.titleElement = this.createElement<HTMLHeadingElement>("h5", {
       classes: ["card-title"],
     });
@@ -58,7 +58,7 @@ export default class ProductCardView extends ViewBuilder {
     return this.titleElement;
   }
 
-  createDescriptionElement(description: string) {
+  private createDescriptionElement(description: string) {
     this.descriptionElement = this.createElement<HTMLParagraphElement>("p", {
       classes: ["card-text"],
     });
