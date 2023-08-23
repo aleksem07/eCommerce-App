@@ -1,55 +1,72 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
+import fallbackImage from "assets/images/card-empty.png";
+import { ProductCardProps } from "./product-card.types";
 
 export default class ProductCardView extends ViewBuilder {
-  private cardWrapperElement: HTMLDivElement;
+  private cardBody: HTMLDivElement;
   private imageElement: HTMLImageElement;
   private titleElement: HTMLHeadingElement;
   private descriptionElement: HTMLParagraphElement;
+  private card: HTMLDivElement;
 
-  constructor() {
+  constructor({ title, description, imageUrl }: ProductCardProps) {
     super();
-    this.cardWrapperElement = this.createCardWrapper();
-    this.imageElement = this.createImageElement();
-    this.titleElement = this.createTitleElement();
-    this.descriptionElement = this.createDescriptionElement();
-
-    this.cardWrapperElement.append(this.imageElement, this.titleElement, this.descriptionElement);
+    this.card = this.createCard();
+    this.cardBody = this.createCardBody();
+    this.imageElement = this.createImageElement(imageUrl);
+    this.titleElement = this.createTitleElement(title);
+    this.descriptionElement = this.createDescriptionElement(description);
   }
 
-  createCardWrapper() {
-    this.cardWrapperElement = this.createElement<HTMLDivElement>("div", {
+  createCard() {
+    this.card = this.createElement<HTMLDivElement>("div", {
       classes: ["card", "mb-3"],
     });
 
-    return this.cardWrapperElement;
+    return this.card;
   }
 
-  createImageElement() {
+  createCardBody() {
+    this.cardBody = this.createElement<HTMLDivElement>("div", {
+      classes: ["card-body"],
+    });
+
+    return this.cardBody;
+  }
+
+  createImageElement(imageUrl: string) {
     this.imageElement = this.createElement<HTMLImageElement>("img", {
       classes: ["card-img-top"],
     });
-    this.imageElement.src = "/";
+    this.imageElement.alt = "Card image";
+    this.imageElement.height = 200;
+    this.imageElement.src = imageUrl || fallbackImage;
 
     return this.imageElement;
   }
 
-  createTitleElement() {
+  createTitleElement(title: string) {
     this.titleElement = this.createElement<HTMLHeadingElement>("h5", {
       classes: ["card-title"],
     });
+    this.titleElement.textContent = title;
 
     return this.titleElement;
   }
 
-  createDescriptionElement() {
+  createDescriptionElement(description: string) {
     this.descriptionElement = this.createElement<HTMLParagraphElement>("p", {
       classes: ["card-text"],
     });
+    this.descriptionElement.textContent = description;
 
     return this.descriptionElement;
   }
 
   render() {
-    return this.cardWrapperElement;
+    this.card.append(this.imageElement, this.cardBody);
+    this.cardBody.append(this.titleElement, this.descriptionElement);
+
+    return this.card;
   }
 }

@@ -8,7 +8,9 @@ export default class ProductListView extends ViewBuilder {
     this.element = this.createElement("div");
   }
 
-  render() {
+  render(...elements: HTMLElement[]) {
+    this.element.append(...elements);
+
     return this.element;
   }
 }

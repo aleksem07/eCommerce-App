@@ -5,10 +5,13 @@ export default class CatalogView extends ViewBuilder {
 
   constructor() {
     super();
-    this.element = this.createElement("div");
+    this.element = this.createElement("div", {
+      classes: ["container", "d-flex", "justify-content-between"],
+    });
   }
 
-  render() {
+  render(list: HTMLElement) {
+    this.element.append(list);
     this.appendTo("#root", this.element);
   }
 }

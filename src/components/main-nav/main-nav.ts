@@ -20,7 +20,7 @@ export default class MainNavComponent {
       text: "Register",
     }).init();
     this.catalogLinkItem = new LinkComponent({ href: Routes.CATALOG, text: "Catalog" }).init();
-    this.productsLinkItem = new LinkComponent({ href: Routes.PRODUCTS, text: "Products" }).init();
+    this.productsLinkItem = new LinkComponent({ href: Routes.PRODUCT, text: "Products" }).init();
     this.userProfileLinkItem = new LinkComponent({
       href: Routes.USER_PROFILE,
       text: "Profile",
