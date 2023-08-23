@@ -39,8 +39,12 @@ export default class ProductCardView extends ViewBuilder {
       classes: ["card-img-top"],
     });
     this.imageElement.alt = "Card image";
-    this.imageElement.height = 200;
-    this.imageElement.src = imageUrl || fallbackImage;
+    this.imageElement.height = 300;
+    this.imageElement.src = imageUrl;
+
+    this.imageElement.onerror = () => {
+      this.imageElement.src = fallbackImage;
+    };
 
     return this.imageElement;
   }
