@@ -10,8 +10,11 @@ export default class CatalogView extends ViewBuilder {
     });
   }
 
-  render(list: HTMLElement) {
+  displayProducts(list: HTMLElement) {
     this.element.append(list);
+  }
+
+  render() {
     this.appendTo("#root", this.element);
   }
 }

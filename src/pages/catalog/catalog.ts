@@ -5,22 +5,24 @@ import ProductListComponent from "@Components/product-list/product-list";
 export default class CatalogPage {
   private view: CatalogView;
   private productService: ProductService;
-  private productListComponent: ProductListComponent;
+  private productListComponent?: ProductListComponent;
 
   constructor() {
     this.view = new CatalogView();
     this.productService = new ProductService();
-    this.productListComponent = new ProductListComponent();
-    this.fetchProducts();
   }
 
   private async fetchProducts() {
-    await this.productService.getAll();
-    // Здесь можно посмотреть товары через console.log()
+    const products = await this.productService.getAll();
+
+    if (products) {
+      this.productListComponent = new ProductListComponent(products);
+      this.view.displayProducts(this.productListComponent.init());
+    }
   }
 
   init() {
-    const list = this.productListComponent.init();
-    this.view.render(list);
+    this.fetchProducts();
+    this.view.render();
   }
 }

@@ -1,22 +1,21 @@
 import ProductCardComponent from "@Components/product-card/product-card";
 import ProductListView from "./product-list.view";
+import { Product } from "@Services/product/product.types";
 
 export default class ProductListComponent {
   private view: ProductListView;
-  productCardComponent: ProductCardComponent;
+  private productCards?: HTMLDivElement[];
+  private products: Product[];
 
-  constructor() {
+  constructor(products: Product[]) {
     this.view = new ProductListView();
-    this.productCardComponent = new ProductCardComponent({
-      title: "title",
-      description: "description",
-      imageUrl: "imageUrl",
-    });
+
+    this.products = products;
   }
 
   init() {
-    const card = this.productCardComponent.init();
+    this.productCards = this.products.map((product) => new ProductCardComponent(product).init());
 
-    return this.view.render(card);
+    return this.view.render(...this.productCards);
   }
 }
