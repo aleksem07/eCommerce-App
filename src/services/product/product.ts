@@ -2,7 +2,7 @@ import AuthService from "@Services/auth/auth";
 import ClientBuilderService from "@Services/client-builder/client-builder";
 
 export default class ProductService extends ClientBuilderService {
-  authService: AuthService;
+  private authService: AuthService;
 
   constructor() {
     super();
