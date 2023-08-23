@@ -3,12 +3,17 @@ import CatalogView from "./catalog.view";
 
 export default class CatalogPage {
   private view: CatalogView;
-  productService: ProductService;
+  private productService: ProductService;
 
   constructor() {
     this.view = new CatalogView();
     this.productService = new ProductService();
-    this.productService.getAll();
+    this.fetchProducts();
+  }
+
+  private async fetchProducts() {
+    const products = await this.productService.getAll();
+    // Здесь можно посмотреть товары через console.log()
   }
 
   init() {
