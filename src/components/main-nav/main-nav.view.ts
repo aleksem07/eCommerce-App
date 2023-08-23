@@ -18,8 +18,8 @@ export default class MainNavView extends ViewBuilder {
     });
   }
 
-  render(loginLinkItem: HTMLElement, registrationLinkItem: HTMLElement) {
-    this.linksContainer.append(loginLinkItem, registrationLinkItem);
+  render(...elements: HTMLElement[]) {
+    this.linksContainer.append(...elements);
 
     return this.linksContainer;
   }
