@@ -10,5 +10,4 @@ export enum Routes {
   USER_PROFILE = "#profile",
   CATALOG = "#catalog",
   PRODUCT = "#product",
-  PRODUCTS = "PRODUCTS",
 }
