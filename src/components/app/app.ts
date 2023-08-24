@@ -12,17 +12,20 @@ import UserProfilePage from "@Pages/user-profile/user-profile";
 import eventBusService from "@Services/event-bus/event-bus";
 import { EventData, Events } from "@Services/event-bus/event-bus.types";
 import { HttpErrorType } from "@commercetools/sdk-client-v2";
+import NotificationComponent from "@Components/notification/notification";
 
 export default class AppComponent {
   private view: AppView;
   private router: RouterService;
   private header: HeaderComponent;
+  private notification: NotificationComponent;
 
   constructor() {
     this.view = new AppView();
     this.view.render();
     this.header = new HeaderComponent();
     this.header.init();
+    this.notification = new NotificationComponent();
 
     this.router = RouterService.getInstance(this.view.element, {
       [Routes.MAIN]: new MainPage(),
@@ -39,6 +42,6 @@ export default class AppComponent {
 
   errorHandler(error?: EventData) {
     const httpError = error as HttpErrorType;
-    console.log("Err", httpError);
+    this.notification.init(httpError.message);
   }
 }
