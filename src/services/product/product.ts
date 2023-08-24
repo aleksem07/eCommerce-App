@@ -1,7 +1,7 @@
 import AuthService from "@Services/auth/auth";
 import ClientBuilderService from "@Services/client-builder/client-builder";
-import { Product as ProductResponse } from "@commercetools/platform-sdk";
-import { Product } from "./product.types";
+import { Price as PriceResponse, Product as ProductResponse } from "@commercetools/platform-sdk";
+import { Price, Product } from "./product.types";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
 import { HttpErrorType } from "@commercetools/sdk-client-v2";
@@ -29,7 +29,7 @@ export default class ProductService extends ClientBuilderService {
           })
           .execute();
 
-        return body.results.map(this.mapProductResponseToProduct);
+        return body.results.map(this.mapProductResponseToProduct.bind(this));
       }
     } catch (error) {
       const httpError = error as HttpErrorType;
@@ -42,6 +42,32 @@ export default class ProductService extends ClientBuilderService {
       title: productResponse.masterData.current.name.en,
       description: productResponse.masterData.current.description?.en || "product description",
       imageUrl: productResponse.masterData.current.masterVariant.images?.[0].url || "",
+      price: this.getPrice(productResponse.masterData.current.masterVariant.prices),
+      discountedPrice: this.getDiscountedPrice(
+        productResponse.masterData.current.masterVariant.prices
+      ),
+    };
+  }
+
+  private getPrice(prices?: PriceResponse[]): Price {
+    const price = prices?.find((price) => price.country === "US");
+    const priceValue = price?.value?.centAmount?.toFixed(price?.value?.fractionDigits);
+
+    return {
+      currencyCode: price?.value?.currencyCode || "USD",
+      value: Number(priceValue) || 0,
+    };
+  }
+
+  private getDiscountedPrice(prices?: PriceResponse[]): Price {
+    const price = prices?.find((price) => price.country === "US");
+    const priceValue = price?.discounted?.value?.centAmount.toFixed(
+      price.discounted?.value?.fractionDigits
+    );
+
+    return {
+      currencyCode: price?.value?.currencyCode || "USD",
+      value: Number(priceValue) || 0,
     };
   }
 }

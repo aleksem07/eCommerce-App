@@ -67,9 +67,9 @@ export default class ProductCardView extends ViewBuilder {
     return this.descriptionElement;
   }
 
-  render() {
+  render(priceElement: HTMLElement) {
     this.card.append(this.imageElement, this.cardBody);
-    this.cardBody.append(this.titleElement, this.descriptionElement);
+    this.cardBody.append(this.titleElement, this.descriptionElement, priceElement);
 
     return this.card;
   }
