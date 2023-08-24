@@ -24,7 +24,7 @@ export default class ProductService extends ClientBuilderService {
           .products()
           .get({
             headers: {
-              // Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${token}`,
             },
           })
           .execute();
