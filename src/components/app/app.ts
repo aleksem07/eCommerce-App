@@ -42,6 +42,6 @@ export default class AppComponent {
 
   errorHandler(error?: EventData) {
     const httpError = error as HttpErrorType;
-    this.notification.init(httpError.message);
+    this.notification.init("danger", httpError.message);
   }
 }

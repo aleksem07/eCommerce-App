@@ -1,6 +1,7 @@
 import "./notification.scss";
 import { Toast } from "bootstrap";
 import NotificationView from "./notification.view";
+import { NotificationVariant } from "./notification.types";
 
 export default class NotificationComponent {
   private view: NotificationView;
@@ -16,8 +17,8 @@ export default class NotificationComponent {
     });
   }
 
-  init(message: string) {
-    this.toast = this.view.render(message);
+  init(variant: NotificationVariant, message: string) {
+    this.toast = this.view.render(variant, message);
     document.body.appendChild(this.toast);
     Toast.getOrCreateInstance(this.toast).show();
 

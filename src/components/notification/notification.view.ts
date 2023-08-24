@@ -1,4 +1,5 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
+import { NotificationVariant } from "./notification.types";
 
 export default class NotificationView extends ViewBuilder {
   private toast: HTMLDivElement;
@@ -52,10 +53,25 @@ export default class NotificationView extends ViewBuilder {
     return button;
   }
 
-  render(message: string) {
+  setVariant(variant: NotificationVariant): string {
+    switch (variant) {
+      case "success":
+        return "text-bg-success";
+      case "danger":
+        return "text-bg-danger";
+      case "warning":
+        return "text-bg-warning";
+      default:
+        return "text-bg-info";
+    }
+  }
+
+  render(variant: NotificationVariant, message: string) {
     this.dFlexDiv.innerHTML = "";
     this.toastBodyDiv.textContent = message;
     this.dFlexDiv.append(this.toastBodyDiv, this.closeButton);
+
+    this.toast.classList.add(this.setVariant(variant));
     this.toast.appendChild(this.dFlexDiv);
 
     return this.toast;
