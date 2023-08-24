@@ -51,7 +51,7 @@ export default class ProductService extends ClientBuilderService {
 
   private getPrice(prices?: PriceResponse[]): Price {
     const price = prices?.find((price) => price.country === "US");
-    const priceValue = price?.value?.centAmount?.toFixed(price?.value?.fractionDigits);
+    const priceValue = this.getPriceValue(price?.value?.centAmount);
 
     return {
       currencyCode: price?.value?.currencyCode || "USD",
@@ -59,15 +59,21 @@ export default class ProductService extends ClientBuilderService {
     };
   }
 
-  private getDiscountedPrice(prices?: PriceResponse[]): Price {
+  private getDiscountedPrice(prices?: PriceResponse[]): Price | undefined {
     const price = prices?.find((price) => price.country === "US");
-    const priceValue = price?.discounted?.value?.centAmount.toFixed(
-      price.discounted?.value?.fractionDigits
-    );
+    const priceValue = this.getPriceValue(price?.discounted?.value?.centAmount);
+
+    if (!priceValue) {
+      return;
+    }
 
     return {
       currencyCode: price?.value?.currencyCode || "USD",
       value: Number(priceValue) || 0,
     };
+  }
+
+  getPriceValue(centAmount?: number): number {
+    return centAmount ? Number((centAmount / 100).toFixed(2)) : 0;
   }
 }

@@ -9,7 +9,9 @@ export default class ProductPriceView extends ViewBuilder {
 
   constructor(price: Price, discountedPrice?: Price) {
     super();
-    this.element = this.createElement("div");
+    this.element = this.createElement("div", {
+      classes: ["d-flex", "align-items-center"],
+    });
 
     if (discountedPrice) {
       this.discountedPrice = this.createDiscountedPrice(discountedPrice);
@@ -38,7 +40,7 @@ export default class ProductPriceView extends ViewBuilder {
 
   private createOldPrice(price: Price): HTMLElement {
     const oldPrice = this.createElement("div", {
-      classes: ["text-muted", "fs-6", "text-decoration-line-through"],
+      classes: ["text-muted", "fs-6", "text-decoration-line-through", "ms-2"],
     });
     oldPrice.textContent = `$${price.value}`;
 
