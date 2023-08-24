@@ -3,14 +3,14 @@ import { NotificationVariant } from "./notification.types";
 
 export default class NotificationView extends ViewBuilder {
   private toast: HTMLDivElement;
-  private dFlexDiv: HTMLDivElement;
+  private wrapper: HTMLDivElement;
   private toastBodyDiv!: HTMLDivElement;
   private closeButton: HTMLButtonElement;
 
   constructor() {
     super();
     this.toast = this.createToast();
-    this.dFlexDiv = this.createDFlexDiv();
+    this.wrapper = this.createDFlexDiv();
     this.toastBodyDiv = this.createToastBodyDiv();
     this.closeButton = this.createCloseButton();
   }
@@ -59,20 +59,18 @@ export default class NotificationView extends ViewBuilder {
         return "text-bg-success";
       case "danger":
         return "text-bg-danger";
-      case "warning":
-        return "text-bg-warning";
       default:
-        return "text-bg-info";
+        return "text-bg-primary";
     }
   }
 
   render(variant: NotificationVariant, message: string) {
-    this.dFlexDiv.innerHTML = "";
+    this.wrapper.innerHTML = "";
     this.toastBodyDiv.textContent = message;
-    this.dFlexDiv.append(this.toastBodyDiv, this.closeButton);
+    this.wrapper.append(this.toastBodyDiv, this.closeButton);
 
     this.toast.classList.add(this.setVariant(variant));
-    this.toast.appendChild(this.dFlexDiv);
+    this.toast.appendChild(this.wrapper);
 
     return this.toast;
   }
