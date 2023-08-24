@@ -21,6 +21,7 @@ export default class ProductListView extends ViewBuilder {
 
   render(...elements: HTMLElement[]) {
     const columns = elements.map((element) => this.createColumn(element));
+    this.element.innerHTML = "";
     this.element.append(...columns);
 
     return this.element;
