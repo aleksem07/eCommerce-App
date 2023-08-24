@@ -17,7 +17,7 @@ export default class NotificationView extends ViewBuilder {
 
   createToast() {
     const toast = this.createElement<HTMLDivElement>("div", {
-      classes: ["toast", "align-items-center", "text-bg-primary", "border-0", "notification"],
+      classes: ["toast", "align-items-center", "border-0", "notification"],
     });
     toast.setAttribute("role", "alert");
     toast.setAttribute("aria-live", "assertive");
