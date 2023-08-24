@@ -9,6 +9,9 @@ import HeaderComponent from "@Components/header/header";
 import CatalogPage from "@Pages/catalog/catalog";
 import ProductPage from "@Pages/product/product";
 import UserProfilePage from "@Pages/user-profile/user-profile";
+import eventBusService from "@Services/event-bus/event-bus";
+import { EventData, Events } from "@Services/event-bus/event-bus.types";
+import { HttpErrorType } from "@commercetools/sdk-client-v2";
 
 export default class AppComponent {
   private view: AppView;
@@ -30,5 +33,12 @@ export default class AppComponent {
       [Routes.PRODUCT]: new ProductPage(),
       [Routes.USER_PROFILE]: new UserProfilePage(),
     });
+
+    eventBusService.subscribe(Events.errorOccurred, this.errorHandler.bind(this));
+  }
+
+  errorHandler(error?: EventData) {
+    const httpError = error as HttpErrorType;
+    console.log("Err", httpError);
   }
 }

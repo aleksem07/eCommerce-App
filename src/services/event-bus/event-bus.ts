@@ -2,7 +2,7 @@ import { Events, EventCallback, EventData } from "./event-bus.types";
 
 export class EventBusService {
   private static instance: EventBusService;
-  private events: { [event: string]: EventCallback<EventData>[] } = {};
+  private events: { [event: string]: EventCallback[] } = {};
 
   constructor() {
     this.events = {};
@@ -16,7 +16,7 @@ export class EventBusService {
     return EventBusService.instance;
   }
 
-  subscribe(event: Events, callback: EventCallback<EventData>) {
+  subscribe(event: Events, callback: EventCallback) {
     if (!this.events[event]) {
       this.events[event] = [];
     }

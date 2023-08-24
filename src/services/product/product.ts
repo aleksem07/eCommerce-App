@@ -2,6 +2,9 @@ import AuthService from "@Services/auth/auth";
 import ClientBuilderService from "@Services/client-builder/client-builder";
 import { Product as ProductResponse } from "@commercetools/platform-sdk";
 import { Product } from "./product.types";
+import eventBusService from "@Services/event-bus/event-bus";
+import { Events } from "@Services/event-bus/event-bus.types";
+import { HttpErrorType } from "@commercetools/sdk-client-v2";
 
 export default class ProductService extends ClientBuilderService {
   private authService: AuthService;
@@ -21,7 +24,7 @@ export default class ProductService extends ClientBuilderService {
           .products()
           .get({
             headers: {
-              Authorization: `Bearer ${token}`,
+              // Authorization: `Bearer ${token}`,
             },
           })
           .execute();
@@ -29,7 +32,8 @@ export default class ProductService extends ClientBuilderService {
         return body.results.map(this.mapProductResponseToProduct);
       }
     } catch (error) {
-      console.error("ERRORRRR", error);
+      const httpError = error as HttpErrorType;
+      eventBusService.publish(Events.errorOccurred, httpError);
     }
   }
 
