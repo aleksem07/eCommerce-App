@@ -29,8 +29,8 @@ export default class CatalogPage {
   }
 
   init() {
-    this.view.displayProducts(this.filter.init());
-    this.view.displayProducts(this.sort.init());
+    this.view.displaySidebar(this.filter.init());
+    this.view.displayToolbar(this.sort.init());
     this.fetchProducts();
     this.view.render();
   }

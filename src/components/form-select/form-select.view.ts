@@ -10,7 +10,7 @@ export default class FormSelectView extends ViewBuilder {
   select: HTMLSelectElement;
   inputHelp: HTMLElement;
 
-  constructor({ formName, inputName, labelText, helpText, options }: FormSelectProps) {
+  constructor({ formName, inputName, labelText, helpText, options, className }: FormSelectProps) {
     super();
 
     this.formName = formName;
@@ -18,7 +18,7 @@ export default class FormSelectView extends ViewBuilder {
 
     this.inputWrapper = this.createElement("div", {
       id: `${formName}-${inputName}-wrapper`,
-      classes: ["mt-2"],
+      classes: className ? ["mt-2", className] : ["mt-2"],
     });
 
     this.inputLabel = this.createElement("label", {

@@ -9,12 +9,12 @@ export default class SortView extends ViewBuilder {
   constructor() {
     super();
     this.toolbar = this.createElement("div", {
-      classes: ["toolbar", "row", "navbar"],
+      classes: ["toolbar", "d-flex", "align-items-center", "justify-content-between"],
     });
     this.arrowLeftIcon = this.createPaginationIcon("arrow-left");
     this.arrowRightIcon = this.createPaginationIcon("arrow-right");
     this.pagination = this.createElement("div", {
-      classes: ["pagination"],
+      classes: ["pagination", "text-end"],
     });
     this.pagination.textContent = "1, 2, 3 ... 10";
   }
@@ -31,7 +31,7 @@ export default class SortView extends ViewBuilder {
   render(toolbarElements: HTMLElement[]) {
     this.pagination.prepend(this.arrowLeftIcon);
     this.pagination.append(this.arrowRightIcon);
-    this.toolbar.append(...toolbarElements);
+    this.toolbar.append(this.pagination, ...toolbarElements);
 
     return this.toolbar;
   }

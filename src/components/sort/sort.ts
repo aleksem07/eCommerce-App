@@ -15,32 +15,36 @@ export default class SortComponent {
   private createSortByInputInputComponent() {
     return new FormSelectComponent({
       formName: "filter",
-      inputName: "sortBy",
+      inputName: "sort-by",
       labelText: "Sort by",
       helpText: "",
       options: [
         { label: "default", value: "*" },
-        { label: "popularity", value: "popularity" },
+        { label: "price", value: "price" },
         { label: "name", value: "name" },
       ],
+      className: "d-flex",
     });
   }
 
   private createShowInputInputComponent() {
     return new FormSelectComponent({
       formName: "filter",
-      inputName: "Show",
+      inputName: "show-products-per-page",
       labelText: "Show products per page",
       helpText: "",
       options: [
-        { label: "10", value: "10" },
-        { label: "11", value: "11" },
+        { label: "8", value: "8" },
+        { label: "12", value: "12" },
+        { label: "16", value: "16" },
       ],
+      className: "d-flex",
     });
   }
 
   init() {
     const toolbarElements: HTMLElement[] = [
+      this.sortByInput.init(),
       this.sortByInput.init(),
       this.showInput.init(),
       this.view.pagination,

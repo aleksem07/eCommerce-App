@@ -21,22 +21,22 @@ export default class FilterView extends ViewBuilder {
 
     this.categoryBrandTitle = this.createElement("h2", {
       id: `category-brand-title`,
-      classes: ["h4", "fw-normal", "text-center", "py-3"],
+      classes: ["h4", "fw-normal", "text-left", "py-3"],
     });
     this.categoryBrandTitle.textContent = `Brand`;
     this.categorySizeTitle = this.createElement("h2", {
       id: `category-size-title`,
-      classes: ["h4", "fw-normal", "text-center", "py-3"],
+      classes: ["h4", "fw-normal", "text-left", "py-3"],
     });
     this.categorySizeTitle.textContent = `Size`;
     this.categoryColorTitle = this.createElement("h2", {
       id: `category-color-title`,
-      classes: ["h4", "fw-normal", "text-center", "py-3"],
+      classes: ["h4", "fw-normal", "text-left", "py-3"],
     });
     this.categoryColorTitle.textContent = `Color`;
     this.categoryPriceTitle = this.createElement("h2", {
       id: `category-price-title`,
-      classes: ["h4", "fw-normal", "text-center", "py-3"],
+      classes: ["h4", "fw-normal", "text-left", "py-3"],
     });
     this.categoryPriceTitle.textContent = `Price`;
   }
