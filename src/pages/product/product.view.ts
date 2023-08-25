@@ -6,12 +6,13 @@ export default class ProductView extends ViewBuilder {
   constructor() {
     super();
     this.element = this.createElement("div", {
-      id: "d-flex",
+      classes: ["container", "mt-5"],
     });
     this.element.textContent = "Product";
   }
 
-  render() {
+  render(information: HTMLElement) {
+    this.element.append(information);
     this.appendTo("#root", this.element);
   }
 }
