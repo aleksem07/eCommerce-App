@@ -73,7 +73,7 @@ export default class ProductService extends ClientBuilderService {
     };
   }
 
-  getPriceValue(centAmount?: number): number {
+  private getPriceValue(centAmount?: number): number {
     return centAmount ? Number((centAmount / 100).toFixed(2)) : 0;
   }
 }
