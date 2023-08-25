@@ -7,7 +7,7 @@ export default class ProductCardView extends ViewBuilder {
   private imageElement: HTMLImageElement;
   private titleElement: HTMLHeadingElement;
   private descriptionElement: HTMLParagraphElement;
-  private card: HTMLDivElement;
+  private card: HTMLLinkElement;
 
   constructor({ title, description, imageUrl }: ProductCardProps) {
     super();
@@ -19,9 +19,10 @@ export default class ProductCardView extends ViewBuilder {
   }
 
   private createCard() {
-    this.card = this.createElement<HTMLDivElement>("div", {
-      classes: ["card"],
+    this.card = this.createElement<HTMLLinkElement>("a", {
+      classes: ["card", "card-animation"],
     });
+    this.card.href = "#";
 
     return this.card;
   }
