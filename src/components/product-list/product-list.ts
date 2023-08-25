@@ -4,16 +4,15 @@ import { Product } from "@Services/product/product.types";
 
 export default class ProductListComponent {
   private view: ProductListView;
-  private productCards?: HTMLDivElement[];
-  private products: Product[];
+  private productCards?: HTMLLinkElement[];
+  private products?: Product[];
 
-  constructor(products: Product[]) {
+  constructor() {
     this.view = new ProductListView();
-
-    this.products = products;
   }
 
-  init() {
+  init(products: Product[]) {
+    this.products = products;
     this.productCards = this.products.map((product) => new ProductCardComponent(product).init());
 
     return this.view.render(...this.productCards);

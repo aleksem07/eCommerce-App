@@ -4,26 +4,32 @@ import { ProductCardProps } from "./product-card.types";
 describe("ProductCardComponent", () => {
   it("should instantiate", () => {
     const instance = new ProductCardComponent({
+      id: "id",
       title: "title",
       description: "description",
       imageUrl: "imageUrl",
       color: "color",
+      size: "XL",
+      price: { currencyCode: "USD", value: 100 },
     });
     expect(instance).toBeInstanceOf(ProductCardComponent);
   });
 
   it("should render a card with the correct structure", () => {
     const props: ProductCardProps = {
+      id: "id",
       title: "Sample Title",
       description: "Sample Description",
       imageUrl: "sample-image.jpg",
       color: "black",
+      size: "XL",
+      price: { currencyCode: "USD", value: 100 },
     };
     const productCard = new ProductCardComponent(props);
 
     const productCardEl = productCard.init();
 
-    expect(productCardEl.tagName).toBe("DIV");
+    expect(productCardEl.tagName).toBe("A");
     expect(productCardEl.classList.contains("card")).toBe(true);
 
     const imageElement = productCardEl.querySelector(".card-img-top") as HTMLImageElement;

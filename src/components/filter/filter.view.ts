@@ -11,7 +11,7 @@ export default class FilterView extends ViewBuilder {
   constructor() {
     super();
     this.sidebar = this.createElement("div", {
-      classes: ["sidebar", "col"],
+      classes: ["sidebar", "row"],
     });
     this.hideSidebarButton = this.createElement("button", {
       classes: ["btn", "btn-dark"],

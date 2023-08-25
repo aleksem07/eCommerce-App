@@ -1,6 +1,3 @@
-export interface ProductCardProps {
-  title: string;
-  description: string;
-  imageUrl: string;
-  color: string;
-}
+import { Product } from "@Services/product/product.types";
+
+export type ProductCardProps = Product;

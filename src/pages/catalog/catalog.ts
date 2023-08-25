@@ -7,13 +7,14 @@ import SortComponent from "@Components/sort/sort";
 export default class CatalogPage {
   private view: CatalogView;
   private productService: ProductService;
-  private productListComponent?: ProductListComponent;
+  private productListComponent: ProductListComponent;
   private filter: FilterComponent;
   private sort: SortComponent;
 
   constructor() {
     this.view = new CatalogView();
     this.productService = new ProductService();
+    this.productListComponent = new ProductListComponent();
     this.filter = new FilterComponent();
     this.sort = new SortComponent();
   }
@@ -22,8 +23,8 @@ export default class CatalogPage {
     const products = await this.productService.getAll();
 
     if (products) {
-      this.productListComponent = new ProductListComponent(products);
-      this.view.displayProducts(this.productListComponent.init());
+      const productListElement = this.productListComponent.init(products);
+      this.view.displayProducts(productListElement);
     }
   }
 
