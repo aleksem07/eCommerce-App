@@ -4,3 +4,17 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+.card-animation {
+  transition: all 0.3s ease;
+  overflow: hidden;
+
+  & img {
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    transform: scale(1.015);
+    box-shadow: 0 10px 20px rgb(0 0 0 / 15%);
+  }
+}

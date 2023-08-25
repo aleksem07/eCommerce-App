@@ -5,7 +5,10 @@ export default class ProductView extends ViewBuilder {
 
   constructor() {
     super();
-    this.element = this.createElement("div");
+    this.element = this.createElement("div", {
+      id: "d-flex",
+    });
+    this.element.textContent = "Product";
   }
 
   render() {

@@ -4,6 +4,7 @@ export interface Product {
   imageUrl: string;
   price: Price;
   discountedPrice?: Price;
+  id: string;
 }
 
 export interface Price {
