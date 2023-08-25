@@ -4,7 +4,7 @@ import { Product } from "@Services/product/product.types";
 
 export default class ProductListComponent {
   private view: ProductListView;
-  private productCards?: HTMLDivElement[];
+  private productCards?: HTMLLinkElement[];
   private products?: Product[];
 
   constructor() {

@@ -39,6 +39,7 @@ export default class ProductService extends ClientBuilderService {
 
   private mapProductResponseToProduct(productResponse: ProductResponse): Product {
     return {
+      id: productResponse.id,
       title: productResponse.masterData.current.name.en,
       description: productResponse.masterData.current.description?.en || "product description",
       imageUrl: productResponse.masterData.current.masterVariant.images?.[0].url || "",

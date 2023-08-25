@@ -1,6 +1,7 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
 import fallbackImage from "assets/images/card-empty.png";
 import { ProductCardProps } from "./product-card.types";
+import { Routes } from "@Services/router/router.types";
 
 export default class ProductCardView extends ViewBuilder {
   private cardBody: HTMLDivElement;
@@ -9,20 +10,20 @@ export default class ProductCardView extends ViewBuilder {
   private descriptionElement: HTMLParagraphElement;
   private card: HTMLLinkElement;
 
-  constructor({ title, description, imageUrl }: ProductCardProps) {
+  constructor({ title, description, imageUrl, id }: ProductCardProps) {
     super();
-    this.card = this.createCard();
+    this.card = this.createCard(id);
     this.cardBody = this.createCardBody();
     this.imageElement = this.createImageElement(imageUrl);
     this.titleElement = this.createTitleElement(title);
     this.descriptionElement = this.createDescriptionElement(description);
   }
 
-  private createCard() {
+  private createCard(id: string) {
     this.card = this.createElement<HTMLLinkElement>("a", {
-      classes: ["card", "card-animation"],
+      classes: ["card", "card-animation", "text-decoration-none"],
     });
-    this.card.href = "#";
+    this.card.href = `${Routes.PRODUCT}?id=${id}`;
 
     return this.card;
   }

@@ -9,8 +9,6 @@
   transition: all 0.3s ease;
   cursor: pointer;
   overflow: hidden;
-  z-index: 10000;
-  position: relative;
 }
 
 .card-animation img {
@@ -18,6 +16,6 @@
 }
 
 .card-animation:hover {
-  transform: scale(1.05);
+  transform: scale(1.015);
   box-shadow: 0 10px 20px rgb(0 0 0 / 15%);
 }
