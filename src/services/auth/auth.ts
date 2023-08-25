@@ -46,7 +46,7 @@ export default class AuthService extends ClientBuilderService {
     billingAddresses,
     defaultBillingAddress,
   }: SignUpParams): Promise<AuthResult<DataInfo | TokenInfo>> {
-    const result = await this.getAnonymousToken();
+    const result = await this.getAnonymousToken(username, password);
 
     if (result.data?.access_token) {
       return await this.registration({
@@ -67,9 +67,14 @@ export default class AuthService extends ClientBuilderService {
     return result;
   }
 
-  private async getAnonymousToken() {
+  private async getAnonymousToken(
+    username?: string,
+    password?: string
+  ): Promise<AuthResult<TokenInfo>> {
     return await this.getToken("/anonymous/token", {
       grant_type: "client_credentials",
+      username,
+      password,
       scopes: this.customersApiScope,
     });
   }
