@@ -38,6 +38,8 @@ export default class ProductService extends ClientBuilderService {
       title: productResponse.masterData.current.name.en,
       description: productResponse.masterData.current.description?.en || "product description",
       imageUrl: productResponse.masterData.current.masterVariant.images?.[0].url || "",
+      color: productResponse.masterData.current.masterVariant.attributes?.[8].value.key,
+      size: productResponse.masterData.current.masterVariant.attributes?.[7].value,
     };
   }
 }

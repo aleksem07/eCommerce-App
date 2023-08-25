@@ -7,6 +7,7 @@ describe("ProductCardComponent", () => {
       title: "title",
       description: "description",
       imageUrl: "imageUrl",
+      color: "color",
     });
     expect(instance).toBeInstanceOf(ProductCardComponent);
   });
@@ -16,6 +17,7 @@ describe("ProductCardComponent", () => {
       title: "Sample Title",
       description: "Sample Description",
       imageUrl: "sample-image.jpg",
+      color: "black",
     };
     const productCard = new ProductCardComponent(props);
 
