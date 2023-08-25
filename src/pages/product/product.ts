@@ -8,9 +8,9 @@ export default class ProductPage {
   constructor() {
     this.view = new ProductView();
     this.information = new ProductInformationComponent({
-      title: "test",
-      description: "test",
-      imageUrl: "test",
+      title: "Title",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      imageUrl: "URL",
       price: { currencyCode: "USD", value: 100 },
       id: "test",
     });

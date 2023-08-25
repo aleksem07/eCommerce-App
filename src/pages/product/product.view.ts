@@ -8,7 +8,6 @@ export default class ProductView extends ViewBuilder {
     this.element = this.createElement("div", {
       classes: ["container", "mt-5"],
     });
-    this.element.textContent = "Product";
   }
 
   render(information: HTMLElement) {
