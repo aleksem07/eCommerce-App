@@ -23,6 +23,7 @@ export default class ProductPriceView extends ViewBuilder {
   private createDiscountedPrice(price: Price): HTMLElement {
     const discountedPrice = this.createElement("div", {
       classes: ["text-danger", "fs-5", "fw-bold"],
+      dataset: [{ testid: "discounted-price" }],
     });
     discountedPrice.textContent = `$${price.value}`;
 
@@ -32,6 +33,7 @@ export default class ProductPriceView extends ViewBuilder {
   private createPrice(price: Price): HTMLElement {
     const priceElement = this.createElement("div", {
       classes: ["fw-bold", "fs-5"],
+      dataset: [{ testid: "price" }],
     });
     priceElement.textContent = `$${price.value}`;
 
@@ -41,6 +43,7 @@ export default class ProductPriceView extends ViewBuilder {
   private createOldPrice(price: Price): HTMLElement {
     const oldPrice = this.createElement("div", {
       classes: ["text-muted", "fs-6", "text-decoration-line-through", "ms-2"],
+      dataset: [{ testid: "old-price" }],
     });
     oldPrice.textContent = `$${price.value}`;
 

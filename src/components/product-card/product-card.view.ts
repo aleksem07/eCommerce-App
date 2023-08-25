@@ -50,7 +50,7 @@ export default class ProductCardView extends ViewBuilder {
   }
 
   private createTitleElement(title: string) {
-    this.titleElement = this.createElement<HTMLHeadingElement>("h5", {
+    this.titleElement = this.createElement<HTMLHeadingElement>("h6", {
       classes: ["card-title"],
     });
     this.titleElement.textContent = title;
@@ -60,7 +60,7 @@ export default class ProductCardView extends ViewBuilder {
 
   private createDescriptionElement(description: string) {
     this.descriptionElement = this.createElement<HTMLParagraphElement>("p", {
-      classes: ["card-text"],
+      classes: ["line-clamp", "text-muted"],
     });
     this.descriptionElement.textContent = description;
 

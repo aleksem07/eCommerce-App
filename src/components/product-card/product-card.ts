@@ -1,6 +1,7 @@
 import ProductPriceComponent from "@Components/product-price/product-price";
 import { ProductCardProps } from "./product-card.types";
 import ProductCardView from "./product-card.view";
+import "./product-card.scss";
 
 export default class ProductCardComponent {
   private view: ProductCardView;
