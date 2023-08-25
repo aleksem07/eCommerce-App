@@ -1,9 +1,9 @@
 import AuthService from "@Services/auth/auth";
 import ClientBuilderService from "@Services/client-builder/client-builder";
-import { Product as ProductResponse } from "@commercetools/platform-sdk";
-import { Product } from "./product.types";
+import { Category } from "@commercetools/platform-sdk";
+import { Category as CategoryResponse } from "@commercetools/platform-sdk";
 
-export default class ProductService extends ClientBuilderService {
+export default class CategoriesService extends ClientBuilderService {
   private authService: AuthService;
 
   constructor() {
@@ -18,7 +18,7 @@ export default class ProductService extends ClientBuilderService {
       if (token) {
         const { body } = await this.apiRoot
           .withProjectKey({ projectKey: this.projectKey })
-          .products()
+          .categories()
           .get({
             headers: {
               Authorization: `Bearer ${token}`,
@@ -34,11 +34,16 @@ export default class ProductService extends ClientBuilderService {
     }
   }
 
-  private mapProductResponseToProduct(productResponse: ProductResponse): Product {
+  private mapProductResponseToProduct(productResponse: CategoryResponse): Category {
     return {
-      title: productResponse.masterData.current.name.en,
-      description: productResponse.masterData.current.description?.en || "product description",
-      imageUrl: productResponse.masterData.current.masterVariant.images?.[0].url || "",
+      version: productResponse.version,
+      createdAt: productResponse.createdAt,
+      lastModifiedAt: productResponse.lastModifiedAt,
+      slug: productResponse.slug,
+      ancestors: productResponse.ancestors,
+      orderHint: productResponse.orderHint,
+      id: productResponse.id,
+      name: productResponse.name,
     };
   }
 }
