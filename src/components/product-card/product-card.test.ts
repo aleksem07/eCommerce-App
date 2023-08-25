@@ -25,7 +25,7 @@ describe("ProductCardComponent", () => {
 
     const productCardEl = productCard.init();
 
-    expect(productCardEl.tagName).toBe("DIV");
+    expect(productCardEl.tagName).toBe("A");
     expect(productCardEl.classList.contains("card")).toBe(true);
 
     const imageElement = productCardEl.querySelector(".card-img-top") as HTMLImageElement;

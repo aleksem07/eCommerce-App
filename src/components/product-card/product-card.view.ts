@@ -62,7 +62,7 @@ export default class ProductCardView extends ViewBuilder {
 
   private createDescriptionElement(description: string) {
     this.descriptionElement = this.createElement<HTMLParagraphElement>("p", {
-      classes: ["line-clamp", "text-muted"],
+      classes: ["line-clamp", "text-muted", "card-text"],
     });
     this.descriptionElement.textContent = description;
 
