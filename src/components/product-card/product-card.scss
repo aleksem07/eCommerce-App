@@ -7,15 +7,14 @@
 
 .card-animation {
   transition: all 0.3s ease;
-  cursor: pointer;
   overflow: hidden;
-}
 
-.card-animation img {
-  transition: transform 0.3s ease;
-}
+  & img {
+    transition: transform 0.3s ease;
+  }
 
-.card-animation:hover {
-  transform: scale(1.015);
-  box-shadow: 0 10px 20px rgb(0 0 0 / 15%);
+  &:hover {
+    transform: scale(1.015);
+    box-shadow: 0 10px 20px rgb(0 0 0 / 15%);
+  }
 }
