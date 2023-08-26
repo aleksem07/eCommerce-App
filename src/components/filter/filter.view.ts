@@ -80,17 +80,23 @@ export default class FilterView extends ViewBuilder {
       id: "min-price",
       classes: ["form-control", "me-1"],
       dataset: [{ filter: "price", type: "number" }],
-    });
+    }) as HTMLInputElement;
 
     const maxInput = this.createElement("input", {
       id: "max-price",
       classes: ["form-control", "ms-1"],
       dataset: [{ filter: "price", type: "number" }],
-    });
+    }) as HTMLInputElement;
 
     const separator = this.createElement("span", {
       classes: ["mx-1"],
     });
+    minInput.placeholder = "0";
+    minInput.type = "number";
+    minInput.min = "0";
+    maxInput.placeholder = "10000";
+    maxInput.type = "number";
+    maxInput.min = "0";
     separator.textContent = "-";
 
     priceRangeContainer.append(minInput, separator, maxInput);
