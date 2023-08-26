@@ -58,7 +58,7 @@ export default class FilterComponent {
     if (colors) {
       colors.forEach((color) => {
         if (color) {
-          const colorElement = this.view.createColorDiv(color);
+          const colorElement = this.view.createColorElement(color);
           filterColorElements.push(colorElement);
         }
       });

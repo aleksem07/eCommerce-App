@@ -36,7 +36,7 @@ export default class FilterView extends ViewBuilder {
     this.categoryPriceTitle.textContent = `Price`;
   }
 
-  createColorDiv(color?: string): HTMLElement {
+  createColorElement(color?: string): HTMLElement {
     const container = this.createElement("div", {
       classes: ["col-md-3", "mb-1"],
     });
