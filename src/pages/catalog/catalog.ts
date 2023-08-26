@@ -3,6 +3,8 @@ import CatalogView from "./catalog.view";
 import ProductListComponent from "@Components/product-list/product-list";
 import FilterComponent from "@Components/filter/filter";
 import SortComponent from "@Components/sort/sort";
+import eventBusService from "@Services/event-bus/event-bus";
+import { Events } from "@Services/event-bus/event-bus.types";
 
 export default class CatalogPage {
   private view: CatalogView;
@@ -25,6 +27,8 @@ export default class CatalogPage {
     if (products) {
       const productListElement = this.productListComponent.init(products);
       this.view.displayProducts(productListElement);
+      const colors = products.map((product) => product.color);
+      eventBusService.publish(Events.colorsReceived, colors);
     }
   }
 

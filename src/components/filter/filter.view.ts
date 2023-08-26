@@ -41,6 +41,37 @@ export default class FilterView extends ViewBuilder {
     this.categoryPriceTitle.textContent = `Price`;
   }
 
+  createColorDiv(color?: string): HTMLElement {
+    const container = this.createElement("div", {
+      classes: ["col-md-3", "mb-4"],
+    });
+    const div = this.createElement("div", {
+      classes: ["d-flex", "rounded-circle", "align-items-center", "justify-content-center", "mt-2"],
+    });
+
+    const title = this.createElement("p", {
+      classes: ["mt-2"],
+    });
+
+    if (color) {
+      div.style.backgroundColor = color;
+      title.textContent = color[0].toUpperCase() + color.slice(1);
+    }
+
+    if (color == "multicolored") {
+      div.style.background = "linear-gradient(45deg, red 30%, yellow 50%, blue 70%)";
+      title.textContent = "Multi";
+    }
+    div.style.outline = "1px solid black";
+    div.style.outlineOffset = "3px";
+    div.style.width = "30px";
+    div.style.height = "30px";
+    div.style.cursor = "pointer";
+    container.append(div, title);
+
+    return container;
+  }
+
   render(sidebarElements: HTMLElement[]) {
     this.sidebar.append(this.hideSidebarButton, ...sidebarElements);
 
