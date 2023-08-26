@@ -2,8 +2,7 @@ import { ViewBuilder } from "@Interfaces/view-builder";
 
 export default class FilterView extends ViewBuilder {
   private sidebar: HTMLElement;
-  hideSidebarButton: HTMLElement;
-  categoryBrandTitle: HTMLHeadingElement;
+  resetFiltersButton: HTMLElement;
   categorySizeTitle: HTMLHeadingElement;
   categoryColorTitle: HTMLHeadingElement;
   categoryPriceTitle: HTMLHeadingElement;
@@ -13,17 +12,13 @@ export default class FilterView extends ViewBuilder {
     this.sidebar = this.createElement("div", {
       classes: ["sidebar", "row"],
     });
-    this.hideSidebarButton = this.createElement("button", {
-      classes: ["btn", "btn-dark"],
+    this.resetFiltersButton = this.createElement("button", {
+      classes: ["btn"],
     });
-    this.hideSidebarButton.setAttribute("type", "button");
-    this.hideSidebarButton.textContent = "Reset filters";
-
-    this.categoryBrandTitle = this.createElement("h2", {
-      id: `category-brand-title`,
-      classes: ["h4", "fw-normal", "text-left", "py-3"],
-    });
-    this.categoryBrandTitle.textContent = `Brand`;
+    this.resetFiltersButton.setAttribute("type", "button");
+    this.resetFiltersButton.textContent = "Reset filters";
+    this.resetFiltersButton.style.color = "white";
+    this.resetFiltersButton.style.backgroundColor = "#17696A";
     this.categorySizeTitle = this.createElement("h2", {
       id: `category-size-title`,
       classes: ["h4", "fw-normal", "text-left", "py-3"],
@@ -73,7 +68,7 @@ export default class FilterView extends ViewBuilder {
   }
 
   render(sidebarElements: HTMLElement[]) {
-    this.sidebar.append(this.hideSidebarButton, ...sidebarElements);
+    this.sidebar.append(this.resetFiltersButton, ...sidebarElements);
 
     return this.sidebar;
   }

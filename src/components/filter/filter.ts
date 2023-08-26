@@ -6,7 +6,6 @@ import { Events, EventData } from "@Services/event-bus/event-bus.types";
 
 export default class FilterComponent {
   private view: FilterView;
-  filterBrand: FormCheckComponent;
   filterSize: FormCheckComponent;
   filteredColors: Set<string>;
   private uniqueColors: string[] | void = [];
@@ -14,7 +13,6 @@ export default class FilterComponent {
 
   constructor() {
     this.view = new FilterView();
-    this.filterBrand = this.createFilterCheckComponent("BrandName (x)", "brand", "brand");
     this.filterSize = this.createFilterCheckComponent("Size (x)", "size", "size");
     this.filteredColors = new Set();
     this.uniqueColors = [];
@@ -56,8 +54,6 @@ export default class FilterComponent {
       });
     }
     const sidebarElements: HTMLElement[] = [
-      this.view.categoryBrandTitle,
-      this.filterBrand.init(),
       this.view.categorySizeTitle,
       this.filterSize.init(),
       this.view.categoryColorTitle,
