@@ -41,11 +41,18 @@ export default class FilterView extends ViewBuilder {
       classes: ["col-md-3", "mb-4"],
     });
     const div = this.createElement("div", {
-      classes: ["d-flex", "rounded-circle", "align-items-center", "justify-content-center", "mt-2"],
+      classes: [
+        "d-flex",
+        "rounded-circle",
+        "align-items-center",
+        "justify-content-center",
+        "mt-2",
+        "mx-auto",
+      ],
     });
 
     const title = this.createElement("p", {
-      classes: ["mt-2"],
+      classes: ["mt-2", "text-center"],
     });
 
     if (color) {

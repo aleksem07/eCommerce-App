@@ -6,7 +6,6 @@ import { Events, EventData } from "@Services/event-bus/event-bus.types";
 
 export default class FilterComponent {
   private view: FilterView;
-  filterSize: FormCheckComponent;
   filteredColors: Set<string>;
   filteredSizes: Set<string>;
   private uniqueColors: string[] | void = [];
@@ -15,7 +14,6 @@ export default class FilterComponent {
 
   constructor() {
     this.view = new FilterView();
-    this.filterSize = this.createFilterCheckComponent("Size (x)", "size", "size");
     this.filteredColors = new Set();
     this.filteredSizes = new Set();
     this.uniqueColors = [];
