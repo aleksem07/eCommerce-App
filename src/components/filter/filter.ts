@@ -37,7 +37,7 @@ export default class FilterComponent {
     this.uniqueColors = [...this.filteredColors];
 
     sizes.forEach((size) => {
-      if (size) {
+      if (size && size.length > 0) {
         this.filteredSizes.add(size);
       }
     });
