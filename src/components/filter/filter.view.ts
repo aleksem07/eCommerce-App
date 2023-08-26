@@ -38,21 +38,14 @@ export default class FilterView extends ViewBuilder {
 
   createColorDiv(color?: string): HTMLElement {
     const container = this.createElement("div", {
-      classes: ["col-md-3", "mb-4"],
+      classes: ["col-md-3", "mb-1"],
     });
     const div = this.createElement("div", {
-      classes: [
-        "d-flex",
-        "rounded-circle",
-        "align-items-center",
-        "justify-content-center",
-        "mt-2",
-        "mx-auto",
-      ],
+      classes: ["rounded-circle", "mx-auto"],
     });
 
     const title = this.createElement("p", {
-      classes: ["mt-2", "text-center"],
+      classes: ["mt-1", "text-center"],
     });
 
     if (color) {
@@ -66,8 +59,8 @@ export default class FilterView extends ViewBuilder {
     }
     div.style.outline = "1px solid black";
     div.style.outlineOffset = "3px";
-    div.style.width = "30px";
-    div.style.height = "30px";
+    div.style.width = "24px";
+    div.style.height = "24px";
     div.style.cursor = "pointer";
     container.append(div, title);
 
