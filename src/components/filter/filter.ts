@@ -68,7 +68,11 @@ export default class FilterComponent {
     if (sizes) {
       sizes.forEach((size) => {
         if (size) {
-          const sizeElement = this.createFilterCheckComponent(size, "size", size).init();
+          const sizeElement = this.createFilterCheckComponent(
+            size.toUpperCase(),
+            "size",
+            `size-${size}`
+          ).init();
           filterSizeElements.push(sizeElement);
         }
       });
@@ -76,9 +80,9 @@ export default class FilterComponent {
 
     const sidebarElements: HTMLElement[] = [
       this.view.categorySizeTitle,
-      ...filterSizeElements,
+      ...filterSizeElements.sort((a, b) => a.innerText.localeCompare(b.innerText)),
       this.view.categoryColorTitle,
-      ...filterColorElements,
+      ...filterColorElements.sort((a, b) => a.innerText.localeCompare(b.innerText)),
       this.view.categoryPriceTitle,
       filterPriceRangeElement,
     ];
