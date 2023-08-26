@@ -54,6 +54,7 @@ export default class FilterComponent {
   init(colors?: string[], sizes?: string[]) {
     const filterColorElements: HTMLElement[] = [];
     const filterSizeElements: HTMLElement[] = [];
+    const filterPriceRangeElement = this.view.createPriceRangeElement();
 
     if (colors) {
       colors.forEach((color) => {
@@ -72,12 +73,14 @@ export default class FilterComponent {
         }
       });
     }
+
     const sidebarElements: HTMLElement[] = [
       this.view.categorySizeTitle,
       ...filterSizeElements,
       this.view.categoryColorTitle,
       ...filterColorElements,
       this.view.categoryPriceTitle,
+      filterPriceRangeElement,
     ];
 
     return this.view.render(sidebarElements);

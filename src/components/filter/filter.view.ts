@@ -67,7 +67,40 @@ export default class FilterView extends ViewBuilder {
     return container;
   }
 
+  createPriceRangeElement(): HTMLElement {
+    const container = this.createElement("div", {
+      classes: ["mb-1"],
+    });
+
+    const priceRangeContainer = this.createElement("div", {
+      classes: ["d-flex"],
+    });
+
+    const minInput = this.createElement("input", {
+      id: "min-price",
+      classes: ["form-control", "me-1"],
+      dataset: [{ filter: "price", type: "number" }],
+    });
+
+    const maxInput = this.createElement("input", {
+      id: "max-price",
+      classes: ["form-control", "ms-1"],
+      dataset: [{ filter: "price", type: "number" }],
+    });
+
+    const separator = this.createElement("span", {
+      classes: ["mx-1"],
+    });
+    separator.textContent = "-";
+
+    priceRangeContainer.append(minInput, separator, maxInput);
+    container.append(priceRangeContainer);
+
+    return container;
+  }
+
   render(sidebarElements: HTMLElement[]) {
+    this.sidebar.innerHTML = "";
     this.sidebar.append(this.resetFiltersButton, ...sidebarElements);
 
     return this.sidebar;
