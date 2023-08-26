@@ -1,27 +1,29 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
 import fallbackImage from "assets/images/card-empty.png";
 import { ProductCardProps } from "./product-card.types";
+import { Routes } from "@Services/router/router.types";
 
 export default class ProductCardView extends ViewBuilder {
   private cardBody: HTMLDivElement;
   private imageElement: HTMLImageElement;
   private titleElement: HTMLHeadingElement;
   private descriptionElement: HTMLParagraphElement;
-  private card: HTMLDivElement;
+  private card: HTMLLinkElement;
 
-  constructor({ title, description, imageUrl }: ProductCardProps) {
+  constructor({ title, description, imageUrl, id }: ProductCardProps) {
     super();
-    this.card = this.createCard();
+    this.card = this.createCard(id);
     this.cardBody = this.createCardBody();
     this.imageElement = this.createImageElement(imageUrl);
     this.titleElement = this.createTitleElement(title);
     this.descriptionElement = this.createDescriptionElement(description);
   }
 
-  private createCard() {
-    this.card = this.createElement<HTMLDivElement>("div", {
-      classes: ["card"],
+  private createCard(id: string) {
+    this.card = this.createElement<HTMLLinkElement>("a", {
+      classes: ["card", "card-animation", "text-decoration-none"],
     });
+    this.card.href = `${Routes.PRODUCT}?id=${id}`;
 
     return this.card;
   }
@@ -39,7 +41,7 @@ export default class ProductCardView extends ViewBuilder {
       classes: ["card-img-top"],
     });
     this.imageElement.alt = "Card image";
-    this.imageElement.height = 300;
+    this.imageElement.height = 250;
     this.imageElement.src = imageUrl;
 
     this.imageElement.onerror = () => {
@@ -50,7 +52,7 @@ export default class ProductCardView extends ViewBuilder {
   }
 
   private createTitleElement(title: string) {
-    this.titleElement = this.createElement<HTMLHeadingElement>("h5", {
+    this.titleElement = this.createElement<HTMLHeadingElement>("h6", {
       classes: ["card-title"],
     });
     this.titleElement.textContent = title;
@@ -60,16 +62,16 @@ export default class ProductCardView extends ViewBuilder {
 
   private createDescriptionElement(description: string) {
     this.descriptionElement = this.createElement<HTMLParagraphElement>("p", {
-      classes: ["card-text"],
+      classes: ["line-clamp", "text-muted", "card-text"],
     });
     this.descriptionElement.textContent = description;
 
     return this.descriptionElement;
   }
 
-  render() {
+  render(priceElement: HTMLElement) {
     this.card.append(this.imageElement, this.cardBody);
-    this.cardBody.append(this.titleElement, this.descriptionElement);
+    this.cardBody.append(this.titleElement, this.descriptionElement, priceElement);
 
     return this.card;
   }
