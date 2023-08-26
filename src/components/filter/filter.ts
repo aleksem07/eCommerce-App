@@ -8,30 +8,41 @@ export default class FilterComponent {
   private view: FilterView;
   filterSize: FormCheckComponent;
   filteredColors: Set<string>;
+  filteredSizes: Set<string>;
   private uniqueColors: string[] | void = [];
+  private uniqueSizes: string[] | void = [];
   private productService: ProductService;
 
   constructor() {
     this.view = new FilterView();
     this.filterSize = this.createFilterCheckComponent("Size (x)", "size", "size");
     this.filteredColors = new Set();
+    this.filteredSizes = new Set();
     this.uniqueColors = [];
+    this.uniqueSizes = [];
     this.productService = new ProductService();
-    eventBusService.subscribe(Events.colorsReceived, (colors?: EventData) => {
-      if (Array.isArray(colors)) {
-        this.updateColors(colors);
+    eventBusService.subscribe(Events.dataProductReceived, (data: EventData | undefined) => {
+      if (data && Array.isArray(data?.colors) && Array.isArray(data?.sizes)) {
+        this.updateDataProduct(data.colors, data.sizes);
       }
     });
   }
 
-  updateColors(colors: string[]) {
+  updateDataProduct(colors: string[], sizes: string[]) {
     colors.forEach((color) => {
       if (color) {
         this.filteredColors.add(color);
       }
     });
     this.uniqueColors = [...this.filteredColors];
-    this.init(this.uniqueColors);
+
+    sizes.forEach((size) => {
+      if (size) {
+        this.filteredSizes.add(size);
+      }
+    });
+    this.uniqueSizes = [...this.filteredSizes];
+    this.init(this.uniqueColors, this.uniqueSizes);
   }
 
   private createFilterCheckComponent(labelText: string, formName: string, inputName: string) {
@@ -42,8 +53,9 @@ export default class FilterComponent {
     });
   }
 
-  init(colors?: string[]) {
+  init(colors?: string[], sizes?: string[]) {
     const filterColorElements: HTMLElement[] = [];
+    const filterSizeElements: HTMLElement[] = [];
 
     if (colors) {
       colors.forEach((color) => {
@@ -53,9 +65,18 @@ export default class FilterComponent {
         }
       });
     }
+
+    if (sizes) {
+      sizes.forEach((size) => {
+        if (size) {
+          const sizeElement = this.createFilterCheckComponent(size, "size", size).init();
+          filterSizeElements.push(sizeElement);
+        }
+      });
+    }
     const sidebarElements: HTMLElement[] = [
       this.view.categorySizeTitle,
-      this.filterSize.init(),
+      ...filterSizeElements,
       this.view.categoryColorTitle,
       ...filterColorElements,
       this.view.categoryPriceTitle,

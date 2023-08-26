@@ -4,9 +4,9 @@ export enum Events {
   loginLinkClicked = "loginLinkClicked",
   logoutLinkClicked = "logoutLinkClicked",
   errorOccurred = "errorOccurred",
-  colorsReceived = "colorsReceived",
+  dataProductReceived = "dataProductReceived",
 }
 
 export type EventCallback = (data?: EventData) => void;
 
-export type EventData = Record<string, unknown> | string[];
+export type EventData = Record<string, unknown>;

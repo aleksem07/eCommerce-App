@@ -28,7 +28,8 @@ export default class CatalogPage {
       const productListElement = this.productListComponent.init(products);
       this.view.displayProducts(productListElement);
       const colors = products.map((product) => product.color);
-      eventBusService.publish(Events.colorsReceived, colors);
+      const sizes = products.map((product) => product.size);
+      eventBusService.publish(Events.dataProductReceived, { colors, sizes });
     }
   }
 

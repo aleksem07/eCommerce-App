@@ -34,9 +34,9 @@ export default class SortComponent {
       labelText: "Show products per page",
       helpText: "",
       options: [
-        { label: "8", value: "8" },
-        { label: "12", value: "12" },
         { label: "16", value: "16" },
+        { label: "32", value: "32" },
+        { label: "All", value: "32" },
       ],
       className: "d-flex",
     });
