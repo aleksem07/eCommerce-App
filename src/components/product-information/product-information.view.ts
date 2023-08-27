@@ -1,6 +1,6 @@
-import { ProductCardProps } from "@Components/product-card/product-card.types";
 import { ViewBuilder } from "@Interfaces/view-builder";
 import fallbackImage from "assets/images/card-empty.png";
+import { ProductInformationProps } from "./product-information.types";
 
 export default class ProductInformationView extends ViewBuilder {
   private informationElement: HTMLDivElement;
@@ -12,7 +12,7 @@ export default class ProductInformationView extends ViewBuilder {
   private imageWrapperElement: HTMLDivElement;
   private descriptionHeaderElement: HTMLHeadingElement;
 
-  constructor({ title, description, imageUrl }: ProductCardProps) {
+  constructor({ title, description, imageUrl }: ProductInformationProps) {
     super();
     this.informationElement = this.createInformationElement();
     this.titleElement = this.createTitleElement(title);

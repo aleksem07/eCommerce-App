@@ -1,14 +1,14 @@
-import { ProductCardProps } from "@Components/product-card/product-card.types";
 import ProductInformationView from "./product-information.view";
 // eslint-disable-next-line max-len
 import ProductExtraDescriptionComponent from "@Components/product-extra-description/product-extra-description";
+import { ProductInformationProps } from "./product-information.types";
 
 export default class ProductInformationComponent {
   private view: ProductInformationView;
   private deliveryDetails: ProductExtraDescriptionComponent;
   private returnDetails: ProductExtraDescriptionComponent;
 
-  constructor({ title, description, imageUrl, price, id }: ProductCardProps) {
+  constructor({ title, description, imageUrl, price, id }: ProductInformationProps) {
     this.view = new ProductInformationView({ title, description, imageUrl, price, id });
     this.deliveryDetails = new ProductExtraDescriptionComponent({
       title: "Delivery",
