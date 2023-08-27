@@ -1,14 +1,14 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
 
 export default class SortView extends ViewBuilder {
-  private toolbar: HTMLElement;
+  private element: HTMLElement;
   pagination: HTMLElement;
   arrowLeftIcon: HTMLElement;
   arrowRightIcon: HTMLElement;
 
   constructor() {
     super();
-    this.toolbar = this.createElement("div", {
+    this.element = this.createElement("div", {
       classes: ["toolbar", "d-flex", "align-items-center", "justify-content-between"],
     });
     this.arrowLeftIcon = this.createPaginationIcon("arrow-left");
@@ -31,8 +31,8 @@ export default class SortView extends ViewBuilder {
   render(toolbarElements: HTMLElement[]) {
     this.pagination.prepend(this.arrowLeftIcon);
     this.pagination.append(this.arrowRightIcon);
-    this.toolbar.append(this.pagination, ...toolbarElements);
+    this.element.append(this.pagination, ...toolbarElements);
 
-    return this.toolbar;
+    return this.element;
   }
 }

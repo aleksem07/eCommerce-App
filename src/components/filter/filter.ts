@@ -12,7 +12,7 @@ export default class FilterComponent {
   private uniqueSizes: string[] | void = [];
   private productService: ProductService;
 
-  constructor() {
+  constructor(onResetClick?: (e: Event) => void) {
     this.view = new FilterView();
     this.filteredColors = new Set();
     this.filteredSizes = new Set();
@@ -24,6 +24,14 @@ export default class FilterComponent {
         this.updateDataProduct(data.colors, data.sizes);
       }
     });
+    this.view.resetFilterListener((e) => this.resetFilterHandler(e, onResetClick));
+  }
+
+  resetFilterHandler(e: Event, onResetClick?: (e: Event) => void) {
+    if (onResetClick) {
+      onResetClick(e);
+    }
+    console.log("reset filter click");
   }
 
   updateDataProduct(colors: string[], sizes: string[]) {

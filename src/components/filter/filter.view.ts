@@ -1,7 +1,7 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
 
 export default class FilterView extends ViewBuilder {
-  private sidebar: HTMLElement;
+  private element: HTMLElement;
   resetFiltersButton: HTMLElement;
   categorySizeTitle: HTMLHeadingElement;
   categoryColorTitle: HTMLHeadingElement;
@@ -9,7 +9,7 @@ export default class FilterView extends ViewBuilder {
 
   constructor() {
     super();
-    this.sidebar = this.createElement("div", {
+    this.element = this.createElement("div", {
       classes: ["sidebar", "row"],
     });
     this.resetFiltersButton = this.createElement("button", {
@@ -105,10 +105,16 @@ export default class FilterView extends ViewBuilder {
     return container;
   }
 
-  render(sidebarElements: HTMLElement[]) {
-    this.sidebar.innerHTML = "";
-    this.sidebar.append(this.resetFiltersButton, ...sidebarElements);
+  resetFilterListener(handler?: (e: Event) => void) {
+    if (handler) {
+      this.resetFiltersButton.addEventListener("click", handler);
+    }
+  }
 
-    return this.sidebar;
+  render(sidebarElements: HTMLElement[]) {
+    this.element.innerHTML = "";
+    this.element.append(this.resetFiltersButton, ...sidebarElements);
+
+    return this.element;
   }
 }
