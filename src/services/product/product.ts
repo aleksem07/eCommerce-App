@@ -5,6 +5,7 @@ import { Price, Product } from "./product.types";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
 import { HttpErrorType } from "@commercetools/sdk-client-v2";
+import { NotificationVariant } from "@Components/notification/notification.types";
 
 export default class ProductService extends ClientBuilderService {
   private authService: AuthService;
@@ -33,7 +34,37 @@ export default class ProductService extends ClientBuilderService {
       }
     } catch (error) {
       const httpError = error as HttpErrorType;
-      eventBusService.publish(Events.errorOccurred, httpError);
+      eventBusService.publish(Events.showNotification, {
+        variant: NotificationVariant.danger,
+        message: httpError.message,
+      });
+    }
+  }
+
+  async getById(id: string): Promise<Product | undefined> {
+    try {
+      const token = await this.authService.retrieveToken();
+
+      if (token) {
+        const { body } = await this.apiRoot
+          .withProjectKey({ projectKey: this.projectKey })
+          .products()
+          .withId({ ID: id })
+          .get({
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .execute();
+
+        return this.mapProductResponseToProduct(body);
+      }
+    } catch (error) {
+      const httpError = error as HttpErrorType;
+      eventBusService.publish(Events.showNotification, {
+        variant: NotificationVariant.danger,
+        message: httpError.message,
+      });
     }
   }
 

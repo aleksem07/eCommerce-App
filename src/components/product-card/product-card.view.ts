@@ -23,7 +23,9 @@ export default class ProductCardView extends ViewBuilder {
     this.card = this.createElement<HTMLLinkElement>("a", {
       classes: ["card", "card-animation", "text-decoration-none"],
     });
-    this.card.href = `${Routes.PRODUCT}?id=${id}`;
+
+    const url = new URL(`${window.location.origin}${Routes.PRODUCT}-${id}`);
+    this.card.href = url.href;
 
     return this.card;
   }

@@ -11,14 +11,14 @@ export default class ProductCardComponent {
     title,
     description,
     imageUrl,
-    color,
-    size,
     price,
     discountedPrice,
     id,
+    color,
+    size,
   }: ProductCardProps) {
-    this.view = new ProductCardView({ title, description, imageUrl, color, size, price, id });
-    this.price = new ProductPriceComponent(price, discountedPrice);
+    this.view = new ProductCardView({ title, description, imageUrl, price, id, color, size });
+    this.price = new ProductPriceComponent({ price, discountedPrice });
   }
 
   init() {

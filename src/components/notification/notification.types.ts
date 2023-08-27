@@ -1,1 +1,6 @@
-export type NotificationVariant = "success" | "danger" | "warning" | "info";
+export enum NotificationVariant {
+  info = "info",
+  success = "success",
+  warning = "warning",
+  danger = "danger",
+}

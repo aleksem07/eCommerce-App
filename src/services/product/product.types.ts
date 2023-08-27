@@ -2,11 +2,11 @@ export interface Product {
   title: string;
   description: string;
   imageUrl: string;
-  color: string;
-  size: string;
   price: Price;
   discountedPrice?: Price;
   id: string;
+  color?: string;
+  size?: string;
 }
 
 export interface Price {

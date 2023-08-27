@@ -5,6 +5,7 @@ export enum Events {
   logoutLinkClicked = "logoutLinkClicked",
   errorOccurred = "errorOccurred",
   dataProductReceived = "dataProductReceived",
+  showNotification = "showNotification",
 }
 
 export type EventCallback = (data?: EventData) => void;
