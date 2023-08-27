@@ -32,7 +32,6 @@ export default class ProductPage {
   private checkProductExists() {
     const [, ...rest] = window.location.href.split("-");
     this.id = rest.join("-");
-    console.log(this.id);
 
     if (!this.id) {
       RouterService.navigateTo(Routes.NOT_FOUND);
