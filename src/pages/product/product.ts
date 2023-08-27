@@ -5,31 +5,35 @@ import { Routes } from "@Services/router/router.types";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
 import { NotificationVariant } from "@Components/notification/notification.types";
+import ProductService from "@Services/product/product";
+import { Product } from "@Services/product/product.types";
 
 export default class ProductPage {
   private view: ProductView;
-  private information: ProductInformationComponent;
+  private information?: ProductInformationComponent;
+  private productService: ProductService;
   private id?: string;
+  private product?: Product;
 
   constructor() {
+    this.productService = new ProductService();
+
     this.view = new ProductView();
-    this.information = new ProductInformationComponent({
-      title: "Title",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      imageUrl: "URL",
-      price: { currencyCode: "USD", value: 100 },
-      id: "test",
-    });
   }
 
-  init() {
-    this.checkProductExists();
-
-    const information = this.information.init();
-    this.view.render(information);
+  async init() {
+    await this.checkProductExists();
+    this.displayProduct();
   }
 
-  private checkProductExists() {
+  private displayProduct() {
+    if (this.product) {
+      this.information = new ProductInformationComponent(this.product);
+      this.view.render(this.information.init());
+    }
+  }
+
+  private async checkProductExists() {
     const [, ...rest] = window.location.href.split("-");
     this.id = rest.join("-");
 
@@ -39,6 +43,12 @@ export default class ProductPage {
         variant: NotificationVariant.info,
         message: "Product not found",
       });
+    } else {
+      const product = await this.productService.getById(this.id);
+
+      if (product) {
+        this.product = product;
+      }
     }
   }
 }
