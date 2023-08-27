@@ -5,4 +5,5 @@ export interface FormControlProps {
   helpText: string;
   placeholderText: string;
   type?: string;
+  min?: string;
 }

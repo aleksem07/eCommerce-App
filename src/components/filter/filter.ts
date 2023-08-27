@@ -1,5 +1,6 @@
 import FilterView from "./filter.view";
 import FormCheckComponent from "@Components/form-check/form-check";
+import FormControlComponent from "@Components/form-control/form-control";
 import ProductService from "@Services/product/product";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events, EventData } from "@Services/event-bus/event-bus.types";
@@ -9,12 +10,30 @@ export default class FilterComponent {
   private uniqueColors: string[] = [];
   private uniqueSizes: string[] = [];
   private productService: ProductService;
+  private rangeMinPrice: FormControlComponent;
+  private rangeMaxPrice: FormControlComponent;
 
   constructor(onResetClick?: (e: Event) => void) {
     this.view = new FilterView();
     this.uniqueColors = [];
     this.uniqueSizes = [];
     this.productService = new ProductService();
+    this.rangeMinPrice = new FormControlComponent({
+      formName: "filterPrice",
+      inputName: "minPrice",
+      labelText: "",
+      helpText: "",
+      placeholderText: "0",
+      type: "number",
+    });
+    this.rangeMaxPrice = new FormControlComponent({
+      formName: "filterPrice",
+      inputName: "maxPrice",
+      labelText: "",
+      helpText: "",
+      placeholderText: "10000",
+      type: "number",
+    });
 
     this.view.resetFilterListener((e) => this.resetFilterHandler(e, onResetClick));
     eventBusService.subscribe(Events.dataProductReceived, (data?: EventData) => {
@@ -96,7 +115,10 @@ export default class FilterComponent {
   init(colors?: string[], sizes?: string[]) {
     const filterColorElements: HTMLElement[] = [];
     const filterSizeElements: HTMLElement[] = [];
-    const filterPriceRangeElement = this.view.createPriceRangeElement();
+    const filterPriceRangeElement = this.view.createPriceRangeElement(
+      this.rangeMinPrice.init(),
+      this.rangeMaxPrice.init()
+    );
 
     if (colors) {
       this.renderColorElements(colors, filterColorElements);

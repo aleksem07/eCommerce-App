@@ -1,4 +1,6 @@
+import "./filter.scss";
 import { ViewBuilder } from "@Interfaces/view-builder";
+import FormControlComponent from "@Components/form-control/form-control";
 
 export default class FilterView extends ViewBuilder {
   private element: HTMLElement;
@@ -10,12 +12,12 @@ export default class FilterView extends ViewBuilder {
   constructor() {
     super();
     this.element = this.createElement("div", {
-      classes: ["sidebar", "row"],
+      classes: ["row"],
     });
     this.resetFiltersButton = this.createResetFiltersButton();
-    this.categorySizeTitle = this.createCategorySizeTitle();
-    this.categoryColorTitle = this.createCategoryColorTitle();
-    this.categoryPriceTitle = this.createCategoryPriceTitle();
+    this.categorySizeTitle = this.createCategoryTitle("size");
+    this.categoryColorTitle = this.createCategoryTitle("color");
+    this.categoryPriceTitle = this.createCategoryTitle("price");
   }
 
   createResetFiltersButton() {
@@ -24,48 +26,27 @@ export default class FilterView extends ViewBuilder {
     });
     this.resetFiltersButton.setAttribute("type", "button");
     this.resetFiltersButton.textContent = "Reset filters";
-    this.resetFiltersButton.style.color = "white";
-    this.resetFiltersButton.style.backgroundColor = "#17696A";
+    this.resetFiltersButton.className = "btn btn-primary";
 
     return this.resetFiltersButton;
   }
 
-  createCategorySizeTitle() {
-    this.categorySizeTitle = this.createElement("h2", {
-      id: `category-size-title`,
-      classes: ["h4", "fw-normal", "text-left", "py-3"],
+  createCategoryTitle(title: string): HTMLHeadingElement {
+    const createCategoryTitle: HTMLHeadingElement = this.createElement("h6", {
+      id: `category-${title}-title`,
+      classes: ["py-3"],
     });
-    this.categorySizeTitle.textContent = `Size`;
+    createCategoryTitle.textContent = title[0].toUpperCase() + title.slice(1);
 
-    return this.categorySizeTitle;
-  }
-
-  createCategoryColorTitle() {
-    this.categoryColorTitle = this.createElement("h2", {
-      id: `category-color-title`,
-      classes: ["h4", "fw-normal", "text-left", "py-3"],
-    });
-    this.categoryColorTitle.textContent = `Color`;
-
-    return this.categoryColorTitle;
-  }
-
-  createCategoryPriceTitle() {
-    this.categoryPriceTitle = this.createElement("h2", {
-      id: `category-price-title`,
-      classes: ["h4", "fw-normal", "text-left", "py-3"],
-    });
-    this.categoryPriceTitle.textContent = `Price`;
-
-    return this.categoryPriceTitle;
+    return createCategoryTitle;
   }
 
   createColorElement(color?: string): HTMLElement {
     const container = this.createElement("div", {
       classes: ["col-md-3", "mb-1"],
     });
-    const div = this.createElement("div", {
-      classes: ["rounded-circle", "mx-auto"],
+    const colorPicker = this.createElement("div", {
+      classes: ["color-picker", "rounded-circle", "mx-auto"],
     });
 
     const title = this.createElement("p", {
@@ -73,58 +54,30 @@ export default class FilterView extends ViewBuilder {
     });
 
     if (color) {
-      div.style.backgroundColor = color;
+      colorPicker.style.backgroundColor = color;
       title.textContent = color[0].toUpperCase() + color.slice(1);
     }
 
     if (color == "multicolored") {
-      div.style.background = "linear-gradient(45deg, red 30%, yellow 50%, blue 70%)";
+      colorPicker.style.background = "linear-gradient(45deg, red 30%, yellow 50%, blue 70%)";
       title.textContent = "Multi";
     }
-    div.style.outline = "1px solid black";
-    div.style.outlineOffset = "3px";
-    div.style.width = "24px";
-    div.style.height = "24px";
-    div.style.cursor = "pointer";
-    container.append(div, title);
+    container.append(colorPicker, title);
 
     return container;
   }
 
-  createPriceRangeElement(): HTMLElement {
+  createPriceRangeElement(minInput: HTMLElement, maxInput: HTMLElement): HTMLElement {
     const container = this.createElement("div", {
-      classes: ["mb-1"],
+      classes: ["d-flex", "align-items-center"],
     });
-
-    const priceRangeContainer = this.createElement("div", {
-      classes: ["d-flex"],
-    });
-
-    const minInput = this.createElement("input", {
-      id: "min-price",
-      classes: ["form-control", "me-1"],
-      dataset: [{ filter: "price", type: "number" }],
-    }) as HTMLInputElement;
-
-    const maxInput = this.createElement("input", {
-      id: "max-price",
-      classes: ["form-control", "ms-1"],
-      dataset: [{ filter: "price", type: "number" }],
-    }) as HTMLInputElement;
 
     const separator = this.createElement("span", {
-      classes: ["mx-1"],
+      classes: ["mx-1", "mt-4"],
     });
-    minInput.placeholder = "0";
-    minInput.type = "number";
-    minInput.min = "0";
-    maxInput.placeholder = "10000";
-    maxInput.type = "number";
-    maxInput.min = "0";
     separator.textContent = "-";
 
-    priceRangeContainer.append(minInput, separator, maxInput);
-    container.append(priceRangeContainer);
+    container.append(minInput, separator, maxInput);
 
     return container;
   }
@@ -141,6 +94,7 @@ export default class FilterView extends ViewBuilder {
     priceRangeElement: HTMLElement
   ) {
     this.element.innerHTML = "";
+
     this.element.append(
       this.resetFiltersButton,
       this.categorySizeTitle,

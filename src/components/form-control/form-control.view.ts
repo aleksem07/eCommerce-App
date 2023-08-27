@@ -17,11 +17,10 @@ export default class FormControlView extends ViewBuilder {
     helpText,
     placeholderText,
     type,
+    min,
   }: FormControlProps) {
     super();
-
     this.formName = formName;
-
     this.inputName = inputName;
 
     this.inputWrapper = this.createElement("div", {
@@ -43,6 +42,7 @@ export default class FormControlView extends ViewBuilder {
     this.input.placeholder = placeholderText;
     this.input.name = inputName;
     this.input.type = type || "text";
+    this.input.min = min || "0";
 
     this.inputHelp = this.createElement("small", {
       id: `${helpText}-help`,
