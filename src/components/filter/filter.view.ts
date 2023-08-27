@@ -11,7 +11,7 @@ export default class FilterView extends ViewBuilder {
   constructor() {
     super();
     this.element = this.createElement("div", {
-      classes: ["row"],
+      classes: ["col-md-3", "order-1"],
     });
     this.resetFiltersButton = this.createResetFiltersButton();
     this.categorySizeTitle = this.createCategoryTitle("size");
@@ -20,6 +20,9 @@ export default class FilterView extends ViewBuilder {
   }
 
   createResetFiltersButton() {
+    const container = this.createElement("div", {
+      classes: ["row"],
+    });
     this.resetFiltersButton = this.createElement("button", {
       classes: ["btn"],
     });
@@ -27,17 +30,24 @@ export default class FilterView extends ViewBuilder {
     this.resetFiltersButton.textContent = "Reset filters";
     this.resetFiltersButton.className = "btn btn-primary";
 
-    return this.resetFiltersButton;
+    container.append(this.resetFiltersButton);
+
+    return container;
   }
 
   createCategoryTitle(title: string): HTMLHeadingElement {
+    const container: HTMLHeadingElement = this.createElement("div", {
+      classes: ["row"],
+    });
     const createCategoryTitle: HTMLHeadingElement = this.createElement("h6", {
       id: `category-${title}-title`,
       classes: ["py-3"],
     });
     createCategoryTitle.textContent = title[0].toUpperCase() + title.slice(1);
 
-    return createCategoryTitle;
+    container.append(createCategoryTitle);
+
+    return container;
   }
 
   createColorElement(color?: string): HTMLElement {
