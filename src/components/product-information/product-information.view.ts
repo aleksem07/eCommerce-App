@@ -10,6 +10,7 @@ export default class ProductInformationView extends ViewBuilder {
   private wrapperElement: HTMLDivElement;
   private descriptionWrapperElement: HTMLDivElement;
   private imageWrapperElement: HTMLDivElement;
+  private descriptionHeaderElement: HTMLHeadingElement;
 
   constructor({ title, description, imageUrl }: ProductCardProps) {
     super();
@@ -18,6 +19,7 @@ export default class ProductInformationView extends ViewBuilder {
     this.wrapperElement = this.createWrapperElement();
     this.imageWrapperElement = this.createImageWrapperElement();
     this.descriptionWrapperElement = this.createDescriptionWrapperElement();
+    this.descriptionHeaderElement = this.createDescriptionHeader();
     this.imageElement = this.createImageElement(imageUrl);
     this.descriptionElement = this.createDescriptionElement(description);
   }
@@ -51,6 +53,13 @@ export default class ProductInformationView extends ViewBuilder {
     return descriptionWrapperElement;
   }
 
+  createDescriptionHeader(): HTMLHeadingElement {
+    const descriptionHeader = this.createElement<HTMLHeadingElement>("h6");
+    descriptionHeader.textContent = "Description";
+
+    return descriptionHeader;
+  }
+
   createWrapperElement(): HTMLDivElement {
     const wrapperElement = this.createElement<HTMLDivElement>("div", {
       classes: ["row"],
@@ -80,8 +89,19 @@ export default class ProductInformationView extends ViewBuilder {
     return descriptionElement;
   }
 
-  render() {
-    this.descriptionWrapperElement.append(this.descriptionElement);
+  createDividerElement(): HTMLHRElement {
+    return this.createElement<HTMLHRElement>("hr");
+  }
+
+  render(deliveryDetails: HTMLElement, returnDetails: HTMLElement) {
+    this.descriptionWrapperElement.append(
+      this.descriptionHeaderElement,
+      this.descriptionElement,
+      this.createDividerElement(),
+      deliveryDetails,
+      this.createDividerElement(),
+      returnDetails
+    );
     this.imageWrapperElement.append(this.imageElement);
     this.wrapperElement.append(this.imageWrapperElement, this.descriptionWrapperElement);
     this.informationElement.append(this.titleElement, this.wrapperElement);
