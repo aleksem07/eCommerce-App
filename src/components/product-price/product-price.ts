@@ -1,11 +1,11 @@
-import { Price } from "@Services/product/product.types";
 import ProductPriceView from "./product-price.view";
+import { ProductPriceProps } from "./product-price.types";
 
 export default class ProductPriceComponent {
   private view: ProductPriceView;
 
-  constructor(price: Price, discountedPrice?: Price) {
-    this.view = new ProductPriceView(price, discountedPrice);
+  constructor({ price, discountedPrice, size = "sm" }: ProductPriceProps) {
+    this.view = new ProductPriceView({ price, discountedPrice, size });
   }
 
   init() {

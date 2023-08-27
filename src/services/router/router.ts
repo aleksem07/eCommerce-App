@@ -18,8 +18,7 @@ export default class RouterService {
 
   private handleRouteInitial() {
     const { hash } = window.location;
-    const [cleanHash] = hash.split("?");
-    const initialRoute = cleanHash || Routes.MAIN;
+    const initialRoute = hash || Routes.MAIN;
     RouterService.navigateTo(initialRoute);
   }
 
@@ -33,7 +32,7 @@ export default class RouterService {
 
   private handleRouteChange() {
     const { hash, pathname } = window.location;
-    const [cleanHash] = hash.split("?");
+    const [cleanHash] = hash.split("-");
     const isRootPath = pathname === "/";
     const route = this.routes[cleanHash];
     this.container.innerHTML = "";

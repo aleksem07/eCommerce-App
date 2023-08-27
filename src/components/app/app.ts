@@ -11,8 +11,9 @@ import ProductPage from "@Pages/product/product";
 import UserProfilePage from "@Pages/user-profile/user-profile";
 import eventBusService from "@Services/event-bus/event-bus";
 import { EventData, Events } from "@Services/event-bus/event-bus.types";
-import { HttpErrorType } from "@commercetools/sdk-client-v2";
 import NotificationComponent from "@Components/notification/notification";
+import { NotificationVariant } from "@Components/notification/notification.types";
+import ObjectGuardUtil from "@Utils/object-guard/object-guard";
 
 export default class AppComponent {
   private view: AppView;
@@ -37,11 +38,15 @@ export default class AppComponent {
       [Routes.USER_PROFILE]: new UserProfilePage(),
     });
 
-    eventBusService.subscribe(Events.errorOccurred, this.errorHandler.bind(this));
+    eventBusService.subscribe(Events.showNotification, this.notificationHandler.bind(this));
   }
 
-  errorHandler(error?: EventData) {
-    const httpError = error as HttpErrorType;
-    this.notification.init("danger", httpError.message);
+  notificationHandler(data?: EventData) {
+    const hasVariant = ObjectGuardUtil.hasProp<NotificationVariant>(data, "variant");
+    const hasMessage = ObjectGuardUtil.hasProp<string>(data, "message");
+
+    if (hasVariant && hasMessage) {
+      this.notification.init(data.variant, data.message);
+    }
   }
 }
