@@ -111,9 +111,21 @@ export default class FilterView extends ViewBuilder {
     }
   }
 
-  render(sidebarElements: HTMLElement[]) {
+  render(
+    sizeElements: HTMLElement[],
+    colorElements: HTMLElement[],
+    priceRangeElement: HTMLElement
+  ) {
     this.element.innerHTML = "";
-    this.element.append(this.resetFiltersButton, ...sidebarElements);
+    this.element.append(
+      this.resetFiltersButton,
+      this.categorySizeTitle,
+      ...sizeElements,
+      this.categoryColorTitle,
+      ...colorElements,
+      this.categoryPriceTitle,
+      priceRangeElement
+    );
 
     return this.element;
   }

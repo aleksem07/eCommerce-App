@@ -43,7 +43,7 @@ export default class FilterComponent {
       }
     });
     this.uniqueColors = [...filteredColors];
-    this.init(this.uniqueColors, this.uniqueSizes);
+    this.init(this.uniqueColors.sort(), this.uniqueSizes);
   }
 
   updateSizes(sizes: string[]) {
@@ -54,7 +54,7 @@ export default class FilterComponent {
       }
     });
     this.uniqueSizes = [...filteredSizes];
-    this.init(this.uniqueColors, this.uniqueSizes);
+    this.init(this.uniqueColors, this.uniqueSizes.sort());
   }
 
   private createFilterCheckComponent(labelText: string, formName: string, inputName: string) {
@@ -106,15 +106,6 @@ export default class FilterComponent {
       this.renderSizeElements(sizes, filterSizeElements);
     }
 
-    const sidebarElements: HTMLElement[] = [
-      this.view.categorySizeTitle,
-      ...filterSizeElements.sort((a, b) => a.innerText.localeCompare(b.innerText)),
-      this.view.categoryColorTitle,
-      ...filterColorElements.sort((a, b) => a.innerText.localeCompare(b.innerText)),
-      this.view.categoryPriceTitle,
-      filterPriceRangeElement,
-    ];
-
-    return this.view.render(sidebarElements);
+    return this.view.render(filterSizeElements, filterColorElements, filterPriceRangeElement);
   }
 }
