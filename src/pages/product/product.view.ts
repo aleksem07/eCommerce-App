@@ -11,6 +11,7 @@ export default class ProductView extends ViewBuilder {
   }
 
   render(information: HTMLElement) {
+    this.element.innerHTML = "";
     this.element.append(information);
     this.appendTo("#root", this.element);
   }

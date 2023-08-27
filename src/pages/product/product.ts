@@ -21,11 +21,6 @@ export default class ProductPage {
     this.view = new ProductView();
   }
 
-  async init() {
-    await this.checkProductExists();
-    this.displayProduct();
-  }
-
   private displayProduct() {
     if (this.product) {
       this.information = new ProductInformationComponent(this.product);
@@ -50,5 +45,10 @@ export default class ProductPage {
         this.product = product;
       }
     }
+  }
+
+  async init() {
+    await this.checkProductExists();
+    this.displayProduct();
   }
 }
