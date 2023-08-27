@@ -54,7 +54,9 @@ export default class ProductInformationView extends ViewBuilder {
   }
 
   createDescriptionHeader(): HTMLHeadingElement {
-    const descriptionHeader = this.createElement<HTMLHeadingElement>("h6");
+    const descriptionHeader = this.createElement<HTMLHeadingElement>("h6", {
+      classes: ["mt-3"],
+    });
     descriptionHeader.textContent = "Description";
 
     return descriptionHeader;
@@ -93,8 +95,13 @@ export default class ProductInformationView extends ViewBuilder {
     return this.createElement<HTMLHRElement>("hr");
   }
 
-  render(deliveryDetails: HTMLElement, returnDetails: HTMLElement) {
+  render(
+    deliveryDetails: HTMLElement,
+    returnDetails: HTMLElement,
+    price: HTMLElement
+  ): HTMLElement {
     this.descriptionWrapperElement.append(
+      price,
       this.descriptionHeaderElement,
       this.descriptionElement,
       this.createDividerElement(),

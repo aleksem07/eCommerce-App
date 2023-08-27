@@ -2,15 +2,15 @@ import ProductPriceComponent from "./product-price";
 
 describe("ProductPriceComponent", () => {
   it("should instantiate", () => {
-    const instance = new ProductPriceComponent(
-      { currencyCode: "USD", value: 100 },
-      { currencyCode: "USD", value: 100 }
-    );
+    const instance = new ProductPriceComponent({
+      price: { currencyCode: "USD", value: 100 },
+      discountedPrice: { currencyCode: "USD", value: 100 },
+    });
     expect(instance).toBeInstanceOf(ProductPriceComponent);
   });
 
   it("should display price when no discounted price", () => {
-    const instance = new ProductPriceComponent({ currencyCode: "USD", value: 100 }, undefined);
+    const instance = new ProductPriceComponent({ price: { currencyCode: "USD", value: 100 } });
 
     const priceElement = instance.init();
 
@@ -23,10 +23,10 @@ describe("ProductPriceComponent", () => {
   });
 
   it("should display discounted price and old price", () => {
-    const instance = new ProductPriceComponent(
-      { currencyCode: "USD", value: 100 },
-      { currencyCode: "USD", value: 100 }
-    );
+    const instance = new ProductPriceComponent({
+      price: { currencyCode: "USD", value: 100 },
+      discountedPrice: { currencyCode: "USD", value: 100 },
+    });
 
     const priceElement = instance.init();
 

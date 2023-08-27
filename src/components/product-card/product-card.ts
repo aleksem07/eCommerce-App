@@ -9,7 +9,7 @@ export default class ProductCardComponent {
 
   constructor({ title, description, imageUrl, price, discountedPrice, id }: ProductCardProps) {
     this.view = new ProductCardView({ title, description, imageUrl, price, id });
-    this.price = new ProductPriceComponent(price, discountedPrice);
+    this.price = new ProductPriceComponent({ price, discountedPrice });
   }
 
   init() {
