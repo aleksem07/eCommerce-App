@@ -6,16 +6,12 @@ import { Events, EventData } from "@Services/event-bus/event-bus.types";
 
 export default class FilterComponent {
   private view: FilterView;
-  filteredColors: Set<string>;
-  filteredSizes: Set<string>;
   private uniqueColors: string[] = [];
   private uniqueSizes: string[] = [];
   private productService: ProductService;
 
   constructor(onResetClick?: (e: Event) => void) {
     this.view = new FilterView();
-    this.filteredColors = new Set();
-    this.filteredSizes = new Set();
     this.uniqueColors = [];
     this.uniqueSizes = [];
     this.productService = new ProductService();
@@ -40,22 +36,24 @@ export default class FilterComponent {
   }
 
   updateColors(colors: string[]) {
+    const filteredColors: Set<string> = new Set();
     colors.forEach((color) => {
       if (color) {
-        this.filteredColors.add(color);
+        filteredColors.add(color);
       }
     });
-    this.uniqueColors = [...this.filteredColors];
+    this.uniqueColors = [...filteredColors];
     this.init(this.uniqueColors, this.uniqueSizes);
   }
 
   updateSizes(sizes: string[]) {
+    const filteredSizes: Set<string> = new Set();
     sizes.forEach((size) => {
       if (size && size.length > 0) {
-        this.filteredSizes.add(size);
+        filteredSizes.add(size);
       }
     });
-    this.uniqueSizes = [...this.filteredSizes];
+    this.uniqueSizes = [...filteredSizes];
     this.init(this.uniqueColors, this.uniqueSizes);
   }
 
@@ -67,27 +65,45 @@ export default class FilterComponent {
     });
   }
 
+  private renderColorElements(colors: string[], element?: HTMLElement[]) {
+    if (colors) {
+      colors.forEach((color) => {
+        if (color) {
+          const colorElement = this.view.createColorElement(color);
+
+          if (element) {
+            element.push(colorElement);
+          }
+        }
+      });
+    }
+  }
+
+  private renderSizeElements(sizes: string[], element?: HTMLElement[]) {
+    if (sizes) {
+      sizes.forEach((size) => {
+        if (size) {
+          const sizeElement = this.createFilterCheckComponent(size, "size", `size-${size}`).init();
+
+          if (element) {
+            element.push(sizeElement);
+          }
+        }
+      });
+    }
+  }
+
   init(colors?: string[], sizes?: string[]) {
     const filterColorElements: HTMLElement[] = [];
     const filterSizeElements: HTMLElement[] = [];
     const filterPriceRangeElement = this.view.createPriceRangeElement();
 
     if (colors) {
-      colors.forEach((color) => {
-        if (color) {
-          const colorElement = this.view.createColorElement(color);
-          filterColorElements.push(colorElement);
-        }
-      });
+      this.renderColorElements(colors, filterColorElements);
     }
 
     if (sizes) {
-      sizes.forEach((size) => {
-        if (size) {
-          const sizeElement = this.createFilterCheckComponent(size, "size", `size-${size}`).init();
-          filterSizeElements.push(sizeElement);
-        }
-      });
+      this.renderSizeElements(sizes, filterSizeElements);
     }
 
     const sidebarElements: HTMLElement[] = [
