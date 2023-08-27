@@ -3,7 +3,6 @@ import ProductFilterService from "@Services/product-filter/product-filter";
 import CatalogView from "./catalog.view";
 import ProductListComponent from "@Components/product-list/product-list";
 import FilterComponent from "@Components/filter/filter";
-import SortComponent from "@Components/sort/sort";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
 
@@ -13,7 +12,6 @@ export default class CatalogPage {
   private productFilterService: ProductFilterService;
   private productListComponent: ProductListComponent;
   private filter: FilterComponent;
-  private sort: SortComponent;
 
   constructor() {
     this.view = new CatalogView();
@@ -21,7 +19,6 @@ export default class CatalogPage {
     this.productFilterService = new ProductFilterService();
     this.productListComponent = new ProductListComponent();
     this.filter = new FilterComponent();
-    this.sort = new SortComponent();
   }
 
   private async fetchProducts() {
@@ -51,7 +48,6 @@ export default class CatalogPage {
 
   init() {
     this.view.displaySidebar(this.filter.init());
-    this.view.displayToolbar(this.sort.init());
     this.fetchProducts();
     this.view.render();
   }

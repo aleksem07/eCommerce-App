@@ -8,8 +8,8 @@ export default class FilterComponent {
   private view: FilterView;
   filteredColors: Set<string>;
   filteredSizes: Set<string>;
-  private uniqueColors: string[] | void = [];
-  private uniqueSizes: string[] | void = [];
+  private uniqueColors: string[] = [];
+  private uniqueSizes: string[] = [];
   private productService: ProductService;
 
   constructor(onResetClick?: (e: Event) => void) {
@@ -19,12 +19,17 @@ export default class FilterComponent {
     this.uniqueColors = [];
     this.uniqueSizes = [];
     this.productService = new ProductService();
-    eventBusService.subscribe(Events.dataProductReceived, (data: EventData | undefined) => {
-      if (data && Array.isArray(data?.colors) && Array.isArray(data?.sizes)) {
-        this.updateDataProduct(data.colors, data.sizes);
+
+    this.view.resetFilterListener((e) => this.resetFilterHandler(e, onResetClick));
+    eventBusService.subscribe(Events.dataProductReceived, (data?: EventData) => {
+      if (data && Array.isArray(data.colors)) {
+        this.updateColors(data.colors);
+      }
+
+      if (data && Array.isArray(data.sizes)) {
+        this.updateSizes(data.sizes);
       }
     });
-    this.view.resetFilterListener((e) => this.resetFilterHandler(e, onResetClick));
   }
 
   resetFilterHandler(e: Event, onResetClick?: (e: Event) => void) {
@@ -34,14 +39,17 @@ export default class FilterComponent {
     console.log("reset filter click");
   }
 
-  updateDataProduct(colors: string[], sizes: string[]) {
+  updateColors(colors: string[]) {
     colors.forEach((color) => {
       if (color) {
         this.filteredColors.add(color);
       }
     });
     this.uniqueColors = [...this.filteredColors];
+    this.init(this.uniqueColors, this.uniqueSizes);
+  }
 
+  updateSizes(sizes: string[]) {
     sizes.forEach((size) => {
       if (size && size.length > 0) {
         this.filteredSizes.add(size);
@@ -76,11 +84,7 @@ export default class FilterComponent {
     if (sizes) {
       sizes.forEach((size) => {
         if (size) {
-          const sizeElement = this.createFilterCheckComponent(
-            size.toUpperCase(),
-            "size",
-            `size-${size}`
-          ).init();
+          const sizeElement = this.createFilterCheckComponent(size, "size", `size-${size}`).init();
           filterSizeElements.push(sizeElement);
         }
       });
