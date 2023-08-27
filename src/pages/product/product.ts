@@ -43,6 +43,8 @@ export default class ProductPage {
 
       if (product) {
         this.product = product;
+      } else {
+        RouterService.navigateTo(Routes.NOT_FOUND);
       }
     }
   }

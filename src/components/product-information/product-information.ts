@@ -1,7 +1,7 @@
-import { ProductCardProps } from "@Components/product-card/product-card.types";
 import ProductInformationView from "./product-information.view";
 // eslint-disable-next-line max-len
 import ProductExtraDescriptionComponent from "@Components/product-extra-description/product-extra-description";
+import { ProductInformationProps } from "./product-information.types";
 import ProductPriceComponent from "@Components/product-price/product-price";
 
 export default class ProductInformationComponent {
@@ -10,14 +10,15 @@ export default class ProductInformationComponent {
   private returnDetails: ProductExtraDescriptionComponent;
   private prices: ProductPriceComponent;
 
-  constructor({ title, description, imageUrl, price, id, discountedPrice }: ProductCardProps) {
-    this.view = new ProductInformationView({
-      title,
-      description,
-      imageUrl,
-      price,
-      id,
-    });
+  constructor({
+    title,
+    description,
+    imageUrl,
+    price,
+    id,
+    discountedPrice,
+  }: ProductInformationProps) {
+    this.view = new ProductInformationView({ title, description, imageUrl, price, id });
     this.deliveryDetails = new ProductExtraDescriptionComponent({
       title: "Delivery",
       content: "Free standard shipping on orders over $35 before tax, plus free returns.",
