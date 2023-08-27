@@ -2,16 +2,23 @@ import { ViewBuilder } from "@Interfaces/view-builder";
 
 export default class FilterView extends ViewBuilder {
   private element: HTMLElement;
-  resetFiltersButton: HTMLElement;
-  categorySizeTitle: HTMLHeadingElement;
-  categoryColorTitle: HTMLHeadingElement;
-  categoryPriceTitle: HTMLHeadingElement;
+  private resetFiltersButton: HTMLElement;
+  private categorySizeTitle: HTMLHeadingElement;
+  private categoryColorTitle: HTMLHeadingElement;
+  private categoryPriceTitle: HTMLHeadingElement;
 
   constructor() {
     super();
     this.element = this.createElement("div", {
       classes: ["sidebar", "row"],
     });
+    this.resetFiltersButton = this.createResetFiltersButton();
+    this.categorySizeTitle = this.createCategorySizeTitle();
+    this.categoryColorTitle = this.createCategoryColorTitle();
+    this.categoryPriceTitle = this.createCategoryPriceTitle();
+  }
+
+  createResetFiltersButton() {
     this.resetFiltersButton = this.createElement("button", {
       classes: ["btn"],
     });
@@ -19,21 +26,38 @@ export default class FilterView extends ViewBuilder {
     this.resetFiltersButton.textContent = "Reset filters";
     this.resetFiltersButton.style.color = "white";
     this.resetFiltersButton.style.backgroundColor = "#17696A";
+
+    return this.resetFiltersButton;
+  }
+
+  createCategorySizeTitle() {
     this.categorySizeTitle = this.createElement("h2", {
       id: `category-size-title`,
       classes: ["h4", "fw-normal", "text-left", "py-3"],
     });
     this.categorySizeTitle.textContent = `Size`;
+
+    return this.categorySizeTitle;
+  }
+
+  createCategoryColorTitle() {
     this.categoryColorTitle = this.createElement("h2", {
       id: `category-color-title`,
       classes: ["h4", "fw-normal", "text-left", "py-3"],
     });
     this.categoryColorTitle.textContent = `Color`;
+
+    return this.categoryColorTitle;
+  }
+
+  createCategoryPriceTitle() {
     this.categoryPriceTitle = this.createElement("h2", {
       id: `category-price-title`,
       classes: ["h4", "fw-normal", "text-left", "py-3"],
     });
     this.categoryPriceTitle.textContent = `Price`;
+
+    return this.categoryPriceTitle;
   }
 
   createColorElement(color?: string): HTMLElement {
