@@ -36,7 +36,7 @@ export default class FilterComponent {
     });
 
     this.view.resetFilterListener((e) => this.resetFilterHandler(e, onResetClick));
-    eventBusService.subscribe(Events.dataProductReceived, (data?: EventData) => {
+    eventBusService.subscribe(Events.fetchProductsSuccessfully, (data?: EventData) => {
       if (data && Array.isArray(data.colors)) {
         this.updateColors(data.colors);
       }

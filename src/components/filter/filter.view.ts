@@ -1,6 +1,5 @@
 import "./filter.scss";
 import { ViewBuilder } from "@Interfaces/view-builder";
-import FormControlComponent from "@Components/form-control/form-control";
 
 export default class FilterView extends ViewBuilder {
   private element: HTMLElement;
@@ -71,7 +70,6 @@ export default class FilterView extends ViewBuilder {
     const container = this.createElement("div", {
       classes: ["d-flex", "align-items-center"],
     });
-
     const separator = this.createElement("span", {
       classes: ["mx-1", "mt-4"],
     });

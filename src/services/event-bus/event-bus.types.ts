@@ -4,7 +4,7 @@ export enum Events {
   loginLinkClicked = "loginLinkClicked",
   logoutLinkClicked = "logoutLinkClicked",
   errorOccurred = "errorOccurred",
-  dataProductReceived = "dataProductReceived",
+  fetchProductsSuccessfully = "fetchProductsSuccessfully",
   showNotification = "showNotification",
 }
 

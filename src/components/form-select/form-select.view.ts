@@ -18,7 +18,7 @@ export default class FormSelectView extends ViewBuilder {
 
     this.inputWrapper = this.createElement("div", {
       id: `${formName}-${inputName}-wrapper`,
-      classes: className ? ["mt-2", className] : ["mt-2"],
+      classes: className ? ["mt-2", ...className] : ["mt-2"],
     });
 
     this.inputLabel = this.createElement("label", {

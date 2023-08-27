@@ -1,6 +1,10 @@
 import AuthService from "@Services/auth/auth";
 import ClientBuilderService from "@Services/client-builder/client-builder";
-import { Price as PriceResponse, Product as ProductResponse } from "@commercetools/platform-sdk";
+import {
+  Price as PriceResponse,
+  Product as ProductResponse,
+  ProductProjection as ProductProjectionResponse,
+} from "@commercetools/platform-sdk";
 import { Price, Product } from "./product.types";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
@@ -109,5 +113,50 @@ export default class ProductService extends ClientBuilderService {
 
   private getPriceValue(centAmount?: number): number {
     return centAmount ? Number((centAmount / 100).toFixed(2)) : 0;
+  }
+
+  async filterProducts(limit?: number) {
+    try {
+      const token = await this.authService.retrieveToken();
+
+      if (token) {
+        const { body } = await this.apiRoot
+          .withProjectKey({ projectKey: this.projectKey })
+          .productProjections()
+          .search()
+          .get({
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            queryArgs: {
+              limit,
+              filter: [
+                // 'variants.attributes.color.key:"gold", "blue"',
+                // "variants.price.centAmount:range (* to 10000)",
+                // 'variants.attributes.size:"M", "L"',
+              ],
+            },
+          })
+          .execute();
+
+        return body.results.map(this.mapProductProjectionResponseToProduct.bind(this));
+      }
+    } catch (error) {
+      const httpError = error as HttpErrorType;
+      eventBusService.publish(Events.errorOccurred, httpError);
+    }
+  }
+
+  private mapProductProjectionResponseToProduct(productResponse: ProductProjectionResponse) {
+    return {
+      id: productResponse.id,
+      title: productResponse.name.en,
+      description: productResponse.description?.en || "product description",
+      imageUrl: productResponse.masterVariant.images?.[0].url || "",
+      color: productResponse.masterVariant.attributes?.[8].value.key,
+      size: productResponse.masterVariant.attributes?.[7].value,
+      price: this.getPrice(productResponse.masterVariant.prices),
+      discountedPrice: this.getDiscountedPrice(productResponse.masterVariant.prices),
+    };
   }
 }
