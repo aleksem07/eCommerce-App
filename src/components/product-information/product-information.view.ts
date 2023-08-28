@@ -99,12 +99,12 @@ export default class ProductInformationView extends ViewBuilder {
     deliveryDetails,
     returnDetails,
     price,
-    slider,
+    imageSlider,
   }: {
     deliveryDetails: HTMLElement;
     returnDetails: HTMLElement;
     price: HTMLElement;
-    slider: HTMLElement;
+    imageSlider: HTMLElement;
   }): HTMLElement {
     this.descriptionWrapperElement.append(
       price,
@@ -115,7 +115,7 @@ export default class ProductInformationView extends ViewBuilder {
       this.createDividerElement(),
       returnDetails
     );
-    this.imageWrapperElement.append(slider);
+    this.imageWrapperElement.append(imageSlider);
     this.wrapperElement.append(this.imageWrapperElement, this.descriptionWrapperElement);
     this.informationElement.append(this.titleElement, this.wrapperElement);
 

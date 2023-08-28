@@ -10,7 +10,7 @@ export default class ProductInformationComponent {
   private deliveryDetails: ProductExtraDescriptionComponent;
   private returnDetails: ProductExtraDescriptionComponent;
   private prices: ProductPriceComponent;
-  private slider: ProductSliderComponent;
+  private imageSlider: ProductSliderComponent;
 
   constructor({
     title,
@@ -33,7 +33,7 @@ export default class ProductInformationComponent {
     });
     this.prices = new ProductPriceComponent({ price, discountedPrice, size: "md" });
 
-    this.slider = new ProductSliderComponent(images);
+    this.imageSlider = new ProductSliderComponent(images, true);
   }
 
   init() {
@@ -41,7 +41,7 @@ export default class ProductInformationComponent {
       deliveryDetails: this.deliveryDetails.init(),
       returnDetails: this.returnDetails.init(),
       price: this.prices.init(),
-      slider: this.slider.init(),
+      imageSlider: this.imageSlider.init(),
     });
   }
 }
