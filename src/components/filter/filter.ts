@@ -54,6 +54,30 @@ export default class FilterComponent {
     console.log("reset filter click");
   }
 
+  handleSizeCheckboxClick(event: Event, size: string) {
+    const checkbox = event.target as HTMLInputElement;
+
+    if (checkbox.checked) {
+      console.log(size);
+    }
+  }
+
+  handleColorElementClick(event: Event, color: string) {
+    console.log(color);
+  }
+
+  handleMinPriceChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const minValue = input.value;
+    console.log(`Min Price changed: ${minValue}`);
+  }
+
+  handleMaxPriceChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const maxValue = input.value;
+    console.log(`Max Price changed: ${maxValue}`);
+  }
+
   updateColors(colors: string[]) {
     const filteredColors: Set<string> = new Set();
     colors.forEach((color) => {
@@ -89,6 +113,7 @@ export default class FilterComponent {
       colors.forEach((color) => {
         if (color) {
           const colorElement = this.view.createColorElement(color);
+          colorElement.addEventListener("click", (e) => this.handleColorElementClick(e, color));
 
           if (element) {
             element.push(colorElement);
@@ -103,6 +128,7 @@ export default class FilterComponent {
       sizes.forEach((size) => {
         if (size) {
           const sizeElement = this.createFilterCheckComponent(size, "size", `size-${size}`).init();
+          sizeElement.addEventListener("click", (e) => this.handleSizeCheckboxClick(e, size));
 
           if (element) {
             element.push(sizeElement);
@@ -119,6 +145,8 @@ export default class FilterComponent {
       this.rangeMinPrice.init(),
       this.rangeMaxPrice.init()
     );
+    const minInput = this.rangeMinPrice.init();
+    const maxInput = this.rangeMaxPrice.init();
 
     if (colors) {
       this.renderColorElements(colors, filterColorElements);
@@ -126,6 +154,14 @@ export default class FilterComponent {
 
     if (sizes) {
       this.renderSizeElements(sizes, filterSizeElements);
+    }
+
+    if (minInput) {
+      minInput.addEventListener("input", (e) => this.handleMinPriceChange(e));
+    }
+
+    if (maxInput) {
+      maxInput.addEventListener("input", (e) => this.handleMaxPriceChange(e));
     }
 
     return this.view.render(filterSizeElements, filterColorElements, filterPriceRangeElement);

@@ -131,9 +131,9 @@ export default class ProductService extends ClientBuilderService {
             queryArgs: {
               limit,
               filter: [
+                'variants.attributes.size:"M", "L"',
                 // 'variants.attributes.color.key:"gold", "blue"',
                 // "variants.price.centAmount:range (* to 10000)",
-                // 'variants.attributes.size:"M", "L"',
               ],
             },
           })
