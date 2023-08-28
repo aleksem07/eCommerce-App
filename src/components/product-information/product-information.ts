@@ -13,12 +13,12 @@ export default class ProductInformationComponent {
   constructor({
     title,
     description,
-    imageUrl,
+    images: imageUrl,
     price,
     id,
     discountedPrice,
   }: ProductInformationProps) {
-    this.view = new ProductInformationView({ title, description, imageUrl, price, id });
+    this.view = new ProductInformationView({ title, description, images: imageUrl, price, id });
     this.deliveryDetails = new ProductExtraDescriptionComponent({
       title: "Delivery",
       content: "Free standard shipping on orders over $35 before tax, plus free returns.",

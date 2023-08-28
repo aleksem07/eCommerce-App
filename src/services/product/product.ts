@@ -1,6 +1,10 @@
 import AuthService from "@Services/auth/auth";
 import ClientBuilderService from "@Services/client-builder/client-builder";
-import { Price as PriceResponse, Product as ProductResponse } from "@commercetools/platform-sdk";
+import {
+  Price as PriceResponse,
+  Product as ProductResponse,
+  Image as ImageResponse,
+} from "@commercetools/platform-sdk";
 import { Price, Product } from "./product.types";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
@@ -73,12 +77,16 @@ export default class ProductService extends ClientBuilderService {
       id: productResponse.id,
       title: productResponse.masterData.current.name.en,
       description: productResponse.masterData.current.description?.en || "product description",
-      imageUrl: productResponse.masterData.current.masterVariant.images?.[0].url || "",
+      images: this.mapProductImages(productResponse.masterData.current.masterVariant.images),
       price: this.getPrice(productResponse.masterData.current.masterVariant.prices),
       discountedPrice: this.getDiscountedPrice(
         productResponse.masterData.current.masterVariant.prices
       ),
     };
+  }
+
+  private mapProductImages(images?: ImageResponse[]): string[] {
+    return images?.map((image) => image.url) || [];
   }
 
   private getPrice(prices?: PriceResponse[]): Price {

@@ -12,7 +12,7 @@ export default class ProductInformationView extends ViewBuilder {
   private imageWrapperElement: HTMLDivElement;
   private descriptionHeaderElement: HTMLHeadingElement;
 
-  constructor({ title, description, imageUrl }: ProductInformationProps) {
+  constructor({ title, description, images }: ProductInformationProps) {
     super();
     this.informationElement = this.createInformationElement();
     this.titleElement = this.createTitleElement(title);
@@ -20,7 +20,7 @@ export default class ProductInformationView extends ViewBuilder {
     this.imageWrapperElement = this.createImageWrapperElement();
     this.descriptionWrapperElement = this.createDescriptionWrapperElement();
     this.descriptionHeaderElement = this.createDescriptionHeader();
-    this.imageElement = this.createImageElement(imageUrl);
+    this.imageElement = this.createImageElement(images);
     this.descriptionElement = this.createDescriptionElement(description);
   }
 
@@ -70,12 +70,12 @@ export default class ProductInformationView extends ViewBuilder {
     return wrapperElement;
   }
 
-  createImageElement(imageUrl: string): HTMLImageElement {
+  createImageElement(images: string[]): HTMLImageElement {
     const imageElement = this.createElement<HTMLImageElement>("img", {
       classes: ["img-fluid"],
     });
 
-    imageElement.src = imageUrl;
+    imageElement.src = images[0];
 
     imageElement.onerror = () => {
       imageElement.src = fallbackImage;

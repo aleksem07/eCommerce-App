@@ -10,11 +10,11 @@ export default class ProductCardView extends ViewBuilder {
   private descriptionElement: HTMLParagraphElement;
   private card: HTMLLinkElement;
 
-  constructor({ title, description, imageUrl, id }: ProductCardProps) {
+  constructor({ title, description, images, id }: ProductCardProps) {
     super();
     this.card = this.createCard(id);
     this.cardBody = this.createCardBody();
-    this.imageElement = this.createImageElement(imageUrl);
+    this.imageElement = this.createImageElement(images);
     this.titleElement = this.createTitleElement(title);
     this.descriptionElement = this.createDescriptionElement(description);
   }
@@ -38,13 +38,13 @@ export default class ProductCardView extends ViewBuilder {
     return this.cardBody;
   }
 
-  private createImageElement(imageUrl: string) {
+  private createImageElement(images: string[]) {
     this.imageElement = this.createElement<HTMLImageElement>("img", {
       classes: ["card-img-top"],
     });
     this.imageElement.alt = "Card image";
     this.imageElement.height = 250;
-    this.imageElement.src = imageUrl;
+    this.imageElement.src = images[0];
 
     this.imageElement.onerror = () => {
       this.imageElement.src = fallbackImage;
