@@ -20,46 +20,36 @@ export default class FilterView extends ViewBuilder {
   }
 
   createResetFiltersButton() {
-    const container = this.createElement("div", {
-      classes: ["row"],
-    });
     this.resetFiltersButton = this.createElement("button", {
-      classes: ["btn"],
+      classes: ["btn", "btn-primary"],
     });
     this.resetFiltersButton.setAttribute("type", "button");
     this.resetFiltersButton.textContent = "Reset filters";
     this.resetFiltersButton.className = "btn btn-primary";
 
-    container.append(this.resetFiltersButton);
-
-    return container;
+    return this.resetFiltersButton;
   }
 
   createCategoryTitle(title: string): HTMLHeadingElement {
-    const container: HTMLHeadingElement = this.createElement("div", {
-      classes: ["row"],
-    });
     const createCategoryTitle: HTMLHeadingElement = this.createElement("h6", {
       id: `category-${title}-title`,
-      classes: ["py-3"],
+      classes: ["mt-3", "p-0"],
     });
     createCategoryTitle.textContent = title[0].toUpperCase() + title.slice(1);
 
-    container.append(createCategoryTitle);
-
-    return container;
+    return createCategoryTitle;
   }
 
   createColorElement(color?: string): HTMLElement {
     const container = this.createElement("div", {
-      classes: ["col-md-3", "mb-1"],
+      classes: ["col-md-3", "no-gutters", "col"],
     });
     const colorPicker = this.createElement("div", {
       classes: ["color-picker", "rounded-circle", "mx-auto"],
     });
 
     const title = this.createElement("p", {
-      classes: ["mt-1", "text-center"],
+      classes: ["mt-2", "text-center"],
     });
 
     if (color) {
@@ -78,7 +68,7 @@ export default class FilterView extends ViewBuilder {
 
   createPriceRangeElement(minInput: HTMLElement, maxInput: HTMLElement): HTMLElement {
     const container = this.createElement("div", {
-      classes: ["d-flex", "align-items-center"],
+      classes: ["d-flex", "align-items-top", "align-items-center"],
     });
     const separator = this.createElement("span", {
       classes: ["mx-1", "mt-4"],
@@ -96,6 +86,20 @@ export default class FilterView extends ViewBuilder {
     }
   }
 
+  private createCategoryContainer(title: HTMLElement, elements?: HTMLElement[]): HTMLElement {
+    const container = this.createElement("div", {
+      classes: ["row", "pb-3", "border-bottom"],
+    });
+
+    container.append(title);
+
+    if (elements) {
+      container.append(...elements);
+    }
+
+    return container;
+  }
+
   render(
     sizeElements: HTMLElement[],
     colorElements: HTMLElement[],
@@ -104,13 +108,10 @@ export default class FilterView extends ViewBuilder {
     this.element.innerHTML = "";
 
     this.element.append(
-      this.resetFiltersButton,
-      this.categorySizeTitle,
-      ...sizeElements,
-      this.categoryColorTitle,
-      ...colorElements,
-      this.categoryPriceTitle,
-      priceRangeElement
+      this.createCategoryContainer(this.resetFiltersButton),
+      this.createCategoryContainer(this.categorySizeTitle, sizeElements),
+      this.createCategoryContainer(this.categoryColorTitle, colorElements),
+      this.createCategoryContainer(this.categoryPriceTitle, [priceRangeElement])
     );
 
     return this.element;
