@@ -1,11 +1,8 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
-import Swiper from "swiper";
-import { Navigation, Pagination } from "swiper/modules";
 
 export default class ProductSliderView extends ViewBuilder {
-  private swiperContainer: HTMLDivElement;
+  swiperContainer: HTMLDivElement;
   private swiperWrapper: HTMLDivElement;
-  private swiper: Swiper | null = null;
   private images: string[] = [];
 
   constructor(images: string[]) {
@@ -65,22 +62,6 @@ export default class ProductSliderView extends ViewBuilder {
       this.createSwiperNavigation("swiper-button-prev"),
       this.createSwiperNavigation("swiper-button-next")
     );
-
-    if (!this.swiper) {
-      this.swiper = new Swiper(this.swiperContainer, {
-        modules: [Navigation, Pagination],
-        spaceBetween: 10,
-        navigation: {
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
-        },
-        // thumbs: {
-        //   swiper,
-        // },
-      });
-    } else {
-      this.swiper.update();
-    }
 
     return this.swiperContainer;
   }
