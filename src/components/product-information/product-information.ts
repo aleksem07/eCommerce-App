@@ -3,22 +3,24 @@ import ProductInformationView from "./product-information.view";
 import ProductExtraDescriptionComponent from "@Components/product-extra-description/product-extra-description";
 import { ProductInformationProps } from "./product-information.types";
 import ProductPriceComponent from "@Components/product-price/product-price";
+import ProductSliderComponent from "@Components/product-slider/product-slider";
 
 export default class ProductInformationComponent {
   private view: ProductInformationView;
   private deliveryDetails: ProductExtraDescriptionComponent;
   private returnDetails: ProductExtraDescriptionComponent;
   private prices: ProductPriceComponent;
+  private slider: ProductSliderComponent;
 
   constructor({
     title,
     description,
-    images: imageUrl,
+    images: images,
     price,
     id,
     discountedPrice,
   }: ProductInformationProps) {
-    this.view = new ProductInformationView({ title, description, images: imageUrl, price, id });
+    this.view = new ProductInformationView({ title, description, images, price, id });
     this.deliveryDetails = new ProductExtraDescriptionComponent({
       title: "Delivery",
       content: "Free standard shipping on orders over $35 before tax, plus free returns.",
@@ -30,13 +32,16 @@ export default class ProductInformationComponent {
       list: ["Free store return", "Free returns via USPS Dropoff Service"],
     });
     this.prices = new ProductPriceComponent({ price, discountedPrice, size: "md" });
+
+    this.slider = new ProductSliderComponent(images);
   }
 
   init() {
-    return this.view.render(
-      this.deliveryDetails.init(),
-      this.returnDetails.init(),
-      this.prices.init()
-    );
+    return this.view.render({
+      deliveryDetails: this.deliveryDetails.init(),
+      returnDetails: this.returnDetails.init(),
+      price: this.prices.init(),
+      slider: this.slider.init(),
+    });
   }
 }

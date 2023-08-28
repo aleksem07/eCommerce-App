@@ -1,5 +1,6 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
 import Swiper from "swiper";
+import { Navigation, Pagination } from "swiper/modules";
 
 export default class ProductSliderView extends ViewBuilder {
   private swiperContainer: HTMLDivElement;
@@ -16,7 +17,7 @@ export default class ProductSliderView extends ViewBuilder {
 
   createSwiperContainer(): HTMLDivElement {
     const container = this.createElement<HTMLDivElement>("div", {
-      classes: ["swiper-container"],
+      classes: ["swiper"],
     });
 
     return container;
@@ -34,11 +35,21 @@ export default class ProductSliderView extends ViewBuilder {
     const slide = this.createElement<HTMLDivElement>("div", {
       classes: ["swiper-slide"],
     });
-    const img = this.createElement<HTMLImageElement>("img");
+    const img = this.createElement<HTMLImageElement>("img", {
+      classes: ["img-fluid"],
+    });
     img.src = imageUrl;
     slide.appendChild(img);
 
     return slide;
+  }
+
+  createSwiperNavigation(buttonClass: string): HTMLDivElement {
+    const navigation = this.createElement<HTMLDivElement>("div", {
+      classes: [buttonClass],
+    });
+
+    return navigation;
   }
 
   render(): HTMLElement {
@@ -49,10 +60,24 @@ export default class ProductSliderView extends ViewBuilder {
       this.swiperWrapper.appendChild(slide);
     });
 
-    this.swiperContainer.appendChild(this.swiperWrapper);
+    this.swiperContainer.append(
+      this.swiperWrapper,
+      this.createSwiperNavigation("swiper-button-prev"),
+      this.createSwiperNavigation("swiper-button-next")
+    );
 
     if (!this.swiper) {
-      this.swiper = new Swiper(".swiper-container");
+      this.swiper = new Swiper(this.swiperContainer, {
+        modules: [Navigation, Pagination],
+        spaceBetween: 10,
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+        // thumbs: {
+        //   swiper,
+        // },
+      });
     } else {
       this.swiper.update();
     }
