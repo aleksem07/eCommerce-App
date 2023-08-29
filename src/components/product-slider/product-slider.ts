@@ -1,8 +1,9 @@
 import eventBusService from "@Services/event-bus/event-bus";
 import ProductSliderView from "./product-slider.view";
 import Swiper from "swiper";
-import { Navigation, Thumbs } from "swiper/modules";
+import { EffectCoverflow, Navigation, Thumbs } from "swiper/modules";
 import { Events } from "@Services/event-bus/event-bus.types";
+import "./product-slider.scss";
 
 export default class ProductSliderComponent {
   private view: ProductSliderView;
@@ -17,12 +18,23 @@ export default class ProductSliderComponent {
     const thumbnailSwiper = new Swiper(this.view.thumbsContainer, {
       spaceBetween: 10,
       slidesPerView: 4,
-      freeMode: true,
+      // freeMode: true,
       watchSlidesProgress: true,
     });
 
     new Swiper(this.view.imageContainer, {
-      modules: [Navigation, Thumbs],
+      effect: "coverflow",
+      coverflowEffect: {
+        rotate: 50,
+        stretch: 0,
+        depth: 100,
+        modifier: 1,
+        slideShadows: true,
+      },
+
+      speed: 1000,
+      loop: true,
+      modules: [Navigation, Thumbs, EffectCoverflow],
       spaceBetween: 10,
       navigation: {
         nextEl: ".swiper-button-next",

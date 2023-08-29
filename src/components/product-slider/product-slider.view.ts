@@ -24,7 +24,7 @@ export default class ProductSliderView extends ViewBuilder {
 
   private createSwiperContainer(id: string, hasNavigation: boolean): HTMLDivElement {
     const container = this.createElement<HTMLDivElement>("div", {
-      classes: ["swiper"],
+      classes: ["swiper", "mb-5"],
       id,
     });
 
