@@ -11,14 +11,14 @@ export default class ProductSliderComponent {
   constructor(images: string[]) {
     this.view = new ProductSliderView(images);
 
-    eventBusService.subscribe(Events.renderSlider, this.initializeSwiper.bind(this));
+    eventBusService.subscribe(Events.renderProductSlider, this.initializeSwiper.bind(this));
   }
 
   initializeSwiper() {
     const thumbnailSwiper = new Swiper(this.view.thumbsContainer, {
       spaceBetween: 10,
       slidesPerView: 4,
-      // freeMode: true,
+      freeMode: true,
       watchSlidesProgress: true,
     });
 

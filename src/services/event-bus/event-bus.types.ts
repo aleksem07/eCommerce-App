@@ -4,7 +4,7 @@ export enum Events {
   loginLinkClicked = "loginLinkClicked",
   logoutLinkClicked = "logoutLinkClicked",
   showNotification = "showNotification",
-  renderSlider = "renderSlider",
+  renderProductSlider = "renderProductSlider",
 }
 
 export type EventCallback = (data?: EventData) => void;
