@@ -1,6 +1,11 @@
 import AuthService from "@Services/auth/auth";
 import ClientBuilderService from "@Services/client-builder/client-builder";
-import { Price as PriceResponse, Product as ProductResponse } from "@commercetools/platform-sdk";
+import {
+  Price as PriceResponse,
+  Product as ProductResponse,
+  Image as ImageResponse,
+  ProductProjection,
+} from "@commercetools/platform-sdk";
 import { Price, Product } from "./product.types";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
@@ -66,6 +71,47 @@ export default class ProductService extends ClientBuilderService {
         message: httpError.message,
       });
     }
+  }
+
+  async getProductsByCategory(categoryId: string) {
+    try {
+      const token = await this.authService.retrieveToken();
+
+      if (token) {
+        const result = await this.apiRoot
+          .withProjectKey({ projectKey: this.projectKey })
+          .productProjections()
+          .search()
+          .get({
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            queryArgs: {
+              filter: [`categories.id:"${categoryId}"`],
+            },
+          })
+          .execute();
+
+        return result.body.results.map((res) => this.mapProductProjectionToProduct(res));
+      }
+    } catch (error) {
+      const httpError = error as HttpErrorType;
+      eventBusService.publish(Events.showNotification, {
+        variant: NotificationVariant.danger,
+        message: httpError.message,
+      });
+    }
+  }
+
+  private mapProductProjectionToProduct(productProjection: ProductProjection): Product {
+    return {
+      id: productProjection.id,
+      title: productProjection.name.en,
+      description: productProjection.description?.en || "product description",
+      images: this.mapProductImages(productProjection.masterVariant.images),
+      price: this.getPrice(productProjection.masterVariant.prices),
+      discountedPrice: this.getDiscountedPrice(productProjection.masterVariant.prices),
+    };
   }
 
   private mapProductResponseToProduct(productResponse: ProductResponse): Product {
