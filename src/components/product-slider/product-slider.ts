@@ -3,40 +3,35 @@ import ProductSliderView from "./product-slider.view";
 import Swiper from "swiper";
 import { Navigation, Thumbs } from "swiper/modules";
 import { Events } from "@Services/event-bus/event-bus.types";
-import { SwiperOptions } from "swiper/types/swiper-options";
-import { ThumbsOptions } from "swiper/types/modules/thumbs";
 
 export default class ProductSliderComponent {
   private view: ProductSliderView;
-  swiper?: Swiper;
 
-  constructor(images: string[], hasNavigation: boolean, thumbnail?: ThumbsOptions) {
+  constructor(images: string[]) {
     this.view = new ProductSliderView(images);
 
-    eventBusService.subscribe(
-      Events.renderSlider,
-      this.initializeSwiper.bind(this, hasNavigation, thumbnail)
-    );
+    eventBusService.subscribe(Events.renderSlider, this.initializeSwiper.bind(this));
   }
 
-  initializeSwiper(hasNavigation: boolean, thumbnail?: ThumbsOptions) {
-    const options: SwiperOptions = {
+  initializeSwiper() {
+    const thumbnailSwiper = new Swiper(this.view.thumbsContainer, {
+      spaceBetween: 10,
+      slidesPerView: 4,
+      freeMode: true,
+      watchSlidesProgress: true,
+    });
+
+    new Swiper(this.view.imageContainer, {
       modules: [Navigation, Thumbs],
       spaceBetween: 10,
-    };
-
-    if (hasNavigation) {
-      options.navigation = {
+      navigation: {
         nextEl: ".swiper-button-next",
         prevEl: ".swiper-button-prev",
-      };
-    }
-
-    if (thumbnail) {
-      options.thumbs = thumbnail;
-    }
-
-    this.swiper = new Swiper(this.view.swiperContainer, options);
+      },
+      thumbs: {
+        swiper: thumbnailSwiper,
+      },
+    });
   }
 
   init() {

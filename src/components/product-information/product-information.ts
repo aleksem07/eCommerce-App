@@ -33,7 +33,7 @@ export default class ProductInformationComponent {
     });
     this.prices = new ProductPriceComponent({ price, discountedPrice, size: "md" });
 
-    this.imageSlider = new ProductSliderComponent(images, true);
+    this.imageSlider = new ProductSliderComponent(images);
   }
 
   init() {
