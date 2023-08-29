@@ -6,6 +6,9 @@ export enum Events {
   errorOccurred = "errorOccurred",
   fetchProductsSuccessfully = "fetchProductsSuccessfully",
   showNotification = "showNotification",
+  resetFiltersClick = "resetFiltersClick",
+  checkboxFilterClick = "checkboxFilterClick",
+  colorFilterClick = "colorFilterClick",
 }
 
 export type EventCallback = (data?: EventData) => void;

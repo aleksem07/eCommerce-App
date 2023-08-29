@@ -51,29 +51,40 @@ export default class FilterComponent {
     if (onResetClick) {
       onResetClick(e);
     }
-    console.log("reset filter click");
+
+    eventBusService.publish(Events.resetFiltersClick);
   }
 
-  handleSizeCheckboxClick(event: Event, size: string) {
-    const checkbox = event.target as HTMLInputElement;
+  handleSizeCheckboxClick(e: Event, size: string) {
+    eventBusService.publish(Events.checkboxFilterClick, { size });
+  }
 
-    if (checkbox.checked) {
-      console.log(size);
+  handleColorElementClick(e: Event, color: string) {
+    const checkbox = e.target as HTMLDivElement;
+    const isColorPicker = checkbox.classList.contains("color-picker");
+
+    if (isColorPicker) {
+      this.toggleColorSelection(checkbox, color);
     }
   }
 
-  handleColorElementClick(event: Event, color: string) {
-    console.log(color);
+  toggleColorSelection(checkbox: HTMLElement, color: string) {
+    if (!checkbox.classList.contains("color-checked")) {
+      checkbox.classList.add("color-checked");
+    } else {
+      checkbox.classList.remove("color-checked");
+    }
+    eventBusService.publish(Events.colorFilterClick, { color });
   }
 
-  handleMinPriceChange(event: Event) {
-    const input = event.target as HTMLInputElement;
+  handleMinPriceChange(e: Event) {
+    const input = e.target as HTMLInputElement;
     const minValue = input.value;
     console.log(`Min Price changed: ${minValue}`);
   }
 
-  handleMaxPriceChange(event: Event) {
-    const input = event.target as HTMLInputElement;
+  handleMaxPriceChange(e: Event) {
+    const input = e.target as HTMLInputElement;
     const maxValue = input.value;
     console.log(`Max Price changed: ${maxValue}`);
   }
@@ -128,7 +139,7 @@ export default class FilterComponent {
       sizes.forEach((size) => {
         if (size) {
           const sizeElement = this.createFilterCheckComponent(size, "size", `size-${size}`).init();
-          sizeElement.addEventListener("click", (e) => this.handleSizeCheckboxClick(e, size));
+          sizeElement.addEventListener("change", (e) => this.handleSizeCheckboxClick(e, size));
 
           if (element) {
             element.push(sizeElement);
@@ -156,13 +167,8 @@ export default class FilterComponent {
       this.renderSizeElements(sizes, filterSizeElements);
     }
 
-    if (minInput) {
-      minInput.addEventListener("input", (e) => this.handleMinPriceChange(e));
-    }
-
-    if (maxInput) {
-      maxInput.addEventListener("input", (e) => this.handleMaxPriceChange(e));
-    }
+    minInput.addEventListener("input", (e) => this.handleMinPriceChange(e));
+    maxInput.addEventListener("input", (e) => this.handleMaxPriceChange(e));
 
     return this.view.render(filterSizeElements, filterColorElements, filterPriceRangeElement);
   }

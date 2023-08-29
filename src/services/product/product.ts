@@ -115,7 +115,8 @@ export default class ProductService extends ClientBuilderService {
     return centAmount ? Number((centAmount / 100).toFixed(2)) : 0;
   }
 
-  async filterProducts(limit?: number) {
+  // eslint-disable-next-line max-lines-per-function
+  async filterProducts(size: string, color: string) {
     try {
       const token = await this.authService.retrieveToken();
 
@@ -129,11 +130,23 @@ export default class ProductService extends ClientBuilderService {
               Authorization: `Bearer ${token}`,
             },
             queryArgs: {
-              limit,
+              // facet: [
+              //   "variants.attributes.size counting products",
+              //   "variants.attributes.color.key counting products",
+              //   "variants.price.centAmount counting products",
+              // ],
+              // "filter.query": [
+              //   'variants.attributes.size:"L"',
+              //   'variants.attributes.color.key:"gold"',
+              // ],
+              // limit,
               filter: [
-                'variants.attributes.size:"M", "L"',
+                // 'categories.id:subtree("0580853f-c6c1-4b5a-8a1a-0cf545a29949")',
+                size,
+                color,
+                // 'variants.attributes.size:"1.8m", "2.0m"',
                 // 'variants.attributes.color.key:"gold", "blue"',
-                // "variants.price.centAmount:range (* to 10000)",
+                "variants.price.centAmount:range(0 to *)",
               ],
             },
           })
