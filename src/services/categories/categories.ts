@@ -1,10 +1,10 @@
 import AuthService from "@Services/auth/auth";
 import ClientBuilderService from "@Services/client-builder/client-builder";
-import eventBusService from "@Services/event-bus/event-bus";
+// import eventBusService from "@Services/event-bus/event-bus";
 import { Category } from "@commercetools/platform-sdk";
 import { Category as CategoryResponse } from "@commercetools/platform-sdk";
-import { HttpErrorType } from "@commercetools/sdk-client-v2";
-import { Events } from "@Services/event-bus/event-bus.types";
+// import { HttpErrorType } from "@commercetools/sdk-client-v2";
+// import { Events } from "@Services/event-bus/event-bus.types";
 
 export default class CategoriesService extends ClientBuilderService {
   private authService: AuthService;

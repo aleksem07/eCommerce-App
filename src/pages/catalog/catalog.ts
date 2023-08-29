@@ -3,7 +3,7 @@ import CatalogView from "./catalog.view";
 import ProductListComponent from "@Components/product-list/product-list";
 import RouterService from "@Services/router/router";
 import { Routes } from "@Services/router/router.types";
-import { Product } from "@commercetools/platform-sdk";
+// import { Product } from "@commercetools/platform-sdk";
 
 export default class CatalogPage {
   private view: CatalogView;
