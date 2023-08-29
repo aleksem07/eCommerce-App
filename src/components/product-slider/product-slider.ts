@@ -14,6 +14,14 @@ export default class ProductSliderComponent {
     eventBusService.subscribe(Events.renderProductSlider, this.initializeSwiper.bind(this));
   }
 
+  get thumbsContainer(): HTMLDivElement {
+    return this.view.thumbsContainer;
+  }
+
+  get imageContainer(): HTMLDivElement {
+    return this.view.imageContainer;
+  }
+
   initializeSwiper() {
     const thumbnailSwiper = new Swiper(this.view.thumbsContainer, {
       spaceBetween: 10,
@@ -31,7 +39,6 @@ export default class ProductSliderComponent {
         modifier: 1,
         slideShadows: true,
       },
-
       speed: 1000,
       loop: true,
       modules: [Navigation, Thumbs, EffectCoverflow],

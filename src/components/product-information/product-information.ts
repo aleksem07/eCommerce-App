@@ -12,14 +12,7 @@ export default class ProductInformationComponent {
   private prices: ProductPriceComponent;
   private imageSlider: ProductSliderComponent;
 
-  constructor({
-    title,
-    description,
-    images: images,
-    price,
-    id,
-    discountedPrice,
-  }: ProductInformationProps) {
+  constructor({ title, description, images, price, id, discountedPrice }: ProductInformationProps) {
     this.view = new ProductInformationView({ title, description, images, price, id });
     this.deliveryDetails = new ProductExtraDescriptionComponent({
       title: "Delivery",
