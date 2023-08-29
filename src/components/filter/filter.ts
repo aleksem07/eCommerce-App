@@ -47,19 +47,19 @@ export default class FilterComponent {
     });
   }
 
-  resetFilterHandler(e: Event, onResetClick?: (e: Event) => void) {
+  private resetFilterHandler(e: Event, onResetClick?: (e: Event) => void) {
     if (onResetClick) {
       onResetClick(e);
     }
-
+    this.resetPriceRange();
     eventBusService.publish(Events.resetFiltersClick);
   }
 
-  handleSizeCheckboxClick(e: Event, size: string) {
+  private handleSizeCheckboxClick(e: Event, size: string) {
     eventBusService.publish(Events.checkboxFilterClick, { size });
   }
 
-  handleColorElementClick(e: Event, color: string) {
+  private handleColorElementClick(e: Event, color: string) {
     const checkbox = e.target as HTMLDivElement;
     const isColorPicker = checkbox.classList.contains("color-picker");
 
@@ -68,7 +68,7 @@ export default class FilterComponent {
     }
   }
 
-  toggleColorSelection(checkbox: HTMLElement, color: string) {
+  private toggleColorSelection(checkbox: HTMLElement, color: string) {
     if (!checkbox.classList.contains("color-checked")) {
       checkbox.classList.add("color-checked");
     } else {
@@ -77,19 +77,21 @@ export default class FilterComponent {
     eventBusService.publish(Events.colorFilterClick, { color });
   }
 
-  handleMinPriceChange(e: Event) {
+  private handleMinPriceChange(e: Event) {
     const input = e.target as HTMLInputElement;
-    const minValue = input.value;
-    console.log(`Min Price changed: ${minValue}`);
+    let minValue = input.value;
+    minValue = (+minValue * 100).toString();
+    eventBusService.publish(Events.minPriceFilterValue, { minValue });
   }
 
-  handleMaxPriceChange(e: Event) {
+  private handleMaxPriceChange(e: Event) {
     const input = e.target as HTMLInputElement;
-    const maxValue = input.value;
-    console.log(`Max Price changed: ${maxValue}`);
+    let maxValue = input.value;
+    maxValue = (+maxValue * 100).toString();
+    eventBusService.publish(Events.maxPriceFilterValue, { maxValue });
   }
 
-  updateColors(colors: string[]) {
+  private updateColors(colors: string[]) {
     const filteredColors: Set<string> = new Set();
     colors.forEach((color) => {
       if (color) {
@@ -100,7 +102,7 @@ export default class FilterComponent {
     this.init(this.uniqueColors.sort(), this.uniqueSizes);
   }
 
-  updateSizes(sizes: string[]) {
+  private updateSizes(sizes: string[]) {
     const filteredSizes: Set<string> = new Set();
     sizes.forEach((size) => {
       if (size && size.length > 0) {
@@ -149,7 +151,13 @@ export default class FilterComponent {
     }
   }
 
+  private resetPriceRange() {
+    this.rangeMinPrice.resetValue();
+    this.rangeMaxPrice.resetValue();
+  }
+
   init(colors?: string[], sizes?: string[]) {
+    this.resetPriceRange();
     const filterColorElements: HTMLElement[] = [];
     const filterSizeElements: HTMLElement[] = [];
     const filterPriceRangeElement = this.view.createPriceRangeElement(

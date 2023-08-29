@@ -11,15 +11,27 @@ export default class CatalogPage {
   private productListComponent: ProductListComponent;
   private filter: FilterComponent;
   sizesFilter: string[] = [];
+  sizeVariantAttribute = "";
   colorsFilter: string[] = [];
+  colorVariantAttribute = "";
+  priceRange: {
+    minPrice: string;
+    maxPrice: string;
+  };
 
   constructor() {
     this.view = new CatalogView();
     this.productService = new ProductService();
     this.productListComponent = new ProductListComponent();
     this.filter = new FilterComponent();
+    this.priceRange = {
+      minPrice: "0",
+      maxPrice: "*",
+    };
 
     eventBusService.subscribe(Events.resetFiltersClick, this.handleResetFiltersClick.bind(this));
+    eventBusService.subscribe(Events.minPriceFilterValue, this.handlePriceChange.bind(this));
+    eventBusService.subscribe(Events.maxPriceFilterValue, this.handlePriceChange.bind(this));
     eventBusService.subscribe(
       Events.checkboxFilterClick,
       this.handleFilterEvent("size", this.sizesFilter)
@@ -30,11 +42,15 @@ export default class CatalogPage {
     );
   }
 
-  private handleResetFiltersClick = () => {
+  private handleResetFiltersClick() {
+    this.resetDataFilter();
+    this.fetchProducts();
+  }
+
+  private resetDataFilter() {
     this.sizesFilter.length = 0;
     this.colorsFilter.length = 0;
-    this.fetchProducts();
-  };
+  }
 
   private handleFilterEvent(attribute: "size" | "color", elements: string[]) {
     return (data?: EventData) => {
@@ -55,13 +71,25 @@ export default class CatalogPage {
   private requestGenerationFilter(size: string[], color: string[]) {
     const formatArray = (arr: string[]) => arr.map((item) => `"${item.trim()}"`).join(", ");
 
-    const sizeFilter =
+    this.sizeVariantAttribute =
       size && size.length > 0 ? `variants.attributes.size:${formatArray(size)}` : "";
 
-    const colorFilter =
+    this.colorVariantAttribute =
       color && color.length > 0 ? `variants.attributes.color.key:${formatArray(color)}` : "";
 
-    this.filterProducts(sizeFilter, colorFilter);
+    this.filterProducts(this.sizeVariantAttribute, this.colorVariantAttribute);
+  }
+
+  private handlePriceChange(data?: EventData) {
+    if (data && typeof data.minValue === "string") {
+      this.priceRange.minPrice = data.minValue;
+      this.filterProducts(this.sizeVariantAttribute, this.colorVariantAttribute);
+    }
+
+    if (data && typeof data.maxValue === "string") {
+      this.priceRange.maxPrice = data.maxValue;
+      this.filterProducts(this.sizeVariantAttribute, this.colorVariantAttribute);
+    }
   }
 
   private async fetchProducts() {
@@ -76,8 +104,16 @@ export default class CatalogPage {
     }
   }
 
+  private getCurrentPriceRange() {
+    return {
+      minPrice: this.priceRange.minPrice,
+      maxPrice: this.priceRange.maxPrice,
+    };
+  }
+
   private async filterProducts(size: string, color: string) {
-    const filterProducts = await this.productService.filterProducts(size, color);
+    const priceRange = this.getCurrentPriceRange();
+    const filterProducts = await this.productService.filterProducts(size, color, priceRange);
 
     if (filterProducts) {
       const productListElement = this.productListComponent.init(filterProducts);
@@ -87,6 +123,7 @@ export default class CatalogPage {
 
   init() {
     this.view.displaySidebar(this.filter.init());
+    this.resetDataFilter();
     this.fetchProducts();
     this.view.render();
   }

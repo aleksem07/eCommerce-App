@@ -44,6 +44,10 @@ export default class FormControlComponent {
     }
   }
 
+  resetValue() {
+    this.view.input.value = "";
+  }
+
   init() {
     return this.view.render();
   }
