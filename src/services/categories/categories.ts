@@ -28,8 +28,17 @@ export default class CategoriesService extends ClientBuilderService {
             },
           })
           .execute();
+        const parentCategories: Category[] = [];
+        const childrenCategories: Category[] = [];
+        body.results.forEach((category) => {
+          if (category.ancestors[0]) {
+            childrenCategories.push(this.mapProductResponseToProduct(category));
+          } else {
+            parentCategories.push(this.mapProductResponseToProduct(category));
+          }
+        });
 
-        return body.results.map(this.mapProductResponseToProduct.bind(this));
+        return { parent: parentCategories, children: childrenCategories };
       }
     } catch (error) {
       // const httpError = error as HttpErrorType;
