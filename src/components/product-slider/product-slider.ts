@@ -4,7 +4,6 @@ import Swiper from "swiper";
 import { EffectCoverflow, Navigation, Thumbs } from "swiper/modules";
 import { Events } from "@Services/event-bus/event-bus.types";
 import "./product-slider.scss";
-import ProductModalComponent from "@Components/product-modal/product-modal";
 
 export default class ProductSliderComponent {
   private view: ProductSliderView;

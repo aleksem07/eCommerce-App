@@ -36,7 +36,7 @@ export default class ProductInformationComponent {
     this.prices = new ProductPriceComponent({ price, discountedPrice, size: "md" });
 
     this.imageSlider = new ProductSliderComponent(images);
-    this.modal = new ProductModalComponent();
+    this.modal = new ProductModalComponent(images);
   }
 
   init() {
