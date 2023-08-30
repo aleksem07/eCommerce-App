@@ -12,7 +12,7 @@ export default class ProductInformationComponent {
   private returnDetails: ProductExtraDescriptionComponent;
   private prices: ProductPriceComponent;
   private imageSlider: ProductSliderComponent;
-  modal: ProductModalComponent;
+  private modal: ProductModalComponent;
 
   constructor({ title, description, images, price, id, discountedPrice }: ProductInformationProps) {
     this.view = new ProductInformationView({ title, description, images, price, id });

@@ -1,11 +1,11 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
 
 export default class ProductModalView extends ViewBuilder {
+  swiperContainer: HTMLDivElement;
   private modal: HTMLDivElement;
   private modalDialog: HTMLDivElement;
   private modalContent: HTMLDivElement;
   private modalBody: HTMLDivElement;
-  swiperContainer: HTMLDivElement;
   private images: string[] = [];
   private modalHeader: HTMLDivElement;
 

@@ -45,11 +45,11 @@ export default class ProductModalComponent {
     }
   }
 
-  urlChangeHandler() {
+  private urlChangeHandler() {
     eventBusService.unsubscribe(Events.showModal, this.initHandler);
   }
 
-  hideModalListener() {
+  private hideModalListener() {
     this.modal.addEventListener("hidden.bs.modal", () => {
       this.modal.remove();
     });
