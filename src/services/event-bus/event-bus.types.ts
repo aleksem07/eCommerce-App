@@ -6,9 +6,9 @@ export enum Events {
   errorOccurred = "errorOccurred",
   fetchProductsSuccessfully = "fetchProductsSuccessfully",
   showNotification = "showNotification",
-  resetFiltersClick = "resetFiltersClick",
-  checkboxFilterClick = "checkboxFilterClick",
-  colorFilterClick = "colorFilterClick",
+  resetFilters = "resetFilters",
+  filterBySize = "checkboxFilterClick",
+  filterByColor = "filterByColor",
   minPriceFilterValue = "minPriceFilterValue",
   maxPriceFilterValue = "maxPriceFilterValue",
 }

@@ -1,7 +1,6 @@
 import FilterView from "./filter.view";
 import FormCheckComponent from "@Components/form-check/form-check";
 import FormControlComponent from "@Components/form-control/form-control";
-import ProductService from "@Services/product/product";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events, EventData } from "@Services/event-bus/event-bus.types";
 
@@ -9,15 +8,11 @@ export default class FilterComponent {
   private view: FilterView;
   private uniqueColors: string[] = [];
   private uniqueSizes: string[] = [];
-  private productService: ProductService;
   private rangeMinPrice: FormControlComponent;
   private rangeMaxPrice: FormControlComponent;
 
   constructor(onResetClick?: (e: Event) => void) {
     this.view = new FilterView();
-    this.uniqueColors = [];
-    this.uniqueSizes = [];
-    this.productService = new ProductService();
     this.rangeMinPrice = new FormControlComponent({
       formName: "filterPrice",
       inputName: "minPrice",
@@ -52,19 +47,21 @@ export default class FilterComponent {
       onResetClick(e);
     }
     this.resetPriceRange();
-    eventBusService.publish(Events.resetFiltersClick);
+    eventBusService.publish(Events.resetFilters);
   }
 
   private handleSizeCheckboxClick(e: Event, size: string) {
-    eventBusService.publish(Events.checkboxFilterClick, { size });
+    eventBusService.publish(Events.filterBySize, { size });
   }
 
   private handleColorElementClick(e: Event, color: string) {
-    const checkbox = e.target as HTMLDivElement;
-    const isColorPicker = checkbox.classList.contains("color-picker");
+    if (e.target) {
+      const checkbox = e.target as HTMLDivElement;
+      const isColorPicker = checkbox.classList.contains("color-picker");
 
-    if (isColorPicker) {
-      this.toggleColorSelection(checkbox, color);
+      if (isColorPicker) {
+        this.toggleColorSelection(checkbox, color);
+      }
     }
   }
 
@@ -74,21 +71,25 @@ export default class FilterComponent {
     } else {
       checkbox.classList.remove("color-checked");
     }
-    eventBusService.publish(Events.colorFilterClick, { color });
+    eventBusService.publish(Events.filterByColor, { color });
   }
 
   private handleMinPriceChange(e: Event) {
-    const input = e.target as HTMLInputElement;
-    let minValue = input.value;
-    minValue = (+minValue * 100).toString();
-    eventBusService.publish(Events.minPriceFilterValue, { minValue });
+    if (e.target) {
+      const input = e.target as HTMLInputElement;
+      let minValue = input.value;
+      minValue = (Number(minValue) * 100).toString();
+      eventBusService.publish(Events.minPriceFilterValue, { minValue });
+    }
   }
 
   private handleMaxPriceChange(e: Event) {
-    const input = e.target as HTMLInputElement;
-    let maxValue = input.value;
-    maxValue = (+maxValue * 100).toString();
-    eventBusService.publish(Events.maxPriceFilterValue, { maxValue });
+    if (e.target) {
+      const input = e.target as HTMLInputElement;
+      let maxValue = input.value;
+      maxValue = (Number(maxValue) * 100).toString();
+      eventBusService.publish(Events.maxPriceFilterValue, { maxValue });
+    }
   }
 
   private updateColors(colors: string[]) {
@@ -113,7 +114,7 @@ export default class FilterComponent {
     this.init(this.uniqueColors, this.uniqueSizes.sort());
   }
 
-  private createFilterCheckComponent(labelText: string, formName: string, inputName: string) {
+  private createFilterSizeComponent(labelText: string, formName: string, inputName: string) {
     return new FormCheckComponent({
       labelText,
       formName,
@@ -140,7 +141,7 @@ export default class FilterComponent {
     if (sizes) {
       sizes.forEach((size) => {
         if (size) {
-          const sizeElement = this.createFilterCheckComponent(size, "size", `size-${size}`).init();
+          const sizeElement = this.createFilterSizeComponent(size, "size", `size-${size}`).init();
           sizeElement.addEventListener("change", (e) => this.handleSizeCheckboxClick(e, size));
 
           if (element) {

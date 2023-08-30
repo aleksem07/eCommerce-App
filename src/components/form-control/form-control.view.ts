@@ -27,14 +27,12 @@ export default class FormControlView extends ViewBuilder {
       id: `${formName}-${inputName}-wrapper`,
       classes: ["mt-2"],
     });
-
     this.inputLabel = this.createElement("label", {
       id: `${formName}-${inputName}-label`,
       classes: ["form-label"],
     });
     this.inputLabel.setAttribute("for", `${formName}-${inputName}-input`);
     this.inputLabel.textContent = labelText;
-
     this.input = this.createElement("input", {
       id: `${formName}-${inputName}-input`,
       classes: ["form-control"],
@@ -42,8 +40,10 @@ export default class FormControlView extends ViewBuilder {
     this.input.placeholder = placeholderText;
     this.input.name = inputName;
     this.input.type = type || "text";
-    this.input.min = min || "0";
 
+    if (min) {
+      this.input.min = min;
+    }
     this.inputHelp = this.createElement("small", {
       id: `${helpText}-help`,
       classes: ["form-text", "h6"],

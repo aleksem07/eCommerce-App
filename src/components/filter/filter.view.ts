@@ -14,9 +14,9 @@ export default class FilterView extends ViewBuilder {
       classes: ["col-md-3", "order-1"],
     });
     this.resetFiltersButton = this.createResetFiltersButton();
-    this.categorySizeTitle = this.createCategoryTitle("size");
-    this.categoryColorTitle = this.createCategoryTitle("color");
-    this.categoryPriceTitle = this.createCategoryTitle("price");
+    this.categorySizeTitle = this.createCategoryTitle("Size");
+    this.categoryColorTitle = this.createCategoryTitle("Color");
+    this.categoryPriceTitle = this.createCategoryTitle("Price");
   }
 
   createResetFiltersButton() {
@@ -25,7 +25,6 @@ export default class FilterView extends ViewBuilder {
     });
     this.resetFiltersButton.setAttribute("type", "button");
     this.resetFiltersButton.textContent = "Reset filters";
-    this.resetFiltersButton.className = "btn btn-primary";
 
     return this.resetFiltersButton;
   }
@@ -35,7 +34,7 @@ export default class FilterView extends ViewBuilder {
       id: `category-${title}-title`,
       classes: ["mt-3", "p-0"],
     });
-    createCategoryTitle.textContent = title[0].toUpperCase() + title.slice(1);
+    createCategoryTitle.textContent = title;
 
     return createCategoryTitle;
   }
@@ -88,12 +87,13 @@ export default class FilterView extends ViewBuilder {
 
   private createCategoryContainer(title: HTMLElement, elements?: HTMLElement[]): HTMLElement {
     const container = this.createElement("div", {
-      classes: ["row", "pb-3", "border-bottom"],
+      classes: ["row", "pb-3"],
     });
 
     container.append(title);
 
     if (elements) {
+      container.classList.add("border-bottom");
       container.append(...elements);
     }
 

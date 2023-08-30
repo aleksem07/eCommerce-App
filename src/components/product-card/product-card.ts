@@ -7,17 +7,8 @@ export default class ProductCardComponent {
   private view: ProductCardView;
   private price: ProductPriceComponent;
 
-  constructor({
-    title,
-    description,
-    imageUrl,
-    price,
-    discountedPrice,
-    id,
-    color,
-    size,
-  }: ProductCardProps) {
-    this.view = new ProductCardView({ title, description, imageUrl, price, id, color, size });
+  constructor({ title, description, imageUrl, price, discountedPrice, id }: ProductCardProps) {
+    this.view = new ProductCardView({ title, description, imageUrl, price, id });
     this.price = new ProductPriceComponent({ price, discountedPrice });
   }
 

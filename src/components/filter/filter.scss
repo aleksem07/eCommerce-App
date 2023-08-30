@@ -1,12 +1,15 @@
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+
 .color-picker {
   width: 24px;
   height: 24px;
-  outline: 1px solid black;
+  outline: 1px solid $dark;
   outline-offset: 3px;
   cursor: pointer;
 }
 
 .color-checked {
-  outline: 3px solid blue;
+  outline: 3px solid $primary;
   outline-offset: 3px;
 }

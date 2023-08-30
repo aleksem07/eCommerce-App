@@ -10,11 +10,11 @@ export default class CatalogPage {
   private productService: ProductService;
   private productListComponent: ProductListComponent;
   private filter: FilterComponent;
-  sizesFilter: string[] = [];
-  sizeVariantAttribute = "";
-  colorsFilter: string[] = [];
-  colorVariantAttribute = "";
-  priceRange: {
+  private sizesFilter: string[] = [];
+  private sizeVariantAttribute = "";
+  private colorsFilter: string[] = [];
+  private colorVariantAttribute = "";
+  private priceRange: {
     minPrice: string;
     maxPrice: string;
   };
@@ -29,22 +29,28 @@ export default class CatalogPage {
       maxPrice: "*",
     };
 
-    eventBusService.subscribe(Events.resetFiltersClick, this.handleResetFiltersClick.bind(this));
+    eventBusService.subscribe(Events.resetFilters, this.handleResetFiltersClick.bind(this));
     eventBusService.subscribe(Events.minPriceFilterValue, this.handlePriceChange.bind(this));
     eventBusService.subscribe(Events.maxPriceFilterValue, this.handlePriceChange.bind(this));
     eventBusService.subscribe(
-      Events.checkboxFilterClick,
+      Events.filterBySize,
       this.handleFilterEvent("size", this.sizesFilter)
     );
     eventBusService.subscribe(
-      Events.colorFilterClick,
+      Events.filterByColor,
       this.handleFilterEvent("color", this.colorsFilter)
     );
   }
 
   private handleResetFiltersClick() {
+    this.resetPriceRange();
     this.resetDataFilter();
     this.fetchProducts();
+  }
+
+  private resetPriceRange() {
+    this.priceRange.minPrice = "0";
+    this.priceRange.maxPrice = "*";
   }
 
   private resetDataFilter() {
@@ -122,8 +128,8 @@ export default class CatalogPage {
   }
 
   init() {
-    this.view.displaySidebar(this.filter.init());
     this.resetDataFilter();
+    this.view.displaySidebar(this.filter.init());
     this.fetchProducts();
     this.view.render();
   }
