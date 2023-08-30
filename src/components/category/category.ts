@@ -28,7 +28,7 @@ export default class CategoryComponent {
     });
   }
 
-  init() {
-    return this.view.render();
+  init(parentComponent = true) {
+    return this.view.render(parentComponent);
   }
 }

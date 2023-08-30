@@ -4,7 +4,9 @@ import { Category, LocalizedString } from "@commercetools/platform-sdk";
 
 export default class CategoryView extends ViewBuilder {
   private element: HTMLElement;
-  private card: HTMLLinkElement;
+  private card?: HTMLLinkElement;
+  private id: string;
+  private name: LocalizedString;
 
   constructor({ id, name }: Category) {
     super();
@@ -13,24 +15,31 @@ export default class CategoryView extends ViewBuilder {
     this.element = this.createElement("li", {
       classes: ["nav-item"],
     });
-    this.card = this.createCategory(id, name);
+    this.id = id;
+    this.name = name;
   }
 
-  private createCategory(id: string, name: LocalizedString) {
-    this.card = this.createElement<HTMLLinkElement>("a", {
-      classes: ["nav-link"],
-    });
-
+  private createCategory(id: string, name: LocalizedString, parentCard: boolean) {
+    if (parentCard) {
+      this.card = this.createElement<HTMLLinkElement>("a", {
+        classes: ["btn"],
+      });
+    } else {
+      this.card = this.createElement<HTMLLinkElement>("a", {
+        classes: ["dropdown-item"],
+      });
+    }
     const url = new URL(`${window.location.origin}${Routes.CATALOG}-${id}`);
     this.card.href = url.href;
     this.card.textContent = String(name.en);
+    this.element.id = id;
 
     return this.card;
   }
 
-  render() {
-    this.element.append(this.card);
+  render(parentCard: boolean) {
+    this.card = this.createCategory(this.id, this.name, parentCard);
 
-    return this.element;
+    return this.card;
   }
 }

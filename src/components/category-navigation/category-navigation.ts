@@ -5,13 +5,16 @@ import { Category } from "@commercetools/platform-sdk";
 
 export default class CategoryNavigationComponent {
   private view: CategoryNavigationView;
-  private cateriesList: CategoryListComponent;
+  private categoriesList: CategoryListComponent;
+  // private childrenCategoriesList: CategoryListComponent;
   categoriesService: CategoriesService;
   categories?: { parent: Category[] | undefined; children: Category[] | undefined };
-  private parentList?: HTMLElement;
+  private parentList?: HTMLElement[];
+  private childrenList?: HTMLElement;
 
   constructor() {
-    this.cateriesList = new CategoryListComponent();
+    this.categoriesList = new CategoryListComponent();
+    // this.childrenCategoriesList = new CategoryListComponent();
     this.view = new CategoryNavigationView();
     this.categoriesService = new CategoriesService();
   }
@@ -21,13 +24,21 @@ export default class CategoryNavigationComponent {
     // eslint-disable-next-line no-console
     console.log("cat nav 1", this.categories);
 
-    if (this.categories?.parent) this.parentList = this.cateriesList.init(this.categories.parent);
+    if (this.categories?.parent) {
+      this.parentList = this.categories.parent.map((category) => {
+        return new CategoryListComponent().init(category);
+      });
+    }
 
     if (this.parentList) {
       // eslint-disable-next-line no-console
       console.log("cat nav 2");
       const header = document.getElementsByTagName("header");
       header[0].after(this.view.render(this.parentList));
+
+      if (this.categories?.children) {
+        this.view.addChildrensCategories(this.categories.children);
+      }
     }
   }
 }

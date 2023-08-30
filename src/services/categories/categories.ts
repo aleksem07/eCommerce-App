@@ -46,6 +46,32 @@ export default class CategoriesService extends ClientBuilderService {
     }
   }
 
+  async getCategory(id: string) {
+    try {
+      const token = await this.authService.retrieveToken();
+
+      if (token) {
+        const { body } = await this.apiRoot
+          .withProjectKey({ projectKey: this.projectKey })
+          .categories()
+          .withId({ ID: id })
+          .get({
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .execute();
+        const category: Category = this.mapProductResponseToProduct(body);
+        // const childrenCategories: Category[] = [];
+
+        return category;
+      }
+    } catch (error) {
+      // const httpError = error as HttpErrorType;
+      // eventBusService.publish(Events.errorOccurred, httpError);
+    }
+  }
+
   private mapProductResponseToProduct(productResponse: CategoryResponse): Category {
     return {
       version: productResponse.version,
