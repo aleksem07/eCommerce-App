@@ -1,24 +1,29 @@
-import bootstrap from "bootstrap";
+import eventBusService from "@Services/event-bus/event-bus";
 import ProductModalView from "./product-modal.view";
+import { Events } from "@Services/event-bus/event-bus.types";
+import { Modal } from "bootstrap";
 
 export default class ProductModalComponent {
   private view: ProductModalView;
+  private modal!: HTMLElement;
 
   constructor() {
     this.view = new ProductModalView();
+
+    eventBusService.subscribe(Events.showModal, this.init.bind(this));
   }
 
-  // openModal() {
-  //   const modalInstance = new bootstrap.Modal(this.modalElement);
-  //   modalInstance.show();
-  // }
-
-  // closeModal() {
-  //   const modalInstance = new bootstrap.Modal(this.modalElement);
-  //   modalInstance.hide();
-  // }
+  hideModalListener() {
+    this.modal.addEventListener("hidden.bs.modal", () => {
+      this.modal.remove();
+    });
+  }
 
   init() {
-    return this.view.render();
+    this.modal = this.view.render();
+    document.body.append(this.modal);
+    Modal.getOrCreateInstance(this.modal).show();
+
+    this.hideModalListener();
   }
 }

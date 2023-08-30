@@ -8,13 +8,16 @@ import ProductModalComponent from "@Components/product-modal/product-modal";
 
 export default class ProductSliderComponent {
   private view: ProductSliderView;
-  private modal: ProductModalComponent;
 
   constructor(images: string[]) {
     this.view = new ProductSliderView(images);
-    this.modal = new ProductModalComponent();
 
     eventBusService.subscribe(Events.renderSlider, this.initializeSwiper.bind(this));
+    this.view.swiperSlideListener(this.swiperSlideHandler.bind(this));
+  }
+
+  swiperSlideHandler() {
+    eventBusService.publish(Events.showModal);
   }
 
   initializeSwiper() {

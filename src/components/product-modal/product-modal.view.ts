@@ -21,8 +21,8 @@ export default class ProductModalView extends ViewBuilder {
   createModal(): HTMLDivElement {
     const element = this.createElement<HTMLDivElement>("div", {
       classes: ["modal", "fade"],
+      id: "product-modal",
     });
-    element.setAttribute("id", "largeImageModal");
     element.setAttribute("tabindex", "-1");
 
     return element;
@@ -50,7 +50,6 @@ export default class ProductModalView extends ViewBuilder {
     closeButton.type = "button";
     closeButton.setAttribute("data-dismiss", "modal");
     closeButton.setAttribute("aria-label", "Close");
-    closeButton.innerHTML = "&times;";
     element.appendChild(closeButton);
 
     return element;
