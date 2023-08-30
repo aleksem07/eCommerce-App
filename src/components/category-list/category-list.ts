@@ -4,16 +4,14 @@ import CategoryComponent from "@Components/category/category";
 
 export default class CategoryListComponent {
   private view: CategoryListView;
-  private categoriesList?: HTMLElement[];
-  private categories?: Category[];
+  private categoryLink?: HTMLElement;
   constructor() {
     this.view = new CategoryListView();
   }
 
-  init(categories: Category[]) {
-    this.categories = categories;
-    this.categoriesList = this.categories.map((category) => new CategoryComponent(category).init());
+  init(category: Category) {
+    this.categoryLink = new CategoryComponent(category).init();
 
-    return this.view.render(...this.categoriesList);
+    return this.view.render(this.categoryLink, category.id);
   }
 }
