@@ -44,9 +44,10 @@ export default class ProductModalView extends ViewBuilder {
     const element = this.createElement<HTMLDivElement>("div", {
       classes: ["modal-header"],
     });
-    const closeButton = this.createElement<HTMLButtonElement>("button");
+    const closeButton = this.createElement<HTMLButtonElement>("button", {
+      classes: ["btn-close"],
+    });
     closeButton.type = "button";
-    closeButton.classList.add("close");
     closeButton.setAttribute("data-dismiss", "modal");
     closeButton.setAttribute("aria-label", "Close");
     closeButton.innerHTML = "&times;";
@@ -68,6 +69,7 @@ export default class ProductModalView extends ViewBuilder {
   }
 
   render(): HTMLElement {
+    this.modal.innerHTML = "";
     this.modalBody.appendChild(this.swiperContainer);
     this.modalContent.appendChild(this.modalHeader);
     this.modalContent.appendChild(this.modalBody);

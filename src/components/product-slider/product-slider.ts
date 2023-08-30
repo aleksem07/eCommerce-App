@@ -4,12 +4,15 @@ import Swiper from "swiper";
 import { EffectCoverflow, Navigation, Thumbs } from "swiper/modules";
 import { Events } from "@Services/event-bus/event-bus.types";
 import "./product-slider.scss";
+import ProductModalComponent from "@Components/product-modal/product-modal";
 
 export default class ProductSliderComponent {
   private view: ProductSliderView;
+  private modal: ProductModalComponent;
 
   constructor(images: string[]) {
     this.view = new ProductSliderView(images);
+    this.modal = new ProductModalComponent();
 
     eventBusService.subscribe(Events.renderSlider, this.initializeSwiper.bind(this));
   }
@@ -18,7 +21,7 @@ export default class ProductSliderComponent {
     const thumbnailSwiper = new Swiper(this.view.thumbsContainer, {
       spaceBetween: 10,
       slidesPerView: 4,
-      // freeMode: true,
+      freeMode: true,
       watchSlidesProgress: true,
     });
 

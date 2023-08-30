@@ -76,6 +76,14 @@ export default class ProductSliderView extends ViewBuilder {
     return navigation;
   }
 
+  swiperSlideListener() {
+    this.imageContainer.addEventListener("click", (e) => {
+      if (this.isHTMLElement(e.target)) {
+        e.target.closest(".swiper-slide");
+      }
+    });
+  }
+
   render(): HTMLElement {
     this.contentContainer.innerHTML = "";
     this.contentContainer.append(this.imageContainer, this.thumbsContainer);
