@@ -15,8 +15,8 @@ export default class ProductSliderComponent {
     this.view.swiperSlideListener(this.swiperSlideHandler.bind(this));
   }
 
-  swiperSlideHandler() {
-    eventBusService.publish(Events.showModal);
+  swiperSlideHandler(index: string) {
+    eventBusService.publish(Events.showModal, { index });
   }
 
   initializeSwiper() {

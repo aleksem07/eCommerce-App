@@ -5,6 +5,7 @@ import { Modal } from "bootstrap";
 import Swiper from "swiper";
 import { EffectCoverflow, Navigation } from "swiper/modules";
 import "./product-modal.scss";
+import ObjectGuardUtil from "@Utils/object-guard/object-guard";
 
 export default class ProductModalComponent {
   private view: ProductModalView;
@@ -18,8 +19,8 @@ export default class ProductModalComponent {
     eventBusService.subscribe(Events.urlChanged, this.urlChangeHandler.bind(this));
   }
 
-  private initSwiper() {
-    new Swiper(this.view.swiperContainer, {
+  private initSwiper(data?: unknown) {
+    const swiper = new Swiper(this.view.swiperContainer, {
       effect: "coverflow",
       coverflowEffect: {
         rotate: 50,
@@ -38,6 +39,10 @@ export default class ProductModalComponent {
         prevEl: ".swiper-button-prev",
       },
     });
+
+    if (ObjectGuardUtil.hasProp(data, "index")) {
+      swiper.slideTo(Number(data.index));
+    }
   }
 
   urlChangeHandler() {
@@ -50,10 +55,10 @@ export default class ProductModalComponent {
     });
   }
 
-  init() {
+  init(data?: unknown) {
     this.modal = this.view.render();
     document.body.append(this.modal);
-    this.initSwiper();
+    this.initSwiper(data);
     Modal.getOrCreateInstance(this.modal).show();
 
     this.hideModalListener();

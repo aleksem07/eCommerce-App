@@ -39,8 +39,8 @@ export default class ProductSliderView extends ViewBuilder {
 
     container.append(wrapper);
 
-    this.images.forEach((imageUrl) => {
-      const slide = this.createSwiperSlide(imageUrl);
+    this.images.forEach((imageUrl, index) => {
+      const slide = this.createSwiperSlide(imageUrl, index);
       wrapper.append(slide);
     });
 
@@ -55,9 +55,10 @@ export default class ProductSliderView extends ViewBuilder {
     return wrapper;
   }
 
-  private createSwiperSlide(imageUrl: string): HTMLDivElement {
+  private createSwiperSlide(imageUrl: string, index: number): HTMLDivElement {
     const slide = this.createElement<HTMLDivElement>("div", {
       classes: ["swiper-slide"],
+      dataset: [{ index: String(index) }],
     });
     const img = this.createElement<HTMLImageElement>("img", {
       classes: ["img-fluid"],
@@ -76,15 +77,19 @@ export default class ProductSliderView extends ViewBuilder {
     return navigation;
   }
 
-  swiperSlideListener(handler: () => void) {
+  swiperSlideListener(handler: (index: string) => void) {
     this.imageContainer.addEventListener("click", (e) => {
       const target = e.target;
 
       if (this.isHTMLElement(target)) {
-        const slide = target.closest(".swiper-slide");
+        const slide = target.closest(".swiper-slide") as HTMLDivElement;
 
         if (slide) {
-          handler();
+          const index = slide.dataset.index;
+
+          if (index) {
+            handler(index);
+          }
         }
       }
     });
