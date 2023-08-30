@@ -11,12 +11,20 @@ export default class ProductSliderComponent {
   constructor(images: string[]) {
     this.view = new ProductSliderView(images);
 
-    eventBusService.subscribe(Events.renderSlider, this.initializeSwiper.bind(this));
+    eventBusService.subscribe(Events.renderProductSlider, this.initializeSwiper.bind(this));
     this.view.swiperSlideListener(this.swiperSlideHandler.bind(this));
   }
 
   swiperSlideHandler(index: string) {
     eventBusService.publish(Events.showModal, { index });
+  }
+
+  get thumbsContainer(): HTMLDivElement {
+    return this.view.thumbsContainer;
+  }
+
+  get imageContainer(): HTMLDivElement {
+    return this.view.imageContainer;
   }
 
   initializeSwiper() {
@@ -36,7 +44,6 @@ export default class ProductSliderComponent {
         modifier: 1,
         slideShadows: true,
       },
-
       speed: 1000,
       loop: true,
       modules: [Navigation, Thumbs, EffectCoverflow],

@@ -4,9 +4,9 @@ export enum Events {
   loginLinkClicked = "loginLinkClicked",
   logoutLinkClicked = "logoutLinkClicked",
   showNotification = "showNotification",
-  renderSlider = "renderSlider",
   showModal = "showModal",
   urlChanged = "urlChanged",
+  renderProductSlider = "renderProductSlider",
 }
 
 export type EventCallback = (data?: EventData) => void;

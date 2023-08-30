@@ -5,8 +5,8 @@ export default class ProductSliderView extends ViewBuilder {
   thumbsContainer: HTMLDivElement;
   private contentContainer: HTMLDivElement;
   private images: string[] = [];
-  IMAGE_ID = "image-container";
-  THUMBS_ID = "thumbs-container";
+  private IMAGE_ID = "image-container";
+  private THUMBS_ID = "thumbs-container";
 
   constructor(images: string[]) {
     super();
@@ -29,6 +29,12 @@ export default class ProductSliderView extends ViewBuilder {
     });
 
     const wrapper = this.createSwiperWrapper();
+    container.append(wrapper);
+
+    this.images.forEach((imageUrl, index) => {
+      const slide = this.createSwiperSlide(imageUrl, index);
+      wrapper.append(slide);
+    });
 
     if (hasNavigation) {
       container.append(
@@ -36,13 +42,6 @@ export default class ProductSliderView extends ViewBuilder {
         this.createSwiperNavigation("swiper-button-next")
       );
     }
-
-    container.append(wrapper);
-
-    this.images.forEach((imageUrl, index) => {
-      const slide = this.createSwiperSlide(imageUrl, index);
-      wrapper.append(slide);
-    });
 
     return container;
   }

@@ -19,7 +19,9 @@ module.exports = {
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
   transform: {
     ".+\\.(png|svg|jpg|jpeg|gif|scss)$": "jest-transform-stub",
+    "^.+\\.mjs$": "babel-jest",
   },
+  transformIgnorePatterns: ["node_modules/(?!(swiper)/)"],
   setupFilesAfterEnv: ["./jest/jest-setup.js"],
   setupFiles: ["dotenv/config"],
 };
