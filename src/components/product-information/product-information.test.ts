@@ -5,7 +5,7 @@ describe("ProductInformationComponent", () => {
     const instance = new ProductInformationComponent({
       title: "test",
       description: "test",
-      imageUrl: "test",
+      images: ["test"],
       price: { currencyCode: "USD", value: 100 },
       id: "test",
     });
