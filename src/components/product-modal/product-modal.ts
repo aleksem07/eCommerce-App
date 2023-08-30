@@ -9,11 +9,13 @@ import "./product-modal.scss";
 export default class ProductModalComponent {
   private view: ProductModalView;
   private modal!: HTMLElement;
+  private initHandler = this.init.bind(this);
 
   constructor(images: string[]) {
     this.view = new ProductModalView(images);
 
-    eventBusService.subscribe(Events.showModal, this.init.bind(this));
+    eventBusService.subscribe(Events.showModal, this.initHandler);
+    eventBusService.subscribe(Events.urlChanged, this.urlChangeHandler.bind(this));
   }
 
   private initSwiper() {
@@ -36,6 +38,10 @@ export default class ProductModalComponent {
         prevEl: ".swiper-button-prev",
       },
     });
+  }
+
+  urlChangeHandler() {
+    eventBusService.unsubscribe(Events.showModal, this.initHandler);
   }
 
   hideModalListener() {
