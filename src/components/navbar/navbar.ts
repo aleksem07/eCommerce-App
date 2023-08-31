@@ -15,11 +15,15 @@ export default class NavbarComponent {
 
   constructor() {
     this.view = new NavbarView();
-    this.loginLinkItem = new NavbarItemComponent(Routes.LOGIN, "Login", "bi-person").init();
+    this.loginLinkItem = new NavbarItemComponent(
+      Routes.LOGIN,
+      "Login",
+      "bi-box-arrow-in-right"
+    ).init();
     this.registerLinkItem = new NavbarItemComponent(
       Routes.REGISTRATION,
       "Register",
-      "bi-box-arrow-in-left"
+      "bi-person-plus"
     ).init();
     this.logoutLinkItem = new NavbarItemComponent(
       Routes.LOGIN,
