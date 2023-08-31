@@ -13,7 +13,7 @@ export default class CategoryView extends ViewBuilder {
     // eslint-disable-next-line no-console
     console.log(id, name);
     this.element = this.createElement("li", {
-      classes: ["nav-item"],
+      classes: ["nav-item", "px-2"],
     });
     this.id = id;
     this.name = name;
@@ -22,11 +22,11 @@ export default class CategoryView extends ViewBuilder {
   private createCategory(id: string, name: LocalizedString, parentCard: boolean) {
     if (parentCard) {
       this.card = this.createElement<HTMLLinkElement>("a", {
-        classes: ["btn", "btn-primary"],
+        classes: ["nav-link", "px-2"],
       });
     } else {
       this.card = this.createElement<HTMLLinkElement>("a", {
-        classes: ["dropdown-item"],
+        classes: ["dropdown-item", "px-2"],
       });
     }
     const url = new URL(`${window.location.origin}${Routes.CATALOG}-${id}`);
