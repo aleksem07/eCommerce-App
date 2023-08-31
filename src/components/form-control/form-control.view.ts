@@ -48,7 +48,7 @@ export default class FormControlView extends ViewBuilder {
       id: `${helpText}-help`,
       classes: ["form-text", "h6"],
     });
-    this.inputHelp.textContent = helpText;
+    this.inputHelp.textContent = helpText || "";
   }
 
   inputListener(handler: (text: string) => void) {
