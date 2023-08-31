@@ -22,13 +22,12 @@ export default class UserMenuView extends ViewBuilder {
     return listGroup;
   }
 
-  private createListGroupItem(heading: string, content: string): HTMLAnchorElement {
+  private createListGroupItem(heading: string, content: string): HTMLDivElement {
     const classes = ["list-group-item", "list-group-item-action"];
 
-    const item = this.createElement<HTMLAnchorElement>("div", {
+    const item = this.createElement<HTMLDivElement>("div", {
       classes,
     });
-    item.setAttribute("href", "#");
 
     const headingElement = this.createElement("h5", { classes: ["mb-3"] });
     headingElement.textContent = heading;
@@ -44,16 +43,15 @@ export default class UserMenuView extends ViewBuilder {
     label: string,
     iconClass: string,
     isActive?: boolean
-  ): HTMLAnchorElement {
+  ): HTMLButtonElement {
     const classes = ["list-group-item", "list-group-item-action", "icon-link"];
 
     if (isActive) {
       classes.push("active");
     }
-    const item = this.createElement<HTMLAnchorElement>("a", {
+    const item = this.createElement<HTMLButtonElement>("button", {
       classes,
     });
-    item.setAttribute("href", "#");
 
     const icon = this.createIcon(iconClass);
     item.textContent = label;
