@@ -32,7 +32,7 @@ export default class ProductModalView extends ViewBuilder {
 
   private createModalDialog(): HTMLDivElement {
     return this.createElement<HTMLDivElement>("div", {
-      classes: ["modal-dialog", "modal-xl", "modal-fullscreen-sm-down"],
+      classes: ["modal-dialog", "modal-lg", "modal-fullscreen-sm-down"],
     });
   }
 
