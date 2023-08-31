@@ -8,8 +8,8 @@ export default class UserAddressComponent {
   private streetInput: FormControlComponent;
   private postalCodeInput: FormControlComponent;
 
-  constructor() {
-    this.view = new UserAddressView();
+  constructor(private header: string) {
+    this.view = new UserAddressView(header);
 
     this.countryInput = new FormControlComponent({
       formName: "user-address",

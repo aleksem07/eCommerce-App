@@ -14,8 +14,8 @@ export default class UserDataComponent {
     this.view = new UserDataView();
     this.userInfo = new UserInfoComponent();
     this.userPassword = new UserPasswordComponent();
-    this.userShippingAddress = new UserAddressComponent();
-    this.userBillingAddress = new UserAddressComponent();
+    this.userShippingAddress = new UserAddressComponent("Shipping Address");
+    this.userBillingAddress = new UserAddressComponent("Billing Address");
   }
 
   init() {
