@@ -52,5 +52,7 @@ export default class ProductPage {
   async init() {
     await this.checkProductExists();
     this.displayProduct();
+
+    eventBusService.publish(Events.renderProductSlider);
   }
 }

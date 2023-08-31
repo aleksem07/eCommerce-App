@@ -61,7 +61,7 @@ module.exports = {
         type: "asset/resource",
       },
       {
-        test: /\.(scss)$/,
+        test: /\.(scss|css)$/,
         use: [
           devMode ? "style-loader" : MiniCssExtractPlugin.loader,
           "css-loader",

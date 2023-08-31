@@ -11,6 +11,9 @@ export enum Events {
   filterByColor = "filterByColor",
   minPriceFilterValue = "minPriceFilterValue",
   maxPriceFilterValue = "maxPriceFilterValue",
+  showModal = "showModal",
+  urlChanged = "urlChanged",
+  renderProductSlider = "renderProductSlider",
 }
 
 export type EventCallback = (data?: EventData) => void;

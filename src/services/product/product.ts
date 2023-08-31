@@ -4,6 +4,7 @@ import {
   Price as PriceResponse,
   Product as ProductResponse,
   ProductProjection as ProductProjectionResponse,
+  Image as ImageResponse,
 } from "@commercetools/platform-sdk";
 import { Price, Product } from "./product.types";
 import eventBusService from "@Services/event-bus/event-bus";
@@ -82,7 +83,7 @@ export default class ProductService extends ClientBuilderService {
       id: productResponse.id,
       title: productResponse.masterData.current.name.en,
       description: productResponse.masterData.current.description?.en || "product description",
-      imageUrl: productResponse.masterData.current.masterVariant.images?.[0].url || "",
+      images: this.mapProductImages(productResponse.masterData.current.masterVariant.images),
       color,
       size,
       price: this.getPrice(productResponse.masterData.current.masterVariant.prices),
@@ -90,6 +91,10 @@ export default class ProductService extends ClientBuilderService {
         productResponse.masterData.current.masterVariant.prices
       ),
     };
+  }
+
+  private mapProductImages(images?: ImageResponse[]): string[] {
+    return images?.map((image) => image.url) || [];
   }
 
   private getPrice(prices?: PriceResponse[]): Price {
@@ -163,7 +168,7 @@ export default class ProductService extends ClientBuilderService {
       id: productProjectionResponse.id,
       title: productProjectionResponse.name.en,
       description: productProjectionResponse.description?.en || "product description",
-      imageUrl: productProjectionResponse.masterVariant.images?.[0].url || "",
+      images: this.mapProductImages(productProjectionResponse.masterVariant.images),
       price: this.getPrice(productProjectionResponse.masterVariant.prices),
       discountedPrice: this.getDiscountedPrice(productProjectionResponse.masterVariant.prices),
     };
