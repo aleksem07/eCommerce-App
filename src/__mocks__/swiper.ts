@@ -3,6 +3,7 @@ const SwiperMock = jest.fn().mockImplementation(() => {
     update: jest.fn(),
     slideNext: jest.fn(),
     slidePrev: jest.fn(),
+    slideTo: jest.fn(),
   };
 });
 

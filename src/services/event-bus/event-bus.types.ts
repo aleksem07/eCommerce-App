@@ -4,6 +4,8 @@ export enum Events {
   loginLinkClicked = "loginLinkClicked",
   logoutLinkClicked = "logoutLinkClicked",
   showNotification = "showNotification",
+  showModal = "showModal",
+  urlChanged = "urlChanged",
   renderProductSlider = "renderProductSlider",
 }
 
