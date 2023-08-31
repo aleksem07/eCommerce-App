@@ -16,8 +16,8 @@ export default class UserDataView extends ViewBuilder {
     this.button.textContent = "Save changes";
   }
 
-  render(userInfo: HTMLElement) {
-    this.element.append(this.header, userInfo, this.button);
+  render(userInfo: HTMLElement, userPassword: HTMLElement) {
+    this.element.append(this.header, userInfo, userPassword, this.button);
 
     return this.element;
   }
