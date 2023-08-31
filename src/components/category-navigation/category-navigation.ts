@@ -9,14 +9,22 @@ export default class CategoryNavigationComponent {
   // private childrenCategoriesList: CategoryListComponent;
   categoriesService: CategoriesService;
   categories?: { parent: Category[] | undefined; children: Category[] | undefined };
-  private parentList?: HTMLElement[];
+  private parentList?: { element: HTMLElement; list: HTMLUListElement }[];
   private childrenList?: HTMLElement;
 
   constructor() {
-    this.categoriesList = new CategoryListComponent();
+    this.categoriesList = new CategoryListComponent(this.collapseShowHandler.bind(this));
     // this.childrenCategoriesList = new CategoryListComponent();
     this.view = new CategoryNavigationView();
     this.categoriesService = new CategoriesService();
+  }
+
+  collapseShowHandler(e: Event) {
+    const list = document.querySelector(".show");
+    // eslint-disable-next-line no-console
+    console.log("Event");
+
+    if (list) list.classList.remove("show");
   }
 
   async init() {
@@ -26,7 +34,7 @@ export default class CategoryNavigationComponent {
 
     if (this.categories?.parent) {
       this.parentList = this.categories.parent.map((category) => {
-        return new CategoryListComponent().init(category);
+        return new CategoryListComponent(this.collapseShowHandler.bind(this)).init(category);
       });
     }
 
@@ -35,6 +43,7 @@ export default class CategoryNavigationComponent {
       console.log("cat nav 2");
       const header = document.getElementsByTagName("header");
       header[0].after(this.view.render(this.parentList));
+      // header[0].after(this.view.render(this.parentList.map((category) => category.list)));
 
       if (this.categories?.children) {
         this.view.addChildrensCategories(this.categories.children);

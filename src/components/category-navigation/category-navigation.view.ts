@@ -4,11 +4,15 @@ import { Category } from "@commercetools/platform-sdk";
 
 export default class CategoryNavigationView extends ViewBuilder {
   private element: HTMLElement;
+  linksContainer: HTMLDivElement;
 
   constructor() {
     super();
     this.element = this.createElement("section", {
-      classes: ["container-fluid"],
+      classes: ["d-flex-column"],
+    });
+    this.linksContainer = this.createElement("div", {
+      classes: ["d-md-flex"],
     });
   }
 
@@ -24,8 +28,14 @@ export default class CategoryNavigationView extends ViewBuilder {
     });
   }
 
-  render(linksList: HTMLElement[]) {
-    this.element.append(...linksList);
+  render(linksList: { element: HTMLElement; list: HTMLUListElement }[]) {
+    linksList.map((category) => {
+      this.linksContainer.append(category.element);
+      this.element.append(category.list);
+    });
+
+    // ...linksList);
+    this.element.prepend(this.linksContainer);
 
     return this.element;
   }
