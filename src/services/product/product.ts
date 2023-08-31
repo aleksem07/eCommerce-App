@@ -143,6 +143,7 @@ export default class ProductService extends ClientBuilderService {
                 color,
                 `variants.price.centAmount:range(${priceRange.minPrice} to ${priceRange.maxPrice})`,
               ],
+              sort: ["createdAt asc"],
             },
           })
           .execute();
