@@ -1,5 +1,6 @@
 import FormControlComponent from "@Components/form-control/form-control";
 import UserAddressView from "./user-address.view";
+import FormCheckComponent from "@Components/form-check/form-check";
 
 export default class UserAddressComponent {
   private view: UserAddressView;
@@ -7,8 +8,9 @@ export default class UserAddressComponent {
   private cityInput: FormControlComponent;
   private streetInput: FormControlComponent;
   private postalCodeInput: FormControlComponent;
+  private isDefaultAddress: FormCheckComponent;
 
-  constructor(private header: string) {
+  constructor(header: string) {
     this.view = new UserAddressView(header);
 
     this.countryInput = new FormControlComponent({
@@ -42,6 +44,16 @@ export default class UserAddressComponent {
       placeholderText: "Enter your postal code",
       type: "text",
     });
+
+    this.isDefaultAddress = this.createCheckBox();
+  }
+
+  createCheckBox() {
+    return new FormCheckComponent({
+      formName: "user-address",
+      inputName: "is-default-address",
+      labelText: "Default Address",
+    });
   }
 
   init() {
@@ -49,12 +61,14 @@ export default class UserAddressComponent {
     const cityInput = this.cityInput.init();
     const streetInput = this.streetInput.init();
     const postalCodeInput = this.postalCodeInput.init();
+    const isDefaultAddress = this.isDefaultAddress.init();
 
     return this.view.render({
       countryInput,
       cityInput,
       streetInput,
       postalCodeInput,
+      isDefaultAddress,
     });
   }
 }
