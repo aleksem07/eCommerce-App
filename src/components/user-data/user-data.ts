@@ -9,13 +9,14 @@ export default class UserDataComponent {
   private userPassword: UserPasswordComponent;
   private userShippingAddress: UserAddressComponent;
   private userBillingAddress: UserAddressComponent;
+  private formName = "user-data";
 
   constructor() {
     this.view = new UserDataView();
-    this.userInfo = new UserInfoComponent();
-    this.userPassword = new UserPasswordComponent();
-    this.userShippingAddress = new UserAddressComponent("Shipping Address");
-    this.userBillingAddress = new UserAddressComponent("Billing Address");
+    this.userInfo = new UserInfoComponent(this.formName);
+    this.userPassword = new UserPasswordComponent(this.formName);
+    this.userShippingAddress = new UserAddressComponent("Shipping Address", this.formName);
+    this.userBillingAddress = new UserAddressComponent("Billing Address", this.formName);
   }
 
   init() {

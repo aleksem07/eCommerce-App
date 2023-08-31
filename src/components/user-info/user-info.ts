@@ -3,13 +3,14 @@ import UserInfoView from "./user-info.view";
 
 export default class UserInfoComponent {
   private view: UserInfoView;
-  private readonly formName = "user-main-info";
+  private formName: string;
   private firstNameInput: FormControlComponent;
   private lastNameInput: FormControlComponent;
   private emailInput: FormControlComponent;
   private dateOfBirthInput: FormControlComponent;
 
-  constructor() {
+  constructor(formName: string) {
+    this.formName = formName;
     this.view = new UserInfoView();
     this.firstNameInput = new FormControlComponent({
       formName: this.formName,
