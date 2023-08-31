@@ -9,7 +9,7 @@ export default class UserPasswordView extends ViewBuilder {
   }
 
   private appendInputToColumn(input: HTMLElement) {
-    const column = this.createElement("div", { classes: ["col-6"] });
+    const column = this.createElement("div", { classes: ["col-12", "col-lg-6"] });
     column.appendChild(input);
     this.element.appendChild(column);
   }

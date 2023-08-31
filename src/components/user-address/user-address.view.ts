@@ -11,7 +11,7 @@ export default class UserAddressView extends ViewBuilder {
     this.headerElement.textContent = header;
   }
 
-  private appendInputToColumn(input: HTMLElement, columnClasses = ["col-6"]) {
+  private appendInputToColumn(input: HTMLElement, columnClasses = ["col-12", "col-lg-6"]) {
     const column = this.createElement("div", { classes: columnClasses });
     column.appendChild(input);
     this.element.appendChild(column);
