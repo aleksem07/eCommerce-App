@@ -34,8 +34,6 @@ export default class NavbarView extends ViewBuilder {
     logoutLinkItem,
     usernameLinkItem,
   }: AuthLinkItems) {
-    const userIcon = this.createLinkIcon("person");
-    const logoutIcon = this.createLinkIcon("box-arrow-in-right");
     loginLinkItem.addEventListener("click", (event: Event) => {
       event.preventDefault();
       eventBusService.publish(Events.loginLinkClicked);
@@ -48,15 +46,15 @@ export default class NavbarView extends ViewBuilder {
     const token = localStorage.getItem(AUTH_TOKEN_LS);
 
     if (token) {
-      const authLinks = [logoutIcon, logoutLinkItem];
+      const authLinks = [logoutLinkItem];
 
       if (usernameLinkItem) {
-        authLinks.unshift(userIcon, usernameLinkItem, this.createSeparator());
+        authLinks.unshift(usernameLinkItem, this.createSeparator());
       }
 
       this.setAuthLinks(authLinks);
     } else {
-      const authLinks = [userIcon, loginLinkItem, this.createSeparator(), registerLinkItem];
+      const authLinks = [loginLinkItem, this.createSeparator(), registerLinkItem];
       this.setAuthLinks(authLinks);
     }
   }
@@ -93,15 +91,6 @@ export default class NavbarView extends ViewBuilder {
     separator.textContent = "|";
     const li = this.createElement("li");
     li.appendChild(separator);
-
-    return li;
-  }
-
-  private createLinkIcon(iconName: string) {
-    const linkIcon = this.createIcon(`bi-${iconName}`);
-    linkIcon.classList.add("me-1", "text-muted");
-    const li = this.createElement("li");
-    li.appendChild(linkIcon);
 
     return li;
   }

@@ -15,9 +15,17 @@ export default class NavbarComponent {
 
   constructor() {
     this.view = new NavbarView();
-    this.loginLinkItem = new NavbarItemComponent(Routes.LOGIN, "Login").init();
-    this.registerLinkItem = new NavbarItemComponent(Routes.REGISTRATION, "Register").init();
-    this.logoutLinkItem = new NavbarItemComponent(Routes.LOGIN, "Logout").init();
+    this.loginLinkItem = new NavbarItemComponent(Routes.LOGIN, "Login", "bi-person").init();
+    this.registerLinkItem = new NavbarItemComponent(
+      Routes.REGISTRATION,
+      "Register",
+      "bi-box-arrow-in-left"
+    ).init();
+    this.logoutLinkItem = new NavbarItemComponent(
+      Routes.LOGIN,
+      "Logout",
+      "bi-box-arrow-right"
+    ).init();
 
     eventBusService.subscribe(Events.userLogin, this.initAuthLinks.bind(this));
     eventBusService.subscribe(Events.loginLinkClicked, this.loginLinkHandler.bind(this));
@@ -39,7 +47,7 @@ export default class NavbarComponent {
     const username = localStorage.getItem(USERNAME_LS);
 
     if (username) {
-      return new NavbarItemComponent(Routes.USER_PROFILE, username).init();
+      return new NavbarItemComponent(Routes.USER_PROFILE, username, "bi-person").init();
     }
   }
 
