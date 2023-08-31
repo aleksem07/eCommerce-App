@@ -9,14 +9,14 @@ export default class CategoryListView extends ViewBuilder {
   constructor() {
     super();
     this.element = this.createElement("div", {
-      classes: ["d-flex", "ml-2"],
+      classes: ["flex"],
     });
     this.dropDownButton = this.createElement("button", {
-      classes: ["dropdown-toggle", "dropdown-toggle-split", "nav-link", "px-2"],
+      classes: ["btn", "btn-primary", "dropdown-toggle", "dropdown-toggle-split"],
     });
     this.dropDownButton.setAttribute("data-bs-toggle", "collapse");
     this.List = this.createElement("ul", {
-      classes: ["collapse", "card"],
+      classes: ["collapse"],
     });
   }
 

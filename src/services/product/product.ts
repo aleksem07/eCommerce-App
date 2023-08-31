@@ -11,8 +11,6 @@ import { Events } from "@Services/event-bus/event-bus.types";
 import { HttpErrorType } from "@commercetools/sdk-client-v2";
 import { NotificationVariant } from "@Components/notification/notification.types";
 
-
-
 export default class ProductService extends ClientBuilderService {
   private authService: AuthService;
 

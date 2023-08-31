@@ -9,7 +9,7 @@ export default class CategoryNavigationView extends ViewBuilder {
   constructor() {
     super();
     this.element = this.createElement("section", {
-      classes: ["d-flex-column", "container"],
+      classes: ["d-flex-column"],
     });
     this.linksContainer = this.createElement("div", {
       classes: ["d-md-flex"],
@@ -21,6 +21,8 @@ export default class CategoryNavigationView extends ViewBuilder {
       const categoryLink = new CategoryComponent(category).init(false);
 
       const parent = document.getElementById(category.ancestors[0].id);
+      // eslint-disable-next-line no-console
+      console.log("addchildrens", categoryLink, parent);
 
       if (parent) parent.append(categoryLink);
     });
@@ -32,6 +34,7 @@ export default class CategoryNavigationView extends ViewBuilder {
       this.element.append(category.list);
     });
 
+    // ...linksList);
     this.element.prepend(this.linksContainer);
 
     return this.element;
