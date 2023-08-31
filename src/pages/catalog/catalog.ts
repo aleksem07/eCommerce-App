@@ -4,6 +4,8 @@ import ProductListComponent from "@Components/product-list/product-list";
 import FilterComponent from "@Components/filter/filter";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events, EventData } from "@Services/event-bus/event-bus.types";
+import ObjectGuardUtil from "@Utils/object-guard/object-guard";
+import { FilterAttributeType } from "./catalog.types";
 
 export default class CatalogPage {
   private view: CatalogView;
@@ -34,11 +36,11 @@ export default class CatalogPage {
     eventBusService.subscribe(Events.maxPriceFilterValue, this.handlePriceChange.bind(this));
     eventBusService.subscribe(
       Events.filterBySize,
-      this.handleFilterEvent("size", this.sizesFilter)
+      this.handleFilterEvent(FilterAttributeType.size, this.sizesFilter)
     );
     eventBusService.subscribe(
       Events.filterByColor,
-      this.handleFilterEvent("color", this.colorsFilter)
+      this.handleFilterEvent(FilterAttributeType.color, this.colorsFilter)
     );
   }
 
@@ -58,9 +60,11 @@ export default class CatalogPage {
     this.colorsFilter.length = 0;
   }
 
-  private handleFilterEvent(attribute: "size" | "color", elements: string[]) {
+  private handleFilterEvent(attribute: FilterAttributeType, elements: string[]) {
     return (data?: EventData) => {
-      if (data && typeof data[attribute] === "string") {
+      const hasAttribute = ObjectGuardUtil.hasProp<string>(data, attribute);
+
+      if (data && hasAttribute) {
         const attributeValue = data[attribute] as string;
 
         if (!elements.includes(attributeValue)) {
