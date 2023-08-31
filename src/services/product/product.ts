@@ -162,4 +162,18 @@ export default class ProductService extends ClientBuilderService {
       discountedPrice: this.getDiscountedPrice(productResponse.masterVariant.prices),
     };
   }
+
+  public generateFilters(
+    size: string[],
+    color: string[]
+  ): { sizeFilter: string; colorFilter: string } {
+    const formatArray = (arr: string[]) => arr.map((item) => `"${item.trim()}"`).join(", ");
+
+    const sizeFilter =
+      size && size.length > 0 ? `variants.attributes.size:${formatArray(size)}` : "";
+    const colorFilter =
+      color && color.length > 0 ? `variants.attributes.color.key:${formatArray(color)}` : "";
+
+    return { sizeFilter, colorFilter };
+  }
 }

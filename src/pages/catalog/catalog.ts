@@ -73,21 +73,13 @@ export default class CatalogPage {
           elements.splice(elements.indexOf(attributeValue), 1);
         }
 
-        this.requestGenerationFilter(this.sizesFilter, this.colorsFilter);
+        const { sizeFilter, colorFilter } = this.productService.generateFilters(
+          this.sizesFilter,
+          this.colorsFilter
+        );
+        this.filterProducts(sizeFilter, colorFilter);
       }
     };
-  }
-
-  private requestGenerationFilter(size: string[], color: string[]) {
-    const formatArray = (arr: string[]) => arr.map((item) => `"${item.trim()}"`).join(", ");
-
-    this.sizeVariantAttribute =
-      size && size.length > 0 ? `variants.attributes.size:${formatArray(size)}` : "";
-
-    this.colorVariantAttribute =
-      color && color.length > 0 ? `variants.attributes.color.key:${formatArray(color)}` : "";
-
-    this.filterProducts(this.sizeVariantAttribute, this.colorVariantAttribute);
   }
 
   private handlePriceChange(data?: EventData) {
