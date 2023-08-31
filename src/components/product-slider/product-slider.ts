@@ -12,6 +12,11 @@ export default class ProductSliderComponent {
     this.view = new ProductSliderView(images);
 
     eventBusService.subscribe(Events.renderProductSlider, this.initializeSwiper.bind(this));
+    this.view.swiperSlideListener(this.swiperSlideHandler.bind(this));
+  }
+
+  swiperSlideHandler(index: string) {
+    eventBusService.publish(Events.showModal, { index });
   }
 
   get thumbsContainer(): HTMLDivElement {

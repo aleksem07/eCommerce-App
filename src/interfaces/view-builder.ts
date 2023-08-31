@@ -51,4 +51,8 @@ export class ViewBuilder {
       parent.appendChild(element);
     }
   }
+
+  isHTMLElement(element: unknown): element is HTMLElement {
+    return !!element && element instanceof HTMLElement;
+  }
 }

@@ -4,6 +4,7 @@ import ProductExtraDescriptionComponent from "@Components/product-extra-descript
 import { ProductInformationProps } from "./product-information.types";
 import ProductPriceComponent from "@Components/product-price/product-price";
 import ProductSliderComponent from "@Components/product-slider/product-slider";
+import ProductModalComponent from "@Components/product-modal/product-modal";
 
 export default class ProductInformationComponent {
   private view: ProductInformationView;
@@ -11,6 +12,7 @@ export default class ProductInformationComponent {
   private returnDetails: ProductExtraDescriptionComponent;
   private prices: ProductPriceComponent;
   private imageSlider: ProductSliderComponent;
+  private modal: ProductModalComponent;
 
   constructor({ title, description, images, price, id, discountedPrice }: ProductInformationProps) {
     this.view = new ProductInformationView({ title, description, images, price, id });
@@ -27,6 +29,7 @@ export default class ProductInformationComponent {
     this.prices = new ProductPriceComponent({ price, discountedPrice, size: "md" });
 
     this.imageSlider = new ProductSliderComponent(images);
+    this.modal = new ProductModalComponent(images);
   }
 
   init() {
