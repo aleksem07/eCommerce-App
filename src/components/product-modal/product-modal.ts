@@ -8,6 +8,7 @@ import "./product-modal.scss";
 import ObjectGuardUtil from "@Utils/object-guard/object-guard";
 
 export default class ProductModalComponent {
+  swiper!: Swiper;
   private view: ProductModalView;
   private modal!: HTMLElement;
   private initHandler = this.init.bind(this);
@@ -20,7 +21,7 @@ export default class ProductModalComponent {
   }
 
   private initSwiper(data?: unknown) {
-    const swiper = new Swiper(this.view.swiperContainer, {
+    this.swiper = new Swiper(this.view.swiperContainer, {
       effect: "coverflow",
       coverflowEffect: {
         rotate: 50,
@@ -41,7 +42,7 @@ export default class ProductModalComponent {
     });
 
     if (ObjectGuardUtil.hasProp(data, "index")) {
-      swiper.slideTo(Number(data.index));
+      this.swiper.slideTo(Number(data.index));
     }
   }
 
