@@ -12,7 +12,7 @@ export default class UserProfileView extends ViewBuilder {
       classes: ["container", "mt-5"],
     });
     this.row = this.createElement<HTMLDivElement>("div", {
-      classes: ["row"],
+      classes: ["row", "g-5"],
     });
     this.sidebar = this.createElement<HTMLDivElement>("div", {
       classes: ["col-3"],
@@ -25,8 +25,9 @@ export default class UserProfileView extends ViewBuilder {
     this.element.append(this.row);
   }
 
-  render(userMenu: HTMLElement) {
+  render(userMenu: HTMLElement, userData: HTMLElement) {
     this.sidebar.append(userMenu);
+    this.main.append(userData);
     this.appendTo("#root", this.element);
   }
 }
