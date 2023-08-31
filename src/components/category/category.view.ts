@@ -22,7 +22,7 @@ export default class CategoryView extends ViewBuilder {
   private createCategory(id: string, name: LocalizedString, parentCard: boolean) {
     if (parentCard) {
       this.card = this.createElement<HTMLLinkElement>("a", {
-        classes: ["btn"],
+        classes: ["btn", "btn-primary"],
       });
     } else {
       this.card = this.createElement<HTMLLinkElement>("a", {

@@ -11,11 +11,11 @@ export default class CategoryListView extends ViewBuilder {
       classes: ["btn-group"],
     });
     this.dropDownButton = this.createElement("button", {
-      classes: ["btn", "dropdown-toggle", "dropdown-toggle-split"],
+      classes: ["btn", "btn-primary", "dropdown-toggle", "dropdown-toggle-split"],
     });
     this.dropDownButton.setAttribute("data-bs-toggle", "dropdown");
     this.dropDownList = this.createElement("ul", {
-      classes: ["dropdown-menu"],
+      classes: ["dropdown-menu", "dropdown-menu-end", "dropdown-menu-lg-start"],
     });
   }
 
