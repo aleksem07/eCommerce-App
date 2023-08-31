@@ -3,13 +3,11 @@ import { Routes } from "@Services/router/router.types";
 import { AUTH_TOKEN_LS } from "@Services/auth/auth.types";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
+import { AuthLinkItems } from "./navbar.types";
 
 export default class NavbarView extends ViewBuilder {
   element: HTMLElement;
   authLinksContainer: HTMLElement;
-  private loginLinkItem!: HTMLElement;
-  private registerLinkItem!: HTMLElement;
-  private logoutLinkItem!: HTMLElement;
 
   constructor() {
     super();
@@ -30,43 +28,35 @@ export default class NavbarView extends ViewBuilder {
     this.element.append(brandLink, this.authLinksContainer);
   }
 
-  initAuthLinks(
-    loginLinkItem: HTMLElement,
-    registerLinkItem: HTMLElement,
-    logoutLinkItem: HTMLElement
-  ) {
-    this.loginLinkItem = loginLinkItem;
-    this.registerLinkItem = registerLinkItem;
-    this.logoutLinkItem = logoutLinkItem;
+  initAuthLinks({
+    loginLinkItem,
+    registerLinkItem,
+    logoutLinkItem,
+    usernameLinkItem,
+  }: AuthLinkItems) {
     const userIcon = this.createLinkIcon("person");
-    const logoutIcon = this.createLinkIcon("box-arrow-in-left");
-    this.loginLinkItem.addEventListener("click", (event: Event) => {
+    const logoutIcon = this.createLinkIcon("box-arrow-in-right");
+    loginLinkItem.addEventListener("click", (event: Event) => {
       event.preventDefault();
       eventBusService.publish(Events.loginLinkClicked);
     });
-    this.logoutLinkItem.addEventListener("click", (event: Event) => {
+    logoutLinkItem.addEventListener("click", (event: Event) => {
       event.preventDefault();
       eventBusService.publish(Events.logoutLinkClicked);
     });
 
-    if (localStorage.getItem(AUTH_TOKEN_LS)) {
-      const authLinks = [
-        userIcon,
-        this.loginLinkItem,
-        this.createSeparator(),
-        this.registerLinkItem,
-        this.createSeparator(),
-        logoutIcon,
-        this.logoutLinkItem,
-      ];
+    const token = localStorage.getItem(AUTH_TOKEN_LS);
+
+    if (token) {
+      const authLinks = [logoutIcon, logoutLinkItem];
+
+      if (usernameLinkItem) {
+        authLinks.unshift(userIcon, usernameLinkItem, this.createSeparator());
+      }
+
       this.setAuthLinks(authLinks);
     } else {
-      const authLinks = [
-        userIcon,
-        this.loginLinkItem,
-        this.createSeparator(),
-        this.registerLinkItem,
-      ];
+      const authLinks = [userIcon, loginLinkItem, this.createSeparator(), registerLinkItem];
       this.setAuthLinks(authLinks);
     }
   }
@@ -89,7 +79,7 @@ export default class NavbarView extends ViewBuilder {
     return authLinksContainer;
   }
 
-  setAuthLinks(authLinks: HTMLElement[]) {
+  private setAuthLinks(authLinks: HTMLElement[]) {
     this.authLinksContainer.innerHTML = "";
     authLinks.forEach((link) => {
       this.authLinksContainer.appendChild(link);

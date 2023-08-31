@@ -18,6 +18,10 @@ export default class NavbarItemView extends ViewBuilder {
     this.element.appendChild(this.link);
   }
 
+  set text(text: string) {
+    this.link.textContent = text;
+  }
+
   render() {
     return this.element;
   }

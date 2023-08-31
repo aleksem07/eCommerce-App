@@ -7,6 +7,10 @@ export default class NavbarItemComponent {
     this.view = new NavbarItemView(href, text);
   }
 
+  set text(text: string) {
+    this.view.text = text;
+  }
+
   init() {
     return this.view.render();
   }
