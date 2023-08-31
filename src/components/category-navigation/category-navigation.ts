@@ -19,6 +19,7 @@ export default class CategoryNavigationComponent {
     this.categoriesService = new CategoriesService();
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   collapseShowHandler(e: Event) {
     const list = document.querySelector(".show");
     // eslint-disable-next-line no-console

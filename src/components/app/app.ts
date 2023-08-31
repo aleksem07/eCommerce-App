@@ -14,18 +14,22 @@ import { EventData, Events } from "@Services/event-bus/event-bus.types";
 import NotificationComponent from "@Components/notification/notification";
 import { NotificationVariant } from "@Components/notification/notification.types";
 import ObjectGuardUtil from "@Utils/object-guard/object-guard";
+import CategoryNavigationComponent from "@Components/category-navigation/category-navigation";
 
 export default class AppComponent {
   private view: AppView;
   private router: RouterService;
   private header: HeaderComponent;
   private notification: NotificationComponent;
+  CategoryNavigation: CategoryNavigationComponent;
 
   constructor() {
     this.view = new AppView();
     this.view.render();
     this.header = new HeaderComponent();
     this.header.init();
+    this.CategoryNavigation = new CategoryNavigationComponent();
+    this.CategoryNavigation.init();
     this.notification = new NotificationComponent();
 
     this.router = RouterService.getInstance(this.view.element, {
