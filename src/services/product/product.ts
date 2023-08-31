@@ -73,13 +73,18 @@ export default class ProductService extends ClientBuilderService {
   }
 
   private mapProductResponseToProduct(productResponse: ProductResponse): Product {
+    const attributes = productResponse.masterData.current.masterVariant.attributes;
+
+    const size = attributes?.find((attribute) => attribute.name === "size")?.value || "";
+    const color = attributes?.find((attribute) => attribute.name === "color")?.value?.key || "";
+
     return {
       id: productResponse.id,
       title: productResponse.masterData.current.name.en,
       description: productResponse.masterData.current.description?.en || "product description",
       imageUrl: productResponse.masterData.current.masterVariant.images?.[0].url || "",
-      color: productResponse.masterData.current.masterVariant.attributes?.[8].value.key,
-      size: productResponse.masterData.current.masterVariant.attributes?.[7].value,
+      color,
+      size,
       price: this.getPrice(productResponse.masterData.current.masterVariant.prices),
       discountedPrice: this.getDiscountedPrice(
         productResponse.masterData.current.masterVariant.prices
@@ -150,16 +155,16 @@ export default class ProductService extends ClientBuilderService {
     }
   }
 
-  private mapProductProjectionResponseToProduct(productResponse: ProductProjectionResponse) {
+  private mapProductProjectionResponseToProduct(
+    productProjectionResponse: ProductProjectionResponse
+  ) {
     return {
-      id: productResponse.id,
-      title: productResponse.name.en,
-      description: productResponse.description?.en || "product description",
-      imageUrl: productResponse.masterVariant.images?.[0].url || "",
-      color: productResponse.masterVariant.attributes?.[8].value.key,
-      size: productResponse.masterVariant.attributes?.[7].value,
-      price: this.getPrice(productResponse.masterVariant.prices),
-      discountedPrice: this.getDiscountedPrice(productResponse.masterVariant.prices),
+      id: productProjectionResponse.id,
+      title: productProjectionResponse.name.en,
+      description: productProjectionResponse.description?.en || "product description",
+      imageUrl: productProjectionResponse.masterVariant.images?.[0].url || "",
+      price: this.getPrice(productProjectionResponse.masterVariant.prices),
+      discountedPrice: this.getDiscountedPrice(productProjectionResponse.masterVariant.prices),
     };
   }
 

@@ -3,6 +3,7 @@ import FormCheckComponent from "@Components/form-check/form-check";
 import FormControlComponent from "@Components/form-control/form-control";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events, EventData } from "@Services/event-bus/event-bus.types";
+import ObjectGuardUtil from "@Utils/object-guard/object-guard";
 
 export default class FilterComponent {
   private view: FilterView;
@@ -32,11 +33,14 @@ export default class FilterComponent {
 
     this.view.resetFilterListener((e) => this.resetFilterHandler(e, onResetClick));
     eventBusService.subscribe(Events.fetchProductsSuccessfully, (data?: EventData) => {
-      if (data && Array.isArray(data.colors)) {
+      const hasColors = ObjectGuardUtil.hasProp<string[]>(data, "colors");
+      const hasSizes = ObjectGuardUtil.hasProp<string[]>(data, "sizes");
+
+      if (data && hasColors) {
         this.updateColors(data.colors);
       }
 
-      if (data && Array.isArray(data.sizes)) {
+      if (data && hasSizes) {
         this.updateSizes(data.sizes);
       }
     });

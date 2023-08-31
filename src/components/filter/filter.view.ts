@@ -53,7 +53,7 @@ export default class FilterView extends ViewBuilder {
 
     if (color) {
       colorPicker.style.backgroundColor = color;
-      title.textContent = color[0].toUpperCase() + color.slice(1);
+      title.textContent = color;
     }
 
     if (color == "multicolored") {

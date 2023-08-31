@@ -73,25 +73,32 @@ export default class CatalogPage {
           elements.splice(elements.indexOf(attributeValue), 1);
         }
 
-        const { sizeFilter, colorFilter } = this.productService.generateFilters(
-          this.sizesFilter,
-          this.colorsFilter
-        );
-        this.filterProducts(sizeFilter, colorFilter);
+        this.sendFiltersToProductService();
       }
     };
   }
 
+  private sendFiltersToProductService() {
+    const { sizeFilter, colorFilter } = this.productService.generateFilters(
+      this.sizesFilter,
+      this.colorsFilter
+    );
+    this.filterProducts(sizeFilter, colorFilter);
+  }
+
   private handlePriceChange(data?: EventData) {
-    if (data && typeof data.minValue === "string") {
+    const hasMinValue = ObjectGuardUtil.hasProp<string>(data, "minValue");
+    const hasMaxValue = ObjectGuardUtil.hasProp<string>(data, "maxValue");
+
+    if (data && hasMinValue) {
       this.priceRange.minPrice = data.minValue;
-      this.filterProducts(this.sizeVariantAttribute, this.colorVariantAttribute);
     }
 
-    if (data && typeof data.maxValue === "string") {
+    if (data && hasMaxValue) {
       this.priceRange.maxPrice = data.maxValue;
-      this.filterProducts(this.sizeVariantAttribute, this.colorVariantAttribute);
     }
+
+    this.sendFiltersToProductService();
   }
 
   private async fetchProducts() {
@@ -115,10 +122,10 @@ export default class CatalogPage {
 
   private async filterProducts(size: string, color: string) {
     const priceRange = this.getCurrentPriceRange();
-    const filterProducts = await this.productService.filterProducts(size, color, priceRange);
+    const filteredProducts = await this.productService.filterProducts(size, color, priceRange);
 
-    if (filterProducts) {
-      const productListElement = this.productListComponent.init(filterProducts);
+    if (filteredProducts) {
+      const productListElement = this.productListComponent.init(filteredProducts);
       this.view.displayProducts(productListElement);
     }
   }
