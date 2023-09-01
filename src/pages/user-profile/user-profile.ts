@@ -7,16 +7,19 @@ import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
 import { Routes } from "@Services/router/router.types";
 import { AUTH_TOKEN_LS } from "@Services/auth/auth.types";
+import CustomerService from "@Services/customer/customer";
 
 export default class UserProfilePage {
   private view: UserProfileView;
   private userMenu: UserMenuComponent;
   userData: UserDataComponent;
+  customer: CustomerService;
 
   constructor() {
     this.view = new UserProfileView();
     this.userMenu = new UserMenuComponent();
     this.userData = new UserDataComponent();
+    this.customer = new CustomerService();
   }
 
   private async checkCustomerExists() {
@@ -29,9 +32,12 @@ export default class UserProfilePage {
         message: "Please login first",
       });
     } else {
-      // const customer = await this.productService.getById(this.id);
+      const customer = await this.customer.getUserInfo();
+
+      console.log(customer);
+
       // if (customer) {
-      //   this.product = customer;
+      //   this.userData.init(customer);
       // } else {
       //   RouterService.navigateTo(Routes.NOT_FOUND);
       // }
