@@ -3,4 +3,5 @@ export interface FormCheckProps {
   formName: string;
   inputName: string;
   checked?: boolean;
+  disabled?: boolean;
 }

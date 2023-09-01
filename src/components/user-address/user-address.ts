@@ -1,7 +1,7 @@
 import FormControlComponent from "@Components/form-control/form-control";
 import UserAddressView from "./user-address.view";
 import FormCheckComponent from "@Components/form-check/form-check";
-import { Address } from "@Services/customer/customer.types";
+import { UserAddressProps } from "./user-address.types";
 
 export default class UserAddressComponent {
   private view: UserAddressView;
@@ -12,7 +12,7 @@ export default class UserAddressComponent {
   private isDefaultAddress: FormCheckComponent;
   private formName: string;
 
-  constructor(header: string, formName: string, address: Address) {
+  constructor({ header, formName, address, isEditMode }: UserAddressProps) {
     this.view = new UserAddressView(header);
     this.formName = `${formName}-${header.toLowerCase().replace(" ", "-")}`;
     this.countryInput = new FormControlComponent({
@@ -20,8 +20,8 @@ export default class UserAddressComponent {
       inputName: "country",
       labelText: "Country",
       placeholderText: "Enter your country",
-      type: "text",
       value: address.country,
+      disabled: !isEditMode,
       //TODO: SELECT COMPONENT
     });
     this.cityInput = new FormControlComponent({
@@ -29,34 +29,35 @@ export default class UserAddressComponent {
       inputName: "city",
       labelText: "City",
       placeholderText: "Enter your city",
-      type: "text",
       value: address.city,
+      disabled: !isEditMode,
     });
     this.streetInput = new FormControlComponent({
       formName: this.formName,
       inputName: "street",
       labelText: "Street",
       placeholderText: "Enter your street",
-      type: "text",
       value: address.streetName,
+      disabled: !isEditMode,
     });
     this.postalCodeInput = new FormControlComponent({
       formName: this.formName,
       inputName: "postal-code",
       labelText: "Postal Code",
       placeholderText: "Enter your postal code",
-      type: "text",
       value: address.postalCode,
+      disabled: !isEditMode,
     });
-    this.isDefaultAddress = this.createCheckBox(address.isDefaultAddress);
+    this.isDefaultAddress = this.createCheckBox(address.isDefaultAddress, isEditMode);
   }
 
-  createCheckBox(isChecked: boolean) {
+  private createCheckBox(isChecked: boolean, isEditMode: boolean) {
     return new FormCheckComponent({
       formName: this.formName,
       inputName: "is-default-address",
       labelText: "Default Address",
       checked: isChecked,
+      disabled: !isEditMode,
     });
   }
 

@@ -10,7 +10,7 @@ export default class UserInfoComponent {
   private emailInput: FormControlComponent;
   private dateOfBirthInput: FormControlComponent;
 
-  constructor(formName: string, customer: Customer) {
+  constructor(formName: string, customer: Customer, isEditMode: boolean) {
     this.formName = formName;
     this.view = new UserInfoView();
     this.firstNameInput = new FormControlComponent({
@@ -19,6 +19,7 @@ export default class UserInfoComponent {
       labelText: "First Name",
       placeholderText: "Enter your first name",
       value: customer?.firstName,
+      disabled: !isEditMode,
     });
     this.lastNameInput = new FormControlComponent({
       formName: this.formName,
@@ -26,6 +27,7 @@ export default class UserInfoComponent {
       labelText: "Last Name",
       placeholderText: "Enter your last name",
       value: customer?.lastName,
+      disabled: !isEditMode,
     });
     this.emailInput = new FormControlComponent({
       formName: this.formName,
@@ -34,6 +36,7 @@ export default class UserInfoComponent {
       placeholderText: "Enter your email",
       type: "email",
       value: customer?.email,
+      disabled: !isEditMode,
     });
     this.dateOfBirthInput = new FormControlComponent({
       formName: this.formName,
@@ -42,6 +45,7 @@ export default class UserInfoComponent {
       placeholderText: "Enter your date of birth",
       type: "date",
       value: customer?.dateOfBirth,
+      disabled: !isEditMode,
     });
   }
 

@@ -19,6 +19,7 @@ export default class FormControlView extends ViewBuilder {
     type,
     value,
     min,
+    disabled = false,
   }: FormControlProps) {
     super();
     this.formName = formName;
@@ -33,7 +34,15 @@ export default class FormControlView extends ViewBuilder {
     });
     this.inputLabel.setAttribute("for", `${formName}-${inputName}-input`);
     this.inputLabel.textContent = labelText;
-    this.input = this.createInput({ formName, inputName, placeholderText, type, value, min });
+    this.input = this.createInput({
+      formName,
+      inputName,
+      placeholderText,
+      type,
+      value,
+      min,
+      disabled,
+    });
     this.inputHelp = this.createElement("small", {
       id: `${helpText}-help`,
       classes: ["form-text", "h6"],
@@ -48,6 +57,7 @@ export default class FormControlView extends ViewBuilder {
     type,
     value,
     min,
+    disabled = false,
   }: Partial<FormControlProps>) {
     const element = this.createElement<HTMLInputElement>("input", {
       id: `${formName}-${inputName}-input`,
@@ -57,6 +67,7 @@ export default class FormControlView extends ViewBuilder {
     element.name = inputName || "";
     element.type = type || "text";
     element.value = value || "";
+    element.disabled = disabled;
 
     if (min) {
       this.input.min = min;

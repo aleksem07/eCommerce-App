@@ -11,24 +11,27 @@ export default class UserDataComponent {
   private userShippingAddress: UserAddressComponent;
   private userBillingAddress?: UserAddressComponent;
   private formName = "user-data";
+  private isEditMode = false;
 
   constructor(customer: Customer) {
     this.view = new UserDataView();
-    this.userInfo = new UserInfoComponent(this.formName, customer);
-    this.userPassword = new UserPasswordComponent(this.formName);
+    this.userInfo = new UserInfoComponent(this.formName, customer, this.isEditMode);
+    this.userPassword = new UserPasswordComponent(this.formName, this.isEditMode);
 
-    this.userShippingAddress = new UserAddressComponent(
-      "Shipping Address",
-      this.formName,
-      customer.shippingAddress
-    );
+    this.userShippingAddress = new UserAddressComponent({
+      header: "Shipping Address",
+      formName: this.formName,
+      address: customer.shippingAddress,
+      isEditMode: this.isEditMode,
+    });
 
     if (customer.billingAddress) {
-      this.userBillingAddress = new UserAddressComponent(
-        "Billing Address",
-        this.formName,
-        customer.billingAddress
-      );
+      this.userBillingAddress = new UserAddressComponent({
+        header: "Billing Address",
+        formName: this.formName,
+        address: customer.billingAddress,
+        isEditMode: this.isEditMode,
+      });
     }
   }
 
