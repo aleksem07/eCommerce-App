@@ -8,19 +8,19 @@ export default class FormSelectComponent {
   form: string;
   inputName: string;
 
-  constructor({ formName, inputName, labelText, helpText, options }: FormSelectProps) {
+  constructor({ formName, inputName, labelText, helpText, options, className }: FormSelectProps) {
     this.view = new FormSelectView({
       formName,
       inputName,
       labelText,
       helpText,
       options,
+      className,
     });
     this.validator = new ValidatorUtil();
 
     this.form = formName;
     this.inputName = inputName;
-
     this.view.inputListener(this.inputHandler.bind(this));
   }
 

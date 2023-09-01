@@ -5,6 +5,8 @@ export interface Product {
   price: Price;
   discountedPrice?: Price;
   id: string;
+  color?: string;
+  size?: string;
 }
 
 export interface Price {

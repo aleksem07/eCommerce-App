@@ -8,6 +8,8 @@ describe("ProductCardComponent", () => {
       title: "title",
       description: "description",
       images: ["imageUrl"],
+      color: "color",
+      size: "XL",
       price: { currencyCode: "USD", value: 100 },
     });
     expect(instance).toBeInstanceOf(ProductCardComponent);
@@ -19,6 +21,8 @@ describe("ProductCardComponent", () => {
       title: "Sample Title",
       description: "Sample Description",
       images: ["sample-image.jpg"],
+      color: "black",
+      size: "XL",
       price: { currencyCode: "USD", value: 100 },
     };
     const productCard = new ProductCardComponent(props);
