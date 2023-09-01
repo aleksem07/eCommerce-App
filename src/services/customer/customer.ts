@@ -51,7 +51,7 @@ export default class CustomerService extends ClientBuilderService {
       lastName: customerResponse.lastName || "",
       email: customerResponse.email,
       dateOfBirth: customerResponse.dateOfBirth || "",
-    };
+    } as Customer; //TODO: fix this
     this.handleCustomerAddresses(customerResponse, customer);
 
     return customer;
@@ -68,7 +68,7 @@ export default class CustomerService extends ClientBuilderService {
       );
 
       if (address) {
-        customer.shippingAddresses = this.mapAddressResponseToAddress(address);
+        customer.shippingAddress = this.mapAddressResponseToAddress(address);
       }
     } else {
       const billingAddress = this.findAddressById(
@@ -77,7 +77,7 @@ export default class CustomerService extends ClientBuilderService {
       );
 
       if (billingAddress) {
-        customer.billingAddresses = this.mapAddressResponseToAddress(billingAddress);
+        customer.billingAddress = this.mapAddressResponseToAddress(billingAddress);
       }
 
       const shippingAddress = this.findAddressById(
@@ -86,7 +86,7 @@ export default class CustomerService extends ClientBuilderService {
       );
 
       if (shippingAddress) {
-        customer.shippingAddresses = this.mapAddressResponseToAddress(shippingAddress);
+        customer.shippingAddress = this.mapAddressResponseToAddress(shippingAddress);
       }
     }
   }

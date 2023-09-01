@@ -25,16 +25,14 @@ export default class UserDataView extends ViewBuilder {
     userInfo: HTMLElement;
     userPassword: HTMLElement;
     userShippingAddress: HTMLElement;
-    userBillingAddress: HTMLElement;
+    userBillingAddress?: HTMLElement;
   }) {
-    this.element.append(
-      this.header,
-      userInfo,
-      userPassword,
-      userShippingAddress,
-      userBillingAddress,
-      this.button
-    );
+    const elements = [this.header, userInfo, userPassword, userShippingAddress];
+
+    if (userBillingAddress) {
+      elements.push(userBillingAddress);
+    }
+    this.element.append(...elements, this.button);
 
     return this.element;
   }

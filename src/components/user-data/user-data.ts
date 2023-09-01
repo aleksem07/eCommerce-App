@@ -9,20 +9,32 @@ export default class UserDataComponent {
   private userInfo: UserInfoComponent;
   private userPassword: UserPasswordComponent;
   private userShippingAddress: UserAddressComponent;
-  private userBillingAddress: UserAddressComponent;
+  private userBillingAddress?: UserAddressComponent;
   private formName = "user-data";
 
   constructor(customer: Customer) {
     this.view = new UserDataView();
     this.userInfo = new UserInfoComponent(this.formName, customer);
     this.userPassword = new UserPasswordComponent(this.formName);
-    this.userShippingAddress = new UserAddressComponent("Shipping Address", this.formName);
-    this.userBillingAddress = new UserAddressComponent("Billing Address", this.formName);
+
+    this.userShippingAddress = new UserAddressComponent(
+      "Shipping Address",
+      this.formName,
+      customer.shippingAddress
+    );
+
+    if (customer.billingAddress) {
+      this.userBillingAddress = new UserAddressComponent(
+        "Billing Address",
+        this.formName,
+        customer.billingAddress
+      );
+    }
   }
 
   init() {
     const userShippingAddress = this.userShippingAddress.init();
-    const userBillingAddress = this.userBillingAddress.init();
+    const userBillingAddress = this.userBillingAddress?.init();
     const userInfo = this.userInfo.init();
     const userPassword = this.userPassword.init();
 

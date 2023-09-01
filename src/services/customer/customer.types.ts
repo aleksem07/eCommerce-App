@@ -4,8 +4,8 @@ export interface Customer {
   lastName: string;
   email: string;
   dateOfBirth: string;
-  shippingAddresses?: Address;
-  billingAddresses?: Address;
+  shippingAddress: Address;
+  billingAddress?: Address;
 }
 
 export interface Address {
