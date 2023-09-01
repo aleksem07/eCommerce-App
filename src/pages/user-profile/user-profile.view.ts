@@ -26,6 +26,8 @@ export default class UserProfileView extends ViewBuilder {
   }
 
   render(userMenu: HTMLElement, userData: HTMLElement) {
+    this.sidebar.innerHTML = "";
+    this.main.innerHTML = "";
     this.sidebar.append(userMenu);
     this.main.append(userData);
     this.appendTo("#root", this.element);

@@ -64,7 +64,7 @@ export default class CustomerService extends ClientBuilderService {
     if (isBillingAddressEqualToShippingAddress) {
       const address = this.findAddressById(
         customerResponse.addresses,
-        customerResponse.defaultBillingAddressId
+        customerResponse.shippingAddressIds?.[0] || customerResponse.defaultShippingAddressId
       );
 
       if (address) {
@@ -73,7 +73,7 @@ export default class CustomerService extends ClientBuilderService {
     } else {
       const billingAddress = this.findAddressById(
         customerResponse.addresses,
-        customerResponse.defaultBillingAddressId
+        customerResponse.billingAddressIds?.[0] || customerResponse.defaultBillingAddressId
       );
 
       if (billingAddress) {
@@ -82,7 +82,7 @@ export default class CustomerService extends ClientBuilderService {
 
       const shippingAddress = this.findAddressById(
         customerResponse.addresses,
-        customerResponse.defaultShippingAddressId
+        customerResponse.shippingAddressIds?.[0] || customerResponse.defaultShippingAddressId
       );
 
       if (shippingAddress) {
