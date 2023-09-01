@@ -6,4 +6,5 @@ export interface FormControlProps {
   placeholderText: string;
   type?: string;
   value?: string;
+  min?: string;
 }
