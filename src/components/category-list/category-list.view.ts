@@ -1,5 +1,4 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
-import { Button } from "bootstrap";
 
 export default class CategoryListView extends ViewBuilder {
   private element: HTMLElement;

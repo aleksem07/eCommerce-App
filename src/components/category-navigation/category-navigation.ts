@@ -6,31 +6,24 @@ import { Category } from "@Services/category/category.types";
 export default class CategoryNavigationComponent {
   private view: CategoryNavigationView;
   private categoriesList: CategoryListComponent;
-  // private childrenCategoriesList: CategoryListComponent;
   categoryService: CategoryService;
   categories?: { parent: Category[] | undefined; children: Category[] | undefined };
   private parentList?: { element: HTMLElement; list: HTMLUListElement }[];
-  private childrenList?: HTMLElement;
 
   constructor() {
     this.categoriesList = new CategoryListComponent(this.collapseShowHandler.bind(this));
-    // this.childrenCategoriesList = new CategoryListComponent();
     this.view = new CategoryNavigationView();
     this.categoryService = new CategoryService();
   }
 
-  collapseShowHandler(e: Event) {
+  collapseShowHandler() {
     const list = document.querySelector(".show");
-    // eslint-disable-next-line no-console
-    console.log("Event");
 
     if (list) list.classList.remove("show");
   }
 
   async init() {
     this.categories = await this.categoryService.getAll();
-    // eslint-disable-next-line no-console
-    console.log("cat nav 1", this.categories);
 
     if (this.categories?.parent) {
       this.parentList = this.categories.parent.map((category) => {
@@ -40,12 +33,9 @@ export default class CategoryNavigationComponent {
 
     if (this.parentList) {
       this.view.render(this.parentList);
-      // eslint-disable-next-line no-console
-      console.log("cat nav 2");
-      // header[0].after(this.view.render(this.parentList.map((category) => category.list)));
 
       if (this.categories?.children) {
-        this.view.addChildrensCategories(this.categories.children);
+        this.view.addChildrenCategories(this.categories.children);
       }
     }
   }

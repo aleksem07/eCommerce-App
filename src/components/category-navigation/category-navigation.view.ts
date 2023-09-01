@@ -28,8 +28,8 @@ export default class CategoryNavigationView extends ViewBuilder {
     this.container.append(brandLink);
   }
 
-  addChildrensCategories(childrens: Category[]) {
-    childrens.forEach((category) => {
+  addChildrenCategories(children: Category[]) {
+    children.forEach((category) => {
       const categoryLink = new CategoryComponent(category).init(false);
 
       const parent = document.getElementById(category.ancestors[0].id);
@@ -52,8 +52,6 @@ export default class CategoryNavigationView extends ViewBuilder {
     linksList.map((category) => {
       this.linksContainer.append(category.element);
       this.categoriesLists?.push(category.list);
-      console.log("55", this.categoriesLists);
-      // this.nav.append(category.list);
     });
 
     this.wrapper.prepend(this.linksContainer);
@@ -64,6 +62,5 @@ export default class CategoryNavigationView extends ViewBuilder {
     const header = document.getElementsByTagName("header");
 
     if (this.categoriesLists) header[0].after(this.nav, ...this.categoriesLists);
-    // return this.nav;
   }
 }

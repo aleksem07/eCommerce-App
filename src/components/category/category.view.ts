@@ -1,6 +1,5 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
 import { Routes } from "@Services/router/router.types";
-import { LocalizedString } from "@commercetools/platform-sdk";
 import { Category } from "@Services/category/category.types";
 
 export default class CategoryView extends ViewBuilder {
@@ -11,8 +10,6 @@ export default class CategoryView extends ViewBuilder {
 
   constructor({ id, name }: Category) {
     super();
-    // eslint-disable-next-line no-console
-    console.log(id, name);
     this.element = this.createElement("li", {
       classes: ["nav-item", "px-2"],
     });
