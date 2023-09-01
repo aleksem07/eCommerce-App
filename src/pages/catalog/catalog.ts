@@ -90,11 +90,11 @@ export default class CatalogPage {
     const hasMinValue = ObjectGuardUtil.hasProp<string>(data, "minValue");
     const hasMaxValue = ObjectGuardUtil.hasProp<string>(data, "maxValue");
 
-    if (data && hasMinValue) {
+    if (hasMinValue) {
       this.priceRange.minPrice = data.minValue;
     }
 
-    if (data && hasMaxValue) {
+    if (hasMaxValue) {
       this.priceRange.maxPrice = data.maxValue;
     }
 
