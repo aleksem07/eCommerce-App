@@ -12,13 +12,13 @@ export default class CategoryNavigationView extends ViewBuilder {
   constructor() {
     super();
     this.nav = this.createElement("nav", {
-      classes: ["bg-body-tertiary", "nav-bar"],
+      classes: ["bg-body-tertiary", "navbar", "navbar-expand"],
     });
     this.container = this.createElement("div", {
-      classes: ["container", "d-flex"],
+      classes: ["container"],
     });
     this.wrapper = this.createElement("div", {
-      classes: ["d-flex-column", "navbar-collapse"],
+      classes: ["d-flex-column"],
     });
     this.linksContainer = this.createElement("div", {
       classes: ["d-md-flex"],

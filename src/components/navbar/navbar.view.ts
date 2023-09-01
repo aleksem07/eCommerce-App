@@ -13,14 +13,7 @@ export default class NavbarView extends ViewBuilder {
   constructor() {
     super();
     this.element = this.createElement("nav", {
-      classes: [
-        "container",
-        "navbar",
-        "navbar-expand",
-        "bg-dark",
-        "d-flex",
-        "justify-content-between",
-      ],
+      classes: ["container", "navbar", "navbar-expand", "bg-dark", "d-flex", "justify-content-end"],
       dataset: [{ bsTheme: "dark" }],
     });
 
