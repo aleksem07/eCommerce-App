@@ -16,7 +16,7 @@ export default class CategoryListView extends ViewBuilder {
     });
     this.dropDownButton.setAttribute("data-bs-toggle", "collapse");
     this.List = this.createElement("ul", {
-      classes: ["collapse", "collapse"],
+      classes: ["collapse", "container"],
     });
   }
 

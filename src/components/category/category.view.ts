@@ -1,12 +1,13 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
 import { Routes } from "@Services/router/router.types";
-import { Category, LocalizedString } from "@commercetools/platform-sdk";
+import { LocalizedString } from "@commercetools/platform-sdk";
+import { Category } from "@Services/category/category.types";
 
 export default class CategoryView extends ViewBuilder {
   private element: HTMLElement;
   private card?: HTMLLinkElement;
   private id: string;
-  private name: LocalizedString;
+  private name: string;
 
   constructor({ id, name }: Category) {
     super();
@@ -19,7 +20,7 @@ export default class CategoryView extends ViewBuilder {
     this.name = name;
   }
 
-  private createCategory(id: string, name: LocalizedString, parentCard: boolean) {
+  private createCategory(id: string, name: string, parentCard: boolean) {
     if (parentCard) {
       this.card = this.createElement<HTMLLinkElement>("a", {
         classes: ["nav-link", "px-2"],
@@ -31,7 +32,7 @@ export default class CategoryView extends ViewBuilder {
     }
     const url = new URL(`${window.location.origin}${Routes.CATALOG}-${id}`);
     this.card.href = url.href;
-    this.card.textContent = String(name.en);
+    this.card.textContent = name;
     this.element.id = id;
 
     return this.card;

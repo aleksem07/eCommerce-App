@@ -1,6 +1,6 @@
 import CategoryComponent from "@Components/category/category";
 import { ViewBuilder } from "@Interfaces/view-builder";
-import { Category } from "@commercetools/platform-sdk";
+import { Category } from "@Services/category/category.types";
 import { Routes } from "@Services/router/router.types";
 
 export default class CategoryNavigationView extends ViewBuilder {
@@ -25,7 +25,7 @@ export default class CategoryNavigationView extends ViewBuilder {
       classes: ["d-md-flex"],
     });
     const brandLink = this.createBrandLink();
-    this.nav.append(brandLink);
+    this.container.append(brandLink);
   }
 
   addChildrensCategories(childrens: Category[]) {

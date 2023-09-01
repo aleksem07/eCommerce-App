@@ -1,4 +1,4 @@
-import { Category } from "@commercetools/platform-sdk";
+import { Category } from "@Services/category/category.types";
 import CategoryListView from "./category-list.view";
 import CategoryComponent from "@Components/category/category";
 

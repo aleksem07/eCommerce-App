@@ -1,7 +1,7 @@
 import AuthService from "@Services/auth/auth";
 import ClientBuilderService from "@Services/client-builder/client-builder";
 // import eventBusService from "@Services/event-bus/event-bus";
-import { Category } from "@commercetools/platform-sdk";
+import { Category } from "./category.types";
 import { Category as CategoryResponse } from "@commercetools/platform-sdk";
 // import { HttpErrorType } from "@commercetools/sdk-client-v2";
 // import { Events } from "@Services/event-bus/event-bus.types";
@@ -32,9 +32,9 @@ export default class CategoryService extends ClientBuilderService {
         const childrenCategories: Category[] = [];
         body.results.forEach((category) => {
           if (category.ancestors[0]) {
-            childrenCategories.push(this.mapProductResponseToProduct(category));
+            childrenCategories.push(this.mapCategoryResponseToCategory(category));
           } else {
-            parentCategories.push(this.mapProductResponseToProduct(category));
+            parentCategories.push(this.mapCategoryResponseToCategory(category));
           }
         });
 
@@ -61,8 +61,7 @@ export default class CategoryService extends ClientBuilderService {
             },
           })
           .execute();
-        const category: Category = this.mapProductResponseToProduct(body);
-        // const childrenCategories: Category[] = [];
+        const category: Category = this.mapCategoryResponseToCategory(body);
 
         return category;
       }
@@ -72,16 +71,11 @@ export default class CategoryService extends ClientBuilderService {
     }
   }
 
-  private mapProductResponseToProduct(productResponse: CategoryResponse): Category {
+  private mapCategoryResponseToCategory(productResponse: CategoryResponse): Category {
     return {
-      version: productResponse.version,
-      createdAt: productResponse.createdAt,
-      lastModifiedAt: productResponse.lastModifiedAt,
-      slug: productResponse.slug,
       ancestors: productResponse.ancestors,
-      orderHint: productResponse.orderHint,
       id: productResponse.id,
-      name: productResponse.name,
+      name: productResponse.name.en,
     };
   }
 }
