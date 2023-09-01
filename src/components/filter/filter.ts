@@ -11,6 +11,7 @@ export default class FilterComponent {
   private uniqueSizes: string[] = [];
   private rangeMinPrice: FormControlComponent;
   private rangeMaxPrice: FormControlComponent;
+  private priceChangeTimer: NodeJS.Timeout | null = null;
 
   constructor(onResetClick?: (e: Event) => void) {
     this.view = new FilterView();
@@ -36,11 +37,11 @@ export default class FilterComponent {
       const hasColors = ObjectGuardUtil.hasProp<string[]>(data, "colors");
       const hasSizes = ObjectGuardUtil.hasProp<string[]>(data, "sizes");
 
-      if (data && hasColors) {
+      if (hasColors) {
         this.updateColors(data.colors);
       }
 
-      if (data && hasSizes) {
+      if (hasSizes) {
         this.updateSizes(data.sizes);
       }
     });
@@ -83,7 +84,14 @@ export default class FilterComponent {
       const input = e.target as HTMLInputElement;
       let minValue = input.value;
       minValue = (Number(minValue) * 100).toString();
-      eventBusService.publish(Events.minPriceFilterValue, { minValue });
+
+      if (this.priceChangeTimer !== null) {
+        clearTimeout(this.priceChangeTimer);
+      }
+
+      this.priceChangeTimer = setTimeout(() => {
+        eventBusService.publish(Events.minPriceFilterValue, { minValue });
+      }, 500);
     }
   }
 
@@ -92,7 +100,18 @@ export default class FilterComponent {
       const input = e.target as HTMLInputElement;
       let maxValue = input.value;
       maxValue = (Number(maxValue) * 100).toString();
-      eventBusService.publish(Events.maxPriceFilterValue, { maxValue });
+
+      if (maxValue == "0") {
+        maxValue = "*";
+      }
+
+      if (this.priceChangeTimer !== null) {
+        clearTimeout(this.priceChangeTimer);
+      }
+
+      this.priceChangeTimer = setTimeout(() => {
+        eventBusService.publish(Events.maxPriceFilterValue, { maxValue });
+      }, 500);
     }
   }
 
