@@ -1,5 +1,6 @@
 import FormControlComponent from "@Components/form-control/form-control";
 import UserInfoView from "./user-info.view";
+import { Customer } from "@Services/customer/customer.types";
 
 export default class UserInfoComponent {
   private view: UserInfoView;
@@ -9,7 +10,7 @@ export default class UserInfoComponent {
   private emailInput: FormControlComponent;
   private dateOfBirthInput: FormControlComponent;
 
-  constructor(formName: string) {
+  constructor(formName: string, customer: Customer) {
     this.formName = formName;
     this.view = new UserInfoView();
     this.firstNameInput = new FormControlComponent({
@@ -17,12 +18,14 @@ export default class UserInfoComponent {
       inputName: "first-name",
       labelText: "First Name",
       placeholderText: "Enter your first name",
+      value: customer?.firstName,
     });
     this.lastNameInput = new FormControlComponent({
       formName: this.formName,
       inputName: "last-name",
       labelText: "Last Name",
       placeholderText: "Enter your last name",
+      value: customer?.lastName,
     });
     this.emailInput = new FormControlComponent({
       formName: this.formName,
@@ -30,6 +33,7 @@ export default class UserInfoComponent {
       labelText: "Email",
       placeholderText: "Enter your email",
       type: "email",
+      value: customer?.email,
     });
     this.dateOfBirthInput = new FormControlComponent({
       formName: this.formName,
@@ -37,6 +41,7 @@ export default class UserInfoComponent {
       labelText: "Date of Birth",
       placeholderText: "Enter your date of birth",
       type: "date",
+      value: customer?.dateOfBirth,
     });
   }
 

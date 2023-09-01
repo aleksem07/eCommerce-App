@@ -2,6 +2,7 @@ import UserInfoComponent from "@Components/user-info/user-info";
 import UserDataView from "./user-data.view";
 import UserPasswordComponent from "@Components/user-password/user-password";
 import UserAddressComponent from "@Components/user-address/user-address";
+import { Customer } from "@Services/customer/customer.types";
 
 export default class UserDataComponent {
   private view: UserDataView;
@@ -11,9 +12,9 @@ export default class UserDataComponent {
   private userBillingAddress: UserAddressComponent;
   private formName = "user-data";
 
-  constructor() {
+  constructor(customer: Customer) {
     this.view = new UserDataView();
-    this.userInfo = new UserInfoComponent(this.formName);
+    this.userInfo = new UserInfoComponent(this.formName, customer);
     this.userPassword = new UserPasswordComponent(this.formName);
     this.userShippingAddress = new UserAddressComponent("Shipping Address", this.formName);
     this.userBillingAddress = new UserAddressComponent("Billing Address", this.formName);

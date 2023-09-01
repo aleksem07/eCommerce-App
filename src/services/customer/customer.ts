@@ -50,6 +50,7 @@ export default class CustomerService extends ClientBuilderService {
       firstName: customerResponse.firstName || "",
       lastName: customerResponse.lastName || "",
       email: customerResponse.email,
+      dateOfBirth: customerResponse.dateOfBirth || "",
     };
     this.handleCustomerAddresses(customerResponse, customer);
 

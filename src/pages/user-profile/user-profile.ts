@@ -13,13 +13,12 @@ import { Customer } from "@Services/customer/customer.types";
 export default class UserProfilePage {
   private view: UserProfileView;
   private userMenu!: UserMenuComponent;
-  private userData: UserDataComponent;
+  private userData!: UserDataComponent;
   private customerService: CustomerService;
   private customer?: Customer;
 
   constructor() {
     this.view = new UserProfileView();
-    this.userData = new UserDataComponent();
     this.customerService = new CustomerService();
   }
 
@@ -53,6 +52,7 @@ export default class UserProfilePage {
     if (this.customer) {
       const fullName = `${this.customer.firstName} ${this.customer.lastName}`;
       this.userMenu = new UserMenuComponent(fullName, this.customer.email);
+      this.userData = new UserDataComponent(this.customer);
 
       const userMenu = this.userMenu.init();
       const userData = this.userData.init();

@@ -3,6 +3,7 @@ export interface Customer {
   firstName: string;
   lastName: string;
   email: string;
+  dateOfBirth: string;
   shippingAddresses?: Address;
   billingAddresses?: Address;
 }
