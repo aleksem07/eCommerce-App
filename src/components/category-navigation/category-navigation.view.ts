@@ -8,6 +8,7 @@ export default class CategoryNavigationView extends ViewBuilder {
   private linksContainer: HTMLDivElement;
   private nav: HTMLElement;
   private wrapper: HTMLElement;
+  private categoriesLists?: HTMLElement[] = [];
 
   constructor() {
     super();
@@ -15,7 +16,7 @@ export default class CategoryNavigationView extends ViewBuilder {
       classes: ["bg-body-tertiary", "navbar", "navbar-expand"],
     });
     this.container = this.createElement("div", {
-      classes: ["container"],
+      classes: ["container", "justify-content-start"],
     });
     this.wrapper = this.createElement("div", {
       classes: ["d-flex-column"],
@@ -24,7 +25,7 @@ export default class CategoryNavigationView extends ViewBuilder {
       classes: ["d-md-flex"],
     });
     const brandLink = this.createBrandLink();
-    this.container.append(brandLink);
+    this.nav.append(brandLink);
   }
 
   addChildrensCategories(childrens: Category[]) {
@@ -50,13 +51,19 @@ export default class CategoryNavigationView extends ViewBuilder {
   render(linksList: { element: HTMLElement; list: HTMLUListElement }[]) {
     linksList.map((category) => {
       this.linksContainer.append(category.element);
-      this.wrapper.append(category.list);
+      this.categoriesLists?.push(category.list);
+      console.log("55", this.categoriesLists);
+      // this.nav.append(category.list);
     });
 
     this.wrapper.prepend(this.linksContainer);
     this.container.append(this.wrapper);
+
     this.nav.append(this.container);
 
-    return this.nav;
+    const header = document.getElementsByTagName("header");
+
+    if (this.categoriesLists) header[0].after(this.nav, ...this.categoriesLists);
+    // return this.nav;
   }
 }

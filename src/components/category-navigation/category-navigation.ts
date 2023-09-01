@@ -39,10 +39,9 @@ export default class CategoryNavigationComponent {
     }
 
     if (this.parentList) {
+      this.view.render(this.parentList);
       // eslint-disable-next-line no-console
       console.log("cat nav 2");
-      const header = document.getElementsByTagName("header");
-      header[0].after(this.view.render(this.parentList));
       // header[0].after(this.view.render(this.parentList.map((category) => category.list)));
 
       if (this.categories?.children) {
