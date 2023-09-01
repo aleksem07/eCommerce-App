@@ -1,10 +1,10 @@
 import AuthService from "@Services/auth/auth";
 import ClientBuilderService from "@Services/client-builder/client-builder";
-// import eventBusService from "@Services/event-bus/event-bus";
+import eventBusService from "@Services/event-bus/event-bus";
 import { Category } from "./category.types";
 import { Category as CategoryResponse } from "@commercetools/platform-sdk";
-// import { HttpErrorType } from "@commercetools/sdk-client-v2";
-// import { Events } from "@Services/event-bus/event-bus.types";
+import { HttpErrorType } from "@commercetools/sdk-client-v2";
+import { Events } from "@Services/event-bus/event-bus.types";
 
 export default class CategoryService extends ClientBuilderService {
   private authService: AuthService;
@@ -41,8 +41,8 @@ export default class CategoryService extends ClientBuilderService {
         return { parent: parentCategories, children: childrenCategories };
       }
     } catch (error) {
-      // const httpError = error as HttpErrorType;
-      // eventBusService.publish(Events.errorOccurred, httpError);
+      const httpError = error as HttpErrorType;
+      eventBusService.publish(Events.errorOccurred, httpError);
     }
   }
 
@@ -66,8 +66,8 @@ export default class CategoryService extends ClientBuilderService {
         return category;
       }
     } catch (error) {
-      // const httpError = error as HttpErrorType;
-      // eventBusService.publish(Events.errorOccurred, httpError);
+      const httpError = error as HttpErrorType;
+      eventBusService.publish(Events.errorOccurred, httpError);
     }
   }
 
