@@ -4,8 +4,8 @@ import "./user-menu.scss";
 export default class UserMenuComponent {
   private view: UserMenuView;
 
-  constructor() {
-    this.view = new UserMenuView();
+  constructor(fullName: string, email: string) {
+    this.view = new UserMenuView(fullName, email);
   }
 
   init() {

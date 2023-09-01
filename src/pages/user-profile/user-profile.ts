@@ -8,46 +8,55 @@ import { Events } from "@Services/event-bus/event-bus.types";
 import { Routes } from "@Services/router/router.types";
 import { AUTH_TOKEN_LS } from "@Services/auth/auth.types";
 import CustomerService from "@Services/customer/customer";
+import { Customer } from "@Services/customer/customer.types";
 
 export default class UserProfilePage {
   private view: UserProfileView;
-  private userMenu: UserMenuComponent;
-  userData: UserDataComponent;
-  customer: CustomerService;
+  private userMenu!: UserMenuComponent;
+  private userData: UserDataComponent;
+  private customerService: CustomerService;
+  private customer?: Customer;
 
   constructor() {
     this.view = new UserProfileView();
-    this.userMenu = new UserMenuComponent();
     this.userData = new UserDataComponent();
-    this.customer = new CustomerService();
+    this.customerService = new CustomerService();
   }
 
   private async checkCustomerExists() {
     const token = localStorage.getItem(AUTH_TOKEN_LS);
 
     if (!token) {
-      RouterService.navigateTo(Routes.LOGIN);
-      eventBusService.publish(Events.showNotification, {
-        variant: NotificationVariant.info,
-        message: "Please login first",
-      });
+      this.redirectToLogin();
     } else {
-      const customer = await this.customer.getUserInfo();
+      const customer = await this.customerService.getUserInfo();
 
-      console.log(customer);
-
-      // if (customer) {
-      //   this.userData.init(customer);
-      // } else {
-      //   RouterService.navigateTo(Routes.NOT_FOUND);
-      // }
+      if (customer) {
+        this.customer = customer;
+      } else {
+        this.redirectToLogin();
+      }
     }
+  }
+
+  private redirectToLogin() {
+    RouterService.navigateTo(Routes.LOGIN);
+    eventBusService.publish(Events.showNotification, {
+      variant: NotificationVariant.info,
+      message: "Please login first",
+    });
   }
 
   async init() {
     await this.checkCustomerExists();
-    const userMenu = this.userMenu.init();
-    const userData = this.userData.init();
-    this.view.render(userMenu, userData);
+
+    if (this.customer) {
+      const fullName = `${this.customer.firstName} ${this.customer.lastName}`;
+      this.userMenu = new UserMenuComponent(fullName, this.customer.email);
+
+      const userMenu = this.userMenu.init();
+      const userData = this.userData.init();
+      this.view.render(userMenu, userData);
+    }
   }
 }

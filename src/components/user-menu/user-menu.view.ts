@@ -2,9 +2,13 @@ import { ViewBuilder } from "@Interfaces/view-builder";
 
 export default class UserMenuView extends ViewBuilder {
   listGroup: HTMLDivElement;
+  fullName: string;
+  email: string;
 
-  constructor() {
+  constructor(fullName: string, email: string) {
     super();
+    this.fullName = fullName;
+    this.email = email;
     this.listGroup = this.createListGroup();
   }
 
@@ -13,7 +17,7 @@ export default class UserMenuView extends ViewBuilder {
       classes: ["list-group"],
     });
 
-    const activeItem = this.createListGroupItem("List group item heading", "user@example.com");
+    const activeItem = this.createListGroupItem(this.fullName, this.email);
     const linkItem1 = this.createIconLinkItem("My profile", "bi-person", true);
     const linkItem2 = this.createIconLinkItem("Sign out", "bi-box-arrow-right");
 
