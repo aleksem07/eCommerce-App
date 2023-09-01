@@ -2,6 +2,7 @@ import ProductService from "@Services/product/product";
 import CatalogView from "./catalog.view";
 import ProductListComponent from "@Components/product-list/product-list";
 import FilterComponent from "@Components/filter/filter";
+import SortComponent from "@Components/sort/sort";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events, EventData } from "@Services/event-bus/event-bus.types";
 import ObjectGuardUtil from "@Utils/object-guard/object-guard";
@@ -12,6 +13,7 @@ export default class CatalogPage {
   private productService: ProductService;
   private productListComponent: ProductListComponent;
   private filter: FilterComponent;
+  private sort: SortComponent;
   private sizesFilter: string[] = [];
   private sizeVariantAttribute = "";
   private colorsFilter: string[] = [];
@@ -26,6 +28,7 @@ export default class CatalogPage {
     this.productService = new ProductService();
     this.productListComponent = new ProductListComponent();
     this.filter = new FilterComponent();
+    this.sort = new SortComponent();
     this.priceRange = {
       minPrice: "0",
       maxPrice: "*",
@@ -133,6 +136,7 @@ export default class CatalogPage {
   init() {
     this.resetDataFilter();
     this.view.displaySidebar(this.filter.init());
+    this.view.displayToolbar(this.sort.init());
     this.fetchProducts();
     this.view.render();
   }
