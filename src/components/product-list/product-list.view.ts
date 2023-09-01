@@ -12,7 +12,7 @@ export default class ProductListView extends ViewBuilder {
 
   private createColumn(element: HTMLElement) {
     const column = this.createElement("div", {
-      classes: ["col-12", "col-sm-6", "col-md-4", "col-lg-3"],
+      classes: ["col-12", "col-sm-6", "col-md-6", "col-lg-4"],
     });
     column.append(element);
 

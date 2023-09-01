@@ -3,6 +3,7 @@ import ClientBuilderService from "@Services/client-builder/client-builder";
 import {
   Price as PriceResponse,
   Product as ProductResponse,
+  ProductProjection as ProductProjectionResponse,
   Image as ImageResponse,
   ProductProjection,
 } from "@commercetools/platform-sdk";
@@ -115,11 +116,18 @@ export default class ProductService extends ClientBuilderService {
   }
 
   private mapProductResponseToProduct(productResponse: ProductResponse): Product {
+    const attributes = productResponse.masterData.current.masterVariant.attributes;
+
+    const size = attributes?.find((attribute) => attribute.name === "size")?.value || "";
+    const color = attributes?.find((attribute) => attribute.name === "color")?.value?.key || "";
+
     return {
       id: productResponse.id,
       title: productResponse.masterData.current.name.en,
       description: productResponse.masterData.current.description?.en || "product description",
       images: this.mapProductImages(productResponse.masterData.current.masterVariant.images),
+      color,
+      size,
       price: this.getPrice(productResponse.masterData.current.masterVariant.prices),
       discountedPrice: this.getDiscountedPrice(
         productResponse.masterData.current.masterVariant.prices
@@ -157,5 +165,68 @@ export default class ProductService extends ClientBuilderService {
 
   private getPriceValue(centAmount?: number): number {
     return centAmount ? Number((centAmount / 100).toFixed(2)) : 0;
+  }
+
+  async filterProducts(
+    size: string,
+    color: string,
+    priceRange: { minPrice: string; maxPrice: string }
+  ) {
+    try {
+      const token = await this.authService.retrieveToken();
+
+      if (token) {
+        const { body } = await this.apiRoot
+          .withProjectKey({ projectKey: this.projectKey })
+          .productProjections()
+          .search()
+          .get({
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            queryArgs: {
+              filter: [
+                size,
+                color,
+                `variants.price.centAmount:range(${priceRange.minPrice} to ${priceRange.maxPrice})`,
+              ],
+              sort: ["createdAt asc"],
+            },
+          })
+          .execute();
+
+        return body.results.map(this.mapProductProjectionResponseToProduct.bind(this));
+      }
+    } catch (error) {
+      const httpError = error as HttpErrorType;
+      eventBusService.publish(Events.errorOccurred, httpError);
+    }
+  }
+
+  private mapProductProjectionResponseToProduct(
+    productProjectionResponse: ProductProjectionResponse
+  ) {
+    return {
+      id: productProjectionResponse.id,
+      title: productProjectionResponse.name.en,
+      description: productProjectionResponse.description?.en || "product description",
+      images: this.mapProductImages(productProjectionResponse.masterVariant.images),
+      price: this.getPrice(productProjectionResponse.masterVariant.prices),
+      discountedPrice: this.getDiscountedPrice(productProjectionResponse.masterVariant.prices),
+    };
+  }
+
+  public generateFilters(
+    size: string[],
+    color: string[]
+  ): { sizeFilter: string; colorFilter: string } {
+    const formatArray = (arr: string[]) => arr.map((item) => `"${item.trim()}"`).join(", ");
+
+    const sizeFilter =
+      size && size.length > 0 ? `variants.attributes.size:${formatArray(size)}` : "";
+    const colorFilter =
+      color && color.length > 0 ? `variants.attributes.color.key:${formatArray(color)}` : "";
+
+    return { sizeFilter, colorFilter };
   }
 }
