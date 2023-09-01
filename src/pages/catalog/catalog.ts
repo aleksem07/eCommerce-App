@@ -135,8 +135,8 @@ export default class CatalogPage {
 
   init() {
     this.resetDataFilter();
-    this.view.displaySidebar(this.filter.init());
     this.view.displayToolbar(this.sort.init());
+    this.view.displaySidebar(this.filter.init());
     this.fetchProducts();
     this.view.render();
   }

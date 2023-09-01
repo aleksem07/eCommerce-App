@@ -38,7 +38,7 @@ export default class SortComponent {
         { label: "16", value: "16" },
         { label: "All", value: "32" },
       ],
-      className: ["d-flex", "col-md-2", "h6"],
+      className: ["d-flex", "col-md-3", "h6", "text-nowrap"],
     });
   }
 
@@ -47,7 +47,6 @@ export default class SortComponent {
       this.sortByInput.init(),
       this.sortByInput.init(),
       this.showInput.init(),
-      this.view.pagination,
     ];
 
     return this.view.render(toolbarElements);

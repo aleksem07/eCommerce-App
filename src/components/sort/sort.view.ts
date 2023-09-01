@@ -8,7 +8,7 @@ export default class SortView extends ViewBuilder {
   constructor() {
     super();
     this.element = this.createElement("div", {
-      classes: ["d-flex", "align-items-center", "justify-content-between", "mb-4"],
+      classes: ["d-flex", "align-items-center", "justify-content-start", "mb-4"],
     });
     this.arrowRightIcon = this.createPaginationIcon("arrow-right");
     this.pagination = this.createElement("div", {
@@ -28,7 +28,7 @@ export default class SortView extends ViewBuilder {
 
   render(toolbarElements: HTMLElement[]) {
     this.pagination.append(this.arrowRightIcon);
-    this.element.append(this.pagination, ...toolbarElements);
+    this.element.append(...toolbarElements, this.pagination);
 
     return this.element;
   }
