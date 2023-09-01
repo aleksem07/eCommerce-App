@@ -48,14 +48,15 @@ export default class UserAddressComponent {
       type: "text",
       value: address.postalCode,
     });
-    this.isDefaultAddress = this.createCheckBox();
+    this.isDefaultAddress = this.createCheckBox(address.isDefaultAddress);
   }
 
-  createCheckBox() {
+  createCheckBox(isChecked: boolean) {
     return new FormCheckComponent({
       formName: this.formName,
       inputName: "is-default-address",
       labelText: "Default Address",
+      checked: isChecked,
     });
   }
 

@@ -7,6 +7,7 @@ describe("UserAddressComponent", () => {
       city: "New York",
       streetName: "123 Main St",
       postalCode: "12345",
+      isDefaultAddress: true,
     });
     expect(instance).toBeInstanceOf(UserAddressComponent);
   });

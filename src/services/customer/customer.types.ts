@@ -13,4 +13,5 @@ export interface Address {
   city: string;
   streetName: string;
   postalCode: string;
+  isDefaultAddress: boolean;
 }

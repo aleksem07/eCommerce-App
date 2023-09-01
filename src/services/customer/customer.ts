@@ -58,45 +58,55 @@ export default class CustomerService extends ClientBuilderService {
   }
 
   private handleCustomerAddresses(customerResponse: CustomerResponse, customer: Customer) {
-    const isBillingAddressEqualToShippingAddress =
-      customerResponse.defaultBillingAddressId === customerResponse.defaultShippingAddressId;
+    const isBillingAddressEqualsShippingAddress =
+      customerResponse.billingAddressIds?.some(
+        (id) => customerResponse.shippingAddressIds?.includes(id)
+      ) || false;
 
-    if (isBillingAddressEqualToShippingAddress) {
-      const address = this.findAddressById(
-        customerResponse.addresses,
-        customerResponse.shippingAddressIds?.[0] || customerResponse.defaultShippingAddressId
+    const shippingAddress = this.findAddressById(
+      customerResponse.addresses,
+      customerResponse.shippingAddressIds?.[0] || customerResponse.defaultShippingAddressId
+    );
+
+    const isShippingAddressDefault = this.findAddressById(
+      customerResponse.addresses,
+      customerResponse.defaultShippingAddressId
+    );
+
+    if (shippingAddress) {
+      customer.shippingAddress = this.mapAddressResponseToAddress(
+        shippingAddress,
+        !!isShippingAddressDefault
       );
+    }
+    const billingAddress = this.findAddressById(
+      customerResponse.addresses,
+      customerResponse.billingAddressIds?.[0] || customerResponse.defaultBillingAddressId
+    );
 
-      if (address) {
-        customer.shippingAddress = this.mapAddressResponseToAddress(address);
-      }
-    } else {
-      const billingAddress = this.findAddressById(
-        customerResponse.addresses,
-        customerResponse.billingAddressIds?.[0] || customerResponse.defaultBillingAddressId
+    const isBillingAddressDefault = this.findAddressById(
+      customerResponse.addresses,
+      customerResponse.defaultBillingAddressId
+    );
+
+    if (billingAddress && !isBillingAddressEqualsShippingAddress) {
+      customer.billingAddress = this.mapAddressResponseToAddress(
+        billingAddress,
+        !!isBillingAddressDefault
       );
-
-      if (billingAddress) {
-        customer.billingAddress = this.mapAddressResponseToAddress(billingAddress);
-      }
-
-      const shippingAddress = this.findAddressById(
-        customerResponse.addresses,
-        customerResponse.shippingAddressIds?.[0] || customerResponse.defaultShippingAddressId
-      );
-
-      if (shippingAddress) {
-        customer.shippingAddress = this.mapAddressResponseToAddress(shippingAddress);
-      }
     }
   }
 
-  private mapAddressResponseToAddress(addressResponse: AddressResponse): Address {
+  private mapAddressResponseToAddress(
+    addressResponse: AddressResponse,
+    isDefaultAddress = false
+  ): Address {
     return {
       country: addressResponse.country,
       city: addressResponse.city || "",
       streetName: addressResponse.streetName || "",
       postalCode: addressResponse.postalCode || "",
+      isDefaultAddress,
     };
   }
 

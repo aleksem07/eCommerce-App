@@ -9,7 +9,7 @@ export default class FormCheckView extends ViewBuilder {
   checkboxWrapper: HTMLDivElement;
   checkboxLabel: HTMLLabelElement;
 
-  constructor({ labelText, formName, inputName }: FormCheckProps) {
+  constructor({ labelText, formName, inputName, checked = false }: FormCheckProps) {
     super();
     this.labelText = labelText;
     this.formName = formName;
@@ -25,6 +25,7 @@ export default class FormCheckView extends ViewBuilder {
       classes: ["form-check-input"],
     });
     this.checkbox.setAttribute("type", "checkbox");
+    this.checkbox.checked = checked;
 
     this.checkboxLabel = this.createElement("label", {
       id: `${inputName}-checkbox-label`,
