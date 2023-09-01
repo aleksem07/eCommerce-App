@@ -1,13 +1,13 @@
 import CategoryListComponent from "@Components/category-list/category-list";
 import CategoryNavigationView from "./category-navigation.view";
-import CategoriesService from "@Services/categories/categories";
+import CategoryService from "@Services/category/category";
 import { Category } from "@commercetools/platform-sdk";
 
 export default class CategoryNavigationComponent {
   private view: CategoryNavigationView;
   private categoriesList: CategoryListComponent;
   // private childrenCategoriesList: CategoryListComponent;
-  categoriesService: CategoriesService;
+  categoryService: CategoryService;
   categories?: { parent: Category[] | undefined; children: Category[] | undefined };
   private parentList?: { element: HTMLElement; list: HTMLUListElement }[];
   private childrenList?: HTMLElement;
@@ -16,7 +16,7 @@ export default class CategoryNavigationComponent {
     this.categoriesList = new CategoryListComponent(this.collapseShowHandler.bind(this));
     // this.childrenCategoriesList = new CategoryListComponent();
     this.view = new CategoryNavigationView();
-    this.categoriesService = new CategoriesService();
+    this.categoryService = new CategoryService();
   }
 
   collapseShowHandler(e: Event) {
@@ -28,7 +28,7 @@ export default class CategoryNavigationComponent {
   }
 
   async init() {
-    this.categories = await this.categoriesService.getAll();
+    this.categories = await this.categoryService.getAll();
     // eslint-disable-next-line no-console
     console.log("cat nav 1", this.categories);
 
