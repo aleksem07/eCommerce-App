@@ -31,6 +31,16 @@ export class EventBusService {
       eventCallback.forEach((callback) => callback(data));
     }
   }
+
+  unsubscribe(event: Events, callback: EventCallback) {
+    const eventCallback = this.events[event];
+
+    if (eventCallback) {
+      this.events[event] = eventCallback.filter((cb) => {
+        return cb !== callback;
+      });
+    }
+  }
 }
 
 const eventBusService = EventBusService.getInstance();

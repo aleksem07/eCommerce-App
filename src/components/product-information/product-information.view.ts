@@ -36,7 +36,7 @@ export default class ProductInformationView extends ViewBuilder {
 
   private createImageWrapperElement(): HTMLDivElement {
     const imageWrapperElement = this.createElement<HTMLDivElement>("div", {
-      classes: ["col-12", "col-lg-7"],
+      classes: ["col-12", "col-sm-6"],
     });
 
     return imageWrapperElement;
@@ -44,7 +44,7 @@ export default class ProductInformationView extends ViewBuilder {
 
   private createDescriptionWrapperElement(): HTMLDivElement {
     const descriptionWrapperElement = this.createElement<HTMLDivElement>("div", {
-      classes: ["col-12", "col-lg-5"],
+      classes: ["col-12", "col-sm-6"],
     });
 
     return descriptionWrapperElement;
