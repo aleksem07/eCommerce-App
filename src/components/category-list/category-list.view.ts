@@ -19,12 +19,6 @@ export default class CategoryListView extends ViewBuilder {
     });
   }
 
-  changeListener(handler?: (e: Event) => void) {
-    if (handler) {
-      this.dropDownButton.addEventListener("click", handler);
-    }
-  }
-
   render(element: HTMLElement, parentId: string) {
     this.dropDownButton.setAttribute("data-bs-target", `#${parentId}`);
     this.list.id = parentId;
