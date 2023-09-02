@@ -157,7 +157,10 @@ export default class ProductService extends ClientBuilderService {
       }
     } catch (error) {
       const httpError = error as HttpErrorType;
-      eventBusService.publish(Events.errorOccurred, httpError);
+      eventBusService.publish(Events.showNotification, {
+        variant: NotificationVariant.danger,
+        message: httpError.message,
+      });
     }
   }
 
