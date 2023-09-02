@@ -8,7 +8,6 @@ export default class CategoryNavigationView extends ViewBuilder {
   private linksContainer: HTMLDivElement;
   private nav: HTMLElement;
   private wrapper: HTMLElement;
-  private categoriesLists?: HTMLElement[] = [];
 
   constructor() {
     super();
@@ -53,7 +52,6 @@ export default class CategoryNavigationView extends ViewBuilder {
   render(linksList: HTMLElement[]) {
     linksList.map((category) => {
       this.linksContainer.append(category);
-      // this.categoriesLists?.push(category.list);
     });
 
     this.wrapper.prepend(this.linksContainer);
@@ -63,8 +61,6 @@ export default class CategoryNavigationView extends ViewBuilder {
 
     const header = document.getElementsByTagName("header");
 
-    if (this.categoriesLists) {
-      header[0].after(this.nav, ...this.categoriesLists);
-    }
+    header[0].after(this.nav);
   }
 }
