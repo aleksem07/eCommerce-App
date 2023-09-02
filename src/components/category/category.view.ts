@@ -17,8 +17,8 @@ export default class CategoryView extends ViewBuilder {
     this.name = name;
   }
 
-  private createCategory(id: string, name: string, parentCard: boolean) {
-    if (parentCard) {
+  private createCategory(id: string, name: string, isParentCard: boolean) {
+    if (isParentCard) {
       this.card = this.createElement<HTMLLinkElement>("a", {
         classes: ["nav-link", "px-2"],
       });
@@ -35,8 +35,8 @@ export default class CategoryView extends ViewBuilder {
     return this.card;
   }
 
-  render(parentCard: boolean) {
-    this.card = this.createCategory(this.id, this.name, parentCard);
+  render(isParentCard: boolean) {
+    this.card = this.createCategory(this.id, this.name, isParentCard);
 
     return this.card;
   }
