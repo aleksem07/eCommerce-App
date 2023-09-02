@@ -3,7 +3,6 @@ import ClientBuilderService from "@Services/client-builder/client-builder";
 import {
   Price as PriceResponse,
   Product as ProductResponse,
-  ProductProjection as ProductProjectionResponse,
   Image as ImageResponse,
   ProductProjection,
 } from "@commercetools/platform-sdk";
