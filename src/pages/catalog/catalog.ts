@@ -16,6 +16,7 @@ export default class CatalogPage {
   private sort: SortComponent;
   private sizesFilter: string[] = [];
   private colorsFilter: string[] = [];
+  private sortValue = "";
   private priceRange: {
     minPrice: string;
     maxPrice: string;
@@ -46,10 +47,15 @@ export default class CatalogPage {
     );
   }
 
-  private handleResetFiltersClick() {
+  private async handleResetFiltersClick() {
     this.resetPriceRange();
     this.resetDataFilter();
-    this.fetchProducts();
+    const { sizeFilter, colorFilter } = this.productService.generateFilters(
+      this.sizesFilter,
+      this.colorsFilter
+    );
+    await this.fetchProducts();
+    this.filterProducts(sizeFilter, colorFilter, this.sortValue);
   }
 
   private resetPriceRange() {
@@ -85,7 +91,7 @@ export default class CatalogPage {
       this.sizesFilter,
       this.colorsFilter
     );
-    this.filterProducts(sizeFilter, colorFilter);
+    this.filterProducts(sizeFilter, colorFilter, this.sortValue);
   }
 
   private handlePriceChange(data?: EventData) {
@@ -122,7 +128,7 @@ export default class CatalogPage {
     };
   }
 
-  private async filterProducts(size: string, color: string, sort?: string) {
+  private async filterProducts(size: string, color: string, sort: string) {
     const priceRange = this.getCurrentPriceRange();
     const filteredProducts = await this.productService.filterProducts(
       { size, color },
@@ -141,6 +147,7 @@ export default class CatalogPage {
 
     if (hasSelectedValue) {
       const selectSort = data.selectValue;
+      this.sortValue = selectSort;
       const { sizeFilter, colorFilter } = this.productService.generateFilters(
         this.sizesFilter,
         this.colorsFilter

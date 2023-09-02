@@ -128,7 +128,7 @@ export default class ProductService extends ClientBuilderService {
   async filterProducts(
     filters: { size: string; color: string },
     priceRange: { minPrice: string; maxPrice: string },
-    sort?: string
+    sort: string
   ) {
     try {
       const token = await this.authService.retrieveToken();
