@@ -34,7 +34,9 @@ export default class CategoryNavigationView extends ViewBuilder {
 
       const parent = document.getElementById(category.ancestors[0].id);
 
-      if (parent) parent.append(categoryLink);
+      if (parent) {
+        parent.append(categoryLink);
+      }
     });
   }
 
@@ -61,6 +63,8 @@ export default class CategoryNavigationView extends ViewBuilder {
 
     const header = document.getElementsByTagName("header");
 
-    if (this.categoriesLists) header[0].after(this.nav, ...this.categoriesLists);
+    if (this.categoriesLists) {
+      header[0].after(this.nav, ...this.categoriesLists);
+    }
   }
 }

@@ -11,7 +11,9 @@ export default class CategoryListComponent {
   }
 
   changeHandler(e: Event, onChange?: (e: Event) => void) {
-    if (onChange) onChange(e);
+    if (onChange) {
+      onChange(e);
+    }
   }
 
   init(category: Category) {

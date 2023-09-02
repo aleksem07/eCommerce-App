@@ -6,8 +6,8 @@ import { Category } from "@Services/category/category.types";
 export default class CategoryNavigationComponent {
   private view: CategoryNavigationView;
   private categoriesList: CategoryListComponent;
-  categoryService: CategoryService;
-  categories?: { parent: Category[] | undefined; children: Category[] | undefined };
+  private categoryService: CategoryService;
+  private categories?: { parent: Category[] | undefined; children: Category[] | undefined };
   private parentList?: { element: HTMLElement; list: HTMLUListElement }[];
 
   constructor() {
@@ -19,7 +19,9 @@ export default class CategoryNavigationComponent {
   collapseShowHandler() {
     const list = document.querySelector(".show");
 
-    if (list) list.classList.remove("show");
+    if (list) {
+      list.classList.remove("show");
+    }
   }
 
   async init() {

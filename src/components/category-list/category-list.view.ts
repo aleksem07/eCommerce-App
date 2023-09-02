@@ -2,8 +2,8 @@ import { ViewBuilder } from "@Interfaces/view-builder";
 
 export default class CategoryListView extends ViewBuilder {
   private element: HTMLElement;
-  List: HTMLUListElement;
-  dropDownButton: HTMLButtonElement;
+  private list: HTMLUListElement;
+  private dropDownButton: HTMLButtonElement;
 
   constructor() {
     super();
@@ -14,20 +14,22 @@ export default class CategoryListView extends ViewBuilder {
       classes: ["dropdown-toggle", "dropdown-toggle-split", "nav-link", "px-2"],
     });
     this.dropDownButton.setAttribute("data-bs-toggle", "collapse");
-    this.List = this.createElement("ul", {
+    this.list = this.createElement("ul", {
       classes: ["collapse", "container"],
     });
   }
 
   changeListener(handler?: (e: Event) => void) {
-    if (handler) this.dropDownButton.addEventListener("click", handler);
+    if (handler) {
+      this.dropDownButton.addEventListener("click", handler);
+    }
   }
 
   render(element: HTMLElement, parentId: string) {
     this.dropDownButton.setAttribute("data-bs-target", `#${parentId}`);
-    this.List.id = parentId;
+    this.list.id = parentId;
     this.element.append(element, this.dropDownButton);
 
-    return { element: this.element, list: this.List };
+    return { element: this.element, list: this.list };
   }
 }

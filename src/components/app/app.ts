@@ -21,7 +21,7 @@ export default class AppComponent {
   private router: RouterService;
   private header: HeaderComponent;
   private notification: NotificationComponent;
-  private categoryNavigaton: CategoryNavigationComponent;
+  private categoryNavigation: CategoryNavigationComponent;
 
   constructor() {
     this.view = new AppView();
@@ -29,8 +29,8 @@ export default class AppComponent {
     this.header = new HeaderComponent();
     this.header.init();
     this.notification = new NotificationComponent();
-    this.categoryNavigaton = new CategoryNavigationComponent();
-    this.categoryNavigaton.init();
+    this.categoryNavigation = new CategoryNavigationComponent();
+    this.categoryNavigation.init();
 
     this.router = RouterService.getInstance(this.view.element, {
       [Routes.MAIN]: new MainPage(),
