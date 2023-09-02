@@ -6,7 +6,7 @@ export default class SortView extends ViewBuilder {
   constructor() {
     super();
     this.element = this.createElement("div", {
-      classes: ["d-flex", "justify-content-start", "mb-4"],
+      classes: ["mb-4"],
     });
   }
 

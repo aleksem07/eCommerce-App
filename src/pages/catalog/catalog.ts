@@ -15,9 +15,7 @@ export default class CatalogPage {
   private filter: FilterComponent;
   private sort: SortComponent;
   private sizesFilter: string[] = [];
-  private sizeVariantAttribute = "";
   private colorsFilter: string[] = [];
-  private colorVariantAttribute = "";
   private priceRange: {
     minPrice: string;
     maxPrice: string;
@@ -37,6 +35,7 @@ export default class CatalogPage {
     eventBusService.subscribe(Events.resetFilters, this.handleResetFiltersClick.bind(this));
     eventBusService.subscribe(Events.minPriceFilterValue, this.handlePriceChange.bind(this));
     eventBusService.subscribe(Events.maxPriceFilterValue, this.handlePriceChange.bind(this));
+    eventBusService.subscribe(Events.sortProducts, this.handleSortProducts.bind(this));
     eventBusService.subscribe(
       Events.filterBySize,
       this.handleFilterEvent(FilterAttributeType.size, this.sizesFilter)
@@ -123,13 +122,31 @@ export default class CatalogPage {
     };
   }
 
-  private async filterProducts(size: string, color: string) {
+  private async filterProducts(size: string, color: string, sort?: string) {
     const priceRange = this.getCurrentPriceRange();
-    const filteredProducts = await this.productService.filterProducts(size, color, priceRange);
+    const filteredProducts = await this.productService.filterProducts(
+      { size, color },
+      priceRange,
+      sort
+    );
 
     if (filteredProducts) {
       const productListElement = this.productListComponent.init(filteredProducts);
       this.view.displayProducts(productListElement);
+    }
+  }
+
+  private handleSortProducts(data?: EventData) {
+    const hasSelectedValue = ObjectGuardUtil.hasProp<string>(data, "selectValue");
+
+    if (hasSelectedValue) {
+      const selectSort = data.selectValue;
+      const { sizeFilter, colorFilter } = this.productService.generateFilters(
+        this.sizesFilter,
+        this.colorsFilter
+      );
+
+      this.filterProducts(sizeFilter, colorFilter, selectSort.toString());
     }
   }
 

@@ -126,9 +126,9 @@ export default class ProductService extends ClientBuilderService {
   }
 
   async filterProducts(
-    size: string,
-    color: string,
-    priceRange: { minPrice: string; maxPrice: string }
+    filters: { size: string; color: string },
+    priceRange: { minPrice: string; maxPrice: string },
+    sort?: string
   ) {
     try {
       const token = await this.authService.retrieveToken();
@@ -144,11 +144,11 @@ export default class ProductService extends ClientBuilderService {
             },
             queryArgs: {
               filter: [
-                size,
-                color,
+                filters.size,
+                filters.color,
                 `variants.price.centAmount:range(${priceRange.minPrice} to ${priceRange.maxPrice})`,
               ],
-              sort: ["createdAt asc"],
+              sort: sort ? [sort] : ["createdAt asc"],
             },
           })
           .execute();
@@ -179,12 +179,13 @@ export default class ProductService extends ClientBuilderService {
     color: string[]
   ): { sizeFilter: string; colorFilter: string } {
     const formatArray = (arr: string[]) => arr.map((item) => `"${item.trim()}"`).join(", ");
+    const filters = { sizeFilter: "", colorFilter: "" };
 
-    const sizeFilter =
+    filters.sizeFilter =
       size && size.length > 0 ? `variants.attributes.size:${formatArray(size)}` : "";
-    const colorFilter =
+    filters.colorFilter =
       color && color.length > 0 ? `variants.attributes.color.key:${formatArray(color)}` : "";
 
-    return { sizeFilter, colorFilter };
+    return filters;
   }
 }
