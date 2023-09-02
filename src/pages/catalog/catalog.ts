@@ -120,6 +120,9 @@ export default class CatalogPage {
       if (products) {
         const productListElement = this.productListComponent.init(products);
         this.view.displayProducts(productListElement);
+        const colors = products.map((product) => product.color);
+        const sizes = products.map((product) => product.size);
+        eventBusService.publish(Events.fetchProductsSuccessfully, { colors, sizes });
       } else {
         RouterService.navigateTo(Routes.NOT_FOUND);
       }

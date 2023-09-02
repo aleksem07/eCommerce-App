@@ -105,6 +105,11 @@ export default class ProductService extends ClientBuilderService {
   }
 
   private mapProductProjectionToProduct(productProjection: ProductProjection): Product {
+    const attributes = productProjection.masterVariant.attributes;
+
+    const size = attributes?.find((attribute) => attribute.name === "size")?.value || "";
+    const color = attributes?.find((attribute) => attribute.name === "color")?.value?.key || "";
+
     return {
       id: productProjection.id,
       title: productProjection.name.en,
@@ -112,6 +117,8 @@ export default class ProductService extends ClientBuilderService {
       images: this.mapProductImages(productProjection.masterVariant.images),
       price: this.getPrice(productProjection.masterVariant.prices),
       discountedPrice: this.getDiscountedPrice(productProjection.masterVariant.prices),
+      color,
+      size,
     };
   }
 
@@ -195,25 +202,12 @@ export default class ProductService extends ClientBuilderService {
           })
           .execute();
 
-        return body.results.map(this.mapProductProjectionResponseToProduct.bind(this));
+        return body.results.map(this.mapProductProjectionToProduct.bind(this));
       }
     } catch (error) {
       const httpError = error as HttpErrorType;
       eventBusService.publish(Events.errorOccurred, httpError);
     }
-  }
-
-  private mapProductProjectionResponseToProduct(
-    productProjectionResponse: ProductProjectionResponse
-  ) {
-    return {
-      id: productProjectionResponse.id,
-      title: productProjectionResponse.name.en,
-      description: productProjectionResponse.description?.en || "product description",
-      images: this.mapProductImages(productProjectionResponse.masterVariant.images),
-      price: this.getPrice(productProjectionResponse.masterVariant.prices),
-      discountedPrice: this.getDiscountedPrice(productProjectionResponse.masterVariant.prices),
-    };
   }
 
   public generateFilters(
