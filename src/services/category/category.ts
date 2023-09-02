@@ -5,6 +5,7 @@ import { Category } from "./category.types";
 import { Category as CategoryResponse } from "@commercetools/platform-sdk";
 import { HttpErrorType } from "@commercetools/sdk-client-v2";
 import { Events } from "@Services/event-bus/event-bus.types";
+import { NotificationVariant } from "@Components/notification/notification.types";
 
 export default class CategoryService extends ClientBuilderService {
   private authService: AuthService;
@@ -42,7 +43,10 @@ export default class CategoryService extends ClientBuilderService {
       }
     } catch (error) {
       const httpError = error as HttpErrorType;
-      eventBusService.publish(Events.errorOccurred, httpError);
+      eventBusService.publish(Events.showNotification, {
+        variant: NotificationVariant.danger,
+        message: httpError.message,
+      });
     }
   }
 
@@ -61,9 +65,8 @@ export default class CategoryService extends ClientBuilderService {
             },
           })
           .execute();
-        const category: Category = this.mapCategoryResponseToCategory(body);
 
-        return category;
+        return this.mapCategoryResponseToCategory(body);
       }
     } catch (error) {
       const httpError = error as HttpErrorType;

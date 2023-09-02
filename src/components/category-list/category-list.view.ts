@@ -8,14 +8,14 @@ export default class CategoryListView extends ViewBuilder {
   constructor() {
     super();
     this.element = this.createElement("div", {
-      classes: ["d-flex", "ml-2"],
+      classes: ["btn-group"],
     });
     this.dropDownButton = this.createElement("button", {
       classes: ["dropdown-toggle", "dropdown-toggle-split", "nav-link", "px-2"],
     });
-    this.dropDownButton.setAttribute("data-bs-toggle", "collapse");
+    this.dropDownButton.setAttribute("data-bs-toggle", "dropdown");
     this.list = this.createElement("ul", {
-      classes: ["collapse", "container"],
+      classes: ["dropdown-menu"],
     });
   }
 
@@ -28,8 +28,8 @@ export default class CategoryListView extends ViewBuilder {
   render(element: HTMLElement, parentId: string) {
     this.dropDownButton.setAttribute("data-bs-target", `#${parentId}`);
     this.list.id = parentId;
-    this.element.append(element, this.dropDownButton);
+    this.element.append(element, this.dropDownButton, this.list);
 
-    return { element: this.element, list: this.list };
+    return this.element;
   }
 }

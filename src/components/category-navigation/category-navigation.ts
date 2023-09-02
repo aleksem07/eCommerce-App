@@ -1,27 +1,17 @@
 import CategoryListComponent from "@Components/category-list/category-list";
 import CategoryNavigationView from "./category-navigation.view";
 import CategoryService from "@Services/category/category";
-import { Category } from "@Services/category/category.types";
+import { CategoryHierarchy } from "./category-navigation.types";
 
 export default class CategoryNavigationComponent {
   private view: CategoryNavigationView;
-  private categoriesList: CategoryListComponent;
   private categoryService: CategoryService;
-  private categories?: { parent: Category[] | undefined; children: Category[] | undefined };
-  private parentList?: { element: HTMLElement; list: HTMLUListElement }[];
+  private categories?: CategoryHierarchy;
+  private parentList?: HTMLElement[];
 
   constructor() {
-    this.categoriesList = new CategoryListComponent(this.collapseShowHandler.bind(this));
     this.view = new CategoryNavigationView();
     this.categoryService = new CategoryService();
-  }
-
-  collapseShowHandler() {
-    const list = document.querySelector(".show");
-
-    if (list) {
-      list.classList.remove("show");
-    }
   }
 
   async init() {
@@ -29,7 +19,7 @@ export default class CategoryNavigationComponent {
 
     if (this.categories?.parent) {
       this.parentList = this.categories.parent.map((category) => {
-        return new CategoryListComponent(this.collapseShowHandler.bind(this)).init(category);
+        return new CategoryListComponent().init(category);
       });
     }
 

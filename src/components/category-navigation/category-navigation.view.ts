@@ -50,10 +50,10 @@ export default class CategoryNavigationView extends ViewBuilder {
     return link;
   }
 
-  render(linksList: { element: HTMLElement; list: HTMLUListElement }[]) {
+  render(linksList: HTMLElement[]) {
     linksList.map((category) => {
-      this.linksContainer.append(category.element);
-      this.categoriesLists?.push(category.list);
+      this.linksContainer.append(category);
+      // this.categoriesLists?.push(category.list);
     });
 
     this.wrapper.prepend(this.linksContainer);

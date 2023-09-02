@@ -8,7 +8,7 @@ import ObjectGuardUtil from "@Utils/object-guard/object-guard";
 import { FilterAttributeType } from "./catalog.types";
 import RouterService from "@Services/router/router";
 import { Routes } from "@Services/router/router.types";
-// import { Product } from "@commercetools/platform-sdk";
+import { NotificationVariant } from "@Components/notification/notification.types";
 
 export default class CatalogPage {
   private view: CatalogView;
@@ -16,17 +16,13 @@ export default class CatalogPage {
   private productListComponent: ProductListComponent;
   private filter: FilterComponent;
   private sizesFilter: string[] = [];
-  private sizeVariantAttribute = "";
   private colorsFilter: string[] = [];
-  private colorVariantAttribute = "";
   private priceRange: {
     minPrice: string;
     maxPrice: string;
   };
 
   private id?: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  products: any;
 
   constructor() {
     this.view = new CatalogView();
@@ -108,14 +104,16 @@ export default class CatalogPage {
     this.sendFiltersToProductService();
   }
 
-  private async checkProductExists() {
+  private async checkCategoryExists() {
     const [, ...rest] = window.location.href.split("-");
     this.id = rest.join("-");
-    // eslint-disable-next-line no-console
-    console.log("id", this.id);
 
     if (!this.id) {
-      this.fetchProducts();
+      RouterService.navigateTo(Routes.NOT_FOUND);
+      eventBusService.publish(Events.showNotification, {
+        variant: NotificationVariant.info,
+        message: "Category not found",
+      });
     } else {
       const products = await this.productService.getProductsByCategory(this.id);
 
@@ -160,7 +158,7 @@ export default class CatalogPage {
   init() {
     this.resetDataFilter();
     this.view.displaySidebar(this.filter.init());
-    this.checkProductExists();
+    this.checkCategoryExists();
     this.view.render();
   }
 }

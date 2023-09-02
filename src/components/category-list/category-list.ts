@@ -5,15 +5,8 @@ import CategoryComponent from "@Components/category/category";
 export default class CategoryListComponent {
   private view: CategoryListView;
   private categoryLink?: HTMLElement;
-  constructor(onChange?: (e: Event) => void) {
+  constructor() {
     this.view = new CategoryListView();
-    this.view.changeListener((e: Event) => this.changeHandler(e, onChange));
-  }
-
-  changeHandler(e: Event, onChange?: (e: Event) => void) {
-    if (onChange) {
-      onChange(e);
-    }
   }
 
   init(category: Category) {
