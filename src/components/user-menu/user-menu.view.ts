@@ -6,14 +6,14 @@ export default class UserMenuView extends ViewBuilder {
   private email: string;
 
   private linkProfile: HTMLButtonElement;
-  private signOut: HTMLButtonElement;
+  private logout: HTMLButtonElement;
 
   constructor(fullName: string, email: string) {
     super();
     this.fullName = fullName;
     this.email = email;
     this.linkProfile = this.createIconLinkItem("My profile", "bi-person", true);
-    this.signOut = this.createIconLinkItem("Sign out", "bi-box-arrow-right");
+    this.logout = this.createIconLinkItem("Logout", "bi-box-arrow-right");
     this.listGroup = this.createListGroup();
   }
 
@@ -24,7 +24,7 @@ export default class UserMenuView extends ViewBuilder {
 
     const activeItem = this.createListGroupItem(this.fullName, this.email);
 
-    listGroup.append(activeItem, this.linkProfile, this.signOut);
+    listGroup.append(activeItem, this.linkProfile, this.logout);
 
     return listGroup;
   }
@@ -69,7 +69,7 @@ export default class UserMenuView extends ViewBuilder {
   }
 
   signOutClickListener(handler: () => void) {
-    this.signOut.addEventListener("click", () => {
+    this.logout.addEventListener("click", () => {
       handler();
     });
   }

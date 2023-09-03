@@ -3,6 +3,8 @@ import "./user-menu.scss";
 import { AUTH_TOKEN_LS, USERNAME_LS } from "@Services/auth/auth.types";
 import RouterService from "@Services/router/router";
 import { Routes } from "@Services/router/router.types";
+import eventBusService from "@Services/event-bus/event-bus";
+import { Events } from "@Services/event-bus/event-bus.types";
 
 export default class UserMenuComponent {
   private view: UserMenuView;
@@ -16,6 +18,7 @@ export default class UserMenuComponent {
     localStorage.removeItem(AUTH_TOKEN_LS);
     localStorage.removeItem(USERNAME_LS);
     RouterService.navigateTo(Routes.LOGIN);
+    eventBusService.publish(Events.logoutLinkClicked);
   }
 
   init() {

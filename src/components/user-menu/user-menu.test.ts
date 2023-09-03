@@ -10,7 +10,7 @@ describe("UserMenuComponent", () => {
     { text: "Full Name" },
     { text: "Email@Address.com" },
     { text: "My profile" },
-    { text: "Sign out" },
+    { text: "Logout" },
   ])("should render $text", ({ text }) => {
     const instance = new UserMenuComponent("Full Name", "Email@Address.com");
 
