@@ -1,6 +1,4 @@
-import CategoryComponent from "@Components/category/category";
 import { ViewBuilder } from "@Interfaces/view-builder";
-import { Category } from "@Services/category/category.types";
 import { Routes } from "@Services/router/router.types";
 
 export default class CategoryNavigationView extends ViewBuilder {
@@ -9,38 +7,40 @@ export default class CategoryNavigationView extends ViewBuilder {
   private searchContainer: HTMLDivElement;
   private nav: HTMLElement;
   private wrapper: HTMLElement;
+  private button: HTMLButtonElement;
+  private buttonSpan: HTMLSpanElement;
 
   constructor() {
     super();
     this.nav = this.createElement("nav", {
-      classes: ["bg-body-tertiary", "navbar", "navbar-expand"],
+      classes: ["bg-body-tertiary", "navbar", "navbar-expand-md", "border-bottom"],
     });
     this.container = this.createElement("div", {
       classes: ["container", "justify-content-space-between"],
     });
     this.wrapper = this.createElement("div", {
-      classes: ["d-flex-column", "flex-grow-1"],
+      classes: ["navbar-collapse", "collapse"],
     });
-    this.linksContainer = this.createElement("div", {
-      classes: ["d-md-flex"],
+    this.wrapper.id = "category-navigation";
+    this.linksContainer = this.createElement("ul", {
+      classes: ["navbar-nav"],
     });
     this.searchContainer = this.createElement("div", {
       classes: ["d-md-flex"],
     });
-    const brandLink = this.createBrandLink();
-    this.container.append(brandLink);
-  }
-
-  addChildrenCategories(children: Category[]) {
-    children.forEach((category) => {
-      const categoryLink = new CategoryComponent(category).init(false);
-
-      const parent = document.getElementById(category.ancestors[0].id);
-
-      if (parent) {
-        parent.append(categoryLink);
-      }
+    this.button = this.createElement("button", {
+      classes: ["navbar-toggler", "collapsed"],
     });
+    this.buttonSpan = this.createElement("span", {
+      classes: ["navbar-toggler-icon"],
+    });
+    this.button.append(this.buttonSpan);
+    this.button.setAttribute("aria-expanded", "false");
+    this.button.setAttribute("aria-label", "Toggle navigation");
+    this.button.setAttribute("data-bs-toggle", "collapse");
+    this.button.setAttribute("data-bs-target", "#category-navigation");
+    const brandLink = this.createBrandLink();
+    this.container.append(brandLink, this.button);
   }
 
   private createBrandLink(): HTMLLinkElement {

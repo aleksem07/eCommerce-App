@@ -15,6 +15,8 @@ export default class FormControlComponent {
     helpText,
     placeholderText,
     type,
+    value,
+    disabled,
   }: FormControlProps) {
     this.view = new FormControlView({
       formName,
@@ -23,6 +25,8 @@ export default class FormControlComponent {
       helpText,
       placeholderText,
       type,
+      value,
+      disabled,
     });
     this.validator = new ValidatorUtil();
 

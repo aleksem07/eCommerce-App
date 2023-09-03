@@ -1,13 +1,14 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
+import { Category } from "@Services/category/category.types";
 
-export default class CategoryListView extends ViewBuilder {
+export default class CategoryNavigationListView extends ViewBuilder {
   private element: HTMLElement;
   private list: HTMLUListElement;
   private dropDownButton: HTMLButtonElement;
 
   constructor() {
     super();
-    this.element = this.createElement("div", {
+    this.element = this.createElement("li", {
       classes: ["btn-group"],
     });
     this.dropDownButton = this.createElement("button", {
@@ -19,14 +20,15 @@ export default class CategoryListView extends ViewBuilder {
     });
   }
 
-  render(element: HTMLElement, parentId: string) {
-    this.dropDownButton.setAttribute("data-bs-target", `#${parentId}`);
-    this.list.id = parentId;
+  render(category: Category, parentLink: HTMLElement, childrenLinks?: HTMLElement[]) {
+    this.dropDownButton.setAttribute("data-bs-target", `#${category.id}`);
+    this.list.id = category.id;
 
-    if (element.textContent !== "Sale") {
-      this.element.append(element, this.list, this.dropDownButton);
+    if (childrenLinks) {
+      this.list.append(...childrenLinks);
+      this.element.append(parentLink, this.list, this.dropDownButton);
     } else {
-      this.element.append(element);
+      this.element.append(parentLink);
     }
 
     return this.element;

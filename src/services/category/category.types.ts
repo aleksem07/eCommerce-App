@@ -1,5 +1,7 @@
 export interface Category {
   id: string;
   name: string;
-  ancestors: { id: string }[];
+  children: Category[];
 }
+
+export const SETTINGS_KEY = "settings";

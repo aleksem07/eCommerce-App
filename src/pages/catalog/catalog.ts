@@ -2,6 +2,7 @@ import ProductService from "@Services/product/product";
 import CatalogView from "./catalog.view";
 import ProductListComponent from "@Components/product-list/product-list";
 import FilterComponent from "@Components/filter/filter";
+import SortComponent from "@Components/sort/sort";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events, EventData } from "@Services/event-bus/event-bus.types";
 import ObjectGuardUtil from "@Utils/object-guard/object-guard";
@@ -15,8 +16,10 @@ export default class CatalogPage {
   private productService: ProductService;
   private productListComponent: ProductListComponent;
   private filter: FilterComponent;
+  private sort: SortComponent;
   private sizesFilter: string[] = [];
   private colorsFilter: string[] = [];
+  private sortValue = "";
   private priceRange: {
     minPrice: string;
     maxPrice: string;
@@ -29,6 +32,7 @@ export default class CatalogPage {
     this.productService = new ProductService();
     this.productListComponent = new ProductListComponent();
     this.filter = new FilterComponent();
+    this.sort = new SortComponent();
     this.priceRange = {
       minPrice: "0",
       maxPrice: "*",
@@ -38,6 +42,7 @@ export default class CatalogPage {
     eventBusService.subscribe(Events.minPriceFilterValue, this.handlePriceChange.bind(this));
     eventBusService.subscribe(Events.maxPriceFilterValue, this.handlePriceChange.bind(this));
     eventBusService.subscribe(Events.searchValue, this.handleSearchChange.bind(this));
+    eventBusService.subscribe(Events.sortProducts, this.handleSortProducts.bind(this));
     eventBusService.subscribe(
       Events.filterBySize,
       this.handleFilterEvent(FilterAttributeType.size, this.sizesFilter)
@@ -48,10 +53,15 @@ export default class CatalogPage {
     );
   }
 
-  private handleResetFiltersClick() {
+  private async handleResetFiltersClick() {
     this.resetPriceRange();
     this.resetDataFilter();
-    this.fetchProducts();
+    const { sizeFilter, colorFilter } = this.productService.generateFilters(
+      this.sizesFilter,
+      this.colorsFilter
+    );
+    await this.fetchProducts();
+    this.filterProducts(sizeFilter, colorFilter, this.sortValue);
   }
 
   private resetPriceRange() {
@@ -87,7 +97,7 @@ export default class CatalogPage {
       this.sizesFilter,
       this.colorsFilter
     );
-    this.filterProducts(sizeFilter, colorFilter);
+    this.filterProducts(sizeFilter, colorFilter, this.sortValue);
   }
 
   private handlePriceChange(data?: EventData) {
@@ -121,6 +131,9 @@ export default class CatalogPage {
       if (products) {
         const productListElement = this.productListComponent.init(products);
         this.view.displayProducts(productListElement);
+        const colors = products.map((product) => product.color);
+        const sizes = products.map((product) => product.size);
+        eventBusService.publish(Events.fetchProductsSuccessfully, { colors, sizes });
       } else {
         RouterService.navigateTo(Routes.NOT_FOUND);
       }
@@ -146,9 +159,13 @@ export default class CatalogPage {
     };
   }
 
-  private async filterProducts(size: string, color: string) {
+  private async filterProducts(size: string, color: string, sort: string) {
     const priceRange = this.getCurrentPriceRange();
-    const filteredProducts = await this.productService.filterProducts(size, color, priceRange);
+    const filteredProducts = await this.productService.filterProducts(
+      { size, color },
+      priceRange,
+      sort
+    );
 
     if (filteredProducts) {
       const productListElement = this.productListComponent.init(filteredProducts);
@@ -173,8 +190,23 @@ export default class CatalogPage {
     }
   }
 
+  private handleSortProducts(data?: EventData) {
+    const hasSelectedValue = ObjectGuardUtil.hasProp<string>(data, "selectValue");
+
+    if (hasSelectedValue) {
+      this.sortValue = data.selectValue;
+      const { sizeFilter, colorFilter } = this.productService.generateFilters(
+        this.sizesFilter,
+        this.colorsFilter
+      );
+
+      this.filterProducts(sizeFilter, colorFilter, this.sortValue);
+    }
+  }
+
   init() {
     this.resetDataFilter();
+    this.view.displayToolbar(this.sort.init());
     this.view.displaySidebar(this.filter.init());
     this.checkCategoryExists();
     this.view.render();
