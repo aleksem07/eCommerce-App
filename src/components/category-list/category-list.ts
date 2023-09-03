@@ -11,10 +11,14 @@ export default class CategoryListComponent {
 
   init(category: Category) {
     const parentLink = new CategoryComponent(category.id, category.name).init();
-    const childrenLinks = category.children.map((child) => {
-      return new CategoryComponent(child.id, child.name).init(false);
-    });
+    let childrenLinks;
 
-    return this.view.render(parentLink, childrenLinks, category);
+    if (category.children.length > 0) {
+      childrenLinks = category.children.map((child) => {
+        return new CategoryComponent(child.id, child.name).init(false);
+      });
+    }
+
+    return this.view.render(category, parentLink, childrenLinks);
   }
 }
