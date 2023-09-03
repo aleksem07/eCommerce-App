@@ -66,7 +66,9 @@ export default class LoginFormView extends ViewBuilder {
     const passwordInput: HTMLInputElement = this.getElement("#login-password-input");
     const passwordCheckbox: HTMLInputElement = this.getElement("#password-checkbox-input");
 
-    if (passwordInput) passwordInput.setAttribute("type", "password");
+    if (passwordInput) {
+      passwordInput.setAttribute("type", "password");
+    }
 
     if (passwordCheckbox) {
       passwordCheckbox.addEventListener("change", (event) => {

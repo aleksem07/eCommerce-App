@@ -1,5 +1,4 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
-import { Routes } from "@Services/router/router.types";
 import { AUTH_TOKEN_LS } from "@Services/auth/auth.types";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
@@ -12,20 +11,12 @@ export default class NavbarView extends ViewBuilder {
   constructor() {
     super();
     this.element = this.createElement("nav", {
-      classes: [
-        "container",
-        "navbar",
-        "navbar-expand",
-        "bg-dark",
-        "d-flex",
-        "justify-content-between",
-      ],
+      classes: ["container", "navbar", "navbar-expand", "bg-dark", "d-flex", "justify-content-end"],
       dataset: [{ bsTheme: "dark" }],
     });
 
-    const brandLink = this.createBrandLink();
     this.authLinksContainer = this.createAuthLinksContainer();
-    this.element.append(brandLink, this.authLinksContainer);
+    this.element.append(this.authLinksContainer);
   }
 
   initAuthLinks({
@@ -57,16 +48,6 @@ export default class NavbarView extends ViewBuilder {
       const authLinks = [loginLinkItem, this.createSeparator(), registerLinkItem];
       this.setAuthLinks(authLinks);
     }
-  }
-
-  private createBrandLink(): HTMLLinkElement {
-    const link = this.createElement<HTMLLinkElement>("a", {
-      classes: ["navbar-brand"],
-    });
-    link.href = Routes.MAIN;
-    link.textContent = "Fishing Hub";
-
-    return link;
   }
 
   private createAuthLinksContainer(): HTMLElement {
