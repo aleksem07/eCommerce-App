@@ -9,6 +9,7 @@ import {
   Address as AddressResponse,
 } from "@commercetools/platform-sdk";
 import { Address as AddressTestData } from "@commercetools-test-data/commons";
+import { Address } from "./customer.types";
 
 jest.mock("@Services/auth/auth");
 jest.mock("@Services/event-bus/event-bus");
@@ -45,6 +46,31 @@ describe("CustomerService", () => {
     expect(customer?.lastName).toBeTruthy();
     expect(customer?.email).toBeTruthy();
     expect(customer?.dateOfBirth).toBeTruthy();
+  });
+
+  it("should return shipping address as default address", async () => {
+    const shippingAddressMock = AddressTestData.random().buildRest<AddressResponse>();
+    const customerMock = CustomerTestData.random()
+      .dateOfBirth("2000-01-01")
+      .addresses([shippingAddressMock])
+      .shippingAddressIds([String(shippingAddressMock.id)])
+      .defaultShippingAddressId(String(shippingAddressMock.id))
+      .buildRest<CustomerResponse>();
+    fetchMock.get(`${apiURL}/${projectKey}/me`, {
+      status: 200,
+      body: customerMock,
+    });
+    const instance = new CustomerService();
+
+    const customer = await instance.getUserInfo();
+
+    expect(customer?.shippingAddress).toEqual<Address>({
+      city: String(shippingAddressMock.city),
+      country: String(shippingAddressMock.country),
+      postalCode: String(shippingAddressMock.postalCode),
+      streetName: String(shippingAddressMock.streetName),
+      isDefaultAddress: true,
+    });
   });
 
   it("should publish show notification when error occurred", async () => {
