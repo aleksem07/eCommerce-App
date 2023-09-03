@@ -1,21 +1,14 @@
 import SortComponent from "./sort";
-import SortView from "./sort.view";
 
 describe("SortComponent", () => {
   it("should instantiate", () => {
     const instance = new SortComponent();
     expect(instance).toBeInstanceOf(SortComponent);
   });
-  it("should call SortView.render with the correct arguments when init is called", () => {
+  it("should render sort by select", () => {
     const instance = new SortComponent();
-    const fakeSelectElement = document.createElement("select");
-    instance["sortByInput"].init = jest.fn().mockReturnValue(fakeSelectElement);
-    const fakeRenderedElement = document.createElement("div");
-    SortView.prototype.render = jest.fn().mockReturnValue(fakeRenderedElement);
-
-    const result = instance.init();
-
-    expect(SortView.prototype.render).toHaveBeenCalledWith(fakeSelectElement);
-    expect(result).toEqual(fakeRenderedElement);
+    const element = instance.init();
+    const sortSelect = element.querySelector("select");
+    expect(sortSelect).toBeTruthy();
   });
 });

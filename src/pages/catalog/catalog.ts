@@ -146,14 +146,13 @@ export default class CatalogPage {
     const hasSelectedValue = ObjectGuardUtil.hasProp<string>(data, "selectValue");
 
     if (hasSelectedValue) {
-      const selectSort = data.selectValue;
-      this.sortValue = selectSort;
+      this.sortValue = data.selectValue;
       const { sizeFilter, colorFilter } = this.productService.generateFilters(
         this.sizesFilter,
         this.colorsFilter
       );
 
-      this.filterProducts(sizeFilter, colorFilter, selectSort.toString());
+      this.filterProducts(sizeFilter, colorFilter, this.sortValue);
     }
   }
 

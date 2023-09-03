@@ -6,7 +6,7 @@ import {
   ProductProjection as ProductProjectionResponse,
   Image as ImageResponse,
 } from "@commercetools/platform-sdk";
-import { Price, Product } from "./product.types";
+import { Price, Product, ProductFilters, PriceRange } from "./product.types";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
 import { HttpErrorType } from "@commercetools/sdk-client-v2";
@@ -125,11 +125,7 @@ export default class ProductService extends ClientBuilderService {
     return centAmount ? Number((centAmount / 100).toFixed(2)) : 0;
   }
 
-  async filterProducts(
-    filters: { size: string; color: string },
-    priceRange: { minPrice: string; maxPrice: string },
-    sort: string
-  ) {
+  async filterProducts(filters: ProductFilters, priceRange: PriceRange, sort: string) {
     try {
       const token = await this.authService.retrieveToken();
 

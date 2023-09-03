@@ -23,12 +23,21 @@ export default class SortComponent {
       labelText: "Sort by",
       helpText: "",
       options: [
-        { label: "default", value: "createdAt asc" },
+        { label: "created at", value: "createdAt asc" },
         { label: "price low to high", value: "price asc" },
         { label: "price high to low", value: "price desc" },
         { label: "name", value: "name.en asc" },
       ],
-      classes: ["d-flex", "align-items-center", "gap-3", "col-md-4", "h6", "text-nowrap"],
+      classes: [
+        "d-flex",
+        "align-items-center",
+        "gap-3",
+        "col-md-6",
+        "col-lg-5",
+        "col-xl-4",
+        "h6",
+        "text-nowrap",
+      ],
     });
   }
 

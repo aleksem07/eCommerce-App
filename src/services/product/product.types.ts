@@ -13,3 +13,13 @@ export interface Price {
   currencyCode: string;
   value: number;
 }
+
+export interface ProductFilters {
+  size: string;
+  color: string;
+}
+
+export interface PriceRange {
+  minPrice: string;
+  maxPrice: string;
+}
