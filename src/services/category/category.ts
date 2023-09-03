@@ -96,16 +96,7 @@ export default class CategoryService extends ClientBuilderService {
         parentCategory.children.push(categoryMap.get(category.id));
       }
     });
-    console.log(rootCategories);
 
     return rootCategories;
   }
-
-  // private mapCategoryResponseToCategory(productResponse: CategoryResponse): Category {
-  //   return {
-  //     ancestors: productResponse.ancestors,
-  //     id: productResponse.id,
-  //     name: productResponse.name.en,
-  //   };
-  // }
 }

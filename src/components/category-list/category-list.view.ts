@@ -20,7 +20,7 @@ export default class CategoryListView extends ViewBuilder {
     });
   }
 
-  render(category: Category, parentLink: HTMLLinkElement, childrenLinks?: HTMLLinkElement[]) {
+  render(category: Category, parentLink: HTMLElement, childrenLinks?: HTMLElement[]) {
     this.dropDownButton.setAttribute("data-bs-target", `#${category.id}`);
     this.list.id = category.id;
 

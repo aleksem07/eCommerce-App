@@ -2,41 +2,34 @@ import { ViewBuilder } from "@Interfaces/view-builder";
 import { Routes } from "@Services/router/router.types";
 
 export default class CategoryView extends ViewBuilder {
-  private element: HTMLElement;
-  private card?: HTMLLinkElement;
+  private element?: HTMLLinkElement;
   private id: string;
   private name: string;
 
   constructor(id: string, name: string) {
     super();
-    this.element = this.createElement("li", {
-      classes: ["nav-item", "px-2"],
-    });
     this.id = id;
     this.name = name;
   }
 
   private createCategory(id: string, name: string, isParentCard: boolean) {
     if (isParentCard) {
-      this.card = this.createElement<HTMLLinkElement>("a", {
+      this.element = this.createElement<HTMLLinkElement>("a", {
         classes: ["nav-link", "px-2"],
       });
     } else {
-      this.card = this.createElement<HTMLLinkElement>("a", {
+      this.element = this.createElement<HTMLLinkElement>("a", {
         classes: ["dropdown-item", "px-2"],
       });
     }
     const url = new URL(`${window.location.origin}${Routes.CATALOG}-${id}`);
-    this.card.href = url.href;
-    this.card.textContent = name;
-    this.element.id = id;
+    this.element.href = url.href;
+    this.element.textContent = name;
 
-    return this.card;
+    return this.element;
   }
 
   render(isParentCard: boolean) {
-    this.card = this.createCategory(this.id, this.name, isParentCard);
-
-    return this.card;
+    return this.createCategory(this.id, this.name, isParentCard);
   }
 }
