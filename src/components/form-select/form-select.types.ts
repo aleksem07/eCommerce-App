@@ -4,5 +4,5 @@ export interface FormSelectProps {
   labelText: string;
   helpText: string;
   options: { label: string; value: string }[];
-  className?: string[];
+  classes?: string[];
 }

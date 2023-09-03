@@ -31,6 +31,10 @@ export default class CatalogView extends ViewBuilder {
     this.containerRow.append(leftColumn);
   }
 
+  displayToolbar(rightColumn: HTMLElement) {
+    this.rightColumn.append(rightColumn);
+  }
+
   render() {
     this.appendTo("#root", this.element);
   }
