@@ -6,23 +6,37 @@ export default class CategoryNavigationView extends ViewBuilder {
   private linksContainer: HTMLDivElement;
   private nav: HTMLElement;
   private wrapper: HTMLElement;
+  private button: HTMLButtonElement;
+  private buttonSpan: HTMLSpanElement;
 
   constructor() {
     super();
     this.nav = this.createElement("nav", {
-      classes: ["bg-body-tertiary", "navbar", "navbar-expand"],
+      classes: ["bg-body-tertiary", "navbar", "navbar-expand-md", "border-bottom"],
     });
     this.container = this.createElement("div", {
       classes: ["container", "justify-content-start"],
     });
     this.wrapper = this.createElement("div", {
-      classes: ["d-flex-column"],
+      classes: ["navbar-collapse", "collapse"],
     });
-    this.linksContainer = this.createElement("div", {
-      classes: ["d-md-flex"],
+    this.wrapper.id = "category-navigation";
+    this.linksContainer = this.createElement("ul", {
+      classes: ["navbar-nav"],
     });
+    this.button = this.createElement("button", {
+      classes: ["navbar-toggler", "collapsed"],
+    });
+    this.buttonSpan = this.createElement("span", {
+      classes: ["navbar-toggler-icon"],
+    });
+    this.button.append(this.buttonSpan);
+    this.button.setAttribute("aria-expanded", "false");
+    this.button.setAttribute("aria-label", "Toggle navigation");
+    this.button.setAttribute("data-bs-toggle", "collapse");
+    this.button.setAttribute("data-bs-target", "#category-navigation");
     const brandLink = this.createBrandLink();
-    this.container.append(brandLink);
+    this.container.append(brandLink, this.button);
   }
 
   private createBrandLink(): HTMLLinkElement {

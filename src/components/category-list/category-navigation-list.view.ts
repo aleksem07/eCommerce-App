@@ -8,7 +8,7 @@ export default class CategoryNavigationListView extends ViewBuilder {
 
   constructor() {
     super();
-    this.element = this.createElement("div", {
+    this.element = this.createElement("li", {
       classes: ["btn-group"],
     });
     this.dropDownButton = this.createElement("button", {
