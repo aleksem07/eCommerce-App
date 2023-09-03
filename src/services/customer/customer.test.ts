@@ -73,6 +73,30 @@ describe("CustomerService", () => {
     });
   });
 
+  it("should return billing address", async () => {
+    const billingAddressMock = AddressTestData.random().buildRest<AddressResponse>();
+    const customerMock = CustomerTestData.random()
+      .dateOfBirth("2000-01-01")
+      .addresses([billingAddressMock])
+      .billingAddressIds([String(billingAddressMock.id)])
+      .buildRest<CustomerResponse>();
+    fetchMock.get(`${apiURL}/${projectKey}/me`, {
+      status: 200,
+      body: customerMock,
+    });
+    const instance = new CustomerService();
+
+    const customer = await instance.getUserInfo();
+
+    expect(customer?.billingAddress).toEqual<Address>({
+      city: String(billingAddressMock.city),
+      country: String(billingAddressMock.country),
+      postalCode: String(billingAddressMock.postalCode),
+      streetName: String(billingAddressMock.streetName),
+      isDefaultAddress: false,
+    });
+  });
+
   it("should publish show notification when error occurred", async () => {
     fetchMock.get(`${apiURL}/${projectKey}/me`, {
       status: 500,
