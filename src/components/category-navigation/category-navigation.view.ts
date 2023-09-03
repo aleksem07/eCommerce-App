@@ -1,6 +1,4 @@
-import CategoryComponent from "@Components/category/category";
 import { ViewBuilder } from "@Interfaces/view-builder";
-import { Category } from "@Services/category/category.types";
 import { Routes } from "@Services/router/router.types";
 
 export default class CategoryNavigationView extends ViewBuilder {
@@ -26,18 +24,6 @@ export default class CategoryNavigationView extends ViewBuilder {
     const brandLink = this.createBrandLink();
     this.container.append(brandLink);
   }
-
-  // addChildrenCategories(children: Category[]) {
-  //   children.forEach((category) => {
-  //     const categoryLink = new CategoryComponent(category).init(false);
-
-  //     // const parent = document.getElementById(category.ancestors[0].id);
-
-  //     // if (parent) {
-  //     //   parent.append(categoryLink);
-  //     // }
-  //   });
-  // }
 
   private createBrandLink(): HTMLLinkElement {
     const link = this.createElement<HTMLLinkElement>("a", {

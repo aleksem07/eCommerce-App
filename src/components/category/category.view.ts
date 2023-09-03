@@ -1,6 +1,5 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
 import { Routes } from "@Services/router/router.types";
-import { Category } from "@Services/category/category.types";
 
 export default class CategoryView extends ViewBuilder {
   private element: HTMLElement;
