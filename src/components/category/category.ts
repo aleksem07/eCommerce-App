@@ -1,4 +1,3 @@
-import { Category } from "@Services/category/category.types";
 import CategoryView from "./category.view";
 
 export default class CategoryComponent {

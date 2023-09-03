@@ -16,8 +16,7 @@ export default class CategoryService extends ClientBuilderService {
   }
 
   async getAll() {
-    const categories = localStorage.getItem("categories");
-    console.log(categories);
+    // const categories = localStorage.getItem("categories");
 
     // if (!categories) {
     try {
@@ -33,8 +32,6 @@ export default class CategoryService extends ClientBuilderService {
             },
           })
           .execute();
-        // const parentCategories: Category[] = [];
-        // const childrenCategories: Category[] = [];
         const categories = this.buildCategoryStructure(body.results);
         localStorage.setItem("categories", String(categories));
 
