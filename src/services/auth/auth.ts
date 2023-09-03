@@ -8,6 +8,7 @@ import {
   RegistrationParams,
   TokenParams,
   SignUpParams,
+  USERNAME_LS,
 } from "./auth.types";
 
 export default class AuthService extends ClientBuilderService {
@@ -105,9 +106,7 @@ export default class AuthService extends ClientBuilderService {
 
       const data: TokenInfo = await response.json();
 
-      if (requestParams.username) {
-        localStorage.setItem(AUTH_TOKEN_LS, data.access_token);
-      }
+      this.saveDataToLocalStorage(requestParams, data);
 
       return { success: true, data };
     } catch (error: unknown) {
@@ -117,6 +116,13 @@ export default class AuthService extends ClientBuilderService {
         success: false,
         error: errorMessage,
       };
+    }
+  }
+
+  private saveDataToLocalStorage(requestParams: TokenParams, data: TokenInfo) {
+    if (requestParams.username) {
+      localStorage.setItem(AUTH_TOKEN_LS, data.access_token);
+      localStorage.setItem(USERNAME_LS, requestParams.username);
     }
   }
 

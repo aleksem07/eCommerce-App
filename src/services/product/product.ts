@@ -6,7 +6,7 @@ import {
   Image as ImageResponse,
   ProductProjection,
 } from "@commercetools/platform-sdk";
-import { Price, Product } from "./product.types";
+import { Price, Product, ProductFilters, PriceRange } from "./product.types";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
 import { HttpErrorType } from "@commercetools/sdk-client-v2";
@@ -173,11 +173,7 @@ export default class ProductService extends ClientBuilderService {
     return centAmount ? Number((centAmount / 100).toFixed(2)) : 0;
   }
 
-  async filterProducts(
-    size: string,
-    color: string,
-    priceRange: { minPrice: string; maxPrice: string }
-  ) {
+  async filterProducts(filters: ProductFilters, priceRange: PriceRange, sort: string) {
     try {
       const token = await this.authService.retrieveToken();
 
@@ -192,11 +188,11 @@ export default class ProductService extends ClientBuilderService {
             },
             queryArgs: {
               filter: [
-                size,
-                color,
+                filters.size,
+                filters.color,
                 `variants.price.centAmount:range(${priceRange.minPrice} to ${priceRange.maxPrice})`,
               ],
-              sort: ["createdAt asc"],
+              sort: sort ? [sort] : ["createdAt asc"],
             },
           })
           .execute();
@@ -205,7 +201,10 @@ export default class ProductService extends ClientBuilderService {
       }
     } catch (error) {
       const httpError = error as HttpErrorType;
-      eventBusService.publish(Events.errorOccurred, httpError);
+      eventBusService.publish(Events.showNotification, {
+        variant: NotificationVariant.danger,
+        message: httpError.message,
+      });
     }
   }
 
@@ -214,12 +213,13 @@ export default class ProductService extends ClientBuilderService {
     color: string[]
   ): { sizeFilter: string; colorFilter: string } {
     const formatArray = (arr: string[]) => arr.map((item) => `"${item.trim()}"`).join(", ");
+    const filters = { sizeFilter: "", colorFilter: "" };
 
-    const sizeFilter =
+    filters.sizeFilter =
       size && size.length > 0 ? `variants.attributes.size:${formatArray(size)}` : "";
-    const colorFilter =
+    filters.colorFilter =
       color && color.length > 0 ? `variants.attributes.color.key:${formatArray(color)}` : "";
 
-    return { sizeFilter, colorFilter };
+    return filters;
   }
 }
