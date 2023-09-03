@@ -1,7 +1,7 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
 import { Routes } from "@Services/router/router.types";
 
-export default class CategoryView extends ViewBuilder {
+export default class CategoryNavigationListItemView extends ViewBuilder {
   private element?: HTMLLinkElement;
   private id: string;
   private name: string;

@@ -1,8 +1,7 @@
-import CategoryListComponent from "@Components/category-list/category-list";
+import CategoryListComponent from "@Components/category-list/category-navigation-list";
 import CategoryNavigationView from "./category-navigation.view";
 import CategoryService from "@Services/category/category";
 import { Category } from "@Services/category/category.types";
-// import { CategoryHierarchy } from "./category-navigation.types";
 
 export default class CategoryNavigationComponent {
   private view: CategoryNavigationView;

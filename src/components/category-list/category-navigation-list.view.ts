@@ -1,7 +1,7 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
 import { Category } from "@Services/category/category.types";
 
-export default class CategoryListView extends ViewBuilder {
+export default class CategoryNavigationListView extends ViewBuilder {
   private element: HTMLElement;
   private list: HTMLUListElement;
   private dropDownButton: HTMLButtonElement;
