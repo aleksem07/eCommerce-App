@@ -6,33 +6,54 @@ import { Customer } from "@Services/customer/customer.types";
 
 export default class UserDataComponent {
   private view: UserDataView;
-  private userInfo: UserInfoComponent;
-  private userPassword: UserPasswordComponent;
-  private userShippingAddress: UserAddressComponent;
+  private userInfo!: UserInfoComponent;
+  private userPassword!: UserPasswordComponent;
+  private userShippingAddress!: UserAddressComponent;
   private userBillingAddress?: UserAddressComponent;
   private formName = "user-data";
   private isEditMode = false;
+  private customer: Customer;
 
   constructor(customer: Customer) {
+    this.customer = customer;
     this.view = new UserDataView();
-    this.userInfo = new UserInfoComponent(this.formName, customer, this.isEditMode);
+    this.instantiateComponents();
+
+    this.view.editButtonListener(this.editButtonHandler.bind(this));
+    this.view.saveButtonListener(this.saveButtonHandler.bind(this));
+  }
+
+  private instantiateComponents() {
+    this.userInfo = new UserInfoComponent(this.formName, this.customer, this.isEditMode);
     this.userPassword = new UserPasswordComponent(this.formName, this.isEditMode);
 
     this.userShippingAddress = new UserAddressComponent({
       header: "Shipping Address",
       formName: this.formName,
-      address: customer.shippingAddress,
+      address: this.customer.shippingAddress,
       isEditMode: this.isEditMode,
     });
 
-    if (customer.billingAddress) {
+    if (this.customer.billingAddress) {
       this.userBillingAddress = new UserAddressComponent({
         header: "Billing Address",
         formName: this.formName,
-        address: customer.billingAddress,
+        address: this.customer.billingAddress,
         isEditMode: this.isEditMode,
       });
     }
+  }
+
+  editButtonHandler() {
+    this.isEditMode = true;
+    this.instantiateComponents();
+    this.init();
+  }
+
+  saveButtonHandler() {
+    this.isEditMode = false;
+    this.instantiateComponents();
+    this.init();
   }
 
   init() {
@@ -41,6 +62,12 @@ export default class UserDataComponent {
     const userInfo = this.userInfo.init();
     const userPassword = this.userPassword.init();
 
-    return this.view.render({ userInfo, userPassword, userShippingAddress, userBillingAddress });
+    return this.view.render({
+      userInfo,
+      userPassword,
+      userShippingAddress,
+      userBillingAddress,
+      isEditMode: this.isEditMode,
+    });
   }
 }
