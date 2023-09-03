@@ -17,12 +17,13 @@ export default class FormControlView extends ViewBuilder {
     helpText,
     placeholderText,
     type,
+    value,
     min,
+    disabled = false,
   }: FormControlProps) {
     super();
     this.formName = formName;
     this.inputName = inputName;
-
     this.inputWrapper = this.createElement("div", {
       id: `${formName}-${inputName}-wrapper`,
       classes: ["mt-2"],
@@ -33,22 +34,46 @@ export default class FormControlView extends ViewBuilder {
     });
     this.inputLabel.setAttribute("for", `${formName}-${inputName}-input`);
     this.inputLabel.textContent = labelText;
-    this.input = this.createElement("input", {
-      id: `${formName}-${inputName}-input`,
-      classes: ["form-control"],
+    this.input = this.createInput({
+      formName,
+      inputName,
+      placeholderText,
+      type,
+      value,
+      min,
+      disabled,
     });
-    this.input.placeholder = placeholderText;
-    this.input.name = inputName;
-    this.input.type = type || "text";
-
-    if (min) {
-      this.input.min = min;
-    }
     this.inputHelp = this.createElement("small", {
       id: `${helpText}-help`,
       classes: ["form-text", "h6"],
     });
-    this.inputHelp.textContent = helpText;
+    this.inputHelp.textContent = helpText || "";
+  }
+
+  private createInput({
+    formName,
+    inputName,
+    placeholderText,
+    type,
+    value,
+    min,
+    disabled = false,
+  }: Partial<FormControlProps>) {
+    const element = this.createElement<HTMLInputElement>("input", {
+      id: `${formName}-${inputName}-input`,
+      classes: ["form-control"],
+    });
+    element.placeholder = placeholderText || "";
+    element.name = inputName || "";
+    element.type = type || "text";
+    element.value = value || "";
+    element.disabled = disabled;
+
+    if (min) {
+      this.input.min = min;
+    }
+
+    return element;
   }
 
   inputListener(handler: (text: string) => void) {

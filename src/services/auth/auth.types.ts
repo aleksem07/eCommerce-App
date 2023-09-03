@@ -47,3 +47,5 @@ export interface Address {
 }
 
 export const AUTH_TOKEN_LS = "authToken";
+
+export const USERNAME_LS = "username";
