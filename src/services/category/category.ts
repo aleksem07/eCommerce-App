@@ -1,7 +1,7 @@
 import AuthService from "@Services/auth/auth";
 import ClientBuilderService from "@Services/client-builder/client-builder";
 import eventBusService from "@Services/event-bus/event-bus";
-import { Category } from "./category.types";
+import { Category, SETTINGS_KEY } from "./category.types";
 import { Category as CategoryResponse } from "@commercetools/platform-sdk";
 import { HttpErrorType } from "@commercetools/sdk-client-v2";
 import { Events } from "@Services/event-bus/event-bus.types";
@@ -16,7 +16,7 @@ export default class CategoryService extends ClientBuilderService {
   }
 
   async getAll() {
-    const categories = localStorage.getItem("categories");
+    const categories = localStorage.getItem(SETTINGS_KEY);
 
     if (!categories) {
       try {
@@ -33,7 +33,7 @@ export default class CategoryService extends ClientBuilderService {
             })
             .execute();
           const categories = this.buildCategoryStructure(body.results);
-          localStorage.setItem("categories", JSON.stringify(categories));
+          localStorage.setItem(SETTINGS_KEY, JSON.stringify(categories));
 
           return categories;
         }

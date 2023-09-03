@@ -3,3 +3,5 @@ export interface Category {
   name: string;
   children: Category[];
 }
+
+export const SETTINGS_KEY = "settings";
