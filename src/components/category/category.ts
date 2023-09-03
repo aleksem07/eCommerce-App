@@ -4,12 +4,8 @@ import CategoryView from "./category.view";
 export default class CategoryComponent {
   private view: CategoryView;
 
-  constructor({ id, name, ancestors }: Category) {
-    this.view = new CategoryView({
-      id,
-      name,
-      ancestors,
-    });
+  constructor(id: string, name: string) {
+    this.view = new CategoryView(id, name);
   }
 
   init(parentComponent = true) {

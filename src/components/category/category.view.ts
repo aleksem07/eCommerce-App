@@ -8,7 +8,7 @@ export default class CategoryView extends ViewBuilder {
   private id: string;
   private name: string;
 
-  constructor({ id, name }: Category) {
+  constructor(id: string, name: string) {
     super();
     this.element = this.createElement("li", {
       classes: ["nav-item", "px-2"],

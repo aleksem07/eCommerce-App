@@ -27,17 +27,17 @@ export default class CategoryNavigationView extends ViewBuilder {
     this.container.append(brandLink);
   }
 
-  addChildrenCategories(children: Category[]) {
-    children.forEach((category) => {
-      const categoryLink = new CategoryComponent(category).init(false);
+  // addChildrenCategories(children: Category[]) {
+  //   children.forEach((category) => {
+  //     const categoryLink = new CategoryComponent(category).init(false);
 
-      const parent = document.getElementById(category.ancestors[0].id);
+  //     // const parent = document.getElementById(category.ancestors[0].id);
 
-      if (parent) {
-        parent.append(categoryLink);
-      }
-    });
-  }
+  //     // if (parent) {
+  //     //   parent.append(categoryLink);
+  //     // }
+  //   });
+  // }
 
   private createBrandLink(): HTMLLinkElement {
     const link = this.createElement<HTMLLinkElement>("a", {

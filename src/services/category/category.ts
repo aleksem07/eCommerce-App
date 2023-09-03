@@ -16,6 +16,10 @@ export default class CategoryService extends ClientBuilderService {
   }
 
   async getAll() {
+    const categories = localStorage.getItem("categories");
+    console.log(categories);
+
+    // if (!categories) {
     try {
       const token = await this.authService.retrieveToken();
 
@@ -29,17 +33,12 @@ export default class CategoryService extends ClientBuilderService {
             },
           })
           .execute();
-        const parentCategories: Category[] = [];
-        const childrenCategories: Category[] = [];
-        body.results.forEach((category) => {
-          if (category.ancestors[0]) {
-            childrenCategories.push(this.mapCategoryResponseToCategory(category));
-          } else {
-            parentCategories.push(this.mapCategoryResponseToCategory(category));
-          }
-        });
+        // const parentCategories: Category[] = [];
+        // const childrenCategories: Category[] = [];
+        const categories = this.buildCategoryStructure(body.results);
+        localStorage.setItem("categories", String(categories));
 
-        return { parent: parentCategories, children: childrenCategories };
+        return categories;
       }
     } catch (error) {
       const httpError = error as HttpErrorType;
@@ -48,37 +47,66 @@ export default class CategoryService extends ClientBuilderService {
         message: httpError.message,
       });
     }
+    // } else {
+    // return categories;
+    // }
   }
 
-  async getCategory(id: string) {
-    try {
-      const token = await this.authService.retrieveToken();
+  // async getCategory(id: string) {
+  //   try {
+  //     const token = await this.authService.retrieveToken();
 
-      if (token) {
-        const { body } = await this.apiRoot
-          .withProjectKey({ projectKey: this.projectKey })
-          .categories()
-          .withId({ ID: id })
-          .get({
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
-          .execute();
+  //     if (token) {
+  //       const { body } = await this.apiRoot
+  //         .withProjectKey({ projectKey: this.projectKey })
+  //         .categories()
+  //         .withId({ ID: id })
+  //         .get({
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //         })
+  //         .execute();
 
-        return this.mapCategoryResponseToCategory(body);
+  //       // return this.mapCategoryResponseToCategory(body);
+  //     }
+  //   } catch (error) {
+  //     const httpError = error as HttpErrorType;
+  //     eventBusService.publish(Events.errorOccurred, httpError);
+  //   }
+  // }
+
+  private buildCategoryStructure(categories: CategoryResponse[]): Category[] {
+    const categoryMap = new Map();
+
+    categories.forEach((category) => {
+      categoryMap.set(category.id, {
+        id: category.id,
+        name: category.name.en,
+        children: [],
+      });
+    });
+
+    const rootCategories: Category[] = [];
+
+    categories.forEach((category) => {
+      if (category.ancestors.length === 0) {
+        rootCategories.push(categoryMap.get(category.id));
+      } else {
+        const parentCategory = categoryMap.get(category.ancestors[0].id);
+        parentCategory.children.push(categoryMap.get(category.id));
       }
-    } catch (error) {
-      const httpError = error as HttpErrorType;
-      eventBusService.publish(Events.errorOccurred, httpError);
-    }
+    });
+    console.log(rootCategories);
+
+    return rootCategories;
   }
 
-  private mapCategoryResponseToCategory(productResponse: CategoryResponse): Category {
-    return {
-      ancestors: productResponse.ancestors,
-      id: productResponse.id,
-      name: productResponse.name.en,
-    };
-  }
+  // private mapCategoryResponseToCategory(productResponse: CategoryResponse): Category {
+  //   return {
+  //     ancestors: productResponse.ancestors,
+  //     id: productResponse.id,
+  //     name: productResponse.name.en,
+  //   };
+  // }
 }

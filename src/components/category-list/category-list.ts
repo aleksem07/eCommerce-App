@@ -10,8 +10,11 @@ export default class CategoryListComponent {
   }
 
   init(category: Category) {
-    this.categoryLink = new CategoryComponent(category).init();
+    const parentLink = new CategoryComponent(category.id, category.name).init();
+    const childrenLinks = category.children.map((child) => {
+      return new CategoryComponent(child.id, child.name).init(false);
+    });
 
-    return this.view.render(this.categoryLink, category.id);
+    return this.view.render(parentLink, childrenLinks, category);
   }
 }
