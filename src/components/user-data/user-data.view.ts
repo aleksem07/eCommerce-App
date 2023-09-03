@@ -1,7 +1,8 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
+import { UserDataFormData } from "./user-data.types";
 
 export default class UserDataView extends ViewBuilder {
-  private element: HTMLDivElement;
+  private form: HTMLFormElement;
   private header: HTMLHeadingElement;
   private saveButton: HTMLButtonElement;
   private editButton: HTMLButtonElement;
@@ -12,16 +13,20 @@ export default class UserDataView extends ViewBuilder {
       classes: ["d-flex", "align-items-center", "justify-content-between"],
     });
     this.header.textContent = "My profile";
-    this.element = this.createElement("div");
+    this.form = this.createElement("form", {
+      id: "user-data",
+    });
 
     this.saveButton = this.createElement("button", { classes: ["btn", "btn-primary"] });
     this.saveButton.textContent = "Save";
+    this.saveButton.type = "submit";
     this.header.append(this.saveButton);
 
     this.editButton = this.createElement<HTMLButtonElement>("button", {
       classes: ["btn", "btn-secondary"],
     });
     this.editButton.textContent = "Edit";
+    this.editButton.type = "button";
     this.header.append(this.editButton);
   }
 
@@ -35,12 +40,22 @@ export default class UserDataView extends ViewBuilder {
     }
   }
 
-  editButtonListener(handler: () => void) {
-    this.editButton?.addEventListener("click", handler);
+  submitFormListener(handler: (inputValues: UserDataFormData) => void) {
+    this.form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const formData = new FormData(this.form);
+      const inputValues = new Map();
+
+      for (const [key, value] of formData.entries()) {
+        inputValues.set(key, value.toString());
+      }
+
+      handler(inputValues);
+    });
   }
 
-  saveButtonListener(handler: () => void) {
-    this.saveButton?.addEventListener("click", handler);
+  editButtonListener(handler: () => void) {
+    this.editButton?.addEventListener("click", handler);
   }
 
   render({
@@ -56,15 +71,15 @@ export default class UserDataView extends ViewBuilder {
     userBillingAddress?: HTMLElement;
     isEditMode: boolean;
   }) {
-    this.element.innerHTML = "";
+    this.form.innerHTML = "";
     this.toggleButtons(isEditMode);
     const elements = [this.header, userInfo, userPassword, userShippingAddress];
 
     if (userBillingAddress) {
       elements.push(userBillingAddress);
     }
-    this.element.append(...elements);
+    this.form.append(...elements);
 
-    return this.element;
+    return this.form;
   }
 }

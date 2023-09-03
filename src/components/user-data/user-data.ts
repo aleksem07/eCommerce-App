@@ -3,6 +3,7 @@ import UserDataView from "./user-data.view";
 import UserPasswordComponent from "@Components/user-password/user-password";
 import UserAddressComponent from "@Components/user-address/user-address";
 import { Customer } from "@Services/customer/customer.types";
+import { UserDataFormData } from "./user-data.types";
 
 export default class UserDataComponent {
   private view: UserDataView;
@@ -19,8 +20,8 @@ export default class UserDataComponent {
     this.view = new UserDataView();
     this.instantiateComponents();
 
+    this.view.submitFormListener(this.submitFormHandler.bind(this));
     this.view.editButtonListener(this.editButtonHandler.bind(this));
-    this.view.saveButtonListener(this.saveButtonHandler.bind(this));
   }
 
   private instantiateComponents() {
@@ -44,14 +45,14 @@ export default class UserDataComponent {
     }
   }
 
-  editButtonHandler() {
-    this.isEditMode = true;
+  submitFormHandler(inputValues: UserDataFormData) {
+    this.isEditMode = false;
     this.instantiateComponents();
     this.init();
   }
 
-  saveButtonHandler() {
-    this.isEditMode = false;
+  editButtonHandler() {
+    this.isEditMode = true;
     this.instantiateComponents();
     this.init();
   }
