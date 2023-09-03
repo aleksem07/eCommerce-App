@@ -131,6 +131,33 @@ describe("CustomerService", () => {
     });
   });
 
+  it("should return shipping address when addresses are the same", async () => {
+    const addressMock = AddressTestData.random().buildRest<AddressResponse>();
+    const customerMock = CustomerTestData.random()
+      .dateOfBirth("2000-01-01")
+      .addresses([addressMock])
+      .billingAddressIds([String(addressMock.id)])
+      .shippingAddressIds([String(addressMock.id)])
+      .defaultShippingAddressId(String(addressMock.id))
+      .buildRest<CustomerResponse>();
+    fetchMock.get(`${apiURL}/${projectKey}/me`, {
+      status: 200,
+      body: customerMock,
+    });
+    const instance = new CustomerService();
+
+    const customer = await instance.getUserInfo();
+
+    expect(customer?.billingAddress).toBeUndefined();
+    expect(customer?.shippingAddress).toEqual<Address>({
+      city: String(addressMock.city),
+      country: String(addressMock.country),
+      postalCode: String(addressMock.postalCode),
+      streetName: String(addressMock.streetName),
+      isDefaultAddress: true,
+    });
+  });
+
   it("should publish show notification when error occurred", async () => {
     fetchMock.get(`${apiURL}/${projectKey}/me`, {
       status: 500,
