@@ -16,9 +16,40 @@ export default class CategoryService extends ClientBuilderService {
   }
 
   async getAll() {
-    // const categories = localStorage.getItem("categories");
+    const categories = localStorage.getItem("categories");
 
-    // if (!categories) {
+    if (!categories) {
+      try {
+        const token = await this.authService.retrieveToken();
+
+        if (token) {
+          const { body } = await this.apiRoot
+            .withProjectKey({ projectKey: this.projectKey })
+            .categories()
+            .get({
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            .execute();
+          const categories = this.buildCategoryStructure(body.results);
+          localStorage.setItem("categories", JSON.stringify(categories));
+
+          return categories;
+        }
+      } catch (error) {
+        const httpError = error as HttpErrorType;
+        eventBusService.publish(Events.showNotification, {
+          variant: NotificationVariant.danger,
+          message: httpError.message,
+        });
+      }
+    } else {
+      return JSON.parse(categories);
+    }
+  }
+
+  async getCategory(id: string) {
     try {
       const token = await this.authService.retrieveToken();
 
@@ -26,52 +57,23 @@ export default class CategoryService extends ClientBuilderService {
         const { body } = await this.apiRoot
           .withProjectKey({ projectKey: this.projectKey })
           .categories()
+          .withId({ ID: id })
           .get({
             headers: {
               Authorization: `Bearer ${token}`,
             },
           })
           .execute();
-        const categories = this.buildCategoryStructure(body.results);
-        localStorage.setItem("categories", String(categories));
 
-        return categories;
+        const category = this.buildCategoryStructure([body]);
+
+        return category;
       }
     } catch (error) {
       const httpError = error as HttpErrorType;
-      eventBusService.publish(Events.showNotification, {
-        variant: NotificationVariant.danger,
-        message: httpError.message,
-      });
+      eventBusService.publish(Events.errorOccurred, httpError);
     }
-    // } else {
-    // return categories;
-    // }
   }
-
-  // async getCategory(id: string) {
-  //   try {
-  //     const token = await this.authService.retrieveToken();
-
-  //     if (token) {
-  //       const { body } = await this.apiRoot
-  //         .withProjectKey({ projectKey: this.projectKey })
-  //         .categories()
-  //         .withId({ ID: id })
-  //         .get({
-  //           headers: {
-  //             Authorization: `Bearer ${token}`,
-  //           },
-  //         })
-  //         .execute();
-
-  //       // return this.mapCategoryResponseToCategory(body);
-  //     }
-  //   } catch (error) {
-  //     const httpError = error as HttpErrorType;
-  //     eventBusService.publish(Events.errorOccurred, httpError);
-  //   }
-  // }
 
   private buildCategoryStructure(categories: CategoryResponse[]): Category[] {
     const categoryMap = new Map();
