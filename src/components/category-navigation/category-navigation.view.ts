@@ -6,6 +6,7 @@ import { Routes } from "@Services/router/router.types";
 export default class CategoryNavigationView extends ViewBuilder {
   private container: HTMLDivElement;
   private linksContainer: HTMLDivElement;
+  private searchContainer: HTMLDivElement;
   private nav: HTMLElement;
   private wrapper: HTMLElement;
 
@@ -15,12 +16,15 @@ export default class CategoryNavigationView extends ViewBuilder {
       classes: ["bg-body-tertiary", "navbar", "navbar-expand"],
     });
     this.container = this.createElement("div", {
-      classes: ["container", "justify-content-start"],
+      classes: ["container", "justify-content-space-between"],
     });
     this.wrapper = this.createElement("div", {
-      classes: ["d-flex-column"],
+      classes: ["d-flex-column", "flex-grow-1"],
     });
     this.linksContainer = this.createElement("div", {
+      classes: ["d-md-flex"],
+    });
+    this.searchContainer = this.createElement("div", {
       classes: ["d-md-flex"],
     });
     const brandLink = this.createBrandLink();
@@ -49,13 +53,14 @@ export default class CategoryNavigationView extends ViewBuilder {
     return link;
   }
 
-  render(linksList: HTMLElement[]) {
+  render(linksList: HTMLElement[], searchProduct: HTMLElement) {
     linksList.map((category) => {
       this.linksContainer.append(category);
     });
-
     this.wrapper.prepend(this.linksContainer);
+    this.searchContainer.append(searchProduct);
     this.container.append(this.wrapper);
+    this.container.append(this.searchContainer);
 
     this.nav.append(this.container);
 
