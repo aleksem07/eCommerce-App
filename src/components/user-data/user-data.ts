@@ -56,11 +56,14 @@ export default class UserDataComponent {
       lastName: inputValues.get("last-name") || this.customer.lastName,
       email: inputValues.get("email") || this.customer.email,
       dateOfBirth: inputValues.get("date-of-birth") || this.customer.dateOfBirth,
+      version: this.customer.version,
     };
   }
 
   async submitFormHandler(inputValues: UserDataFormData) {
     const info = this.mapInputValuesToCustomer(inputValues);
+
+    // TODO: check validation before server call
     await this.customerService.updateInfo(info);
     this.isEditMode = false;
     this.instantiateComponents();

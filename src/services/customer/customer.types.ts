@@ -6,11 +6,12 @@ export interface Customer {
   dateOfBirth: string;
   shippingAddress: Address;
   billingAddress?: Address;
+  version: number;
 }
 
 export type CustomerInfo = Pick<
   Customer,
-  "firstName" | "lastName" | "email" | "dateOfBirth" | "id"
+  "firstName" | "lastName" | "email" | "dateOfBirth" | "id" | "version"
 >;
 
 export interface Address {

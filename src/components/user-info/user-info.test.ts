@@ -10,6 +10,7 @@ describe("UserInfoComponent", () => {
         lastName: "Doe",
         email: "a@b.com",
         dateOfBirth: "2000-01-01",
+        version: 1,
         shippingAddress: {
           country: "US",
           city: "New York",
@@ -32,6 +33,7 @@ describe("UserInfoComponent", () => {
         lastName: "Doe",
         email: "a@b.com",
         dateOfBirth: "2000-01-01",
+        version: 1,
         shippingAddress: {
           country: "US",
           city: "New York",
@@ -58,6 +60,7 @@ describe("UserInfoComponent", () => {
         lastName: "Doe",
         email: "a@b.com",
         dateOfBirth: "2000-01-01",
+        version: 1,
         shippingAddress: {
           country: "US",
           city: "New York",
@@ -84,6 +87,7 @@ describe("UserInfoComponent", () => {
         lastName: "Doe",
         email: "a@b.com",
         dateOfBirth: "2000-01-01",
+        version: 1,
         shippingAddress: {
           country: "US",
           city: "New York",

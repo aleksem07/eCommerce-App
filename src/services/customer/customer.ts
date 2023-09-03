@@ -8,6 +8,12 @@ import {
   Customer as CustomerResponse,
   Address as AddressResponse,
   CustomerDraft,
+  CustomerUpdate,
+  CustomerSetFirstNameAction,
+  CustomerSetLastNameAction,
+  CustomerEmailChangedMessage,
+  CustomerChangeEmailAction,
+  CustomerSetDateOfBirthAction,
 } from "@commercetools/platform-sdk";
 import { Address, Customer, CustomerInfo } from "./customer.types";
 
@@ -54,6 +60,7 @@ export default class CustomerService extends ClientBuilderService {
       dateOfBirth: customerResponse.dateOfBirth || "",
       shippingAddress: this.getShippingAddress(customerResponse),
       billingAddress: this.getBillingAddress(customerResponse),
+      version: customerResponse.version,
     };
   }
 
@@ -108,20 +115,21 @@ export default class CustomerService extends ClientBuilderService {
   }
 
   async updateInfo(customerInfo: CustomerInfo) {
-    const token = this.authService.retrieveToken();
-    const draft = this.mapCustomerToCustomerDraft(customerInfo);
+    const token = await this.authService.retrieveToken();
+    const updateActions = this.updateCustomerInfo(customerInfo);
 
     try {
-      // TODO: data is not saved to API
       await this.apiRoot
         .withProjectKey({ projectKey: this.projectKey })
         .customers()
+        .withId({ ID: customerInfo.id })
         .post({
-          body: draft,
+          body: updateActions,
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        });
+        })
+        .execute();
 
       eventBusService.publish(Events.showNotification, {
         variant: NotificationVariant.success,
@@ -136,12 +144,30 @@ export default class CustomerService extends ClientBuilderService {
     }
   }
 
-  private mapCustomerToCustomerDraft(customer: CustomerInfo): CustomerDraft {
-    return {
+  private updateCustomerInfo(customer: CustomerInfo): CustomerUpdate {
+    const setFirstNameAction: CustomerSetFirstNameAction = {
       firstName: customer.firstName,
+      action: "setFirstName",
+    };
+
+    const setLastNameAction: CustomerSetLastNameAction = {
       lastName: customer.lastName,
+      action: "setLastName",
+    };
+
+    const setEmailAction: CustomerChangeEmailAction = {
       email: customer.email,
+      action: "changeEmail",
+    };
+
+    const setDateOfBirthAction: CustomerSetDateOfBirthAction = {
       dateOfBirth: customer.dateOfBirth,
+      action: "setDateOfBirth",
+    };
+
+    return {
+      version: customer.version,
+      actions: [setFirstNameAction, setLastNameAction, setEmailAction, setDateOfBirthAction],
     };
   }
 }
