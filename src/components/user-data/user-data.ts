@@ -2,8 +2,9 @@ import UserInfoComponent from "@Components/user-info/user-info";
 import UserDataView from "./user-data.view";
 import UserPasswordComponent from "@Components/user-password/user-password";
 import UserAddressComponent from "@Components/user-address/user-address";
-import { Customer } from "@Services/customer/customer.types";
+import { Customer, CustomerInfo } from "@Services/customer/customer.types";
 import { UserDataFormData } from "./user-data.types";
+import CustomerService from "@Services/customer/customer";
 
 export default class UserDataComponent {
   private view: UserDataView;
@@ -14,10 +15,13 @@ export default class UserDataComponent {
   private formName = "user-data";
   private isEditMode = false;
   private customer: Customer;
+  private customerService: CustomerService;
 
   constructor(customer: Customer) {
     this.customer = customer;
     this.view = new UserDataView();
+    this.customerService = new CustomerService();
+
     this.instantiateComponents();
 
     this.view.submitFormListener(this.submitFormHandler.bind(this));
@@ -45,7 +49,19 @@ export default class UserDataComponent {
     }
   }
 
-  submitFormHandler(inputValues: UserDataFormData) {
+  private mapInputValuesToCustomer(inputValues: UserDataFormData): CustomerInfo {
+    return {
+      id: this.customer.id,
+      firstName: inputValues.get("first-name") || this.customer.firstName,
+      lastName: inputValues.get("last-name") || this.customer.lastName,
+      email: inputValues.get("email") || this.customer.email,
+      dateOfBirth: inputValues.get("date-of-birth") || this.customer.dateOfBirth,
+    };
+  }
+
+  async submitFormHandler(inputValues: UserDataFormData) {
+    const info = this.mapInputValuesToCustomer(inputValues);
+    await this.customerService.updateInfo(info);
     this.isEditMode = false;
     this.instantiateComponents();
     this.init();

@@ -8,6 +8,11 @@ export interface Customer {
   billingAddress?: Address;
 }
 
+export type CustomerInfo = Pick<
+  Customer,
+  "firstName" | "lastName" | "email" | "dateOfBirth" | "id"
+>;
+
 export interface Address {
   country: string;
   city: string;

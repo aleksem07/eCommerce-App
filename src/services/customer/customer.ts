@@ -7,8 +7,9 @@ import { HttpErrorType } from "@commercetools/sdk-client-v2";
 import {
   Customer as CustomerResponse,
   Address as AddressResponse,
+  CustomerDraft,
 } from "@commercetools/platform-sdk";
-import { Address, Customer } from "./customer.types";
+import { Address, Customer, CustomerInfo } from "./customer.types";
 
 export default class CustomerService extends ClientBuilderService {
   private authService: AuthService;
@@ -104,5 +105,43 @@ export default class CustomerService extends ClientBuilderService {
 
   private findAddressById(addresses: AddressResponse[], addressId?: string) {
     return addresses.find((address) => address.id === addressId);
+  }
+
+  async updateInfo(customerInfo: CustomerInfo) {
+    const token = this.authService.retrieveToken();
+    const draft = this.mapCustomerToCustomerDraft(customerInfo);
+
+    try {
+      // TODO: data is not saved to API
+      await this.apiRoot
+        .withProjectKey({ projectKey: this.projectKey })
+        .customers()
+        .post({
+          body: draft,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+      eventBusService.publish(Events.showNotification, {
+        variant: NotificationVariant.success,
+        message: "Saved successfully",
+      });
+    } catch (error) {
+      const httpError = error as HttpErrorType;
+      eventBusService.publish(Events.showNotification, {
+        variant: NotificationVariant.danger,
+        message: httpError.message,
+      });
+    }
+  }
+
+  private mapCustomerToCustomerDraft(customer: CustomerInfo): CustomerDraft {
+    return {
+      firstName: customer.firstName,
+      lastName: customer.lastName,
+      email: customer.email,
+      dateOfBirth: customer.dateOfBirth,
+    };
   }
 }
