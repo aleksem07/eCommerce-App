@@ -1,14 +1,19 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
 
 export default class UserMenuView extends ViewBuilder {
-  listGroup: HTMLDivElement;
-  fullName: string;
-  email: string;
+  private listGroup: HTMLDivElement;
+  private fullName: string;
+  private email: string;
+
+  private linkProfile: HTMLButtonElement;
+  private signOut: HTMLButtonElement;
 
   constructor(fullName: string, email: string) {
     super();
     this.fullName = fullName;
     this.email = email;
+    this.linkProfile = this.createIconLinkItem("My profile", "bi-person", true);
+    this.signOut = this.createIconLinkItem("Sign out", "bi-box-arrow-right");
     this.listGroup = this.createListGroup();
   }
 
@@ -18,10 +23,8 @@ export default class UserMenuView extends ViewBuilder {
     });
 
     const activeItem = this.createListGroupItem(this.fullName, this.email);
-    const linkItem1 = this.createIconLinkItem("My profile", "bi-person", true);
-    const linkItem2 = this.createIconLinkItem("Sign out", "bi-box-arrow-right");
 
-    listGroup.append(activeItem, linkItem1, linkItem2);
+    listGroup.append(activeItem, this.linkProfile, this.signOut);
 
     return listGroup;
   }
@@ -63,6 +66,12 @@ export default class UserMenuView extends ViewBuilder {
     item.prepend(icon);
 
     return item;
+  }
+
+  signOutClickListener(handler: () => void) {
+    this.signOut.addEventListener("click", () => {
+      handler();
+    });
   }
 
   render(): HTMLElement {
