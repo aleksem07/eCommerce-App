@@ -1,3 +1,4 @@
+import "./product-search.scss";
 import ProductSearchView from "./product-search.view";
 import FormControlComponent from "@Components/form-control/form-control";
 import eventBusService from "@Services/event-bus/event-bus";

@@ -4,7 +4,6 @@ import { Routes } from "@Services/router/router.types";
 export default class CategoryNavigationView extends ViewBuilder {
   private container: HTMLDivElement;
   private linksContainer: HTMLDivElement;
-  private searchContainer: HTMLDivElement;
   private nav: HTMLElement;
   private wrapper: HTMLElement;
   private button: HTMLButtonElement;
@@ -24,9 +23,6 @@ export default class CategoryNavigationView extends ViewBuilder {
     this.wrapper.id = "category-navigation";
     this.linksContainer = this.createElement("ul", {
       classes: ["navbar-nav"],
-    });
-    this.searchContainer = this.createElement("div", {
-      classes: ["d-md-flex"],
     });
     this.button = this.createElement("button", {
       classes: ["navbar-toggler", "collapsed"],
@@ -53,14 +49,13 @@ export default class CategoryNavigationView extends ViewBuilder {
     return link;
   }
 
-  render(linksList: HTMLElement[], searchProduct: HTMLElement) {
+  render(linksList: HTMLElement[], searchProducts: HTMLElement) {
     linksList.map((category) => {
       this.linksContainer.append(category);
     });
     this.wrapper.prepend(this.linksContainer);
-    this.searchContainer.append(searchProduct);
     this.container.append(this.wrapper);
-    this.container.append(this.searchContainer);
+    this.container.append(searchProducts);
 
     this.nav.append(this.container);
 
