@@ -8,14 +8,14 @@ export default class FormSelectComponent {
   form: string;
   inputName: string;
 
-  constructor({ formName, inputName, labelText, helpText, options, className }: FormSelectProps) {
+  constructor({ formName, inputName, labelText, helpText, options, classes }: FormSelectProps) {
     this.view = new FormSelectView({
       formName,
       inputName,
       labelText,
       helpText,
       options,
-      className,
+      classes,
     });
     this.validator = new ValidatorUtil();
 
