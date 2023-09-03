@@ -1,4 +1,4 @@
-import CategoryListComponent from "@Components/category-list/category-navigation-list";
+import CategoryListComponent from "@Components/category-navigation-list/category-navigation-list";
 import CategoryNavigationView from "./category-navigation.view";
 import CategoryService from "@Services/category/category";
 import { Category } from "@Services/category/category.types";
