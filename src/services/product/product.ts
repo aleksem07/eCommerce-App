@@ -199,7 +199,10 @@ export default class ProductService extends ClientBuilderService {
       }
     } catch (error) {
       const httpError = error as HttpErrorType;
-      eventBusService.publish(Events.errorOccurred, httpError);
+      eventBusService.publish(Events.showNotification, {
+        variant: NotificationVariant.danger,
+        message: httpError.message,
+      });
     }
   }
 
@@ -228,5 +231,37 @@ export default class ProductService extends ClientBuilderService {
       color && color.length > 0 ? `variants.attributes.color.key:${formatArray(color)}` : "";
 
     return { sizeFilter, colorFilter };
+  }
+
+  async searchProducts(search: string) {
+    try {
+      const token = await this.authService.retrieveToken();
+
+      if (token) {
+        const { body } = await this.apiRoot
+          .withProjectKey({ projectKey: this.projectKey })
+          .productProjections()
+          .search()
+          .get({
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            queryArgs: {
+              "text.en": search,
+              fuzzy: true,
+              sort: ["name.en asc"],
+            },
+          })
+          .execute();
+
+        return body.results.map(this.mapProductProjectionResponseToProduct.bind(this));
+      }
+    } catch (error) {
+      const httpError = error as HttpErrorType;
+      eventBusService.publish(Events.showNotification, {
+        variant: NotificationVariant.danger,
+        message: httpError.message,
+      });
+    }
   }
 }

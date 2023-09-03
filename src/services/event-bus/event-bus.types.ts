@@ -14,6 +14,7 @@ export enum Events {
   showModal = "showModal",
   urlChanged = "urlChanged",
   renderProductSlider = "renderProductSlider",
+  searchValue = "searchValue",
 }
 
 export type EventCallback = (data?: EventData) => void;

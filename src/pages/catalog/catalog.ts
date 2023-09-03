@@ -37,6 +37,7 @@ export default class CatalogPage {
     eventBusService.subscribe(Events.resetFilters, this.handleResetFiltersClick.bind(this));
     eventBusService.subscribe(Events.minPriceFilterValue, this.handlePriceChange.bind(this));
     eventBusService.subscribe(Events.maxPriceFilterValue, this.handlePriceChange.bind(this));
+    eventBusService.subscribe(Events.searchValue, this.handleSearchChange.bind(this));
     eventBusService.subscribe(
       Events.filterBySize,
       this.handleFilterEvent(FilterAttributeType.size, this.sizesFilter)
@@ -151,6 +152,23 @@ export default class CatalogPage {
 
     if (filteredProducts) {
       const productListElement = this.productListComponent.init(filteredProducts);
+      this.view.displayProducts(productListElement);
+    }
+  }
+
+  private handleSearchChange(data?: EventData) {
+    const hasSearchValue = ObjectGuardUtil.hasProp<string>(data, "searchValue");
+
+    if (hasSearchValue) {
+      this.searchProducts(data.searchValue);
+    }
+  }
+
+  private async searchProducts(inputValue: string) {
+    const searchProducts = await this.productService.searchProducts(inputValue);
+
+    if (searchProducts) {
+      const productListElement = this.productListComponent.init(searchProducts);
       this.view.displayProducts(productListElement);
     }
   }
