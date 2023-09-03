@@ -97,6 +97,40 @@ describe("CustomerService", () => {
     });
   });
 
+  it("should return shipping and billing address when they are different", async () => {
+    const billingAddressMock = AddressTestData.random().buildRest<AddressResponse>();
+    const shippingAddressMock = AddressTestData.random().buildRest<AddressResponse>();
+    const customerMock = CustomerTestData.random()
+      .dateOfBirth("2000-01-01")
+      .addresses([billingAddressMock, shippingAddressMock])
+      .billingAddressIds([String(billingAddressMock.id)])
+      .shippingAddressIds([String(shippingAddressMock.id)])
+      .defaultShippingAddressId(String(shippingAddressMock.id))
+      .buildRest<CustomerResponse>();
+    fetchMock.get(`${apiURL}/${projectKey}/me`, {
+      status: 200,
+      body: customerMock,
+    });
+    const instance = new CustomerService();
+
+    const customer = await instance.getUserInfo();
+
+    expect(customer?.billingAddress).toEqual<Address>({
+      city: String(billingAddressMock.city),
+      country: String(billingAddressMock.country),
+      postalCode: String(billingAddressMock.postalCode),
+      streetName: String(billingAddressMock.streetName),
+      isDefaultAddress: false,
+    });
+    expect(customer?.shippingAddress).toEqual<Address>({
+      city: String(shippingAddressMock.city),
+      country: String(shippingAddressMock.country),
+      postalCode: String(shippingAddressMock.postalCode),
+      streetName: String(shippingAddressMock.streetName),
+      isDefaultAddress: true,
+    });
+  });
+
   it("should publish show notification when error occurred", async () => {
     fetchMock.get(`${apiURL}/${projectKey}/me`, {
       status: 500,

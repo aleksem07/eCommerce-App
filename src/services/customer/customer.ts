@@ -74,6 +74,7 @@ export default class CustomerService extends ClientBuilderService {
       customerResponse.billingAddressIds?.some(
         (id) => customerResponse.shippingAddressIds?.includes(id)
       ) || false;
+
     const billingAddress = this.findAddressById(
       customerResponse.addresses,
       customerResponse.billingAddressIds?.[0] || customerResponse.defaultBillingAddressId
