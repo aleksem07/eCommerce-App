@@ -3,8 +3,8 @@ import ClientBuilderService from "@Services/client-builder/client-builder";
 import {
   Price as PriceResponse,
   Product as ProductResponse,
-  ProductProjection as ProductProjectionResponse,
   Image as ImageResponse,
+  ProductProjection,
 } from "@commercetools/platform-sdk";
 import { Price, Product, ProductFilters, PriceRange } from "./product.types";
 import eventBusService from "@Services/event-bus/event-bus";
@@ -71,6 +71,54 @@ export default class ProductService extends ClientBuilderService {
         message: httpError.message,
       });
     }
+  }
+
+  async getProductsByCategory(categoryId: string) {
+    try {
+      const token = await this.authService.retrieveToken();
+
+      if (token) {
+        const result = await this.apiRoot
+          .withProjectKey({ projectKey: this.projectKey })
+          .productProjections()
+          .search()
+          .get({
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            queryArgs: {
+              filter: [`categories.id:"${categoryId}"`],
+            },
+          })
+          .execute();
+
+        return result.body.results.map((res) => this.mapProductProjectionToProduct(res));
+      }
+    } catch (error) {
+      const httpError = error as HttpErrorType;
+      eventBusService.publish(Events.showNotification, {
+        variant: NotificationVariant.danger,
+        message: httpError.message,
+      });
+    }
+  }
+
+  private mapProductProjectionToProduct(productProjection: ProductProjection): Product {
+    const attributes = productProjection.masterVariant.attributes;
+
+    const size = attributes?.find((attribute) => attribute.name === "size")?.value || "";
+    const color = attributes?.find((attribute) => attribute.name === "color")?.value?.key || "";
+
+    return {
+      id: productProjection.id,
+      title: productProjection.name.en,
+      description: productProjection.description?.en || "product description",
+      images: this.mapProductImages(productProjection.masterVariant.images),
+      price: this.getPrice(productProjection.masterVariant.prices),
+      discountedPrice: this.getDiscountedPrice(productProjection.masterVariant.prices),
+      color,
+      size,
+    };
   }
 
   private mapProductResponseToProduct(productResponse: ProductResponse): Product {
@@ -149,7 +197,7 @@ export default class ProductService extends ClientBuilderService {
           })
           .execute();
 
-        return body.results.map(this.mapProductProjectionResponseToProduct.bind(this));
+        return body.results.map(this.mapProductProjectionToProduct.bind(this));
       }
     } catch (error) {
       const httpError = error as HttpErrorType;
@@ -158,19 +206,6 @@ export default class ProductService extends ClientBuilderService {
         message: httpError.message,
       });
     }
-  }
-
-  private mapProductProjectionResponseToProduct(
-    productProjectionResponse: ProductProjectionResponse
-  ) {
-    return {
-      id: productProjectionResponse.id,
-      title: productProjectionResponse.name.en,
-      description: productProjectionResponse.description?.en || "product description",
-      images: this.mapProductImages(productProjectionResponse.masterVariant.images),
-      price: this.getPrice(productProjectionResponse.masterVariant.prices),
-      discountedPrice: this.getDiscountedPrice(productProjectionResponse.masterVariant.prices),
-    };
   }
 
   public generateFilters(

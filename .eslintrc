@@ -18,6 +18,7 @@
     "jest/globals": true
   },
   "rules": {
+    "curly": "error",
     "object-shorthand": ["error", "always"],
     "no-plusplus": "off",
     "max-len": ["error", 100],

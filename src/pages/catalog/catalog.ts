@@ -7,6 +7,9 @@ import eventBusService from "@Services/event-bus/event-bus";
 import { Events, EventData } from "@Services/event-bus/event-bus.types";
 import ObjectGuardUtil from "@Utils/object-guard/object-guard";
 import { FilterAttributeType } from "./catalog.types";
+import RouterService from "@Services/router/router";
+import { Routes } from "@Services/router/router.types";
+import { NotificationVariant } from "@Components/notification/notification.types";
 
 export default class CatalogPage {
   private view: CatalogView;
@@ -21,6 +24,8 @@ export default class CatalogPage {
     minPrice: string;
     maxPrice: string;
   };
+
+  private id?: string;
 
   constructor() {
     this.view = new CatalogView();
@@ -109,6 +114,31 @@ export default class CatalogPage {
     this.sendFiltersToProductService();
   }
 
+  private async checkCategoryExists() {
+    const [, ...rest] = window.location.href.split("-");
+    this.id = rest.join("-");
+
+    if (!this.id) {
+      RouterService.navigateTo(Routes.NOT_FOUND);
+      eventBusService.publish(Events.showNotification, {
+        variant: NotificationVariant.info,
+        message: "Category not found",
+      });
+    } else {
+      const products = await this.productService.getProductsByCategory(this.id);
+
+      if (products) {
+        const productListElement = this.productListComponent.init(products);
+        this.view.displayProducts(productListElement);
+        const colors = products.map((product) => product.color);
+        const sizes = products.map((product) => product.size);
+        eventBusService.publish(Events.fetchProductsSuccessfully, { colors, sizes });
+      } else {
+        RouterService.navigateTo(Routes.NOT_FOUND);
+      }
+    }
+  }
+
   private async fetchProducts() {
     const products = await this.productService.getAll();
 
@@ -160,7 +190,7 @@ export default class CatalogPage {
     this.resetDataFilter();
     this.view.displayToolbar(this.sort.init());
     this.view.displaySidebar(this.filter.init());
-    this.fetchProducts();
+    this.checkCategoryExists();
     this.view.render();
   }
 }
