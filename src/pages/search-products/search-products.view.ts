@@ -8,7 +8,7 @@ export default class SearchProductsView extends ViewBuilder {
     super();
     this.element = this.createElement("div", {
       id: "search",
-      classes: ["container", "mt-5"],
+      classes: ["container", "mt-5", "mb-4"],
     });
     this.returnButton = this.createElement("button", {
       classes: ["btn", "btn-primary", "mb-4"],
