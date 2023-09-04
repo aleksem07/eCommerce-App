@@ -222,4 +222,36 @@ export default class ProductService extends ClientBuilderService {
 
     return filters;
   }
+
+  async searchProducts(search: string) {
+    try {
+      const token = await this.authService.retrieveToken();
+
+      if (token) {
+        const { body } = await this.apiRoot
+          .withProjectKey({ projectKey: this.projectKey })
+          .productProjections()
+          .search()
+          .get({
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            queryArgs: {
+              "text.en": search,
+              fuzzy: true,
+              sort: ["name.en asc"],
+            },
+          })
+          .execute();
+
+        return body.results.map(this.mapProductProjectionToProduct.bind(this));
+      }
+    } catch (error) {
+      const httpError = error as HttpErrorType;
+      eventBusService.publish(Events.showNotification, {
+        variant: NotificationVariant.danger,
+        message: httpError.message,
+      });
+    }
+  }
 }

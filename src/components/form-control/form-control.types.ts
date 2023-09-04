@@ -8,4 +8,5 @@ export interface FormControlProps {
   value?: string;
   min?: string;
   disabled?: boolean;
+  classes?: string[];
 }
