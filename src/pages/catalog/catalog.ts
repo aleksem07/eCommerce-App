@@ -58,11 +58,11 @@ export default class CatalogPage {
   private async handleResetFiltersClick() {
     this.resetPriceRange();
     this.resetDataFilter();
+    await this.checkCategoryExists();
     const { sizeFilter, colorFilter } = this.productService.generateFilters(
       this.sizesFilter,
       this.colorsFilter
     );
-    await this.fetchProducts();
     this.filterProducts(sizeFilter, colorFilter, this.sortValue);
   }
 
@@ -80,7 +80,7 @@ export default class CatalogPage {
     return (data?: EventData) => {
       const hasAttribute = ObjectGuardUtil.hasProp<string>(data, attribute);
 
-      if (data && hasAttribute) {
+      if (hasAttribute) {
         const attributeValue = data[attribute] as string;
 
         if (!elements.includes(attributeValue)) {
@@ -142,18 +142,6 @@ export default class CatalogPage {
     }
   }
 
-  private async fetchProducts() {
-    const products = await this.productService.getAll();
-
-    if (products) {
-      const productListElement = this.productListComponent.init(products);
-      this.view.displayProducts(productListElement);
-      const colors = products.map((product) => product.color);
-      const sizes = products.map((product) => product.size);
-      eventBusService.publish(Events.fetchProductsSuccessfully, { colors, sizes });
-    }
-  }
-
   private getCurrentPriceRange() {
     return {
       minPrice: this.priceRange.minPrice,
@@ -166,7 +154,8 @@ export default class CatalogPage {
     const filteredProducts = await this.productService.filterProducts(
       { size, color },
       priceRange,
-      sort
+      sort,
+      this.id
     );
 
     if (filteredProducts) {

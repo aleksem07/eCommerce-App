@@ -88,6 +88,7 @@ export default class ProductService extends ClientBuilderService {
             },
             queryArgs: {
               filter: [`categories.id:"${categoryId}"`],
+              sort: ["createdAt asc"],
             },
           })
           .execute();
@@ -173,7 +174,13 @@ export default class ProductService extends ClientBuilderService {
     return centAmount ? Number((centAmount / 100).toFixed(2)) : 0;
   }
 
-  async filterProducts(filters: ProductFilters, priceRange: PriceRange, sort: string) {
+  // eslint-disable-next-line max-params
+  async filterProducts(
+    filters: ProductFilters,
+    priceRange: PriceRange,
+    sort: string,
+    categoryId?: string
+  ) {
     try {
       const token = await this.authService.retrieveToken();
 
@@ -188,6 +195,7 @@ export default class ProductService extends ClientBuilderService {
             },
             queryArgs: {
               filter: [
+                `categories.id:"${categoryId}"`,
                 filters.size,
                 filters.color,
                 `variants.price.centAmount:range(${priceRange.minPrice} to ${priceRange.maxPrice})`,
