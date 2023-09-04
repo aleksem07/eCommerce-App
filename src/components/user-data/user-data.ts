@@ -17,18 +17,18 @@ export default class UserDataComponent {
   private customer: Customer;
   private customerService: CustomerService;
 
-  constructor(customer: Customer, isEditMode: boolean) {
+  constructor(customer: Customer) {
     this.customer = customer;
     this.view = new UserDataView();
     this.customerService = new CustomerService();
 
-    this.instantiateComponents(isEditMode);
+    this.instantiateComponents();
 
     this.view.submitFormListener(this.submitFormHandler.bind(this));
     this.view.editButtonListener(this.editButtonHandler.bind(this));
   }
 
-  private instantiateComponents(isEditMode = false) {
+  private instantiateComponents() {
     this.userInfo = new UserInfoComponent(this.formName, this.customer);
     this.userPassword = new UserPasswordComponent(this.formName);
 

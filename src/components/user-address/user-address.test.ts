@@ -12,7 +12,6 @@ describe("UserAddressComponent", () => {
         postalCode: "12345",
         isDefaultAddress: true,
       },
-      isEditMode: false,
     });
     expect(instance).toBeInstanceOf(UserAddressComponent);
   });
@@ -28,7 +27,6 @@ describe("UserAddressComponent", () => {
         postalCode: "12345",
         isDefaultAddress: true,
       },
-      isEditMode: false,
     });
 
     const element = instance.init();
@@ -48,7 +46,6 @@ describe("UserAddressComponent", () => {
         postalCode: "12345",
         isDefaultAddress: true,
       },
-      isEditMode: false,
     });
 
     const element = instance.init();
@@ -68,7 +65,6 @@ describe("UserAddressComponent", () => {
         postalCode: "12345",
         isDefaultAddress: true,
       },
-      isEditMode: true,
     });
 
     const element = instance.init();
