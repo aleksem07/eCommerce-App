@@ -9,3 +9,10 @@ import "swiper/scss/effect-coverflow";
 import AppComponent from "@Components/app/app";
 
 new AppComponent();
+document.addEventListener("DOMContentLoaded", () => {
+  alert(
+    //TODO: удалить ивент лисенер
+    // eslint-disable-next-line max-len
+    `Привет! Мы немного не успели доделать страницу профиля и хотели бы вас попросить проверить нашу работу завтра. Заранее спасибо!`
+  );
+});

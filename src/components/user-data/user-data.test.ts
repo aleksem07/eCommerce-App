@@ -8,6 +8,7 @@ describe("UserDataComponent", () => {
       lastName: "Doe",
       email: "a@b.com",
       dateOfBirth: "2000-01-01",
+      version: 1,
       shippingAddress: {
         country: "US",
         city: "New York",
@@ -26,6 +27,7 @@ describe("UserDataComponent", () => {
       lastName: "Doe",
       email: "a@b.com",
       dateOfBirth: "2000-01-01",
+      version: 1,
       shippingAddress: {
         country: "US",
         city: "New York",
@@ -37,7 +39,9 @@ describe("UserDataComponent", () => {
 
     const element = instance.init();
 
-    const billingAddressInputs = element.querySelectorAll("input[id^=user-data-billing-address]");
+    const billingAddressInputs = element.querySelectorAll(
+      "input[id^=user-address-billing-address]"
+    );
     expect(billingAddressInputs).toHaveLength(0);
   });
 
@@ -48,6 +52,7 @@ describe("UserDataComponent", () => {
       lastName: "Doe",
       email: "a@b.com",
       dateOfBirth: "2000-01-01",
+      version: 1,
       shippingAddress: {
         country: "US",
         city: "New York",
@@ -66,7 +71,9 @@ describe("UserDataComponent", () => {
 
     const element = instance.init();
 
-    const billingAddressInputs = element.querySelectorAll("input[id^=user-data-billing-address]");
+    const billingAddressInputs = element.querySelectorAll(
+      "input[id^=user-address-billing-address]"
+    );
     expect(billingAddressInputs).toHaveLength(4);
   });
 });

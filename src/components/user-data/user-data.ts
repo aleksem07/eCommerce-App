@@ -6,31 +6,32 @@ import { Customer } from "@Services/customer/customer.types";
 
 export default class UserDataComponent {
   private view: UserDataView;
-  private userInfo: UserInfoComponent;
-  private userPassword: UserPasswordComponent;
-  private userShippingAddress: UserAddressComponent;
+  private userInfo!: UserInfoComponent;
+  private userPassword!: UserPasswordComponent;
+  private userShippingAddress!: UserAddressComponent;
   private userBillingAddress?: UserAddressComponent;
-  private formName = "user-data";
-  private isEditMode = false;
+  private customer: Customer;
 
   constructor(customer: Customer) {
+    this.customer = customer;
     this.view = new UserDataView();
-    this.userInfo = new UserInfoComponent(this.formName, customer, this.isEditMode);
-    this.userPassword = new UserPasswordComponent(this.formName, this.isEditMode);
+
+    this.instantiateComponents();
+  }
+
+  private instantiateComponents() {
+    this.userInfo = new UserInfoComponent(this.customer);
+    this.userPassword = new UserPasswordComponent(this.customer);
 
     this.userShippingAddress = new UserAddressComponent({
       header: "Shipping Address",
-      formName: this.formName,
-      address: customer.shippingAddress,
-      isEditMode: this.isEditMode,
+      address: this.customer.shippingAddress,
     });
 
-    if (customer.billingAddress) {
+    if (this.customer.billingAddress) {
       this.userBillingAddress = new UserAddressComponent({
         header: "Billing Address",
-        formName: this.formName,
-        address: customer.billingAddress,
-        isEditMode: this.isEditMode,
+        address: this.customer.billingAddress,
       });
     }
   }
@@ -41,6 +42,11 @@ export default class UserDataComponent {
     const userInfo = this.userInfo.init();
     const userPassword = this.userPassword.init();
 
-    return this.view.render({ userInfo, userPassword, userShippingAddress, userBillingAddress });
+    return this.view.render({
+      userInfo,
+      userPassword,
+      userShippingAddress,
+      userBillingAddress,
+    });
   }
 }
