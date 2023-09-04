@@ -15,7 +15,7 @@ export default class CategoryNavigationView extends ViewBuilder {
       classes: ["bg-body-tertiary", "navbar", "navbar-expand-md", "border-bottom"],
     });
     this.container = this.createElement("div", {
-      classes: ["container", "justify-content-space-between"],
+      classes: ["container", "justify-content-space-between", "g-0"],
     });
     this.wrapper = this.createElement("div", {
       classes: ["navbar-collapse", "collapse"],
@@ -54,8 +54,7 @@ export default class CategoryNavigationView extends ViewBuilder {
       this.linksContainer.append(category);
     });
     this.wrapper.prepend(this.linksContainer);
-    this.container.append(this.wrapper);
-    this.container.append(searchProducts);
+    this.container.append(this.wrapper, searchProducts);
 
     this.nav.append(this.container);
 

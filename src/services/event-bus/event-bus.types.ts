@@ -14,7 +14,7 @@ export enum Events {
   showModal = "showModal",
   urlChanged = "urlChanged",
   renderProductSlider = "renderProductSlider",
-  searchValue = "searchValue",
+  searchProducts = "searchProducts",
   sortProducts = "sortProducts",
 }
 

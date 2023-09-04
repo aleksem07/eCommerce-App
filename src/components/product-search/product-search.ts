@@ -36,7 +36,7 @@ export default class ProductSearchComponent {
       }
 
       this.inputChangeTimer = setTimeout(() => {
-        eventBusService.publish(Events.searchValue, { searchValue });
+        eventBusService.publish(Events.searchProducts, { searchValue });
       }, 500);
     }
   }
