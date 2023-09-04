@@ -9,7 +9,7 @@ export default class BreadCrumbsView extends ViewBuilder {
 
   constructor() {
     super();
-    this.element = this.createElement("nav", { classes: ["container"] });
+    this.element = this.createElement("nav", { classes: ["container", "pt-4"] });
     this.element.setAttribute("aria-label", "breadcrumb");
     this.breadCrumbList = this.createElement("ol", {
       classes: ["breadcrumb"],
