@@ -193,6 +193,10 @@ export default class CustomerService extends ClientBuilderService {
         })
         .execute();
 
+      if (body) {
+        this.authService.signIn(body.email, newPassword);
+      }
+
       eventBusService.publish(Events.showNotification, {
         variant: NotificationVariant.success,
         message: "Password changed successfully",

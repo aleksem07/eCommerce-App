@@ -66,7 +66,14 @@ export default class UserPasswordComponent {
     const newPassword = inputValues.get("new-password");
     const confirmPassword = inputValues.get("confirm-password");
 
-    if (areValuesValid && newPassword === confirmPassword) {
+    if (newPassword !== confirmPassword) {
+      eventBusService.publish(Events.showNotification, {
+        variant: NotificationVariant.danger,
+        message: "Passwords do not match",
+      });
+    }
+
+    if (areValuesValid) {
       const customer = this.mapInputValuesToPassword();
 
       if (newPassword && currentPassword) {
