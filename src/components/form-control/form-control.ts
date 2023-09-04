@@ -17,6 +17,7 @@ export default class FormControlComponent {
     type,
     value,
     disabled,
+    classes,
   }: FormControlProps) {
     this.view = new FormControlView({
       formName,
@@ -27,6 +28,7 @@ export default class FormControlComponent {
       type,
       value,
       disabled,
+      classes,
     });
     this.validator = new ValidatorUtil();
 
