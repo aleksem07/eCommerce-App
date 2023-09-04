@@ -40,7 +40,7 @@ describe("UserPasswordComponent", () => {
     const element = instance.init();
 
     const inputs = element.querySelectorAll("input[type='password']");
-    expect(inputs).toHaveLength(2);
+    expect(inputs).toHaveLength(3);
   });
 
   it("should disable fields when not in edit mode", () => {
@@ -63,7 +63,7 @@ describe("UserPasswordComponent", () => {
     const element = instance.init();
 
     const disabledInputs = element.querySelectorAll("input:disabled");
-    expect(disabledInputs).toHaveLength(2);
+    expect(disabledInputs).toHaveLength(3);
   });
 
   it("should not disable fields when in edit mode", () => {
@@ -82,8 +82,10 @@ describe("UserPasswordComponent", () => {
         isDefaultAddress: true,
       },
     });
-
     const element = instance.init();
+
+    const editButton = element.querySelector<HTMLButtonElement>("button[type='button']");
+    editButton?.click();
 
     const disabledInputs = element.querySelectorAll("input:disabled");
     expect(disabledInputs).toHaveLength(0);

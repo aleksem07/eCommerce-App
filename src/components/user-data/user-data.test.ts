@@ -39,7 +39,9 @@ describe("UserDataComponent", () => {
 
     const element = instance.init();
 
-    const billingAddressInputs = element.querySelectorAll("input[id^=user-data-billing-address]");
+    const billingAddressInputs = element.querySelectorAll(
+      "input[id^=user-address-billing-address]"
+    );
     expect(billingAddressInputs).toHaveLength(0);
   });
 
@@ -69,7 +71,9 @@ describe("UserDataComponent", () => {
 
     const element = instance.init();
 
-    const billingAddressInputs = element.querySelectorAll("input[id^=user-data-billing-address]");
+    const billingAddressInputs = element.querySelectorAll(
+      "input[id^=user-address-billing-address]"
+    );
     expect(billingAddressInputs).toHaveLength(4);
   });
 });
