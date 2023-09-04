@@ -6,11 +6,9 @@ export default class UserInfoView extends ViewBuilder {
   private form: HTMLFormElement;
   private saveButton: HTMLButtonElement;
   private editButton: HTMLButtonElement;
-  private element: HTMLElement;
 
   constructor() {
     super();
-    this.element = this.createElement("div");
     this.header = this.createElement<HTMLHeadingElement>("h4", {
       classes: ["d-flex", "align-items-center", "justify-content-between"],
     });
@@ -76,7 +74,7 @@ export default class UserInfoView extends ViewBuilder {
     dateOfBirthInput,
     isEditMode,
   }: UserInfoElements) {
-    this.element.innerHTML = "";
+    this.form.innerHTML = "";
     this.toggleButtons(isEditMode);
 
     this.appendInputToColumn(firstNameInput);
@@ -84,8 +82,8 @@ export default class UserInfoView extends ViewBuilder {
     this.appendInputToColumn(emailInput);
     this.appendInputToColumn(dateOfBirthInput);
 
-    this.element.append(this.header, this.form);
+    this.form.prepend(this.header);
 
-    return this.element;
+    return this.form;
   }
 }

@@ -82,8 +82,10 @@ describe("UserInfoComponent", () => {
         isDefaultAddress: true,
       },
     });
-
     const element = instance.init();
+
+    const editButton = element.querySelector<HTMLButtonElement>("button[type='button']");
+    editButton?.click();
 
     const disabledInputs = element.querySelectorAll("input:disabled");
     expect(disabledInputs).toHaveLength(0);
