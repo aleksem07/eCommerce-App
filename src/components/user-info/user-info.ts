@@ -3,6 +3,10 @@ import UserInfoView from "./user-info.view";
 import { Customer, CustomerInfo } from "@Services/customer/customer.types";
 import CustomerService from "@Services/customer/customer";
 import { UserInfoFormData } from "./user-info.types";
+import ValidatorUtil from "@Utils/validator/validator";
+import eventBusService from "@Services/event-bus/event-bus";
+import { Events } from "@Services/event-bus/event-bus.types";
+import { NotificationVariant } from "@Components/notification/notification.types";
 
 export default class UserInfoComponent {
   private view: UserInfoView;
@@ -14,10 +18,12 @@ export default class UserInfoComponent {
   private isEditMode = false;
   private customer: Customer;
   private customerService: CustomerService;
+  private validator: ValidatorUtil;
 
   constructor(customer: Customer) {
     this.view = new UserInfoView();
     this.customerService = new CustomerService();
+    this.validator = new ValidatorUtil();
     this.customer = customer;
     this.instantiateComponents();
 
@@ -75,12 +81,27 @@ export default class UserInfoComponent {
 
   async submitFormHandler(inputValues: UserInfoFormData) {
     const info = this.mapInputValuesToCustomer(inputValues);
+    const areValuesValid = [...inputValues.entries()].every(
+      ([key, value]) => this.validator.validate(key, value)?.isValid
+    );
 
-    // TODO: check validation before server call
-    await this.customerService.updateInfo(info);
-    this.isEditMode = false;
-    this.instantiateComponents();
-    this.init();
+    if (areValuesValid) {
+      await this.customerService.updateInfo(info);
+
+      this.isEditMode = false;
+      this.instantiateComponents();
+      this.init();
+    } else {
+      this.firstNameInput.validate();
+      this.lastNameInput.validate();
+      this.emailInput.validate();
+      this.dateOfBirthInput.validate();
+
+      eventBusService.publish(Events.showNotification, {
+        variant: NotificationVariant.danger,
+        message: "Invalid input values",
+      });
+    }
   }
 
   editButtonHandler() {
