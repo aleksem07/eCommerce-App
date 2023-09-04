@@ -1,38 +1,24 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
+import { UserDataElements } from "./user-data.types";
 
 export default class UserDataView extends ViewBuilder {
-  private element: HTMLDivElement;
-  private header: HTMLHeadingElement;
-  private button: HTMLButtonElement;
+  element: HTMLDivElement;
+  header: HTMLHeadingElement;
 
   constructor() {
     super();
-    this.header = this.createElement("h1");
-    this.header.textContent = "My profile";
-
-    this.element = this.createElement("div");
-
-    this.button = this.createElement("button", { classes: ["btn", "btn-primary", "mt-4"] });
-    this.button.textContent = "Save changes";
+    this.element = this.createElement<HTMLDivElement>("div");
+    this.header = this.createElement<HTMLHeadingElement>("h1");
+    this.header.textContent = "My Profile";
   }
 
-  render({
-    userInfo,
-    userPassword,
-    userShippingAddress,
-    userBillingAddress,
-  }: {
-    userInfo: HTMLElement;
-    userPassword: HTMLElement;
-    userShippingAddress: HTMLElement;
-    userBillingAddress?: HTMLElement;
-  }) {
-    const elements = [this.header, userInfo, userPassword, userShippingAddress];
+  render({ userInfo, userPassword, userShippingAddress, userBillingAddress }: UserDataElements) {
+    const elements = [userInfo, userPassword, userShippingAddress];
 
     if (userBillingAddress) {
       elements.push(userBillingAddress);
     }
-    this.element.append(...elements, this.button);
+    this.element.append(this.header, ...elements);
 
     return this.element;
   }

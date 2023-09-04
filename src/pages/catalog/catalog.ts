@@ -10,12 +10,14 @@ import { FilterAttributeType } from "./catalog.types";
 import RouterService from "@Services/router/router";
 import { Routes } from "@Services/router/router.types";
 import { NotificationVariant } from "@Components/notification/notification.types";
+import CategoryService from "@Services/category/category";
 import BreadCrumbsComponent from "@Components/bread-crumbs/bread-crumbs";
 
 export default class CatalogPage {
   private view: CatalogView;
   private breadcrumbs: BreadCrumbsComponent;
   private productService: ProductService;
+  private categoryService: CategoryService;
   private productListComponent: ProductListComponent;
   private filter: FilterComponent;
   private sort: SortComponent;
@@ -33,6 +35,7 @@ export default class CatalogPage {
     this.view = new CatalogView();
     this.breadcrumbs = new BreadCrumbsComponent();
     this.productService = new ProductService();
+    this.categoryService = new CategoryService();
     this.productListComponent = new ProductListComponent();
     this.filter = new FilterComponent();
     this.sort = new SortComponent();
@@ -128,7 +131,12 @@ export default class CatalogPage {
         message: "Category not found",
       });
     } else {
+      const category = await this.categoryService.getById(this.id);
       const products = await this.productService.getProductsByCategory(this.id);
+
+      if (category) {
+        this.view.displayHeader(category.name);
+      }
 
       if (products) {
         const productListElement = this.productListComponent.init(products);

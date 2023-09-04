@@ -7,8 +7,14 @@ import { HttpErrorType } from "@commercetools/sdk-client-v2";
 import {
   Customer as CustomerResponse,
   Address as AddressResponse,
+  CustomerUpdate,
+  CustomerSetFirstNameAction,
+  CustomerSetLastNameAction,
+  CustomerChangeEmailAction,
+  CustomerSetDateOfBirthAction,
+  CustomerChangePassword,
 } from "@commercetools/platform-sdk";
-import { Address, Customer } from "./customer.types";
+import { Address, Customer, CustomerInfo, CustomerPassword } from "./customer.types";
 
 export default class CustomerService extends ClientBuilderService {
   private authService: AuthService;
@@ -53,6 +59,7 @@ export default class CustomerService extends ClientBuilderService {
       dateOfBirth: customerResponse.dateOfBirth || "",
       shippingAddress: this.getShippingAddress(customerResponse),
       billingAddress: this.getBillingAddress(customerResponse),
+      version: customerResponse.version,
     };
   }
 
@@ -104,5 +111,117 @@ export default class CustomerService extends ClientBuilderService {
 
   private findAddressById(addresses: AddressResponse[], addressId?: string) {
     return addresses.find((address) => address.id === addressId);
+  }
+
+  async updateInfo(customerInfo: CustomerInfo): Promise<Customer | undefined> {
+    const token = await this.authService.retrieveToken();
+    const updateActions = this.updateCustomerInfo(customerInfo);
+
+    try {
+      const { body } = await this.apiRoot
+        .withProjectKey({ projectKey: this.projectKey })
+        .customers()
+        .withId({ ID: customerInfo.id })
+        .post({
+          body: updateActions,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .execute();
+
+      eventBusService.publish(Events.showNotification, {
+        variant: NotificationVariant.success,
+        message: "Saved successfully",
+      });
+
+      return this.mapCustomerResponseToCustomer(body);
+    } catch (error) {
+      const httpError = error as HttpErrorType;
+      eventBusService.publish(Events.showNotification, {
+        variant: NotificationVariant.danger,
+        message: httpError.message,
+      });
+    }
+  }
+
+  private updateCustomerInfo(customer: CustomerInfo): CustomerUpdate {
+    const setFirstNameAction: CustomerSetFirstNameAction = {
+      firstName: customer.firstName,
+      action: "setFirstName",
+    };
+
+    const setLastNameAction: CustomerSetLastNameAction = {
+      lastName: customer.lastName,
+      action: "setLastName",
+    };
+
+    const setEmailAction: CustomerChangeEmailAction = {
+      email: customer.email,
+      action: "changeEmail",
+    };
+
+    const setDateOfBirthAction: CustomerSetDateOfBirthAction = {
+      dateOfBirth: customer.dateOfBirth,
+      action: "setDateOfBirth",
+    };
+
+    return {
+      version: customer.version,
+      actions: [setFirstNameAction, setLastNameAction, setEmailAction, setDateOfBirthAction],
+    };
+  }
+
+  async updatePassword(
+    customer: CustomerPassword,
+    currentPassword: string,
+    newPassword: string
+  ): Promise<Customer | undefined> {
+    const token = await this.authService.retrieveToken();
+    const passwordData = this.updateCustomerPassword(customer, currentPassword, newPassword);
+
+    try {
+      const { body } = await this.apiRoot
+        .withProjectKey({ projectKey: this.projectKey })
+        .customers()
+        .password()
+        .post({
+          body: passwordData,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .execute();
+
+      if (body) {
+        this.authService.signIn(body.email, newPassword);
+      }
+
+      eventBusService.publish(Events.showNotification, {
+        variant: NotificationVariant.success,
+        message: "Password changed successfully",
+      });
+
+      return this.mapCustomerResponseToCustomer(body);
+    } catch (error) {
+      const httpError = error as HttpErrorType;
+      eventBusService.publish(Events.showNotification, {
+        variant: NotificationVariant.danger,
+        message: httpError.message,
+      });
+    }
+  }
+
+  private updateCustomerPassword(
+    customer: CustomerPassword,
+    currentPassword: string,
+    newPassword: string
+  ): CustomerChangePassword {
+    return {
+      id: customer.id,
+      currentPassword,
+      newPassword,
+      version: customer.version,
+    };
   }
 }

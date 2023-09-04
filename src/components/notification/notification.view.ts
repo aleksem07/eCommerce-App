@@ -54,6 +54,7 @@ export default class NotificationView extends ViewBuilder {
   }
 
   setVariant(variant: NotificationVariant): string {
+    this.toast.classList.remove("text-bg-primary", "text-bg-danger", "text-bg-success");
     switch (variant) {
       case "success":
         return "text-bg-success";

@@ -49,7 +49,7 @@ export default class CategoryService extends ClientBuilderService {
     }
   }
 
-  async getCategory(id: string) {
+  async getById(id: string): Promise<Category | undefined> {
     try {
       const token = await this.authService.retrieveToken();
 
@@ -65,14 +65,20 @@ export default class CategoryService extends ClientBuilderService {
           })
           .execute();
 
-        const category = this.buildCategoryStructure([body]);
-
-        return category;
+        return this.mapCategoryResponseToCategory(body);
       }
     } catch (error) {
       const httpError = error as HttpErrorType;
       eventBusService.publish(Events.errorOccurred, httpError);
     }
+  }
+
+  private mapCategoryResponseToCategory(response: CategoryResponse): Category {
+    return {
+      id: response.id,
+      name: response.name.en,
+      children: [],
+    };
   }
 
   private buildCategoryStructure(categories: CategoryResponse[]): Category[] {
