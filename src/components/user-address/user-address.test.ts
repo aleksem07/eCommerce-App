@@ -4,7 +4,6 @@ describe("UserAddressComponent", () => {
   it("should instantiate", () => {
     const instance = new UserAddressComponent({
       header: "Shipping Address",
-      formName: "user-data",
       address: {
         country: "US",
         city: "New York",
@@ -19,7 +18,6 @@ describe("UserAddressComponent", () => {
   it("should render address fields", () => {
     const instance = new UserAddressComponent({
       header: "Shipping Address",
-      formName: "user-data",
       address: {
         country: "US",
         city: "New York",
@@ -38,7 +36,6 @@ describe("UserAddressComponent", () => {
   it("should disable fields when is not in edit mode", () => {
     const instance = new UserAddressComponent({
       header: "Shipping Address",
-      formName: "user-data",
       address: {
         country: "US",
         city: "New York",
@@ -57,7 +54,6 @@ describe("UserAddressComponent", () => {
   it("should not disable fields when is in edit mode", () => {
     const instance = new UserAddressComponent({
       header: "Shipping Address",
-      formName: "user-data",
       address: {
         country: "US",
         city: "New York",

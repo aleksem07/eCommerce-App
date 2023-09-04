@@ -2,7 +2,7 @@ import UserInfoComponent from "./user-info";
 
 describe("UserInfoComponent", () => {
   it("should instantiate", () => {
-    const instance = new UserInfoComponent("data", {
+    const instance = new UserInfoComponent({
       id: "1",
       firstName: "John",
       lastName: "Doe",
@@ -21,7 +21,7 @@ describe("UserInfoComponent", () => {
   });
 
   it("should render address fields", () => {
-    const instance = new UserInfoComponent("data", {
+    const instance = new UserInfoComponent({
       id: "1",
       firstName: "John",
       lastName: "Doe",
@@ -44,7 +44,7 @@ describe("UserInfoComponent", () => {
   });
 
   it("should disable fields when is not in edit mode", () => {
-    const instance = new UserInfoComponent("data", {
+    const instance = new UserInfoComponent({
       id: "1",
       firstName: "John",
       lastName: "Doe",
@@ -67,7 +67,7 @@ describe("UserInfoComponent", () => {
   });
 
   it("should not disable fields when is in edit mode", () => {
-    const instance = new UserInfoComponent("data", {
+    const instance = new UserInfoComponent({
       id: "1",
       firstName: "John",
       lastName: "Doe",

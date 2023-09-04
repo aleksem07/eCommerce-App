@@ -10,12 +10,12 @@ export default class UserAddressComponent {
   private streetInput: FormControlComponent;
   private postalCodeInput: FormControlComponent;
   private isDefaultAddress: FormCheckComponent;
-  private formName: string;
+  private formName = "user-address";
   private isEditMode = false;
 
-  constructor({ header, formName, address }: UserAddressProps) {
+  constructor({ header, address }: UserAddressProps) {
     this.view = new UserAddressView(header);
-    this.formName = `${formName}-${header.toLowerCase().replace(" ", "-")}`;
+    this.formName = `${this.formName}-${header.toLowerCase().replace(" ", "-")}`;
     this.countryInput = new FormControlComponent({
       formName: this.formName,
       inputName: "country",

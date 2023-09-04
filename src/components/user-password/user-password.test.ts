@@ -2,12 +2,12 @@ import UserPasswordComponent from "./user-password";
 
 describe("UserPasswordComponent", () => {
   it("should instantiate", () => {
-    const instance = new UserPasswordComponent("user");
+    const instance = new UserPasswordComponent();
     expect(instance).toBeInstanceOf(UserPasswordComponent);
   });
 
   it("should render password fields", () => {
-    const instance = new UserPasswordComponent("user");
+    const instance = new UserPasswordComponent();
 
     const element = instance.init();
 
@@ -16,7 +16,7 @@ describe("UserPasswordComponent", () => {
   });
 
   it("should disable fields when not in edit mode", () => {
-    const instance = new UserPasswordComponent("user");
+    const instance = new UserPasswordComponent();
 
     const element = instance.init();
 
@@ -25,7 +25,7 @@ describe("UserPasswordComponent", () => {
   });
 
   it("should not disable fields when in edit mode", () => {
-    const instance = new UserPasswordComponent("user");
+    const instance = new UserPasswordComponent();
 
     const element = instance.init();
 

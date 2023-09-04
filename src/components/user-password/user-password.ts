@@ -5,12 +5,11 @@ export default class UserPasswordComponent {
   private view: UserPasswordView;
   private newPasswordInput: FormControlComponent;
   private confirmPasswordInput: FormControlComponent;
-  private formName: string;
+  private formName = "user-password";
   private isEditMode = false;
 
-  constructor(formName: string) {
+  constructor() {
     this.view = new UserPasswordView();
-    this.formName = formName;
 
     this.newPasswordInput = new FormControlComponent({
       formName: this.formName,
