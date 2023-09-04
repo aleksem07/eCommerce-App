@@ -3,7 +3,6 @@ import { ViewBuilder } from "@Interfaces/view-builder";
 export default class MainView extends ViewBuilder {
   container: HTMLElement;
   heading: HTMLHeadingElement;
-
   constructor() {
     super();
     this.container = this.createElement("div", {
