@@ -1,4 +1,4 @@
-import { date, string, ValidationError } from "yup";
+import { date, ref, string, ValidationError } from "yup";
 import { ValidationSchema, ValidationResult } from "./validator.types";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -7,6 +7,7 @@ dayjs.extend(customParseFormat);
 
 export default class ValidatorUtil {
   passwordSchema: ValidationSchema;
+  confirmPasswordSchema: ValidationSchema;
   emailSchema: ValidationSchema;
   nameSchema: ValidationSchema;
   postalCodeSchema: ValidationSchema;
@@ -24,14 +25,9 @@ export default class ValidatorUtil {
       .min(3)
       .required("Email is required");
 
-    this.passwordSchema = string()
-      .min(8, "Password must be at least 8 characters long")
-      .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
-      .matches(/[a-z]/, "Password must contain at least one lowercase letter")
-      .matches(/[0-9]/, "Password must contain at least one digit")
-      .matches(/^[^\s]+$/, "Password must not contain leading or trailing whitespace")
-      .matches(/[^A-Za-z0-9]/, "Password must contain at least one special character")
-      .required("Password is required");
+    this.passwordSchema = this.passwordSchemaCheck();
+
+    this.confirmPasswordSchema = this.passwordSchemaCheck();
 
     this.nameSchema = string()
       .transform((value) => value.trim().toUpperCase())
@@ -53,7 +49,18 @@ export default class ValidatorUtil {
       .required("Street address is required");
   }
 
-  postalCodeSchemaCheck(): ValidationSchema {
+  private passwordSchemaCheck(): ValidationSchema {
+    return string()
+      .min(8, "Password must be at least 8 characters long")
+      .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+      .matches(/[a-z]/, "Password must contain at least one lowercase letter")
+      .matches(/[0-9]/, "Password must contain at least one digit")
+      .matches(/^[^\s]+$/, "Password must not contain leading or trailing whitespace")
+      .matches(/[^A-Za-z0-9]/, "Password must contain at least one special character")
+      .required("Password is required");
+  }
+
+  private postalCodeSchemaCheck(): ValidationSchema {
     return string()
       .matches(
         /^(?:\d{5}(-\d{4})?|[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d)$/,
@@ -62,7 +69,7 @@ export default class ValidatorUtil {
       .required("Postal code is required");
   }
 
-  dateOfBirthSchemaCheck(): ValidationSchema {
+  private dateOfBirthSchemaCheck(): ValidationSchema {
     const now = dayjs();
     const minDate = dayjs("1900-01-01").toISOString();
     const maxDate = now.subtract(13, "year").toISOString();
@@ -73,7 +80,7 @@ export default class ValidatorUtil {
       .required("Date of birth is required");
   }
 
-  validatePassword(password: string): ValidationResult {
+  private validatePassword(password: string): ValidationResult {
     try {
       this.passwordSchema.validateSync(password);
 
@@ -90,7 +97,7 @@ export default class ValidatorUtil {
     }
   }
 
-  validateEmail(email: string): ValidationResult {
+  private validateEmail(email: string): ValidationResult {
     try {
       this.emailSchema.validateSync(email);
 
@@ -107,7 +114,7 @@ export default class ValidatorUtil {
     }
   }
 
-  validateField(schema: ValidationSchema, value: string | Date): ValidationResult {
+  private validateField(schema: ValidationSchema, value: string | Date): ValidationResult {
     try {
       schema.validateSync(value);
 
@@ -124,23 +131,23 @@ export default class ValidatorUtil {
     }
   }
 
-  validateName(name: string): ValidationResult {
+  private validateName(name: string): ValidationResult {
     return this.validateField(this.nameSchema, name);
   }
 
-  validateCountry(country: string): ValidationResult {
+  private validateCountry(country: string): ValidationResult {
     return this.validateField(this.countrySchema, country);
   }
 
-  validatePostalCode(postalCode: string): ValidationResult {
+  private validatePostalCode(postalCode: string): ValidationResult {
     return this.validateField(this.postalCodeSchema, postalCode);
   }
 
-  validateDateOfBirth(dateOfBirth: string | Date): ValidationResult {
+  private validateDateOfBirth(dateOfBirth: string | Date): ValidationResult {
     return this.validateField(this.dateOfBirthSchema, dateOfBirth);
   }
 
-  validateStreet(street: string): ValidationResult {
+  private validateStreet(street: string): ValidationResult {
     return this.validateField(this.streetSchema, street);
   }
 
@@ -150,6 +157,7 @@ export default class ValidatorUtil {
         return this.validateEmail(inputText);
       case "password":
       case "new-password":
+      case "confirm-password":
         return this.validatePassword(inputText);
       case "first-name":
       case "last-name":

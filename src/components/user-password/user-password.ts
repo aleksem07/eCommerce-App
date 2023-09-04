@@ -52,10 +52,11 @@ export default class UserPasswordComponent {
     const areValuesValid = [...inputValues.entries()].every(
       ([key, value]) => this.validator.validate(key, value)?.isValid
     );
+    const newPassword = inputValues.get("new-password");
+    const confirmPassword = inputValues.get("confirm-password");
 
-    if (areValuesValid) {
+    if (areValuesValid && newPassword === confirmPassword) {
       const customerPassword = this.mapInputValuesToPassword();
-      const newPassword = inputValues.get("new-password");
 
       if (newPassword) {
         await this.customerService.updatePassword(customerPassword, newPassword);
