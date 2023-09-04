@@ -6,7 +6,7 @@ import {
   Image as ImageResponse,
   ProductProjection,
 } from "@commercetools/platform-sdk";
-import { Price, Product, ProductFilters, PriceRange } from "./product.types";
+import { Price, Product, FilterProductsProps } from "./product.types";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
 import { HttpErrorType } from "@commercetools/sdk-client-v2";
@@ -174,13 +174,7 @@ export default class ProductService extends ClientBuilderService {
     return centAmount ? Number((centAmount / 100).toFixed(2)) : 0;
   }
 
-  // eslint-disable-next-line max-params
-  async filterProducts(
-    filters: ProductFilters,
-    priceRange: PriceRange,
-    sort: string,
-    categoryId?: string
-  ) {
+  async filterProducts(filter: FilterProductsProps) {
     try {
       const token = await this.authService.retrieveToken();
 
@@ -195,12 +189,13 @@ export default class ProductService extends ClientBuilderService {
             },
             queryArgs: {
               filter: [
-                `categories.id:"${categoryId}"`,
-                filters.size,
-                filters.color,
-                `variants.price.centAmount:range(${priceRange.minPrice} to ${priceRange.maxPrice})`,
+                `categories.id:"${filter.categoryId}"`,
+                filter.size,
+                filter.color,
+                `variants.price.centAmount:range(
+                  ${filter.priceRange.minPrice} to ${filter.priceRange.maxPrice})`,
               ],
-              sort: sort ? [sort] : ["createdAt asc"],
+              sort: filter.sort ? [filter.sort] : ["createdAt asc"],
             },
           })
           .execute();
@@ -216,10 +211,7 @@ export default class ProductService extends ClientBuilderService {
     }
   }
 
-  public generateFilters(
-    size: string[],
-    color: string[]
-  ): { sizeFilter: string; colorFilter: string } {
+  public generateFilters(size: string[], color: string[]) {
     const formatArray = (arr: string[]) => arr.map((item) => `"${item.trim()}"`).join(", ");
     const filters = { sizeFilter: "", colorFilter: "" };
 

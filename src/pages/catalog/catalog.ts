@@ -151,12 +151,13 @@ export default class CatalogPage {
 
   private async filterProducts(size: string, color: string, sort: string) {
     const priceRange = this.getCurrentPriceRange();
-    const filteredProducts = await this.productService.filterProducts(
-      { size, color },
+    const filteredProducts = await this.productService.filterProducts({
+      size,
+      color,
       priceRange,
       sort,
-      this.id
-    );
+      categoryId: this.id,
+    });
 
     if (filteredProducts) {
       const productListElement = this.productListComponent.init(filteredProducts);
