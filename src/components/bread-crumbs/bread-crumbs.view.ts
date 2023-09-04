@@ -21,14 +21,17 @@ export default class BreadCrumbsView extends ViewBuilder {
     const breadCrumbItem = this.createElement("li", {
       classes: ["breadcrumb-item"],
     });
-    const breadCrumbLink: HTMLLinkElement = this.createElement("a");
-    const url = new URL(`${window.location.origin}${Routes.CATALOG}-${category.id}`);
-    breadCrumbLink.href = url.href;
-    breadCrumbLink.textContent = category.name;
-    breadCrumbItem.append(breadCrumbLink);
+    breadCrumbItem.setAttribute("aria-current", "page");
 
     if (isActive) {
       breadCrumbItem.classList.add("active");
+      breadCrumbItem.textContent = category.name;
+    } else {
+      const breadCrumbLink: HTMLLinkElement = this.createElement("a");
+      const url = new URL(`${window.location.origin}${Routes.CATALOG}-${category.id}`);
+      breadCrumbLink.href = url.href;
+      breadCrumbLink.textContent = category.name;
+      breadCrumbItem.append(breadCrumbLink);
     }
 
     return breadCrumbItem;
