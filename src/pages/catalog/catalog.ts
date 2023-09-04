@@ -10,9 +10,11 @@ import { FilterAttributeType } from "./catalog.types";
 import RouterService from "@Services/router/router";
 import { Routes } from "@Services/router/router.types";
 import { NotificationVariant } from "@Components/notification/notification.types";
+import BreadCrumbsComponent from "@Components/bread-crumbs/bread-crumbs";
 
 export default class CatalogPage {
   private view: CatalogView;
+  private breadcrumbs: BreadCrumbsComponent;
   private productService: ProductService;
   private productListComponent: ProductListComponent;
   private filter: FilterComponent;
@@ -29,6 +31,7 @@ export default class CatalogPage {
 
   constructor() {
     this.view = new CatalogView();
+    this.breadcrumbs = new BreadCrumbsComponent();
     this.productService = new ProductService();
     this.productListComponent = new ProductListComponent();
     this.filter = new FilterComponent();
@@ -191,6 +194,7 @@ export default class CatalogPage {
     this.view.displayToolbar(this.sort.init());
     this.view.displaySidebar(this.filter.init());
     this.checkCategoryExists();
+    this.breadcrumbs.init();
     this.view.render();
   }
 }
