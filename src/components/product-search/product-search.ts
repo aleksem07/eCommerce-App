@@ -22,6 +22,7 @@ export default class ProductSearchComponent {
       helpText: "",
       placeholderText: "Search for products...",
       type: "search",
+      classes: ["p-1"],
     });
   }
 
