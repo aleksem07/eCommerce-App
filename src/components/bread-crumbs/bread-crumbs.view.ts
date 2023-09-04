@@ -1,7 +1,7 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
-import CategoryService from "@Services/category/category";
 import { Category } from "@Services/category/category.types";
 import { Routes } from "@Services/router/router.types";
+import { BreadCrumbsProps } from "./bread-crumbs.types";
 
 export default class BreadCrumbsView extends ViewBuilder {
   private element: HTMLElement;
@@ -17,7 +17,7 @@ export default class BreadCrumbsView extends ViewBuilder {
     this.element.append(this.breadCrumbList);
   }
 
-  createBreadCrumb(category: { id: string; name: string }, isActive = false) {
+  createBreadCrumbListItem(category: { id: string; name: string }, isActive = false) {
     const breadCrumbItem = this.createElement("li", {
       classes: ["breadcrumb-item"],
     });
@@ -34,13 +34,13 @@ export default class BreadCrumbsView extends ViewBuilder {
     return breadCrumbItem;
   }
 
-  createBreadCrumbs(breadCrumbs: { id: string; name: string }[]) {
+  createBreadCrumbsList(breadCrumbs: BreadCrumbsProps[]) {
     const breadcrumbList: HTMLElement[] = [];
     for (let i = 0, len = breadCrumbs.length; i < len; i++) {
       if (i === len - 1) {
-        breadcrumbList.push(this.createBreadCrumb(breadCrumbs[i], true));
+        breadcrumbList.push(this.createBreadCrumbListItem(breadCrumbs[i], true));
       } else {
-        breadcrumbList.push(this.createBreadCrumb(breadCrumbs[i]));
+        breadcrumbList.push(this.createBreadCrumbListItem(breadCrumbs[i]));
       }
     }
 
@@ -50,13 +50,12 @@ export default class BreadCrumbsView extends ViewBuilder {
   buildBreadcrumbs(
     categories: Category[],
     catId: string,
-    breadcrumb: { id: string; name: string }[] = []
-  ): { id: string; name: string }[] | null {
+    breadcrumb: BreadCrumbsProps[] = []
+  ): BreadCrumbsProps[] | null {
     for (const category of categories) {
       breadcrumb.push({ id: category.id, name: category.name });
 
       if (category.id === catId) {
-        // Found the desired category, stop and return the breadcrumb
         return breadcrumb;
       }
 
@@ -64,22 +63,18 @@ export default class BreadCrumbsView extends ViewBuilder {
         const childBreadcrumb = this.buildBreadcrumbs(category.children, catId, [...breadcrumb]);
 
         if (childBreadcrumb) {
-          // Found the category in the child hierarchy, return the breadcrumb
           return childBreadcrumb;
         }
       }
 
-      // Category not found in this branch, remove it from the breadcrumb
       breadcrumb.pop();
     }
 
-    // Category not found anywhere in the hierarchy
     return null;
   }
 
   async render(categories?: Category[]) {
     this.breadCrumbList.innerHTML = "";
-    console.log(categories);
 
     if (categories) {
       const [, ...rest] = window.location.href.split("-");
@@ -87,7 +82,7 @@ export default class BreadCrumbsView extends ViewBuilder {
       const breadcrumb = this.buildBreadcrumbs(categories, currentCategoryId);
 
       if (breadcrumb) {
-        const thisBreadCrumbList = this.createBreadCrumbs(breadcrumb);
+        const thisBreadCrumbList = this.createBreadCrumbsList(breadcrumb);
         this.breadCrumbList.append(...thisBreadCrumbList);
         this.element.append(this.breadCrumbList);
       }
