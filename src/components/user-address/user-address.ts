@@ -11,8 +11,9 @@ export default class UserAddressComponent {
   private postalCodeInput: FormControlComponent;
   private isDefaultAddress: FormCheckComponent;
   private formName: string;
+  private isEditMode = false;
 
-  constructor({ header, formName, address, isEditMode }: UserAddressProps) {
+  constructor({ header, formName, address }: UserAddressProps) {
     this.view = new UserAddressView(header);
     this.formName = `${formName}-${header.toLowerCase().replace(" ", "-")}`;
     this.countryInput = new FormControlComponent({
@@ -21,7 +22,7 @@ export default class UserAddressComponent {
       labelText: "Country",
       placeholderText: "Enter your country",
       value: address.country,
-      disabled: !isEditMode,
+      disabled: !this.isEditMode,
       //TODO: SELECT COMPONENT
     });
     this.cityInput = new FormControlComponent({
@@ -30,7 +31,7 @@ export default class UserAddressComponent {
       labelText: "City",
       placeholderText: "Enter your city",
       value: address.city,
-      disabled: !isEditMode,
+      disabled: !this.isEditMode,
     });
     this.streetInput = new FormControlComponent({
       formName: this.formName,
@@ -38,7 +39,7 @@ export default class UserAddressComponent {
       labelText: "Street",
       placeholderText: "Enter your street",
       value: address.streetName,
-      disabled: !isEditMode,
+      disabled: !this.isEditMode,
     });
     this.postalCodeInput = new FormControlComponent({
       formName: this.formName,
@@ -46,9 +47,9 @@ export default class UserAddressComponent {
       labelText: "Postal Code",
       placeholderText: "Enter your postal code",
       value: address.postalCode,
-      disabled: !isEditMode,
+      disabled: !this.isEditMode,
     });
-    this.isDefaultAddress = this.createCheckBox(address.isDefaultAddress, isEditMode);
+    this.isDefaultAddress = this.createCheckBox(address.isDefaultAddress, this.isEditMode);
   }
 
   private createCheckBox(isChecked: boolean, isEditMode: boolean) {

@@ -17,26 +17,25 @@ export default class UserDataComponent {
   private customer: Customer;
   private customerService: CustomerService;
 
-  constructor(customer: Customer) {
+  constructor(customer: Customer, isEditMode: boolean) {
     this.customer = customer;
     this.view = new UserDataView();
     this.customerService = new CustomerService();
 
-    this.instantiateComponents();
+    this.instantiateComponents(isEditMode);
 
     this.view.submitFormListener(this.submitFormHandler.bind(this));
     this.view.editButtonListener(this.editButtonHandler.bind(this));
   }
 
-  private instantiateComponents() {
-    this.userInfo = new UserInfoComponent(this.formName, this.customer, this.isEditMode);
-    this.userPassword = new UserPasswordComponent(this.formName, this.isEditMode);
+  private instantiateComponents(isEditMode = false) {
+    this.userInfo = new UserInfoComponent(this.formName, this.customer);
+    this.userPassword = new UserPasswordComponent(this.formName);
 
     this.userShippingAddress = new UserAddressComponent({
       header: "Shipping Address",
       formName: this.formName,
       address: this.customer.shippingAddress,
-      isEditMode: this.isEditMode,
     });
 
     if (this.customer.billingAddress) {
@@ -44,7 +43,6 @@ export default class UserDataComponent {
         header: "Billing Address",
         formName: this.formName,
         address: this.customer.billingAddress,
-        isEditMode: this.isEditMode,
       });
     }
   }

@@ -4,5 +4,4 @@ export interface UserAddressProps {
   header: string;
   formName: string;
   address: Address;
-  isEditMode: boolean;
 }

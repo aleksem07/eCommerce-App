@@ -6,8 +6,9 @@ export default class UserPasswordComponent {
   private newPasswordInput: FormControlComponent;
   private confirmPasswordInput: FormControlComponent;
   private formName: string;
+  private isEditMode = false;
 
-  constructor(formName: string, isEditMode: boolean) {
+  constructor(formName: string) {
     this.view = new UserPasswordView();
     this.formName = formName;
 
@@ -17,7 +18,7 @@ export default class UserPasswordComponent {
       labelText: "New Password",
       placeholderText: "Enter a new password",
       type: "password",
-      disabled: !isEditMode,
+      disabled: !this.isEditMode,
     });
 
     this.confirmPasswordInput = new FormControlComponent({
@@ -26,7 +27,7 @@ export default class UserPasswordComponent {
       labelText: "Confirm Password",
       placeholderText: "Confirm the new password",
       type: "password",
-      disabled: !isEditMode,
+      disabled: !this.isEditMode,
     });
   }
 
