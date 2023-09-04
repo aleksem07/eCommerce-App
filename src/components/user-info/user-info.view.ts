@@ -19,14 +19,14 @@ export default class UserInfoView extends ViewBuilder {
     });
 
     this.saveButton = this.createElement<HTMLButtonElement>("button", {
-      classes: ["btn", "btn-primary"],
+      classes: ["btn", "btn-primary", "btn-sm"],
     });
     this.saveButton.textContent = "Save";
     this.saveButton.type = "submit";
     this.header.append(this.saveButton);
 
     this.editButton = this.createElement<HTMLButtonElement>("button", {
-      classes: ["btn", "btn-secondary"],
+      classes: ["btn", "btn-secondary", "btn-sm"],
     });
     this.editButton.textContent = "Edit";
     this.editButton.type = "button";
