@@ -69,10 +69,12 @@ export default class UserPasswordView extends ViewBuilder {
   }
 
   render({
+    currentPasswordInput,
     newPasswordInput,
     confirmPasswordInput,
     isEditMode,
   }: {
+    currentPasswordInput: HTMLElement;
     newPasswordInput: HTMLElement;
     confirmPasswordInput: HTMLElement;
     isEditMode: boolean;
@@ -81,6 +83,7 @@ export default class UserPasswordView extends ViewBuilder {
     this.toggleButtons(isEditMode);
 
     this.form.append(this.header);
+    this.appendInputToColumn(currentPasswordInput);
     this.appendInputToColumn(newPasswordInput);
     this.appendInputToColumn(confirmPasswordInput);
 

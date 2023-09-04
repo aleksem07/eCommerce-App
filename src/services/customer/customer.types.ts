@@ -7,7 +7,6 @@ export interface Customer {
   shippingAddress: Address;
   billingAddress?: Address;
   version: number;
-  password?: string;
 }
 
 export type CustomerInfo = Pick<
@@ -15,7 +14,7 @@ export type CustomerInfo = Pick<
   "firstName" | "lastName" | "email" | "dateOfBirth" | "id" | "version"
 >;
 
-export type CustomerPassword = Pick<Customer, "id" | "version" | "password">;
+export type CustomerPassword = Pick<Customer, "id" | "version">;
 
 export interface Address {
   country: string;

@@ -10,6 +10,7 @@ import { NotificationVariant } from "@Components/notification/notification.types
 
 export default class UserPasswordComponent {
   private view: UserPasswordView;
+  private currentPasswordInput!: FormControlComponent;
   private newPasswordInput!: FormControlComponent;
   private confirmPasswordInput!: FormControlComponent;
   private formName = "user-password";
@@ -29,6 +30,15 @@ export default class UserPasswordComponent {
   }
 
   instantiateComponents() {
+    this.currentPasswordInput = new FormControlComponent({
+      formName: this.formName,
+      inputName: "password",
+      labelText: "Current Password",
+      placeholderText: "Enter your current password",
+      type: "password",
+      disabled: !this.isEditMode,
+    });
+
     this.newPasswordInput = new FormControlComponent({
       formName: this.formName,
       inputName: "new-password",
@@ -52,19 +62,21 @@ export default class UserPasswordComponent {
     const areValuesValid = [...inputValues.entries()].every(
       ([key, value]) => this.validator.validate(key, value)?.isValid
     );
+    const currentPassword = inputValues.get("password");
     const newPassword = inputValues.get("new-password");
     const confirmPassword = inputValues.get("confirm-password");
 
     if (areValuesValid && newPassword === confirmPassword) {
-      const customerPassword = this.mapInputValuesToPassword();
+      const customer = this.mapInputValuesToPassword();
 
-      if (newPassword) {
-        await this.customerService.updatePassword(customerPassword, newPassword);
+      if (newPassword && currentPassword) {
+        await this.customerService.updatePassword(customer, currentPassword, newPassword);
         this.isEditMode = false;
         this.instantiateComponents();
         this.init();
       }
     } else {
+      this.currentPasswordInput.validate();
       this.newPasswordInput.validate();
       this.confirmPasswordInput.validate();
 
@@ -78,7 +90,6 @@ export default class UserPasswordComponent {
   private mapInputValuesToPassword(): CustomerPassword {
     return {
       id: this.customer.id,
-      password: this.customer.password,
       version: this.customer.version,
     };
   }
@@ -90,10 +101,12 @@ export default class UserPasswordComponent {
   }
 
   init() {
+    const currentPasswordInput = this.currentPasswordInput.init();
     const newPasswordInput = this.newPasswordInput.init();
     const confirmPasswordInput = this.confirmPasswordInput.init();
 
     return this.view.render({
+      currentPasswordInput,
       newPasswordInput,
       confirmPasswordInput,
       isEditMode: this.isEditMode,

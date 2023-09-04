@@ -60,7 +60,6 @@ export default class CustomerService extends ClientBuilderService {
       shippingAddress: this.getShippingAddress(customerResponse),
       billingAddress: this.getBillingAddress(customerResponse),
       version: customerResponse.version,
-      password: customerResponse.password,
     };
   }
 
@@ -174,11 +173,12 @@ export default class CustomerService extends ClientBuilderService {
   }
 
   async updatePassword(
-    customerPassword: CustomerPassword,
+    customer: CustomerPassword,
+    currentPassword: string,
     newPassword: string
   ): Promise<Customer | undefined> {
     const token = await this.authService.retrieveToken();
-    const passwordData = this.updateCustomerPassword(customerPassword, newPassword);
+    const passwordData = this.updateCustomerPassword(customer, currentPassword, newPassword);
 
     try {
       const { body } = await this.apiRoot
@@ -209,14 +209,15 @@ export default class CustomerService extends ClientBuilderService {
   }
 
   private updateCustomerPassword(
-    customerPassword: CustomerPassword,
+    customer: CustomerPassword,
+    currentPassword: string,
     newPassword: string
   ): CustomerChangePassword {
     return {
-      id: customerPassword.id,
-      currentPassword: String(customerPassword.password),
+      id: customer.id,
+      currentPassword,
       newPassword,
-      version: customerPassword.version,
+      version: customer.version,
     };
   }
 }
