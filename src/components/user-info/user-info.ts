@@ -80,17 +80,20 @@ export default class UserInfoComponent {
   }
 
   async submitFormHandler(inputValues: UserInfoFormData) {
-    const info = this.mapInputValuesToCustomer(inputValues);
     const areValuesValid = [...inputValues.entries()].every(
       ([key, value]) => this.validator.validate(key, value)?.isValid
     );
 
     if (areValuesValid) {
-      await this.customerService.updateInfo(info);
+      const info = this.mapInputValuesToCustomer(inputValues);
+      const customer = await this.customerService.updateInfo(info);
 
-      this.isEditMode = false;
-      this.instantiateComponents();
-      this.init();
+      if (customer) {
+        this.customer = customer;
+        this.isEditMode = false;
+        this.instantiateComponents();
+        this.init();
+      }
     } else {
       this.firstNameInput.validate();
       this.lastNameInput.validate();

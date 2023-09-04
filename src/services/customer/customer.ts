@@ -7,11 +7,9 @@ import { HttpErrorType } from "@commercetools/sdk-client-v2";
 import {
   Customer as CustomerResponse,
   Address as AddressResponse,
-  CustomerDraft,
   CustomerUpdate,
   CustomerSetFirstNameAction,
   CustomerSetLastNameAction,
-  CustomerEmailChangedMessage,
   CustomerChangeEmailAction,
   CustomerSetDateOfBirthAction,
 } from "@commercetools/platform-sdk";
@@ -114,12 +112,12 @@ export default class CustomerService extends ClientBuilderService {
     return addresses.find((address) => address.id === addressId);
   }
 
-  async updateInfo(customerInfo: CustomerInfo) {
+  async updateInfo(customerInfo: CustomerInfo): Promise<Customer | undefined> {
     const token = await this.authService.retrieveToken();
     const updateActions = this.updateCustomerInfo(customerInfo);
 
     try {
-      await this.apiRoot
+      const { body } = await this.apiRoot
         .withProjectKey({ projectKey: this.projectKey })
         .customers()
         .withId({ ID: customerInfo.id })
@@ -135,6 +133,8 @@ export default class CustomerService extends ClientBuilderService {
         variant: NotificationVariant.success,
         message: "Saved successfully",
       });
+
+      return this.mapCustomerResponseToCustomer(body);
     } catch (error) {
       const httpError = error as HttpErrorType;
       eventBusService.publish(Events.showNotification, {
