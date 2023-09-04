@@ -17,7 +17,7 @@ export default class BreadCrumbsView extends ViewBuilder {
     this.element.append(this.breadCrumbList);
   }
 
-  createBreadCrumbListItem(category: { id: string; name: string }, isActive = false) {
+  private createBreadCrumbListItem(category: { id: string; name: string }, isActive = false) {
     const breadCrumbItem = this.createElement("li", {
       classes: ["breadcrumb-item"],
     });
@@ -37,7 +37,7 @@ export default class BreadCrumbsView extends ViewBuilder {
     return breadCrumbItem;
   }
 
-  createBreadCrumbsList(breadCrumbs: BreadCrumbsProps[]) {
+  private createBreadCrumbsList(breadCrumbs: BreadCrumbsProps[]) {
     const breadcrumbList: HTMLElement[] = [];
     for (let i = 0, len = breadCrumbs.length; i < len; i++) {
       if (i === len - 1) {
@@ -50,7 +50,7 @@ export default class BreadCrumbsView extends ViewBuilder {
     return breadcrumbList;
   }
 
-  buildBreadcrumbs(
+  private buildBreadcrumbs(
     categories: Category[],
     catId: string,
     breadcrumb: BreadCrumbsProps[] = []
