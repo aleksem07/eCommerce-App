@@ -4,6 +4,7 @@ export default class CatalogView extends ViewBuilder {
   private element: HTMLElement;
   private containerRow: HTMLElement;
   private rightColumn: HTMLElement;
+  private header: HTMLHeadingElement;
 
   constructor() {
     super();
@@ -18,9 +19,22 @@ export default class CatalogView extends ViewBuilder {
       classes: ["col-md-9", "order-2"],
     });
 
+    this.header = this.createHeader();
+
     this.element.append(this.containerRow);
 
     this.containerRow.append(this.rightColumn);
+  }
+
+  createHeader(): HTMLHeadingElement {
+    const header = this.createElement<HTMLHeadingElement>("h1");
+
+    return header;
+  }
+
+  displayHeader(name: string) {
+    this.header.textContent = name;
+    this.rightColumn.prepend(this.header);
   }
 
   displayProducts(list: HTMLElement) {
