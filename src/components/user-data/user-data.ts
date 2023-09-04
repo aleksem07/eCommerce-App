@@ -21,7 +21,7 @@ export default class UserDataComponent {
 
   private instantiateComponents() {
     this.userInfo = new UserInfoComponent(this.customer);
-    this.userPassword = new UserPasswordComponent();
+    this.userPassword = new UserPasswordComponent(this.customer);
 
     this.userShippingAddress = new UserAddressComponent({
       header: "Shipping Address",

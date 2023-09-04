@@ -149,6 +149,7 @@ export default class ValidatorUtil {
       case "email":
         return this.validateEmail(inputText);
       case "password":
+      case "new-password":
         return this.validatePassword(inputText);
       case "first-name":
       case "last-name":

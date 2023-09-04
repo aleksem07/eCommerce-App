@@ -12,8 +12,9 @@ import {
   CustomerSetLastNameAction,
   CustomerChangeEmailAction,
   CustomerSetDateOfBirthAction,
+  CustomerChangePassword,
 } from "@commercetools/platform-sdk";
-import { Address, Customer, CustomerInfo } from "./customer.types";
+import { Address, Customer, CustomerInfo, CustomerPassword } from "./customer.types";
 
 export default class CustomerService extends ClientBuilderService {
   private authService: AuthService;
@@ -59,6 +60,7 @@ export default class CustomerService extends ClientBuilderService {
       shippingAddress: this.getShippingAddress(customerResponse),
       billingAddress: this.getBillingAddress(customerResponse),
       version: customerResponse.version,
+      password: customerResponse.password,
     };
   }
 
@@ -168,6 +170,53 @@ export default class CustomerService extends ClientBuilderService {
     return {
       version: customer.version,
       actions: [setFirstNameAction, setLastNameAction, setEmailAction, setDateOfBirthAction],
+    };
+  }
+
+  async updatePassword(
+    customerPassword: CustomerPassword,
+    newPassword: string
+  ): Promise<Customer | undefined> {
+    const token = await this.authService.retrieveToken();
+    const passwordData = this.updateCustomerPassword(customerPassword, newPassword);
+
+    try {
+      const { body } = await this.apiRoot
+        .withProjectKey({ projectKey: this.projectKey })
+        .customers()
+        .password()
+        .post({
+          body: passwordData,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .execute();
+
+      eventBusService.publish(Events.showNotification, {
+        variant: NotificationVariant.success,
+        message: "Password changed successfully",
+      });
+
+      return this.mapCustomerResponseToCustomer(body);
+    } catch (error) {
+      const httpError = error as HttpErrorType;
+      eventBusService.publish(Events.showNotification, {
+        variant: NotificationVariant.danger,
+        message: httpError.message,
+      });
+    }
+  }
+
+  private updateCustomerPassword(
+    customerPassword: CustomerPassword,
+    newPassword: string
+  ): CustomerChangePassword {
+    return {
+      id: customerPassword.id,
+      currentPassword: String(customerPassword.password),
+      newPassword,
+      version: customerPassword.version,
     };
   }
 }
