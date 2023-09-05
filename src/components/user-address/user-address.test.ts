@@ -10,6 +10,9 @@ describe("UserAddressComponent", () => {
         streetName: "123 Main St",
         postalCode: "12345",
         isDefaultAddress: true,
+        isBillingAddress: true,
+        isShippingAddress: true,
+        name: "John Doe",
       },
     });
     expect(instance).toBeInstanceOf(UserAddressComponent);
@@ -24,6 +27,9 @@ describe("UserAddressComponent", () => {
         streetName: "123 Main St",
         postalCode: "12345",
         isDefaultAddress: true,
+        isBillingAddress: true,
+        isShippingAddress: true,
+        name: "John Doe",
       },
     });
 
@@ -42,6 +48,9 @@ describe("UserAddressComponent", () => {
         streetName: "123 Main St",
         postalCode: "12345",
         isDefaultAddress: true,
+        isBillingAddress: true,
+        isShippingAddress: true,
+        name: "John Doe",
       },
     });
 
@@ -61,6 +70,9 @@ describe("UserAddressComponent", () => {
         streetName: "123 Main St",
         postalCode: "12345",
         isDefaultAddress: true,
+        isBillingAddress: true,
+        isShippingAddress: true,
+        name: "John Doe",
       },
     });
     const element = instance.init();
