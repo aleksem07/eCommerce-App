@@ -85,7 +85,6 @@ export default class ProductCardView extends ViewBuilder {
   private createAddToCartButton() {
     const button = this.createElement("button", { classes: ["btn", "btn-primary"] });
     button.textContent = "Add to Cart";
-    // button.addEventListener("click", this.addToCA.bind(this));
 
     return button;
   }
