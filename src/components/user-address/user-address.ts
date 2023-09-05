@@ -2,17 +2,17 @@ import FormControlComponent from "@Components/form-control/form-control";
 import UserAddressView from "./user-address.view";
 import FormCheckComponent from "@Components/form-check/form-check";
 import { UserAddressFormData, UserAddressProps } from "./user-address.types";
-import { Address, Customer } from "@Services/customer/customer.types";
+import { Address } from "@Services/customer/customer.types";
 import ValidatorUtil from "@Utils/validator/validator";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
 import { NotificationVariant } from "@Components/notification/notification.types";
-import CustomerService from "@Services/customer/customer";
 import ButtonRadioGroupComponent from "@Components/button-radio-group/button-radio-group";
+import FormSelectComponent from "@Components/form-select/form-select";
 
 export default class UserAddressComponent {
   private view: UserAddressView;
-  private countryInput!: FormControlComponent;
+  private countryInput!: FormSelectComponent;
   private cityInput!: FormControlComponent;
   private streetInput!: FormControlComponent;
   private postalCodeInput!: FormControlComponent;
@@ -20,16 +20,13 @@ export default class UserAddressComponent {
   private addressTypes!: ButtonRadioGroupComponent;
   private formName = "user-address";
   private isEditMode = false;
-  // private customer: Customer;
   private validator: ValidatorUtil;
-  private customerService: CustomerService;
   private address: Address;
   private buttonRadioGroupName: string;
 
   constructor({ header, address }: UserAddressProps) {
     this.address = address;
     this.view = new UserAddressView(header);
-    this.customerService = new CustomerService();
 
     this.validator = new ValidatorUtil();
     this.formName = `${this.formName}-${header.toLowerCase().replace(/[^a-zA-Z0-9]+/g, "-")}`;
@@ -79,15 +76,9 @@ export default class UserAddressComponent {
       .every(([key, value]) => this.validator.validate(key, value)?.isValid);
 
     if (areValuesValid) {
-      // const info = this.mapInputValuesToCustomer(inputValues);
-      // const customer = await this.customerService.updateInfo(info);
-
-      // if (customer) {
-      // this.customer = customer;
       this.isEditMode = false;
       this.instantiateComponents();
       this.init();
-      // }
     } else {
       this.countryInput.validate();
       this.cityInput.validate();
@@ -101,19 +92,17 @@ export default class UserAddressComponent {
     }
   }
 
-  // private mapInputValuesToCustomer(inputValues: UserAddressFormData): CustomerAddresses {
-  //   throw new Error("Method not implemented.");
-  // }
-
   private instantiateComponents() {
-    this.countryInput = new FormControlComponent({
+    this.countryInput = new FormSelectComponent({
       formName: this.formName,
       inputName: "country",
       labelText: "Country",
-      placeholderText: "Enter your country",
       value: this.address.country,
       disabled: !this.isEditMode,
-      //TODO: SELECT COMPONENT
+      options: [
+        { label: "Select a country", value: "" },
+        { label: "United States", value: "US" },
+      ],
     });
     this.cityInput = new FormControlComponent({
       formName: this.formName,
