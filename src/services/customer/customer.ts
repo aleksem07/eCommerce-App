@@ -82,7 +82,7 @@ export default class CustomerService extends ClientBuilderService {
 
     const isShippingAddress = Boolean(customerResponse.shippingAddressIds?.includes(addressId));
     const isBillingAddress = Boolean(customerResponse.billingAddressIds?.includes(addressId));
-    const isDefaultShippingAddress = customerResponse.defaultBillingAddressId === addressId;
+    const isDefaultShippingAddress = customerResponse.defaultShippingAddressId === addressId;
     const isDefaultBillingAddress = customerResponse.defaultBillingAddressId === addressId;
 
     const isDefaultAddress =
