@@ -9,13 +9,18 @@ describe("UserInfoComponent", () => {
       email: "a@b.com",
       dateOfBirth: "2000-01-01",
       version: 1,
-      shippingAddress: {
-        country: "US",
-        city: "New York",
-        streetName: "123 Main St",
-        postalCode: "12345",
-        isDefaultAddress: true,
-      },
+      addresses: [
+        {
+          country: "US",
+          city: "New York",
+          streetName: "123 Main St",
+          postalCode: "12345",
+          isDefaultAddress: true,
+          isShippingAddress: true,
+          isBillingAddress: false,
+          name: "Shipping Address",
+        },
+      ],
     });
     expect(instance).toBeInstanceOf(UserInfoComponent);
   });
@@ -28,13 +33,18 @@ describe("UserInfoComponent", () => {
       email: "a@b.com",
       dateOfBirth: "2000-01-01",
       version: 1,
-      shippingAddress: {
-        country: "US",
-        city: "New York",
-        streetName: "123 Main St",
-        postalCode: "12345",
-        isDefaultAddress: true,
-      },
+      addresses: [
+        {
+          country: "US",
+          city: "New York",
+          streetName: "123 Main St",
+          postalCode: "12345",
+          isDefaultAddress: true,
+          isShippingAddress: true,
+          isBillingAddress: false,
+          name: "Shipping Address",
+        },
+      ],
     });
 
     const element = instance.init();
@@ -51,13 +61,18 @@ describe("UserInfoComponent", () => {
       email: "a@b.com",
       dateOfBirth: "2000-01-01",
       version: 1,
-      shippingAddress: {
-        country: "US",
-        city: "New York",
-        streetName: "123 Main St",
-        postalCode: "12345",
-        isDefaultAddress: true,
-      },
+      addresses: [
+        {
+          country: "US",
+          city: "New York",
+          streetName: "123 Main St",
+          postalCode: "12345",
+          isDefaultAddress: true,
+          isShippingAddress: true,
+          isBillingAddress: false,
+          name: "Shipping Address",
+        },
+      ],
     });
 
     const element = instance.init();
@@ -74,13 +89,18 @@ describe("UserInfoComponent", () => {
       email: "a@b.com",
       dateOfBirth: "2000-01-01",
       version: 1,
-      shippingAddress: {
-        country: "US",
-        city: "New York",
-        streetName: "123 Main St",
-        postalCode: "12345",
-        isDefaultAddress: true,
-      },
+      addresses: [
+        {
+          country: "US",
+          city: "New York",
+          streetName: "123 Main St",
+          postalCode: "12345",
+          isDefaultAddress: true,
+          isShippingAddress: true,
+          isBillingAddress: false,
+          name: "Shipping Address",
+        },
+      ],
     });
     const element = instance.init();
 

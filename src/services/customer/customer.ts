@@ -57,60 +57,57 @@ export default class CustomerService extends ClientBuilderService {
       lastName: customerResponse.lastName || "",
       email: customerResponse.email,
       dateOfBirth: customerResponse.dateOfBirth || "",
-      shippingAddress: this.getShippingAddress(customerResponse),
-      billingAddress: this.getBillingAddress(customerResponse),
       version: customerResponse.version,
+      addresses: this.getAddresses(customerResponse),
     };
   }
 
-  private getShippingAddress(customerResponse: CustomerResponse): Address {
-    const shippingAddress = this.findAddressById(
-      customerResponse.addresses,
-      customerResponse.shippingAddressIds?.[0] || customerResponse.defaultShippingAddressId
+  private getAddresses(customerResponse: CustomerResponse): Address[] {
+    return (
+      customerResponse.addresses
+        .map((address) => this.mapAddressResponseToAddress(address, customerResponse))
+        .filter((address): address is Address => !!address) || []
     );
-    const isShippingAddressDefault = this.findAddressById(
-      customerResponse.addresses,
-      customerResponse.defaultShippingAddressId
-    );
-
-    return this.mapAddressResponseToAddress(shippingAddress, !!isShippingAddressDefault);
-  }
-
-  private getBillingAddress(customerResponse: CustomerResponse): Address | undefined {
-    const isBillingAddressEqualsShippingAddress =
-      customerResponse.billingAddressIds?.some(
-        (id) => customerResponse.shippingAddressIds?.includes(id)
-      ) || false;
-
-    const billingAddress = this.findAddressById(
-      customerResponse.addresses,
-      customerResponse.billingAddressIds?.[0] || customerResponse.defaultBillingAddressId
-    );
-    const isBillingAddressDefault = this.findAddressById(
-      customerResponse.addresses,
-      customerResponse.defaultBillingAddressId
-    );
-
-    if (billingAddress && !isBillingAddressEqualsShippingAddress) {
-      return this.mapAddressResponseToAddress(billingAddress, !!isBillingAddressDefault);
-    }
   }
 
   private mapAddressResponseToAddress(
-    addressResponse?: AddressResponse,
-    isDefaultAddress = false
-  ): Address {
+    addressResponse: AddressResponse,
+    customerResponse: CustomerResponse
+  ): Address | undefined {
+    const addressId = addressResponse.id;
+
+    if (!addressId) {
+      return;
+    }
+
+    const isShippingAddress = Boolean(customerResponse.shippingAddressIds?.includes(addressId));
+    const isBillingAddress = Boolean(customerResponse.billingAddressIds?.includes(addressId));
+    const isDefaultShippingAddress = customerResponse.defaultShippingAddressId === addressId;
+    const isDefaultBillingAddress = customerResponse.defaultBillingAddressId === addressId;
+
+    const isDefaultAddress =
+      (isShippingAddress && isDefaultShippingAddress) ||
+      (isBillingAddress && isDefaultBillingAddress);
+
+    const name = [
+      addressResponse.country,
+      addressResponse.city,
+      addressResponse.streetName,
+      addressResponse.postalCode,
+    ]
+      .filter(Boolean)
+      .join(", ");
+
     return {
       country: addressResponse?.country || "",
       city: addressResponse?.city || "",
       streetName: addressResponse?.streetName || "",
       postalCode: addressResponse?.postalCode || "",
       isDefaultAddress,
+      isBillingAddress,
+      isShippingAddress,
+      name,
     };
-  }
-
-  private findAddressById(addresses: AddressResponse[], addressId?: string) {
-    return addresses.find((address) => address.id === addressId);
   }
 
   async updateInfo(customerInfo: CustomerInfo): Promise<Customer | undefined> {

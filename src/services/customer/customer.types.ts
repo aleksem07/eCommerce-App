@@ -4,9 +4,8 @@ export interface Customer {
   lastName: string;
   email: string;
   dateOfBirth: string;
-  shippingAddress: Address;
-  billingAddress?: Address;
   version: number;
+  addresses: Address[];
 }
 
 export type CustomerInfo = Pick<
@@ -22,4 +21,7 @@ export interface Address {
   streetName: string;
   postalCode: string;
   isDefaultAddress: boolean;
+  isShippingAddress: boolean;
+  isBillingAddress: boolean;
+  name: string;
 }

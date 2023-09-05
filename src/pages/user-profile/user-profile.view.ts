@@ -9,7 +9,7 @@ export default class UserProfileView extends ViewBuilder {
   constructor() {
     super();
     this.element = this.createElement<HTMLDivElement>("div", {
-      classes: ["container", "mt-5"],
+      classes: ["container", "my-5"],
     });
     this.row = this.createElement<HTMLDivElement>("div", {
       classes: ["row", "g-3", "g-md-5"],
