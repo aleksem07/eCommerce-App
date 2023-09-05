@@ -6,7 +6,6 @@ export default class ProductListComponent {
   private view: ProductListView;
   private productCards?: HTMLLinkElement[];
   private products?: Product[];
-  // addToCartHandler: any;
 
   constructor() {
     this.view = new ProductListView();
