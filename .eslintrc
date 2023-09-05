@@ -18,6 +18,7 @@
     "jest/globals": true
   },
   "rules": {
+    "curly": "error",
     "object-shorthand": ["error", "always"],
     "no-plusplus": "off",
     "max-len": ["error", 100],
@@ -27,6 +28,8 @@
     "@typescript-eslint/no-non-null-assertion": "error",
     "@typescript-eslint/no-var-requires": "off",
     "max-lines-per-function": ["error", 40],
+    "max-params": "error",
+    "no-nested-ternary": "error",
     "jest/no-disabled-tests": "warn",
     "jest/no-focused-tests": "error",
     "jest/no-identical-title": "error",

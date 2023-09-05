@@ -31,6 +31,9 @@
   "devDependencies": {
     "@babel/core": "^7.20.7",
     "@babel/preset-env": "^7.20.2",
+    "@commercetools-test-data/commons": "^5.10.1",
+    "@commercetools-test-data/customer": "^5.10.1",
+    "@commercetools-test-data/product": "^5.10.1",
     "@commercetools/platform-sdk": "^4.11.0",
     "@commercetools/sdk-client-v2": "^2.2.0",
     "@types/bootstrap": "^5.2.6",
@@ -38,6 +41,7 @@
     "@typescript-eslint/eslint-plugin": "^5.59.9",
     "@typescript-eslint/parser": "^5.59.9",
     "autoprefixer": "^10.4.14",
+    "babel-jest": "^29.6.4",
     "babel-loader": "^9.1.0",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.8.1",
@@ -51,6 +55,7 @@
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-webpack-plugin": "^4.0.1",
+    "fetch-mock": "^9.11.0",
     "gh-pages": "^6.0.0",
     "group-css-media-queries-loader": "^4.3.0",
     "html-webpack-plugin": "^5.5.0",
@@ -89,6 +94,7 @@
     "bootstrap": "^5.3.1",
     "bootstrap-icons": "^1.10.5",
     "dayjs": "^1.11.9",
+    "swiper": "^10.2.0",
     "yup": "^1.2.0"
   }
 }

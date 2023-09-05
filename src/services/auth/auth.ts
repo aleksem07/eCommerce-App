@@ -1,4 +1,4 @@
-import { HttpErrorType, TokenInfo } from "@commercetools/sdk-client-v2";
+import { TokenInfo } from "@commercetools/sdk-client-v2";
 import ClientBuilderService from "../client-builder/client-builder";
 import {
   AUTH_TOKEN_LS,
@@ -8,6 +8,7 @@ import {
   RegistrationParams,
   TokenParams,
   SignUpParams,
+  USERNAME_LS,
 } from "./auth.types";
 
 export default class AuthService extends ClientBuilderService {
@@ -46,12 +47,7 @@ export default class AuthService extends ClientBuilderService {
     billingAddresses,
     defaultBillingAddress,
   }: SignUpParams): Promise<AuthResult<DataInfo | TokenInfo>> {
-    const result = await this.getToken("/anonymous/token", {
-      grant_type: "client_credentials",
-      username,
-      password,
-      scopes: this.customersApiScope,
-    });
+    const result = await this.getAnonymousToken(username, password);
 
     if (result.data?.access_token) {
       return await this.registration({
@@ -70,6 +66,18 @@ export default class AuthService extends ClientBuilderService {
     }
 
     return result;
+  }
+
+  private async getAnonymousToken(
+    username?: string,
+    password?: string
+  ): Promise<AuthResult<TokenInfo>> {
+    return await this.getToken("/anonymous/token", {
+      grant_type: "client_credentials",
+      username,
+      password,
+      scopes: this.customersApiScope,
+    });
   }
 
   private async getToken(url: string, requestParams: TokenParams): Promise<AuthResult<TokenInfo>> {
@@ -98,9 +106,7 @@ export default class AuthService extends ClientBuilderService {
 
       const data: TokenInfo = await response.json();
 
-      if (requestParams.username) {
-        localStorage.setItem(AUTH_TOKEN_LS, data.access_token);
-      }
+      this.saveDataToLocalStorage(requestParams, data);
 
       return { success: true, data };
     } catch (error: unknown) {
@@ -113,33 +119,20 @@ export default class AuthService extends ClientBuilderService {
     }
   }
 
-  private async login({ username, password, token }: LoginParams): Promise<AuthResult<DataInfo>> {
-    try {
-      const data = await this.commercetoolsClient.execute({
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        uri: `/${this.projectKey}/login`,
-        body: {
-          email: username,
-          password,
-        },
-      });
-
-      return { success: true, data };
-    } catch (error: unknown) {
-      const errorMessage = (error as HttpErrorType).message;
-
-      return {
-        success: false,
-        error: errorMessage,
-      };
+  private saveDataToLocalStorage(requestParams: TokenParams, data: TokenInfo) {
+    if (requestParams.username) {
+      localStorage.setItem(AUTH_TOKEN_LS, data.access_token);
+      localStorage.setItem(USERNAME_LS, requestParams.username);
     }
   }
 
-  // eslint-disable-next-line max-lines-per-function
+  private async login({ username, password, token }: LoginParams): Promise<AuthResult<DataInfo>> {
+    return await this.execute(`/${this.projectKey}/login`, token, {
+      email: username,
+      password,
+    });
+  }
+
   async registration({
     firstName,
     lastName,
@@ -153,33 +146,31 @@ export default class AuthService extends ClientBuilderService {
     billingAddresses,
     defaultBillingAddress,
   }: RegistrationParams) {
-    try {
-      const data = await this.commercetoolsClient.execute({
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        uri: `/${this.projectKey}/customers`,
-        body: {
-          firstName,
-          lastName,
-          email: username,
-          password,
-          dateOfBirth,
-          addresses,
-          shippingAddresses,
-          defaultShippingAddress,
-          billingAddresses,
-          defaultBillingAddress,
-        },
-      });
+    return await this.execute(`/${this.projectKey}/customers`, token, {
+      firstName,
+      lastName,
+      email: username,
+      password,
+      dateOfBirth,
+      addresses,
+      shippingAddresses,
+      defaultShippingAddress,
+      billingAddresses,
+      defaultBillingAddress,
+    });
+  }
 
-      return { success: true, data };
-    } catch (error: unknown) {
-      const errorMessage = (error as HttpErrorType).message;
+  async retrieveToken() {
+    let token = localStorage.getItem(AUTH_TOKEN_LS);
 
-      return { success: false, error: errorMessage };
+    if (!token) {
+      const result = await this.getAnonymousToken();
+
+      if (result.data?.access_token) {
+        token = result.data?.access_token;
+      }
     }
+
+    return token;
   }
 }

@@ -1,0 +1,29 @@
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+
+#thumbs-container {
+  .swiper-wrapper {
+    .swiper-slide {
+      cursor: pointer;
+      opacity: 0.4;
+    }
+
+    .swiper-slide-thumb-active {
+      opacity: 1;
+      border: 1px solid $primary;
+    }
+  }
+}
+
+#image-container {
+  .swiper-wrapper {
+    align-items: center;
+
+    .swiper-slide {
+      display: flex;
+      cursor: pointer;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}

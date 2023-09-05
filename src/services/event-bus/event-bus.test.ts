@@ -6,6 +6,7 @@ describe("EventBusService", () => {
     const instance = new EventBusService();
     expect(instance).toBeInstanceOf(EventBusService);
   });
+
   it("should support and publish events", () => {
     const eventBusService = EventBusService.getInstance();
     const mockCallback1 = jest.fn();

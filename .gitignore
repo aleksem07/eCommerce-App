@@ -3,3 +3,5 @@ dist/
 package-lock.json
 coverage
 .env
+settings.json
+.DS_Store

@@ -69,4 +69,24 @@ describe("RouterService", () => {
 
     expect(notFoundRouteInitSpy).toHaveBeenCalled();
   });
+
+  it("should redirect to correct page when query params exist", () => {
+    window.location.pathname = "/";
+    window.location.hash = "#mock?param1=value1&param2=value2";
+    const mockInitSpy = jest.spyOn(MockRoute.prototype, "init");
+
+    new RouterService(mockContainer, mockRoutes);
+
+    expect(mockInitSpy).toHaveBeenCalled();
+  });
+
+  it("should redirect to correct page when url has item id", () => {
+    window.location.pathname = "/";
+    window.location.hash = "#mock-123-456-789";
+    const mockInitSpy = jest.spyOn(MockRoute.prototype, "init");
+
+    new RouterService(mockContainer, mockRoutes);
+
+    expect(mockInitSpy).toHaveBeenCalled();
+  });
 });

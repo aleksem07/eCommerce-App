@@ -103,7 +103,12 @@ export default class LoginFormComponent {
     const password = this.passwordInput.init();
     const showPassword = this.passwordCheck.init();
     const registrationLink = this.registrationLink.init();
-    this.view.render(email, password, showPassword, registrationLink);
+    this.view.render({
+      email,
+      password,
+      showPassword,
+      registrationLink,
+    });
     this.view.checkboxListener(this.checkboxHandler.bind(this));
     this.tooltip.init(this.view.submitButton);
   }

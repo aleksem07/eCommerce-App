@@ -15,6 +15,9 @@ export default class FormControlComponent {
     helpText,
     placeholderText,
     type,
+    value,
+    disabled,
+    classes,
   }: FormControlProps) {
     this.view = new FormControlView({
       formName,
@@ -23,6 +26,9 @@ export default class FormControlComponent {
       helpText,
       placeholderText,
       type,
+      value,
+      disabled,
+      classes,
     });
     this.validator = new ValidatorUtil();
 
@@ -42,6 +48,10 @@ export default class FormControlComponent {
     if (inputValid) {
       this.view.showValidation(inputValid);
     }
+  }
+
+  resetValue() {
+    this.view.input.value = "";
   }
 
   init() {

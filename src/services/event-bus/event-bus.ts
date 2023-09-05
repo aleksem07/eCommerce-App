@@ -2,7 +2,7 @@ import { Events, EventCallback, EventData } from "./event-bus.types";
 
 export class EventBusService {
   private static instance: EventBusService;
-  private events: { [event: string]: EventCallback<EventData>[] } = {};
+  private events: { [event: string]: EventCallback[] } = {};
 
   constructor() {
     this.events = {};
@@ -16,7 +16,7 @@ export class EventBusService {
     return EventBusService.instance;
   }
 
-  subscribe(event: Events, callback: EventCallback<EventData>) {
+  subscribe(event: Events, callback: EventCallback) {
     if (!this.events[event]) {
       this.events[event] = [];
     }
@@ -29,6 +29,16 @@ export class EventBusService {
 
     if (eventCallback) {
       eventCallback.forEach((callback) => callback(data));
+    }
+  }
+
+  unsubscribe(event: Events, callback: EventCallback) {
+    const eventCallback = this.events[event];
+
+    if (eventCallback) {
+      this.events[event] = eventCallback.filter((cb) => {
+        return cb !== callback;
+      });
     }
   }
 }

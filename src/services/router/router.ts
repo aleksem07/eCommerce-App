@@ -1,4 +1,6 @@
+import eventBusService from "@Services/event-bus/event-bus";
 import { Route, Routes } from "./router.types";
+import { Events } from "@Services/event-bus/event-bus.types";
 
 export default class RouterService {
   private static instance: RouterService;
@@ -32,8 +34,9 @@ export default class RouterService {
 
   private handleRouteChange() {
     const { hash, pathname } = window.location;
+    const [cleanHash] = hash.split("-");
     const isRootPath = pathname === "/";
-    const route = this.routes[hash];
+    const route = this.routes[cleanHash];
     this.container.innerHTML = "";
 
     if (route && isRootPath) {
@@ -41,6 +44,8 @@ export default class RouterService {
     } else {
       this.routes[Routes.NOT_FOUND].init();
     }
+
+    eventBusService.publish(Events.urlChanged);
   }
 
   static navigateTo(path: string) {
