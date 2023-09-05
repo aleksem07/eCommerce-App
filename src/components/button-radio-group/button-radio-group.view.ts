@@ -22,7 +22,7 @@ export default class ButtonRadioGroupView extends ViewBuilder {
       radio.disabled = disabled;
 
       const label = this.createElement<HTMLLabelElement>("label", {
-        classes: ["btn", "btn-outline-primary"],
+        classes: ["btn", "btn-outline-secondary"],
       });
       label.htmlFor = buttonId;
       label.textContent = button;
