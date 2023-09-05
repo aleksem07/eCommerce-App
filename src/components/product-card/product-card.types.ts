@@ -1,13 +1,5 @@
-import { Price } from "@Services/product/product.types";
+import { Product } from "@Services/product/product.types";
 
-export type ProductCardProps = {
-  title: string;
-  description: string;
-  images: string[];
-  price: Price;
-  discountedPrice?: Price;
-  id: string;
+export interface ProductCardProps extends Product {
   onClick?: (e: Event) => void;
-  color?: string;
-  size?: string;
-};
+}
