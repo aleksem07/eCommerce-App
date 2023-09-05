@@ -14,12 +14,15 @@ export interface Price {
   value: number;
 }
 
-export interface ProductFilters {
-  size: string;
-  color: string;
-}
-
 export interface PriceRange {
   minPrice: string;
   maxPrice: string;
+}
+
+export interface FilterProductsProps {
+  size: string;
+  color: string;
+  priceRange: PriceRange;
+  sort: string;
+  categoryId?: string;
 }
