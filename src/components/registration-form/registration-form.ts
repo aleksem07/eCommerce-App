@@ -115,6 +115,10 @@ export default class RegistrationFormComponent {
         this.tooltip.show("Error", result.error);
       } else {
         this.tooltip.show("Success", "Registration successful");
+        await this.authService.signIn(
+          this.getValueByKey(inputValues, "email"),
+          this.getValueByKey(inputValues, "password")
+        );
         eventBusService.publish(Events.userLogin);
         RouterService.navigateTo(Routes.MAIN);
       }
