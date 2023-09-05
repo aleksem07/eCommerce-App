@@ -6,14 +6,22 @@ export default class ProductListComponent {
   private view: ProductListView;
   private productCards?: HTMLLinkElement[];
   private products?: Product[];
+  // addToCartHandler: any;
 
   constructor() {
     this.view = new ProductListView();
   }
 
+  addToCartHandler(e: Event) {
+    const button = e.target as HTMLButtonElement;
+    button.disabled = true;
+  }
+
   init(products: Product[]) {
     this.products = products;
-    this.productCards = this.products.map((product) => new ProductCardComponent(product).init());
+    this.productCards = this.products.map((product) =>
+      new ProductCardComponent({ ...product, onClick: this.addToCartHandler.bind(this) }).init()
+    );
 
     return this.view.render(...this.productCards);
   }

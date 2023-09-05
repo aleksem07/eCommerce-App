@@ -90,6 +90,12 @@ export default class ProductCardView extends ViewBuilder {
     return button;
   }
 
+  clickListener(handler?: (e: Event) => void) {
+    if (handler) {
+      this.addToCartButton.addEventListener("click", handler);
+    }
+  }
+
   render(priceElement: HTMLElement) {
     this.card.append(this.cardLink, this.addToCartButton);
     this.cardLink.append(this.imageElement, this.cardBody);
