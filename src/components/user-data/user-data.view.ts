@@ -12,13 +12,8 @@ export default class UserDataView extends ViewBuilder {
     this.header.textContent = "My Profile";
   }
 
-  render({ userInfo, userPassword, userShippingAddress, userBillingAddress }: UserDataElements) {
-    const elements = [userInfo, userPassword, userShippingAddress];
-
-    if (userBillingAddress) {
-      elements.push(userBillingAddress);
-    }
-    this.element.append(this.header, ...elements);
+  render({ userInfo, userPassword, userAddresses }: UserDataElements) {
+    this.element.append(this.header, userInfo, userPassword, ...userAddresses);
 
     return this.element;
   }

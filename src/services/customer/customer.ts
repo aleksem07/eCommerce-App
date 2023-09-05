@@ -106,7 +106,7 @@ export default class CustomerService extends ClientBuilderService {
       isDefaultAddress,
       isBillingAddress,
       isShippingAddress,
-      name: name || "",
+      name,
     };
   }
 
