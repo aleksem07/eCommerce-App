@@ -64,12 +64,15 @@ describe("CustomerService", () => {
 
     const customer = await instance.getUserInfo();
 
-    expect(customer?.shippingAddress).toEqual<Address>({
+    expect(customer?.addresses[0]).toEqual<Address>({
       city: String(shippingAddressMock.city),
       country: String(shippingAddressMock.country),
       postalCode: String(shippingAddressMock.postalCode),
       streetName: String(shippingAddressMock.streetName),
       isDefaultAddress: true,
+      isShippingAddress: true,
+      isBillingAddress: false,
+      name: expect.any(String),
     });
   });
 
@@ -88,12 +91,15 @@ describe("CustomerService", () => {
 
     const customer = await instance.getUserInfo();
 
-    expect(customer?.billingAddress).toEqual<Address>({
+    expect(customer?.addresses[0]).toEqual<Address>({
       city: String(billingAddressMock.city),
       country: String(billingAddressMock.country),
       postalCode: String(billingAddressMock.postalCode),
       streetName: String(billingAddressMock.streetName),
       isDefaultAddress: false,
+      isShippingAddress: false,
+      isBillingAddress: true,
+      name: expect.any(String),
     });
   });
 
@@ -115,19 +121,27 @@ describe("CustomerService", () => {
 
     const customer = await instance.getUserInfo();
 
-    expect(customer?.billingAddress).toEqual<Address>({
+    const [billingAddress, shippingAddress] = customer?.addresses || [];
+
+    expect(billingAddress).toEqual<Address>({
       city: String(billingAddressMock.city),
       country: String(billingAddressMock.country),
       postalCode: String(billingAddressMock.postalCode),
       streetName: String(billingAddressMock.streetName),
       isDefaultAddress: false,
+      isShippingAddress: false,
+      isBillingAddress: true,
+      name: expect.any(String),
     });
-    expect(customer?.shippingAddress).toEqual<Address>({
+    expect(shippingAddress).toEqual<Address>({
       city: String(shippingAddressMock.city),
       country: String(shippingAddressMock.country),
       postalCode: String(shippingAddressMock.postalCode),
       streetName: String(shippingAddressMock.streetName),
       isDefaultAddress: true,
+      isShippingAddress: true,
+      isBillingAddress: false,
+      name: expect.any(String),
     });
   });
 
@@ -148,13 +162,15 @@ describe("CustomerService", () => {
 
     const customer = await instance.getUserInfo();
 
-    expect(customer?.billingAddress).toBeUndefined();
-    expect(customer?.shippingAddress).toEqual<Address>({
+    expect(customer?.addresses[0]).toEqual<Address>({
       city: String(addressMock.city),
       country: String(addressMock.country),
       postalCode: String(addressMock.postalCode),
       streetName: String(addressMock.streetName),
       isDefaultAddress: true,
+      isShippingAddress: true,
+      isBillingAddress: true,
+      name: expect.any(String),
     });
   });
 

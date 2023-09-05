@@ -11,7 +11,7 @@ export default class UserPasswordView extends ViewBuilder {
     super();
     this.form = this.createElement<HTMLFormElement>("form", {
       id: "user-password",
-      classes: ["row", "g-3", "mt-3"],
+      classes: ["row", "g-3"],
     });
 
     this.header = this.createElement<HTMLHeadingElement>("h4", {
