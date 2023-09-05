@@ -70,6 +70,7 @@ export default class UserAddressView extends ViewBuilder {
     streetInput,
     postalCodeInput,
     isDefaultAddress,
+    addressTypes,
     isEditMode,
   }: UserAddressElements) {
     this.form.innerHTML = "";
@@ -77,6 +78,7 @@ export default class UserAddressView extends ViewBuilder {
     this.form.appendChild(this.headerElement);
 
     this.appendInputToColumn(isDefaultAddress, ["col-12"]);
+    this.appendInputToColumn(addressTypes, ["col-12"]);
     this.appendInputToColumn(countryInput);
     this.appendInputToColumn(cityInput);
     this.appendInputToColumn(streetInput);

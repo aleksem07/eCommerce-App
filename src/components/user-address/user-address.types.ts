@@ -18,5 +18,6 @@ export interface UserAddressElements {
   streetInput: HTMLElement;
   postalCodeInput: HTMLElement;
   isDefaultAddress: HTMLElement;
+  addressTypes: HTMLElement;
   isEditMode: boolean;
 }

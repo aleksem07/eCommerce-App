@@ -8,6 +8,7 @@ import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
 import { NotificationVariant } from "@Components/notification/notification.types";
 import CustomerService from "@Services/customer/customer";
+import ButtonRadioGroupComponent from "@Components/button-radio-group/button-radio-group";
 
 export default class UserAddressComponent {
   private view: UserAddressView;
@@ -16,12 +17,14 @@ export default class UserAddressComponent {
   private streetInput!: FormControlComponent;
   private postalCodeInput!: FormControlComponent;
   private isDefaultAddress!: FormCheckComponent;
+  private addressTypes!: ButtonRadioGroupComponent;
   private formName = "user-address";
   private isEditMode = false;
   // private customer: Customer;
   private validator: ValidatorUtil;
   private customerService: CustomerService;
   private address: Address;
+  private buttonRadioGroupName: string;
 
   constructor({ header, address }: UserAddressProps) {
     this.address = address;
@@ -29,7 +32,8 @@ export default class UserAddressComponent {
     this.customerService = new CustomerService();
 
     this.validator = new ValidatorUtil();
-    this.formName = `${this.formName}-${header.toLowerCase().replace(" ", "-")}`;
+    this.formName = `${this.formName}-${header.toLowerCase().replace(/[^a-zA-Z0-9]+/g, "-")}`;
+    this.buttonRadioGroupName = this.formName;
 
     this.instantiateComponents();
 
@@ -47,10 +51,32 @@ export default class UserAddressComponent {
     });
   }
 
-  async submitFormHandler(inputValues: UserAddressFormData) {
-    const areValuesValid = [...inputValues.entries()].every(
-      ([key, value]) => this.validator.validate(key, value)?.isValid
+  private createRadioButtons() {
+    return new ButtonRadioGroupComponent(
+      [
+        {
+          button: "Use as shipping address",
+          checked: this.address.isShippingAddress && !this.address.isBillingAddress,
+        },
+        {
+          button: "Use as billing address",
+          checked: this.address.isBillingAddress && !this.address.isShippingAddress,
+        },
+        {
+          button: "Use for both",
+          checked: this.address.isShippingAddress && this.address.isBillingAddress,
+        },
+      ],
+      this.buttonRadioGroupName,
+      !this.isEditMode
     );
+  }
+
+  async submitFormHandler(inputValues: UserAddressFormData) {
+    const areValuesValid = [...inputValues.entries()]
+      // Filter out from validation button radio inputs
+      .filter(([key]) => key !== this.buttonRadioGroupName)
+      .every(([key, value]) => this.validator.validate(key, value)?.isValid);
 
     if (areValuesValid) {
       // const info = this.mapInputValuesToCustomer(inputValues);
@@ -114,6 +140,7 @@ export default class UserAddressComponent {
       disabled: !this.isEditMode,
     });
     this.isDefaultAddress = this.createCheckBox(this.address.isDefaultAddress, this.isEditMode);
+    this.addressTypes = this.createRadioButtons();
   }
 
   editButtonHandler() {
@@ -128,6 +155,7 @@ export default class UserAddressComponent {
     const streetInput = this.streetInput.init();
     const postalCodeInput = this.postalCodeInput.init();
     const isDefaultAddress = this.isDefaultAddress.init();
+    const addressTypes = this.addressTypes.init();
 
     return this.view.render({
       countryInput,
@@ -135,6 +163,7 @@ export default class UserAddressComponent {
       streetInput,
       postalCodeInput,
       isDefaultAddress,
+      addressTypes,
       isEditMode: this.isEditMode,
     });
   }
