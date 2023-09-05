@@ -36,7 +36,7 @@ describe("UserAddressComponent", () => {
     const element = instance.init();
 
     const inputs = element.querySelectorAll("input");
-    expect(inputs).toHaveLength(8);
+    expect(inputs).toHaveLength(7);
   });
 
   it("should disable fields when is not in edit mode", () => {
@@ -57,7 +57,7 @@ describe("UserAddressComponent", () => {
     const element = instance.init();
 
     const disabledInputs = element.querySelectorAll("input:disabled");
-    expect(disabledInputs).toHaveLength(8);
+    expect(disabledInputs).toHaveLength(7);
   });
 
   it("should not disable fields when is in edit mode", () => {
