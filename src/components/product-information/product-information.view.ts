@@ -9,8 +9,9 @@ export default class ProductInformationView extends ViewBuilder {
   private descriptionWrapperElement: HTMLDivElement;
   private imageWrapperElement: HTMLDivElement;
   private descriptionHeaderElement: HTMLHeadingElement;
+  private addToCartButton: HTMLButtonElement;
 
-  constructor({ title, description }: ProductInformationProps) {
+  constructor({ title, description }: ProductInformationProps, iconClass: string) {
     super();
     this.informationElement = this.createInformationElement();
     this.titleElement = this.createTitleElement(title);
@@ -19,6 +20,7 @@ export default class ProductInformationView extends ViewBuilder {
     this.descriptionWrapperElement = this.createDescriptionWrapperElement();
     this.descriptionHeaderElement = this.createDescriptionHeader();
     this.descriptionElement = this.createDescriptionElement(description);
+    this.addToCartButton = this.createAddToCartButton(iconClass);
   }
 
   private createInformationElement(): HTMLDivElement {
@@ -74,6 +76,33 @@ export default class ProductInformationView extends ViewBuilder {
     return descriptionElement;
   }
 
+  createAddToCartButton(iconClass: string, disabled = false): HTMLButtonElement {
+    const addToCartButton = this.createElement<HTMLButtonElement>("button", {
+      classes: [
+        "btn",
+        "btn-primary",
+        "mt-5",
+        "mb-5",
+        "col-6",
+        "btn-lg",
+        "d-flex",
+        "align-items-center",
+        "justify-content-center",
+      ],
+    });
+    addToCartButton.textContent = "Add to Cart";
+    addToCartButton.disabled = disabled;
+
+    const iconWrapper = this.createElement<HTMLDivElement>("div", {
+      classes: ["me-2"],
+    });
+    const icon = this.createIcon(iconClass);
+    iconWrapper.prepend(icon);
+    addToCartButton.prepend(iconWrapper);
+
+    return addToCartButton;
+  }
+
   createDividerElement(): HTMLHRElement {
     return this.createElement<HTMLHRElement>("hr");
   }
@@ -93,6 +122,8 @@ export default class ProductInformationView extends ViewBuilder {
       price,
       this.descriptionHeaderElement,
       this.descriptionElement,
+      this.createDividerElement(),
+      this.addToCartButton,
       this.createDividerElement(),
       deliveryDetails,
       this.createDividerElement(),

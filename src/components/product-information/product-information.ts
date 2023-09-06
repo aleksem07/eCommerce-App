@@ -14,8 +14,11 @@ export default class ProductInformationComponent {
   private imageSlider: ProductSliderComponent;
   private modal: ProductModalComponent;
 
-  constructor({ title, description, images, price, id, discountedPrice }: ProductInformationProps) {
-    this.view = new ProductInformationView({ title, description, images, price, id });
+  constructor(
+    { title, description, images, price, id, discountedPrice }: ProductInformationProps,
+    iconClass: string
+  ) {
+    this.view = new ProductInformationView({ title, description, images, price, id }, iconClass);
     this.deliveryDetails = new ProductExtraDescriptionComponent({
       title: "Delivery",
       content: "Free standard shipping on orders over $35 before tax, plus free returns.",

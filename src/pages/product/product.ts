@@ -23,7 +23,8 @@ export default class ProductPage {
 
   private displayProduct() {
     if (this.product) {
-      this.information = new ProductInformationComponent(this.product);
+      const cartIcon = "bi-cart";
+      this.information = new ProductInformationComponent(this.product, cartIcon);
       this.view.render(this.information.init());
     }
   }
