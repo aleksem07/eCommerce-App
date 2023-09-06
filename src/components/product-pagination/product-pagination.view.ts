@@ -15,11 +15,13 @@ export default class ProductPaginationView extends ViewBuilder {
     this.prevButton = this.createElement("button", {
       classes: ["btn", "bi", "bi-arrow-left"],
     });
+    this.prevButton.setAttribute("type", "button");
     this.nextButton = this.createElement("button", {
       classes: ["btn", "bi", "bi-arrow-right"],
     });
+    this.nextButton.setAttribute("type", "button");
     this.paginationContainer = this.createElement("ul", {
-      classes: ["pagination", "mb-0", "pb-0"],
+      classes: ["pagination", "mb-0"],
     });
     this.paginationElement = this.createElement("li", {
       classes: ["page-item"],
@@ -28,6 +30,38 @@ export default class ProductPaginationView extends ViewBuilder {
 
     this.paginationContainer.append(this.paginationElement);
     this.element.append(this.prevButton, this.paginationContainer, this.nextButton);
+  }
+
+  prevPageListener(handler?: (e: Event) => void) {
+    if (handler) {
+      this.prevButton.addEventListener("click", handler);
+    }
+  }
+
+  nextPageListener(handler?: (e: Event) => void) {
+    if (handler) {
+      this.nextButton.addEventListener("click", handler);
+    }
+  }
+
+  updatePageNumber(pageNumber: number) {
+    this.paginationElement.textContent = pageNumber.toString();
+  }
+
+  hideArrow(buttonName: string) {
+    if (buttonName === "prev") {
+      this.prevButton.style.display = "none";
+    } else if (buttonName === "next") {
+      this.nextButton.style.display = "none";
+    }
+  }
+
+  showArrow(buttonName: string) {
+    if (buttonName === "prev") {
+      this.prevButton.style.display = "block";
+    } else if (buttonName === "next") {
+      this.nextButton.style.display = "block";
+    }
   }
 
   render() {
