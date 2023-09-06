@@ -89,6 +89,8 @@ export default class ProductService extends ClientBuilderService {
             queryArgs: {
               filter: [`categories.id:"${categoryId}"`],
               sort: ["createdAt asc"],
+              limit: 6,
+              offset: 0,
             },
           })
           .execute();

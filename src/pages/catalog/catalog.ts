@@ -12,6 +12,7 @@ import { Routes } from "@Services/router/router.types";
 import { NotificationVariant } from "@Components/notification/notification.types";
 import CategoryService from "@Services/category/category";
 import BreadCrumbsComponent from "@Components/bread-crumbs/bread-crumbs";
+import ProductPaginationComponent from "@Components/product-pagination/product-pagination";
 
 export default class CatalogPage {
   private view: CatalogView;
@@ -21,6 +22,7 @@ export default class CatalogPage {
   private productListComponent: ProductListComponent;
   private filter: FilterComponent;
   private sort: SortComponent;
+  private pagination: ProductPaginationComponent;
   private sizesFilter: string[] = [];
   private colorsFilter: string[] = [];
   private sortValue = "";
@@ -39,6 +41,7 @@ export default class CatalogPage {
     this.productListComponent = new ProductListComponent();
     this.filter = new FilterComponent();
     this.sort = new SortComponent();
+    this.pagination = new ProductPaginationComponent();
     this.priceRange = {
       minPrice: "0",
       maxPrice: "*",
@@ -189,7 +192,7 @@ export default class CatalogPage {
 
   init() {
     this.resetDataFilter();
-    this.view.displayToolbar(this.sort.init());
+    this.view.displayToolbar(this.sort.init(), this.pagination.init());
     this.view.displaySidebar(this.filter.init());
     this.checkCategoryExists();
     this.breadcrumbs.init();

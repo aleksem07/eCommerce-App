@@ -5,9 +5,7 @@ export default class SortView extends ViewBuilder {
 
   constructor() {
     super();
-    this.element = this.createElement("div", {
-      classes: ["mb-4"],
-    });
+    this.element = this.createElement("div", {});
   }
 
   render(sort: HTMLElement) {
