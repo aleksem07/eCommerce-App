@@ -53,6 +53,7 @@ export default class CartListItemView extends ViewBuilder {
 
   render() {
     this.element.innerHTML = "";
+    this.itemWrapper.append(this.imageElement, this.headerElement, this.quantityInputElement);
     this.element.append(this.itemWrapper);
 
     return this.element;

@@ -35,20 +35,10 @@ export default class CartListView extends ViewBuilder {
     return link;
   }
 
-  private createColumn(element: HTMLElement) {
-    const column = this.createElement("div", {
-      classes: ["col-12", "col-sm-6", "col-md-6", "col-lg-4"],
-    });
-    column.append(element);
-
-    return column;
-  }
-
-  render(...elements: HTMLElement[]) {
-    const columns = elements.map((element) => this.createColumn(element));
+  render(cartListItems: HTMLElement) {
     this.element.innerHTML = "";
     this.header.append(this.homeLink);
-    this.element.append(...columns, this.header);
+    this.element.append(this.header, cartListItems);
 
     return this.element;
   }
