@@ -7,7 +7,7 @@ export default class CartPage {
 
   constructor() {
     this.view = new CartView();
-    this.cartList = new CartListComponent();
+    this.cartList = new CartListComponent("", "");
   }
 
   init() {
