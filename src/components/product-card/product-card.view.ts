@@ -10,12 +10,10 @@ export default class ProductCardView extends ViewBuilder {
   private descriptionElement: HTMLParagraphElement;
   private card: HTMLLinkElement;
   private addToCartButton: HTMLElement;
-  private cardLink: HTMLLinkElement;
 
   constructor({ title, description, images, id }: ProductCardProps) {
     super();
-    this.card = this.createCard();
-    this.cardLink = this.createCardLink(id);
+    this.card = this.createCard(id);
     this.cardBody = this.createCardBody();
     this.imageElement = this.createImageElement(images);
     this.titleElement = this.createTitleElement(title);
@@ -23,22 +21,14 @@ export default class ProductCardView extends ViewBuilder {
     this.addToCartButton = this.createAddToCartButton();
   }
 
-  private createCard() {
-    this.card = this.createElement("div", {
+  private createCard(id: string) {
+    this.card = this.createElement("a", {
       classes: ["card", "card-animation", "text-decoration-none"],
     });
+    const url = new URL(`${window.location.origin}${Routes.PRODUCT}-${id}`);
+    this.card.href = url.href;
 
     return this.card;
-  }
-
-  private createCardLink(id: string) {
-    this.cardLink = this.createElement<HTMLLinkElement>("a", {
-      classes: ["text-decoration-none"],
-    });
-    const url = new URL(`${window.location.origin}${Routes.PRODUCT}-${id}`);
-    this.cardLink.href = url.href;
-
-    return this.cardLink;
   }
 
   private createCardBody() {
@@ -89,15 +79,14 @@ export default class ProductCardView extends ViewBuilder {
     return button;
   }
 
-  clickListener(handler?: (e: Event) => void) {
+  clickButtonCardListener(handler?: (e: Event) => void) {
     if (handler) {
       this.addToCartButton.addEventListener("click", handler);
     }
   }
 
   render(priceElement: HTMLElement) {
-    this.card.append(this.cardLink, this.addToCartButton);
-    this.cardLink.append(this.imageElement, this.cardBody);
+    this.card.append(this.imageElement, this.cardBody, this.addToCartButton);
     this.cardBody.append(this.titleElement, this.descriptionElement, priceElement);
 
     return this.card;

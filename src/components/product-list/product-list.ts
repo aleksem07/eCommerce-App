@@ -12,6 +12,8 @@ export default class ProductListComponent {
   }
 
   addToCartHandler(e: Event) {
+    e.preventDefault();
+    e.stopPropagation();
     const button = e.target as HTMLButtonElement;
     button.disabled = true;
   }

@@ -18,10 +18,10 @@ export default class ProductCardComponent {
   }: ProductCardProps) {
     this.view = new ProductCardView({ title, description, images, price, id });
     this.price = new ProductPriceComponent({ price, discountedPrice });
-    this.view.clickListener((e: Event) => this.clickHandler(e, onClick));
+    this.view.clickButtonCardListener((e: Event) => this.clickButtonCardHandler(e, onClick));
   }
 
-  private clickHandler(e: Event, onClick?: (e: Event) => void) {
+  private clickButtonCardHandler(e: Event, onClick?: (e: Event) => void) {
     if (onClick) {
       onClick(e);
     }
