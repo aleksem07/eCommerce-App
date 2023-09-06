@@ -1,3 +1,5 @@
 import { Product } from "@Services/product/product.types";
 
-export type ProductCardProps = Product;
+export interface ProductCardProps extends Product {
+  onClick?: (e: Event) => void;
+}
