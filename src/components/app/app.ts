@@ -16,6 +16,7 @@ import { NotificationVariant } from "@Components/notification/notification.types
 import ObjectGuardUtil from "@Utils/object-guard/object-guard";
 import CategoryNavigationComponent from "@Components/category-navigation/category-navigation";
 import SearchProductsPage from "@Pages/search-products/search-products";
+import CartPage from "@Pages/cart/cart";
 
 export default class AppComponent {
   private view: AppView;
@@ -42,6 +43,7 @@ export default class AppComponent {
       [Routes.PRODUCT]: new ProductPage(),
       [Routes.USER_PROFILE]: new UserProfilePage(),
       [Routes.SEARCH]: new SearchProductsPage(),
+      [Routes.CART]: new CartPage(),
     });
 
     eventBusService.subscribe(Events.showNotification, this.notificationHandler.bind(this));
