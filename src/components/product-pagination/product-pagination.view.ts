@@ -45,22 +45,22 @@ export default class ProductPaginationView extends ViewBuilder {
   }
 
   updatePageNumber(pageNumber: number) {
-    this.paginationElement.textContent = pageNumber.toString();
+    this.paginationElement.textContent = `${pageNumber} `;
   }
 
   hideArrow(buttonName: string) {
     if (buttonName === "prev") {
-      this.prevButton.style.display = "none";
+      this.prevButton.classList.add("hide-element");
     } else if (buttonName === "next") {
-      this.nextButton.style.display = "none";
+      this.nextButton.classList.add("hide-element");
     }
   }
 
   showArrow(buttonName: string) {
     if (buttonName === "prev") {
-      this.prevButton.style.display = "block";
+      this.prevButton.classList.remove("hide-element");
     } else if (buttonName === "next") {
-      this.nextButton.style.display = "block";
+      this.nextButton.classList.remove("hide-element");
     }
   }
 
