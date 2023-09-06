@@ -5,10 +5,14 @@ export default class CartView extends ViewBuilder {
 
   constructor() {
     super();
-    this.element = this.createElement("div");
+    this.element = this.createElement("div", {
+      classes: ["container", "my-5"],
+    });
   }
 
-  render() {
+  render(cartList: HTMLElement) {
+    this.element.innerHTML = "";
+    this.element.append(cartList);
     this.appendTo("#root", this.element);
   }
 }

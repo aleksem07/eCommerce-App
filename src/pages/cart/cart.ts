@@ -11,7 +11,7 @@ export default class CartPage {
   }
 
   init() {
-    this.cartList.init();
-    this.view.render();
+    const cartList = this.cartList.init();
+    this.view.render(cartList);
   }
 }
