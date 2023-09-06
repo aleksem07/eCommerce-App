@@ -8,11 +8,10 @@ export default class ProductPaginationComponent {
   private view: ProductPaginationView;
   private pageCurrent = 1;
   private pageMin = 1;
-  private pageMax: number;
+  private pageMax = 1;
 
   constructor() {
     this.view = new ProductPaginationView();
-    this.pageMax = 1;
     this.view.prevPageListener(this.prevPageHandler.bind(this));
     this.view.nextPageListener(this.nextPageHandler.bind(this));
 
@@ -26,66 +25,49 @@ export default class ProductPaginationComponent {
     const hasData = ObjectGuardUtil.hasProp<number>(data, "productsInCategory");
 
     if (hasData) {
-      this.pageMax = Math.floor(data.productsInCategory / 6);
-      this.view.showArrow("next");
-
-      if (this.pageMax <= 1) {
-        this.pageMax = 1;
-        this.view.hideArrow("next");
-      }
+      this.pageMax = Math.max(1, Math.floor(data.productsInCategory / 6));
+      this.updateArrowVisibility();
     }
   }
 
-  private prevPageHandler(e: Event) {
-    e.preventDefault();
-    this.pageCurrent--;
-
-    if (this.pageCurrent < this.pageMin) {
-      this.pageCurrent = this.pageMin;
-    }
-    this.view.updatePageNumber(this.pageCurrent);
-
-    this.view.showArrow("next");
-
+  private updateArrowVisibility() {
     if (this.pageCurrent === this.pageMin) {
       this.view.hideArrow("prev");
     } else {
       this.view.showArrow("prev");
     }
 
-    eventBusService.publish(Events.pageSwitch, { page: this.pageCurrent });
-  }
-
-  private nextPageHandler(e: Event) {
-    e.preventDefault();
-    this.pageCurrent++;
-
-    if (this.pageCurrent > this.pageMax) {
-      this.pageCurrent = this.pageMax;
-    }
-
-    if (this.pageCurrent < this.pageMin) {
-      this.pageCurrent = this.pageMin;
-    }
-
-    this.view.updatePageNumber(this.pageCurrent);
-
-    this.view.showArrow("prev");
-
     if (this.pageCurrent === this.pageMax) {
       this.view.hideArrow("next");
     } else {
       this.view.showArrow("next");
     }
+  }
 
-    eventBusService.publish(Events.pageSwitch, { page: this.pageCurrent });
+  private prevPageHandler(e: Event) {
+    e.preventDefault();
+    this.pageCurrent = Math.max(this.pageMin, this.pageCurrent - 1);
+    this.view.updatePageNumber(this.pageCurrent);
+    this.updateArrowVisibility();
+    this.publishPageSwitchEvent();
+  }
+
+  private nextPageHandler(e: Event) {
+    e.preventDefault();
+    this.pageCurrent = Math.min(this.pageMax, this.pageCurrent + 1);
+    this.view.updatePageNumber(this.pageCurrent);
+    this.updateArrowVisibility();
+    this.publishPageSwitchEvent();
   }
 
   private defaultPage() {
     this.pageCurrent = this.pageMin;
     this.view.updatePageNumber(this.pageCurrent);
-
     this.view.hideArrow("prev");
+  }
+
+  private publishPageSwitchEvent() {
+    eventBusService.publish(Events.pageSwitch, { page: this.pageCurrent });
   }
 
   init() {
