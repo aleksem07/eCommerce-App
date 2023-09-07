@@ -3,6 +3,7 @@ import ProductListView from "./product-list.view";
 import { Product } from "@Services/product/product.types";
 import CartService from "@Services/cart/cart";
 import { USERNAME_ID } from "@Services/auth/auth.types";
+import { CART_ID } from "@Services/cart/cart.types";
 
 export default class ProductListComponent {
   private view: ProductListView;
@@ -25,7 +26,7 @@ export default class ProductListComponent {
     if (productId) {
       this.cartService.addToCart(productId);
     }
-    const cartID = localStorage.getItem(USERNAME_ID);
+    const cartID = localStorage.getItem(CART_ID);
     console.log("cartID", cartID);
 
     if (cartID) {

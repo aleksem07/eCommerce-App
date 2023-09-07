@@ -119,7 +119,7 @@ export default class CartService extends ClientBuilderService {
       const token = await this.authService.retrieveToken();
 
       if (token) {
-        await this.apiRoot
+        const productResponce = await this.apiRoot
           .withProjectKey({ projectKey: this.projectKey })
           .carts()
           .withId({ ID: cartId })
@@ -138,7 +138,9 @@ export default class CartService extends ClientBuilderService {
                 },
               ],
             },
-          });
+          })
+          .execute();
+        console.log(productResponce);
       }
     } catch (error) {
       const httpError = error as HttpErrorType;
@@ -164,6 +166,10 @@ export default class CartService extends ClientBuilderService {
           })
           .execute();
         console.log("cart with customer id", cart.body);
+
+        if (cart.body) {
+          this.saveDataToLocalStorage(cart.body.id);
+        }
 
         return cart.body;
       }
@@ -198,7 +204,7 @@ export default class CartService extends ClientBuilderService {
 
   private saveDataToLocalStorage(cartId: string) {
     if (cartId) {
-      console.log(cartId);
+      console.log("save thisid ", cartId);
       localStorage.setItem(CART_ID, cartId);
     }
   }
