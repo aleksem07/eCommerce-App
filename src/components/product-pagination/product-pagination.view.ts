@@ -24,7 +24,7 @@ export default class ProductPaginationView extends ViewBuilder {
       classes: ["pagination", "mb-0"],
     });
     this.paginationElement = this.createElement("li", {
-      classes: ["page-item"],
+      classes: ["page-item", "h5", "m-0"],
     });
     this.paginationElement.textContent = "1";
 
