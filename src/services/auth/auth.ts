@@ -9,6 +9,7 @@ import {
   TokenParams,
   SignUpParams,
   USERNAME_LS,
+  USERNAME_ID,
 } from "./auth.types";
 
 export default class AuthService extends ClientBuilderService {
@@ -25,11 +26,21 @@ export default class AuthService extends ClientBuilderService {
     });
 
     if (result.success && result.data?.access_token) {
-      return await this.login({
+      const authResult = await this.login({
         username,
         password,
         token: result.data?.access_token,
       });
+      console.log("AuthResult", authResult);
+
+      const id = await authResult.data?.body.customer.id;
+      console.log(id);
+
+      if (id) {
+        localStorage.setItem(USERNAME_ID, id);
+      }
+
+      return authResult;
     }
 
     return result;
@@ -105,7 +116,7 @@ export default class AuthService extends ClientBuilderService {
       }
 
       const data: TokenInfo = await response.json();
-
+      console.log("token data", data);
       this.saveDataToLocalStorage(requestParams, data);
 
       return { success: true, data };
@@ -123,6 +134,10 @@ export default class AuthService extends ClientBuilderService {
     if (requestParams.username) {
       localStorage.setItem(AUTH_TOKEN_LS, data.access_token);
       localStorage.setItem(USERNAME_LS, requestParams.username);
+
+      if (requestParams.id) {
+        localStorage.setItem(USERNAME_ID, requestParams.id);
+      }
     }
   }
 
@@ -162,6 +177,7 @@ export default class AuthService extends ClientBuilderService {
 
   async retrieveToken() {
     let token = localStorage.getItem(AUTH_TOKEN_LS);
+    console.log("token", token);
 
     if (!token) {
       const result = await this.getAnonymousToken();

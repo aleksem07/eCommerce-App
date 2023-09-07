@@ -1,5 +1,9 @@
 export interface DataInfo {
-  body: <T>() => Promise<T>;
+  body: {
+    customer: {
+      id: string;
+    };
+  };
   statusCode: number;
 }
 
@@ -14,6 +18,7 @@ export interface TokenParams {
   scopes: string;
   username?: string;
   password?: string;
+  id?: string;
 }
 
 export interface LoginParams {
@@ -49,3 +54,5 @@ export interface Address {
 export const AUTH_TOKEN_LS = "authToken";
 
 export const USERNAME_LS = "username";
+
+export const USERNAME_ID = "usernameId";
