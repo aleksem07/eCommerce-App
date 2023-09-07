@@ -18,7 +18,7 @@ export default class ProductCardView extends ViewBuilder {
     this.imageElement = this.createImageElement(images);
     this.titleElement = this.createTitleElement(title);
     this.descriptionElement = this.createDescriptionElement(description);
-    this.addToCartButton = this.createAddToCartButton();
+    this.addToCartButton = this.createAddToCartButton(id);
   }
 
   private createCard(id: string) {
@@ -72,9 +72,10 @@ export default class ProductCardView extends ViewBuilder {
     return this.descriptionElement;
   }
 
-  private createAddToCartButton() {
+  private createAddToCartButton(id: string) {
     const button = this.createElement("button", { classes: ["btn", "btn-primary"] });
     button.textContent = "Add to Cart";
+    button.dataset.productId = id;
 
     return button;
   }

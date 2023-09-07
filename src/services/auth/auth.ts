@@ -11,10 +11,13 @@ import {
   USERNAME_LS,
   USERNAME_ID,
 } from "./auth.types";
+import CartService from "@Services/cart/cart";
 
 export default class AuthService extends ClientBuilderService {
+  // private cartService: CartService;
   constructor() {
     super();
+    // this.cartService = new CartService();
   }
 
   async signIn(username: string, password: string): Promise<AuthResult<DataInfo | TokenInfo>> {
@@ -31,13 +34,14 @@ export default class AuthService extends ClientBuilderService {
         password,
         token: result.data?.access_token,
       });
-      console.log("AuthResult", authResult);
+      // console.log("AuthResult", authResult);
 
-      const id = await authResult.data?.body.customer.id;
-      console.log(id);
+      const id = authResult.data?.body.customer.id;
+      // console.log(id);
 
       if (id) {
         localStorage.setItem(USERNAME_ID, id);
+        new CartService().createUserCart(id);
       }
 
       return authResult;
@@ -116,7 +120,6 @@ export default class AuthService extends ClientBuilderService {
       }
 
       const data: TokenInfo = await response.json();
-      console.log("token data", data);
       this.saveDataToLocalStorage(requestParams, data);
 
       return { success: true, data };
@@ -177,7 +180,6 @@ export default class AuthService extends ClientBuilderService {
 
   async retrieveToken() {
     let token = localStorage.getItem(AUTH_TOKEN_LS);
-    console.log("token", token);
 
     if (!token) {
       const result = await this.getAnonymousToken();
