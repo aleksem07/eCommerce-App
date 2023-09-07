@@ -11,4 +11,5 @@ export enum Routes {
   CATALOG = "#catalog",
   PRODUCT = "#product",
   SEARCH = "#search",
+  ABOUT_US = "#about",
 }
