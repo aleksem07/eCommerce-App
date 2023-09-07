@@ -8,10 +8,7 @@ export default class CartListView extends ViewBuilder {
 
   constructor() {
     super();
-    this.element = this.createElement("div", {
-      classes: ["row", "g-3"],
-    });
-
+    this.element = this.createElement("div");
     this.header = this.createHeaderElement();
     this.homeLink = this.createHomeLink();
   }
