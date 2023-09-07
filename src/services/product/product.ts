@@ -73,7 +73,7 @@ export default class ProductService extends ClientBuilderService {
     }
   }
 
-  async getProductsByCategory(categoryId: string) {
+  async getProductsByCategory(categoryId: string, offset = 0, limit?: number) {
     try {
       const token = await this.authService.retrieveToken();
 
@@ -89,6 +89,8 @@ export default class ProductService extends ClientBuilderService {
             queryArgs: {
               filter: [`categories.id:"${categoryId}"`],
               sort: ["createdAt asc"],
+              limit,
+              offset,
             },
           })
           .execute();
