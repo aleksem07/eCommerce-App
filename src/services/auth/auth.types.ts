@@ -55,4 +55,4 @@ export const AUTH_TOKEN_LS = "authToken";
 
 export const USERNAME_LS = "username";
 
-export const USERNAME_ID = "usernameId";
+export const USERNAME_ID_LS = "usernameId";

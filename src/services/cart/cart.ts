@@ -1,6 +1,6 @@
 import { NotificationVariant } from "@Components/notification/notification.types";
 import AuthService from "@Services/auth/auth";
-import { USERNAME_ID } from "@Services/auth/auth.types";
+import { USERNAME_ID_LS } from "@Services/auth/auth.types";
 import ClientBuilderService from "@Services/client-builder/client-builder";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
@@ -19,7 +19,7 @@ export default class CartService extends ClientBuilderService {
 
   addToCart(productId: string) {
     let anonCartId = localStorage.getItem(ANON_CART_ID);
-    const userId = localStorage.getItem(USERNAME_ID);
+    const userId = localStorage.getItem(USERNAME_ID_LS);
 
     if (!anonCartId && !userId) {
       this.createAnonCart();
