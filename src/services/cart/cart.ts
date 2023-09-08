@@ -28,15 +28,16 @@ export default class CartService extends ClientBuilderService {
     if (!cartId && !userId) {
       this.createAnonCart();
       cartId = localStorage.getItem(CART_ID);
+    } else if (!cartId && userId) {
+      this.createUserCart(userId);
     }
+    cartId = localStorage.getItem(CART_ID);
 
     if (cartId) {
       this.updateCart(cartId, productId);
-      console.log(" add to cart cartId", cartId);
     }
   }
 
-  // eslint-disable-next-line max-lines-per-function
   async createAnonCart() {
     try {
       const token = await this.authService.retrieveToken();
@@ -52,7 +53,6 @@ export default class CartService extends ClientBuilderService {
             body: { currency: "USD" },
           })
           .execute();
-        console.log(cart);
 
         if (cart) {
           this.saveDataToLocalStorage(cart.body.id);
@@ -89,7 +89,6 @@ export default class CartService extends ClientBuilderService {
               body: { currency: "USD", customerId: userId },
             })
             .execute();
-          console.log("crate new user cart", cart);
 
           if (cart) {
             this.saveDataToLocalStorage(cart.body.id);
@@ -119,18 +118,14 @@ export default class CartService extends ClientBuilderService {
   }
 
   private async updateCart(cartId: string, productId: string) {
-    console.log("update cart");
     try {
       const token = await this.authService.retrieveToken();
 
       if (token) {
-        // const product = await this.productService.getById(productId);
         const cart = await this.getCartById(cartId);
-        console.log("update cart after get cart", cart);
 
         if (cart) {
-          console.log("cart version", cart.version);
-          const productResponce = await this.apiRoot
+          const productResponse = await this.apiRoot
             .withProjectKey({ projectKey: this.projectKey })
             .carts()
             .withId({ ID: cartId })
@@ -151,8 +146,8 @@ export default class CartService extends ClientBuilderService {
               },
             })
             .execute();
-          this.cart = productResponce.body;
-          console.log("add product to cart", productResponce);
+          this.cart = productResponse.body;
+          console.log("add product to cart", productResponse);
         }
       }
     } catch (error) {
@@ -178,7 +173,6 @@ export default class CartService extends ClientBuilderService {
             },
           })
           .execute();
-        console.log("cart with customer id", cart.body);
 
         if (cart.body) {
           this.saveDataToLocalStorage(cart.body.id);
@@ -187,7 +181,7 @@ export default class CartService extends ClientBuilderService {
         return cart.body;
       }
     } catch (error) {
-      const httpError = error as HttpErrorType;
+      //
     }
   }
 
@@ -206,20 +200,18 @@ export default class CartService extends ClientBuilderService {
             },
           })
           .execute();
-        console.log("cart with cart id", cart.body);
 
         this.cart = cart.body;
 
         return cart.body;
       } catch (error) {
-        const httpError = error as HttpErrorType;
+        //
       }
     }
   }
 
   private saveDataToLocalStorage(cartId: string) {
     if (cartId) {
-      console.log("save thisid ", cartId);
       localStorage.setItem(CART_ID, cartId);
     }
   }

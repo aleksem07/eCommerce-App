@@ -2,8 +2,6 @@ import ProductCardComponent from "@Components/product-card/product-card";
 import ProductListView from "./product-list.view";
 import { Product } from "@Services/product/product.types";
 import CartService from "@Services/cart/cart";
-import { USERNAME_ID } from "@Services/auth/auth.types";
-import { CART_ID } from "@Services/cart/cart.types";
 
 export default class ProductListComponent {
   private view: ProductListView;
@@ -21,17 +19,9 @@ export default class ProductListComponent {
     const button = e.target as HTMLButtonElement;
     button.disabled = true;
     const productId = button.dataset.productId;
-    console.log("ADD product", productId);
 
     if (productId) {
       this.cartService.addToCart(productId);
-    }
-    const cartID = localStorage.getItem(CART_ID);
-    console.log("cartID", cartID);
-
-    if (cartID) {
-      const cart = await this.cartService.getCartById(cartID);
-      console.log(cart);
     }
   }
 
