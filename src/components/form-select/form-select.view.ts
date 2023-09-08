@@ -9,46 +9,54 @@ export default class FormSelectView extends ViewBuilder {
   inputLabel: HTMLLabelElement;
   select: HTMLSelectElement;
   inputHelp: HTMLElement;
+  selectedValue: string;
 
-  constructor({ formName, inputName, labelText, helpText, options, classes }: FormSelectProps) {
+  constructor({
+    formName,
+    inputName,
+    labelText,
+    helpText = "",
+    options,
+    classes,
+    disabled = false,
+    value = "",
+  }: FormSelectProps) {
     super();
-
     this.formName = formName;
     this.inputName = inputName;
-
+    this.selectedValue = value;
     this.inputWrapper = this.createElement("div", {
       id: `${formName}-${inputName}-wrapper`,
       classes: classes ? [...classes] : ["mt-2"],
     });
-
     this.inputLabel = this.createElement("label", {
       id: `${formName}-${inputName}-label`,
       classes: ["form-label"],
     });
     this.inputLabel.setAttribute("for", `${formName}-${inputName}-input`);
     this.inputLabel.textContent = labelText;
-
     this.select = this.createElement<HTMLSelectElement>("select", {
       id: `${formName}-${inputName}-input`,
       classes: ["form-select"],
     });
     this.select.name = inputName;
-
-    const optionElements = options.map((option) => {
-      const optionElement = this.createElement<HTMLOptionElement>("option");
-      optionElement.value = option.value;
-      optionElement.textContent = option.label;
-
-      return optionElement;
-    });
-
+    this.select.disabled = disabled;
+    const optionElements = options.map(this.mapOption.bind(this));
     this.select.append(...optionElements);
-
     this.inputHelp = this.createElement("small", {
       id: `${helpText}-help`,
       classes: ["form-text", "h6"],
     });
     this.inputHelp.textContent = helpText;
+  }
+
+  mapOption(option: { label: string; value: string }) {
+    const optionElement = this.createElement<HTMLOptionElement>("option");
+    optionElement.value = option.value;
+    optionElement.textContent = option.label;
+    optionElement.selected = option.value === this.selectedValue;
+
+    return optionElement;
   }
 
   inputListener(handler: (text: string) => void) {

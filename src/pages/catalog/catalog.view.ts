@@ -5,6 +5,7 @@ export default class CatalogView extends ViewBuilder {
   private containerRow: HTMLElement;
   private rightColumn: HTMLElement;
   private header: HTMLHeadingElement;
+  private sortingContainer: HTMLElement;
 
   constructor() {
     super();
@@ -17,6 +18,10 @@ export default class CatalogView extends ViewBuilder {
 
     this.rightColumn = this.createElement("div", {
       classes: ["col-md-9", "order-2"],
+    });
+
+    this.sortingContainer = this.createElement("div", {
+      classes: ["d-flex", "justify-content-between", "mb-4"],
     });
 
     this.header = this.createHeader();
@@ -45,8 +50,9 @@ export default class CatalogView extends ViewBuilder {
     this.containerRow.append(leftColumn);
   }
 
-  displayToolbar(rightColumn: HTMLElement) {
-    this.rightColumn.append(rightColumn);
+  displayToolbar(sort: HTMLElement, pagination: HTMLElement) {
+    this.rightColumn.append(this.sortingContainer);
+    this.sortingContainer.append(sort, pagination);
   }
 
   render() {

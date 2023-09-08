@@ -8,8 +8,7 @@ export default class UserDataComponent {
   private view: UserDataView;
   private userInfo!: UserInfoComponent;
   private userPassword!: UserPasswordComponent;
-  private userShippingAddress!: UserAddressComponent;
-  private userBillingAddress?: UserAddressComponent;
+  private userAddresses: UserAddressComponent[] = [];
   private customer: Customer;
 
   constructor(customer: Customer) {
@@ -23,30 +22,23 @@ export default class UserDataComponent {
     this.userInfo = new UserInfoComponent(this.customer);
     this.userPassword = new UserPasswordComponent(this.customer);
 
-    this.userShippingAddress = new UserAddressComponent({
-      header: "Shipping Address",
-      address: this.customer.shippingAddress,
-    });
-
-    if (this.customer.billingAddress) {
-      this.userBillingAddress = new UserAddressComponent({
-        header: "Billing Address",
-        address: this.customer.billingAddress,
+    this.userAddresses = this.customer.addresses.map((address) => {
+      return new UserAddressComponent({
+        address,
+        header: address.name,
       });
-    }
+    });
   }
 
   init() {
-    const userShippingAddress = this.userShippingAddress.init();
-    const userBillingAddress = this.userBillingAddress?.init();
+    const userAddresses = this.userAddresses.map((address) => address.init());
     const userInfo = this.userInfo.init();
     const userPassword = this.userPassword.init();
 
     return this.view.render({
       userInfo,
       userPassword,
-      userShippingAddress,
-      userBillingAddress,
+      userAddresses,
     });
   }
 }

@@ -1,4 +1,4 @@
-import { date, ref, string, ValidationError } from "yup";
+import { date, string, ValidationError } from "yup";
 import { ValidationSchema, ValidationResult } from "./validator.types";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";

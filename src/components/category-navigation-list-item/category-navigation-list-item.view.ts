@@ -1,5 +1,7 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
 import { Routes } from "@Services/router/router.types";
+import { Events } from "@Services/event-bus/event-bus.types";
+import eventBusService from "@Services/event-bus/event-bus";
 
 export default class CategoryNavigationListItemView extends ViewBuilder {
   private element?: HTMLLinkElement;
@@ -25,6 +27,9 @@ export default class CategoryNavigationListItemView extends ViewBuilder {
     const url = new URL(`${window.location.origin}${Routes.CATALOG}-${id}`);
     this.element.href = url.href;
     this.element.textContent = name;
+    this.element.addEventListener("click", () => {
+      eventBusService.publish(Events.moveByCategory);
+    });
 
     return this.element;
   }
