@@ -1,5 +1,5 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
-import { ProductInformationProps } from "./product-information.types";
+import { ProductInformationElements, ProductInformationProps } from "./product-information.types";
 
 export default class ProductInformationView extends ViewBuilder {
   private informationElement: HTMLDivElement;
@@ -9,11 +9,8 @@ export default class ProductInformationView extends ViewBuilder {
   private descriptionWrapperElement: HTMLDivElement;
   private imageWrapperElement: HTMLDivElement;
   private descriptionHeaderElement: HTMLHeadingElement;
-  private addToCartButton: HTMLButtonElement;
-  private removeFromCartButton: HTMLButtonElement;
-  private buttonWrapperElement: HTMLDivElement;
 
-  constructor({ title, description }: ProductInformationProps, iconClass: string) {
+  constructor({ title, description }: ProductInformationProps) {
     super();
     this.informationElement = this.createInformationElement();
     this.titleElement = this.createTitleElement(title);
@@ -22,9 +19,6 @@ export default class ProductInformationView extends ViewBuilder {
     this.descriptionWrapperElement = this.createDescriptionWrapperElement();
     this.descriptionHeaderElement = this.createDescriptionHeader();
     this.descriptionElement = this.createDescriptionElement(description);
-    this.buttonWrapperElement = this.createButtonWrapperElement();
-    this.addToCartButton = this.createAddToCartButton(iconClass);
-    this.removeFromCartButton = this.createRemoveFromCartButton(iconClass);
   }
 
   private createInformationElement(): HTMLDivElement {
@@ -80,66 +74,6 @@ export default class ProductInformationView extends ViewBuilder {
     return descriptionElement;
   }
 
-  createButtonWrapperElement(): HTMLDivElement {
-    const buttonWrapperElement = this.createElement<HTMLDivElement>("div", {
-      classes: ["d-flex", "justify-content-flex-start"],
-    });
-
-    return buttonWrapperElement;
-  }
-
-  createAddToCartButton(iconClass: string, disabled = false): HTMLButtonElement {
-    const addToCartButton = this.createElement<HTMLButtonElement>("button", {
-      classes: [
-        "btn",
-        "btn-primary",
-        "mt-5",
-        "mb-5",
-        "d-flex",
-        "align-items-center",
-        "justify-content-center",
-      ],
-    });
-    addToCartButton.textContent = "Add to Cart";
-    addToCartButton.type = "submit";
-    addToCartButton.disabled = disabled;
-
-    const iconWrapper = this.createElement<HTMLDivElement>("div", {
-      classes: ["me-2"],
-    });
-    const icon = this.createIcon(iconClass);
-    iconWrapper.prepend(icon);
-    addToCartButton.prepend(iconWrapper);
-
-    return addToCartButton;
-  }
-
-  createRemoveFromCartButton(iconClass: string, disabled = false): HTMLButtonElement {
-    const removeFromCartButton = this.createElement<HTMLButtonElement>("button", {
-      classes: [
-        "btn",
-        "btn-primary",
-        "mt-5",
-        "mb-5",
-        "d-flex",
-        "align-items-center",
-        "justify-content-center",
-      ],
-    });
-    removeFromCartButton.textContent = "Remove from Cart";
-    removeFromCartButton.type = "submit";
-    removeFromCartButton.disabled = disabled;
-
-    const iconWrapper = this.createElement<HTMLDivElement>("div", {
-      classes: ["me-2"],
-    });
-    const icon = this.createIcon(iconClass);
-    iconWrapper.prepend(icon);
-    removeFromCartButton.prepend(iconWrapper);
-
-    return removeFromCartButton;
-  }
-
   createDividerElement(): HTMLHRElement {
     return this.createElement<HTMLHRElement>("hr");
   }
@@ -149,24 +83,19 @@ export default class ProductInformationView extends ViewBuilder {
     returnDetails,
     price,
     imageSlider,
-  }: {
-    deliveryDetails: HTMLElement;
-    returnDetails: HTMLElement;
-    price: HTMLElement;
-    imageSlider: HTMLElement;
-  }): HTMLElement {
+    actions,
+  }: ProductInformationElements): HTMLElement {
     this.descriptionWrapperElement.append(
       price,
       this.descriptionHeaderElement,
       this.descriptionElement,
-      this.createDividerElement(),
-      this.buttonWrapperElement,
+      actions,
       this.createDividerElement(),
       deliveryDetails,
       this.createDividerElement(),
       returnDetails
     );
-    this.buttonWrapperElement.append(this.addToCartButton, this.removeFromCartButton);
+
     this.imageWrapperElement.append(imageSlider);
     this.wrapperElement.append(this.imageWrapperElement, this.descriptionWrapperElement);
     this.informationElement.append(this.titleElement, this.wrapperElement);

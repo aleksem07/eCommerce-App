@@ -5,6 +5,7 @@ import { ProductInformationProps } from "./product-information.types";
 import ProductPriceComponent from "@Components/product-price/product-price";
 import ProductSliderComponent from "@Components/product-slider/product-slider";
 import ProductModalComponent from "@Components/product-modal/product-modal";
+import ProductActionsComponent from "@Components/product-actions/product-actions";
 
 export default class ProductInformationComponent {
   private view: ProductInformationView;
@@ -13,12 +14,11 @@ export default class ProductInformationComponent {
   private prices: ProductPriceComponent;
   private imageSlider: ProductSliderComponent;
   private modal: ProductModalComponent;
+  private actions: ProductActionsComponent;
 
-  constructor(
-    { title, description, images, price, id, discountedPrice }: ProductInformationProps,
-    iconClass: string
-  ) {
-    this.view = new ProductInformationView({ title, description, images, price, id }, iconClass);
+  constructor({ title, description, images, price, id, discountedPrice }: ProductInformationProps) {
+    this.view = new ProductInformationView({ title, description, images, price, id });
+    this.actions = new ProductActionsComponent();
     this.deliveryDetails = new ProductExtraDescriptionComponent({
       title: "Delivery",
       content: "Free standard shipping on orders over $35 before tax, plus free returns.",
@@ -41,6 +41,7 @@ export default class ProductInformationComponent {
       returnDetails: this.returnDetails.init(),
       price: this.prices.init(),
       imageSlider: this.imageSlider.init(),
+      actions: this.actions.init(),
     });
   }
 }
