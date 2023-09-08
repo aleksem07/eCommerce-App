@@ -7,16 +7,13 @@ import { Events } from "@Services/event-bus/event-bus.types";
 import { Cart } from "@commercetools/platform-sdk";
 import { HttpErrorType } from "@commercetools/sdk-client-v2";
 import { ANON_CART_ID, USER_CART_ID } from "./cart.types";
-import ProductService from "@Services/product/product";
 
 export default class CartService extends ClientBuilderService {
   private authService: AuthService;
-  private productService: ProductService;
   private cart?: Cart;
 
   constructor() {
     super();
-    this.productService = new ProductService();
     this.authService = new AuthService();
   }
 
