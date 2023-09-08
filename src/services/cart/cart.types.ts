@@ -8,7 +8,7 @@ export interface Cart {
   totalPrice: CentPrecisionMoney;
 }
 
-interface LineItem {
+export interface LineItem {
   quantity: number;
   productId: string;
 }

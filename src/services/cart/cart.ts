@@ -3,9 +3,9 @@ import AuthService from "@Services/auth/auth";
 import ClientBuilderService from "@Services/client-builder/client-builder";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
-import { Cart as CartResponse } from "@commercetools/platform-sdk";
+import { Cart as CartResponse, LineItem as LineItemResponse } from "@commercetools/platform-sdk";
 import { HttpErrorType } from "@commercetools/sdk-client-v2";
-import { CART_ID_LS, Cart } from "./cart.types";
+import { CART_ID_LS, Cart, LineItem } from "./cart.types";
 import ProductService from "@Services/product/product";
 
 export default class CartService extends ClientBuilderService {
@@ -16,32 +16,6 @@ export default class CartService extends ClientBuilderService {
     super();
     this.authService = new AuthService();
     this.productService = new ProductService();
-  }
-
-  async createCart(): Promise<Cart | undefined> {
-    try {
-      const token = await this.authService.retrieveToken();
-
-      if (token) {
-        const { body } = await this.apiRoot
-          .withProjectKey({ projectKey: this.projectKey })
-          .carts()
-          .post({
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            body: {
-              lineItems: [],
-              currency: "USD",
-            },
-          })
-          .execute();
-
-        return this.mapCartResponse(body);
-      }
-    } catch (error) {
-      this.handleError(error as HttpErrorType);
-    }
   }
 
   async getCart(): Promise<Cart | undefined> {
@@ -60,13 +34,6 @@ export default class CartService extends ClientBuilderService {
             },
           })
           .execute();
-
-        // If the cart is not found, create one.
-        if (!body || Object.keys(body).length === 0) {
-          return this.createCart();
-        }
-
-        console.log("BODY", body);
 
         return this.mapCartResponse(body);
       }
@@ -90,8 +57,15 @@ export default class CartService extends ClientBuilderService {
       key: cartResponse.key || "",
       customerId: cartResponse.customerId || "",
       customerEmail: cartResponse.customerEmail || "",
-      lineItems: cartResponse.lineItems || [],
+      lineItems: cartResponse.lineItems.map(this.mapLineItemsResponseToLineItems.bind(this)) || [],
       totalPrice: cartResponse.totalPrice,
+    };
+  }
+
+  private mapLineItemsResponseToLineItems(lineItemsResponse: LineItemResponse): LineItem {
+    return {
+      quantity: lineItemsResponse.quantity,
+      productId: lineItemsResponse.productId,
     };
   }
 }
