@@ -10,9 +10,12 @@ export interface Cart {
 
 interface LineItem {
   quantity: number;
+  productId: string;
 }
 
 export interface CentPrecisionMoney {
   centAmount: number;
   currencyCode: string;
 }
+
+export const CART_ID_LS = "cartID";

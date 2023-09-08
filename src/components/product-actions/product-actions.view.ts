@@ -15,7 +15,7 @@ export default class ProductActionsView extends ViewBuilder {
 
   createButtonWrapperElement(): HTMLDivElement {
     const buttonWrapperElement = this.createElement<HTMLDivElement>("div", {
-      classes: ["d-flex", "justify-content-flex-start"],
+      classes: ["d-flex", "justify-content-flex-start", "my-5"],
     });
 
     return buttonWrapperElement;
@@ -23,15 +23,7 @@ export default class ProductActionsView extends ViewBuilder {
 
   createAddToCartButton(disabled = false): HTMLButtonElement {
     const addToCartButton = this.createElement<HTMLButtonElement>("button", {
-      classes: [
-        "btn",
-        "btn-primary",
-        "mt-5",
-        "mb-5",
-        "d-flex",
-        "align-items-center",
-        "justify-content-center",
-      ],
+      classes: ["btn", "btn-primary", "d-flex", "align-items-center", "justify-content-center"],
     });
     addToCartButton.textContent = "Add to Cart";
     addToCartButton.type = "submit";
@@ -51,9 +43,7 @@ export default class ProductActionsView extends ViewBuilder {
     const removeFromCartButton = this.createElement<HTMLButtonElement>("button", {
       classes: [
         "btn",
-        "btn-primary",
-        "mt-5",
-        "mb-5",
+        "btn-outline-danger",
         "d-flex",
         "align-items-center",
         "justify-content-center",
@@ -73,8 +63,14 @@ export default class ProductActionsView extends ViewBuilder {
     return removeFromCartButton;
   }
 
-  render() {
-    this.buttonWrapperElement.append(this.addToCartButton, this.removeFromCartButton);
+  render(hasProduct: boolean): HTMLDivElement {
+    if (hasProduct) {
+      this.addToCartButton.remove();
+      this.buttonWrapperElement.append(this.removeFromCartButton);
+    } else {
+      this.removeFromCartButton.remove();
+      this.buttonWrapperElement.append(this.addToCartButton);
+    }
 
     return this.buttonWrapperElement;
   }

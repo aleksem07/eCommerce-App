@@ -21,11 +21,11 @@ export default class ProductPage {
     this.view = new ProductView();
   }
 
-  private displayProduct() {
+  private async displayProduct() {
     if (this.product) {
-      const cartIcon = "bi-cart";
-      this.information = new ProductInformationComponent(this.product, cartIcon);
-      this.view.render(this.information.init());
+      this.information = new ProductInformationComponent(this.product);
+      const informationElement = await this.information.init();
+      this.view.render(informationElement);
     }
   }
 
@@ -52,7 +52,7 @@ export default class ProductPage {
 
   async init() {
     await this.checkProductExists();
-    this.displayProduct();
+    await this.displayProduct();
 
     eventBusService.publish(Events.renderProductSlider);
   }

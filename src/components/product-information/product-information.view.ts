@@ -90,7 +90,6 @@ export default class ProductInformationView extends ViewBuilder {
       this.descriptionHeaderElement,
       this.descriptionElement,
       actions,
-      this.createDividerElement(),
       deliveryDetails,
       this.createDividerElement(),
       returnDetails

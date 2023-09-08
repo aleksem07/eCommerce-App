@@ -18,7 +18,7 @@ export default class ProductInformationComponent {
 
   constructor({ title, description, images, price, id, discountedPrice }: ProductInformationProps) {
     this.view = new ProductInformationView({ title, description, images, price, id });
-    this.actions = new ProductActionsComponent();
+    this.actions = new ProductActionsComponent(id);
     this.deliveryDetails = new ProductExtraDescriptionComponent({
       title: "Delivery",
       content: "Free standard shipping on orders over $35 before tax, plus free returns.",
@@ -35,13 +35,13 @@ export default class ProductInformationComponent {
     this.modal = new ProductModalComponent(images);
   }
 
-  init() {
+  async init() {
     return this.view.render({
       deliveryDetails: this.deliveryDetails.init(),
       returnDetails: this.returnDetails.init(),
       price: this.prices.init(),
       imageSlider: this.imageSlider.init(),
-      actions: this.actions.init(),
+      actions: await this.actions.init(),
     });
   }
 }

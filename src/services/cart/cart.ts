@@ -3,16 +3,19 @@ import AuthService from "@Services/auth/auth";
 import ClientBuilderService from "@Services/client-builder/client-builder";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
-import { Cart as CartResponse, Product as ProductResponse } from "@commercetools/platform-sdk";
+import { Cart as CartResponse } from "@commercetools/platform-sdk";
 import { HttpErrorType } from "@commercetools/sdk-client-v2";
-import { Cart } from "./cart.types";
+import { CART_ID_LS, Cart } from "./cart.types";
+import ProductService from "@Services/product/product";
 
 export default class CartService extends ClientBuilderService {
   private authService: AuthService;
+  private productService: ProductService;
 
   constructor() {
     super();
     this.authService = new AuthService();
+    this.productService = new ProductService();
   }
 
   async createCart(): Promise<Cart | undefined> {
@@ -44,12 +47,13 @@ export default class CartService extends ClientBuilderService {
   async getCart(): Promise<Cart | undefined> {
     try {
       const token = await this.authService.retrieveToken();
+      const cartId = localStorage.getItem(CART_ID_LS);
 
-      if (token) {
+      if (token && cartId) {
         const { body } = await this.apiRoot
           .withProjectKey({ projectKey: this.projectKey })
           .carts()
-          .withId({ ID: this.clientID })
+          .withId({ ID: cartId })
           .get({
             headers: {
               Authorization: `Bearer ${token}`,
@@ -61,6 +65,8 @@ export default class CartService extends ClientBuilderService {
         if (!body || Object.keys(body).length === 0) {
           return this.createCart();
         }
+
+        console.log("BODY", body);
 
         return this.mapCartResponse(body);
       }
