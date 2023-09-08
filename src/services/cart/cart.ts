@@ -1,4 +1,3 @@
-/* eslint-disable max-lines-per-function */
 import { NotificationVariant } from "@Components/notification/notification.types";
 import AuthService from "@Services/auth/auth";
 import { USERNAME_ID } from "@Services/auth/auth.types";
@@ -6,8 +5,8 @@ import ClientBuilderService from "@Services/client-builder/client-builder";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
 import { Cart } from "@commercetools/platform-sdk";
-import { ClientResponse, HttpErrorType } from "@commercetools/sdk-client-v2";
-import { CART_ID } from "./cart.types";
+import { HttpErrorType } from "@commercetools/sdk-client-v2";
+import { ANON_CART_ID, USER_CART_ID } from "./cart.types";
 import ProductService from "@Services/product/product";
 
 export default class CartService extends ClientBuilderService {
@@ -22,19 +21,21 @@ export default class CartService extends ClientBuilderService {
   }
 
   addToCart(productId: string) {
-    let cartId = localStorage.getItem(CART_ID);
+    let anonCartId = localStorage.getItem(ANON_CART_ID);
     const userId = localStorage.getItem(USERNAME_ID);
 
-    if (!cartId && !userId) {
+    if (!anonCartId && !userId) {
       this.createAnonCart();
-      cartId = localStorage.getItem(CART_ID);
-    } else if (!cartId && userId) {
+      anonCartId = localStorage.getItem(ANON_CART_ID);
+    } else if (!anonCartId && userId) {
       this.createUserCart(userId);
     }
-    cartId = localStorage.getItem(CART_ID);
+    const userCartId = localStorage.getItem(USER_CART_ID);
 
-    if (cartId) {
-      this.updateCart(cartId, productId);
+    if (userCartId) {
+      this.updateCart(userCartId, productId);
+    } else if (anonCartId) {
+      this.updateCart(anonCartId, productId);
     }
   }
 
@@ -55,7 +56,7 @@ export default class CartService extends ClientBuilderService {
           .execute();
 
         if (cart) {
-          this.saveDataToLocalStorage(cart.body.id);
+          localStorage.setItem(ANON_CART_ID, cart.body.id);
         }
 
         return cart;
@@ -70,9 +71,8 @@ export default class CartService extends ClientBuilderService {
   }
 
   async createUserCart(userId: string) {
+    const anonCartId = localStorage.getItem(ANON_CART_ID);
     const userCart = await this.getCartByCustomerID(userId);
-    const anonCartId = localStorage.getItem(CART_ID);
-    let anonCart;
 
     if (!userCart) {
       try {
@@ -91,7 +91,7 @@ export default class CartService extends ClientBuilderService {
             .execute();
 
           if (cart) {
-            this.saveDataToLocalStorage(cart.body.id);
+            localStorage.setItem(USER_CART_ID, cart.body.id);
           }
 
           return cart;
@@ -105,15 +105,19 @@ export default class CartService extends ClientBuilderService {
       }
 
       if (anonCartId) {
-        anonCart = await this.getCartById(anonCartId);
-        const cartId = localStorage.getItem(CART_ID);
-
-        if (anonCart && cartId) {
-          anonCart.lineItems.map((key) => {
-            this.updateCart(cartId, key.productId);
-          });
-        }
+        this.cartToCartTransfer(anonCartId, userId);
       }
+    }
+  }
+
+  async cartToCartTransfer(originalCartId: string, endingCartId: string) {
+    const originalCart = await this.getCartById(originalCartId);
+    const endingCart = await this.getCartById(endingCartId);
+
+    if (originalCart && endingCart) {
+      originalCart.lineItems.map((key) => {
+        this.updateCart(endingCartId, key.productId);
+      });
     }
   }
 
@@ -147,7 +151,6 @@ export default class CartService extends ClientBuilderService {
             })
             .execute();
           this.cart = productResponse.body;
-          console.log("add product to cart", productResponse);
         }
       }
     } catch (error) {
@@ -175,7 +178,7 @@ export default class CartService extends ClientBuilderService {
           .execute();
 
         if (cart.body) {
-          this.saveDataToLocalStorage(cart.body.id);
+          localStorage.setItem(USER_CART_ID, cart.body.id);
         }
 
         return cart.body;
@@ -207,12 +210,6 @@ export default class CartService extends ClientBuilderService {
       } catch (error) {
         //
       }
-    }
-  }
-
-  private saveDataToLocalStorage(cartId: string) {
-    if (cartId) {
-      localStorage.setItem(CART_ID, cartId);
     }
   }
 }
