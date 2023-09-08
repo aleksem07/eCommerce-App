@@ -8,12 +8,16 @@ import { Events } from "@Services/event-bus/event-bus.types";
 import { Cart } from "@commercetools/platform-sdk";
 import { ClientResponse, HttpErrorType } from "@commercetools/sdk-client-v2";
 import { CART_ID } from "./cart.types";
+import ProductService from "@Services/product/product";
 
 export default class CartService extends ClientBuilderService {
   private authService: AuthService;
+  private productService: ProductService;
+  private cart?: Cart;
 
   constructor() {
     super();
+    this.productService = new ProductService();
     this.authService = new AuthService();
   }
 
@@ -115,32 +119,41 @@ export default class CartService extends ClientBuilderService {
   }
 
   private async updateCart(cartId: string, productId: string) {
+    console.log("update cart");
     try {
       const token = await this.authService.retrieveToken();
 
       if (token) {
-        const productResponce = await this.apiRoot
-          .withProjectKey({ projectKey: this.projectKey })
-          .carts()
-          .withId({ ID: cartId })
-          .post({
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            body: {
-              version: 1,
-              actions: [
-                {
-                  action: "addLineItem",
-                  productId,
-                  variantId: 1,
-                  quantity: 1,
-                },
-              ],
-            },
-          })
-          .execute();
-        console.log(productResponce);
+        // const product = await this.productService.getById(productId);
+        const cart = await this.getCartById(cartId);
+        console.log("update cart after get cart", cart);
+
+        if (cart) {
+          console.log("cart version", cart.version);
+          const productResponce = await this.apiRoot
+            .withProjectKey({ projectKey: this.projectKey })
+            .carts()
+            .withId({ ID: cartId })
+            .post({
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+              body: {
+                version: cart.version,
+                actions: [
+                  {
+                    action: "addLineItem",
+                    productId,
+                    variantId: 1,
+                    quantity: 1,
+                  },
+                ],
+              },
+            })
+            .execute();
+          this.cart = productResponce.body;
+          console.log("add product to cart", productResponce);
+        }
       }
     } catch (error) {
       const httpError = error as HttpErrorType;
@@ -194,6 +207,8 @@ export default class CartService extends ClientBuilderService {
           })
           .execute();
         console.log("cart with cart id", cart.body);
+
+        this.cart = cart.body;
 
         return cart.body;
       } catch (error) {
