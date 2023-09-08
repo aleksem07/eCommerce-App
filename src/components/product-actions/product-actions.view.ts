@@ -1,9 +1,9 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
 
 export default class ProductActionsView extends ViewBuilder {
-  buttonWrapperElement: HTMLDivElement;
-  addToCartButton: HTMLButtonElement;
-  removeFromCartButton: HTMLButtonElement;
+  private buttonWrapperElement: HTMLDivElement;
+  private addToCartButton: HTMLButtonElement;
+  private removeFromCartButton: HTMLButtonElement;
 
   constructor() {
     super();
@@ -13,7 +13,7 @@ export default class ProductActionsView extends ViewBuilder {
     this.removeFromCartButton = this.createRemoveFromCartButton();
   }
 
-  createButtonWrapperElement(): HTMLDivElement {
+  private createButtonWrapperElement(): HTMLDivElement {
     const buttonWrapperElement = this.createElement<HTMLDivElement>("div", {
       classes: ["d-flex", "justify-content-flex-start", "my-5"],
     });
@@ -21,7 +21,7 @@ export default class ProductActionsView extends ViewBuilder {
     return buttonWrapperElement;
   }
 
-  createAddToCartButton(disabled = false): HTMLButtonElement {
+  private createAddToCartButton(disabled = false): HTMLButtonElement {
     const addToCartButton = this.createElement<HTMLButtonElement>("button", {
       classes: ["btn", "btn-primary", "d-flex", "align-items-center", "justify-content-center"],
     });
@@ -39,7 +39,7 @@ export default class ProductActionsView extends ViewBuilder {
     return addToCartButton;
   }
 
-  createRemoveFromCartButton(disabled = false): HTMLButtonElement {
+  private createRemoveFromCartButton(disabled = false): HTMLButtonElement {
     const removeFromCartButton = this.createElement<HTMLButtonElement>("button", {
       classes: [
         "btn",
@@ -61,6 +61,18 @@ export default class ProductActionsView extends ViewBuilder {
     removeFromCartButton.prepend(iconWrapper);
 
     return removeFromCartButton;
+  }
+
+  addToCartListener(handler: () => void): void {
+    this.addToCartButton.addEventListener("click", () => {
+      handler();
+    });
+  }
+
+  removeFromCartListener(handler: () => void): void {
+    this.removeFromCartButton.addEventListener("click", () => {
+      handler();
+    });
   }
 
   render(hasProduct: boolean): HTMLDivElement {
