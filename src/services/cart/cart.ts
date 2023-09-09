@@ -183,7 +183,11 @@ export default class CartService extends ClientBuilderService {
         return cart.body;
       }
     } catch (error) {
-      //
+      const httpError = error as HttpErrorType;
+      eventBusService.publish(Events.showNotification, {
+        variant: NotificationVariant.danger,
+        message: httpError.message,
+      });
     }
   }
 
@@ -207,7 +211,11 @@ export default class CartService extends ClientBuilderService {
 
         return cart.body;
       } catch (error) {
-        //
+        const httpError = error as HttpErrorType;
+        eventBusService.publish(Events.showNotification, {
+          variant: NotificationVariant.danger,
+          message: httpError.message,
+        });
       }
     }
   }
