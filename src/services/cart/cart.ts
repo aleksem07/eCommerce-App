@@ -27,7 +27,7 @@ export default class CartService extends ClientBuilderService {
       await this.createAnonCart();
       anonCartId = localStorage.getItem(ANON_CART_ID_LS);
     } else if (!anonCartId && userId) {
-      await this.createUserCart(userId);
+      await this.checkUserCart(userId);
     }
     const userCartId = localStorage.getItem(USER_CART_ID_LS);
 
@@ -69,43 +69,12 @@ export default class CartService extends ClientBuilderService {
     }
   }
 
-  async createUserCart(userId: string) {
+  async checkUserCart(userId: string) {
     const anonCartId = localStorage.getItem(ANON_CART_ID_LS);
-    const userCart = await this.getCartByCustomerID(userId);
+    await this.getCartByCustomerID(userId);
 
-    if (!userCart) {
-      try {
-        const token = await this.authService.retrieveToken();
-
-        if (token) {
-          const cart = await this.apiRoot
-            .withProjectKey({ projectKey: this.projectKey })
-            .carts()
-            .post({
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-              body: { currency: "USD", customerId: userId },
-            })
-            .execute();
-
-          if (cart) {
-            localStorage.setItem(USER_CART_ID_LS, cart.body.id);
-          }
-
-          return cart;
-        }
-      } catch (error) {
-        const httpError = error as HttpErrorType;
-        eventBusService.publish(Events.showNotification, {
-          variant: NotificationVariant.danger,
-          message: httpError.message,
-        });
-      }
-
-      if (anonCartId) {
-        this.cartToCartTransfer(anonCartId, userId);
-      }
+    if (anonCartId) {
+      this.cartToCartTransfer(anonCartId, userId);
     }
   }
 
@@ -161,6 +130,7 @@ export default class CartService extends ClientBuilderService {
     }
   }
 
+  // eslint-disable-next-line max-lines-per-function
   async getCartByCustomerID(customerId: string) {
     const token = await this.authService.retrieveToken();
     try {
@@ -181,6 +151,33 @@ export default class CartService extends ClientBuilderService {
         }
 
         return cart.body;
+      }
+    } catch (error) {
+      this.createUserCart(customerId);
+    }
+  }
+
+  async createUserCart(customerId: string) {
+    try {
+      const token = await this.authService.retrieveToken();
+
+      if (token) {
+        const cart = await this.apiRoot
+          .withProjectKey({ projectKey: this.projectKey })
+          .carts()
+          .post({
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            body: { currency: "USD", customerId },
+          })
+          .execute();
+
+        if (cart) {
+          localStorage.setItem(USER_CART_ID_LS, cart.body.id);
+        }
+
+        return cart;
       }
     } catch (error) {
       const httpError = error as HttpErrorType;
