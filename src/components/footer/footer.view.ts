@@ -3,6 +3,7 @@ import { ViewBuilder } from "@Interfaces/view-builder";
 export default class FooterView extends ViewBuilder {
   private element: HTMLElement;
   private container: HTMLElement;
+  private copyright: HTMLElement;
   private buttonGoToTop: HTMLElement;
 
   constructor() {
@@ -12,15 +13,19 @@ export default class FooterView extends ViewBuilder {
       dataset: [{ bsTheme: "dark" }],
     });
     this.container = this.createElement("div", {
-      classes: ["container", "justify-content-end", "d-flex", "py-3"],
+      classes: ["container", "justify-content-between", "d-flex", "py-3", "align-items-center"],
     });
+    this.copyright = this.createElement("p", {
+      classes: ["text-white", "mb-0", "align-content-center"],
+    });
+    this.copyright.textContent = "© All rights reserved. Made with ❤ by Random Team #19";
     this.buttonGoToTop = this.createElement("button", {
-      classes: ["btn"],
+      classes: ["btn", "text-white"],
     });
-    this.buttonGoToTop.textContent = "Go to top";
     this.buttonGoToTop.setAttribute("type", "button");
+    this.buttonGoToTop.textContent = "Go to top";
 
-    this.container.append(this.buttonGoToTop);
+    this.container.append(this.copyright, this.buttonGoToTop);
     this.element.append(this.container);
   }
 
