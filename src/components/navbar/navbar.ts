@@ -5,6 +5,7 @@ import { Events } from "@Services/event-bus/event-bus.types";
 import RouterService from "@Services/router/router";
 import { Routes } from "@Services/router/router.types";
 import { AUTH_TOKEN_LS, USERNAME_LS } from "@Services/auth/auth.types";
+import LinkComponent from "@Components/link/link";
 
 export default class NavbarComponent {
   private view: NavbarView;
@@ -12,6 +13,8 @@ export default class NavbarComponent {
   private logoutLinkItem: HTMLElement;
   private registerLinkItem: HTMLElement;
   private usernameLinkItem?: HTMLLIElement;
+  private aboutUsLinkItem: HTMLLIElement;
+  private phone: HTMLElement;
 
   constructor() {
     this.view = new NavbarView();
@@ -30,6 +33,12 @@ export default class NavbarComponent {
       "Logout",
       "bi-box-arrow-right"
     ).init();
+    this.aboutUsLinkItem = new NavbarItemComponent(Routes.ABOUT_US, "About Us").init();
+    this.phone = new LinkComponent({
+      href: "tel:1234567890",
+      text: "(123) 456-7890",
+      classes: ["text-decoration-none", "fw-bold", "text-muted", "px-2", "text-align-center"],
+    }).init();
 
     eventBusService.subscribe(Events.userLogin, this.initAuthLinks.bind(this));
     eventBusService.subscribe(Events.loginLinkClicked, this.loginLinkHandler.bind(this));
@@ -70,7 +79,7 @@ export default class NavbarComponent {
   }
 
   init() {
-    this.view.render();
+    this.view.render(this.phone, this.aboutUsLinkItem);
     this.initAuthLinks();
   }
 }

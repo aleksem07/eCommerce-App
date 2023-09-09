@@ -6,17 +6,35 @@ import { AuthLinkItems } from "./navbar.types";
 
 export default class NavbarView extends ViewBuilder {
   element: HTMLElement;
+  availableContainer: HTMLElement;
+  available: HTMLElement;
+  menuContainer: HTMLElement;
   authLinksContainer: HTMLElement;
 
   constructor() {
     super();
     this.element = this.createElement("nav", {
-      classes: ["container", "navbar", "navbar-expand", "bg-dark", "d-flex", "justify-content-end"],
+      classes: [
+        "container",
+        "navbar",
+        "navbar-expand",
+        "bg-dark",
+        "d-flex",
+        "justify-content-between",
+      ],
       dataset: [{ bsTheme: "dark" }],
     });
+    this.available = this.createElement("p", {
+      classes: ["text-muted", "mb-0"],
+    });
+    this.available.textContent = "Available 24/7 at ";
 
-    this.authLinksContainer = this.createAuthLinksContainer();
-    this.element.append(this.authLinksContainer);
+    this.availableContainer = this.createLinksContainer();
+    this.menuContainer = this.createLinksContainer();
+    this.authLinksContainer = this.createLinksContainer();
+
+    this.availableContainer.append(this.available);
+    this.element.append(this.availableContainer, this.menuContainer, this.authLinksContainer);
   }
 
   initAuthLinks({
@@ -50,12 +68,12 @@ export default class NavbarView extends ViewBuilder {
     }
   }
 
-  private createAuthLinksContainer(): HTMLElement {
-    const authLinksContainer = this.createElement("ul", {
+  private createLinksContainer(): HTMLElement {
+    const linksContainer = this.createElement("ul", {
       classes: ["d-flex", "align-items-center", "navbar-nav"],
     });
 
-    return authLinksContainer;
+    return linksContainer;
   }
 
   private setAuthLinks(authLinks: HTMLElement[]) {
@@ -76,7 +94,9 @@ export default class NavbarView extends ViewBuilder {
     return li;
   }
 
-  render() {
+  render(phone: HTMLElement, aboutUsLinkItem: HTMLElement) {
+    this.availableContainer.append(phone);
+    this.menuContainer.append(aboutUsLinkItem);
     this.appendTo("header", this.element);
   }
 }
