@@ -1,6 +1,6 @@
-export const USER_CART_ID = "userCartId";
+export const USER_CART_ID_LS = "userCartId";
 
-export const ANON_CART_ID = "anonCartId";
+export const ANON_CART_ID_LS = "anonCartId";
 
 export interface Cart {
   id: string;

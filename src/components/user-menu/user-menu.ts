@@ -5,7 +5,7 @@ import RouterService from "@Services/router/router";
 import { Routes } from "@Services/router/router.types";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
-import { ANON_CART_ID, USER_CART_ID } from "@Services/cart/cart.types";
+import { ANON_CART_ID_LS, USER_CART_ID_LS } from "@Services/cart/cart.types";
 
 export default class UserMenuComponent {
   private view: UserMenuView;
@@ -19,8 +19,8 @@ export default class UserMenuComponent {
     localStorage.removeItem(AUTH_TOKEN_LS);
     localStorage.removeItem(USERNAME_LS);
     localStorage.removeItem(USERNAME_ID_LS);
-    localStorage.removeItem(USER_CART_ID);
-    localStorage.removeItem(ANON_CART_ID);
+    localStorage.removeItem(USER_CART_ID_LS);
+    localStorage.removeItem(ANON_CART_ID_LS);
     RouterService.navigateTo(Routes.LOGIN);
     eventBusService.publish(Events.logoutLinkClicked);
   }

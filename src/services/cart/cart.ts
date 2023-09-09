@@ -8,7 +8,7 @@ import { Cart } from "./cart.types";
 import { Cart as CartResponse } from "@commercetools/platform-sdk";
 import { LineItem as LineItemResponse } from "@commercetools/platform-sdk";
 import { HttpErrorType } from "@commercetools/sdk-client-v2";
-import { ANON_CART_ID, LineItem, USER_CART_ID } from "./cart.types";
+import { ANON_CART_ID_LS, LineItem, USER_CART_ID_LS } from "./cart.types";
 
 export default class CartService extends ClientBuilderService {
   private authService: AuthService;
@@ -20,16 +20,16 @@ export default class CartService extends ClientBuilderService {
   }
 
   async addToCart(productId: string) {
-    let anonCartId = localStorage.getItem(ANON_CART_ID);
+    let anonCartId = localStorage.getItem(ANON_CART_ID_LS);
     const userId = localStorage.getItem(USERNAME_ID_LS);
 
     if (!anonCartId && !userId) {
       await this.createAnonCart();
-      anonCartId = localStorage.getItem(ANON_CART_ID);
+      anonCartId = localStorage.getItem(ANON_CART_ID_LS);
     } else if (!anonCartId && userId) {
       await this.createUserCart(userId);
     }
-    const userCartId = localStorage.getItem(USER_CART_ID);
+    const userCartId = localStorage.getItem(USER_CART_ID_LS);
 
     if (userCartId) {
       await this.updateCart(userCartId, productId);
@@ -55,7 +55,7 @@ export default class CartService extends ClientBuilderService {
           .execute();
 
         if (cart) {
-          localStorage.setItem(ANON_CART_ID, cart.body.id);
+          localStorage.setItem(ANON_CART_ID_LS, cart.body.id);
         }
 
         return cart;
@@ -70,7 +70,7 @@ export default class CartService extends ClientBuilderService {
   }
 
   async createUserCart(userId: string) {
-    const anonCartId = localStorage.getItem(ANON_CART_ID);
+    const anonCartId = localStorage.getItem(ANON_CART_ID_LS);
     const userCart = await this.getCartByCustomerID(userId);
 
     if (!userCart) {
@@ -90,7 +90,7 @@ export default class CartService extends ClientBuilderService {
             .execute();
 
           if (cart) {
-            localStorage.setItem(USER_CART_ID, cart.body.id);
+            localStorage.setItem(USER_CART_ID_LS, cart.body.id);
           }
 
           return cart;
@@ -177,7 +177,7 @@ export default class CartService extends ClientBuilderService {
           .execute();
 
         if (cart.body) {
-          localStorage.setItem(USER_CART_ID, cart.body.id);
+          localStorage.setItem(USER_CART_ID_LS, cart.body.id);
         }
 
         return cart.body;
