@@ -4,9 +4,11 @@ import { USERNAME_ID_LS } from "@Services/auth/auth.types";
 import ClientBuilderService from "@Services/client-builder/client-builder";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
-import { Cart } from "@commercetools/platform-sdk";
+import { Cart } from "./cart.types";
+import { Cart as CartResponse } from "@commercetools/platform-sdk";
+import { LineItem as LineItemResponse } from "@commercetools/platform-sdk";
 import { HttpErrorType } from "@commercetools/sdk-client-v2";
-import { ANON_CART_ID, USER_CART_ID } from "./cart.types";
+import { ANON_CART_ID, LineItem, USER_CART_ID } from "./cart.types";
 
 export default class CartService extends ClientBuilderService {
   private authService: AuthService;
@@ -17,22 +19,22 @@ export default class CartService extends ClientBuilderService {
     this.authService = new AuthService();
   }
 
-  addToCart(productId: string) {
+  async addToCart(productId: string) {
     let anonCartId = localStorage.getItem(ANON_CART_ID);
     const userId = localStorage.getItem(USERNAME_ID_LS);
 
     if (!anonCartId && !userId) {
-      this.createAnonCart();
+      await this.createAnonCart();
       anonCartId = localStorage.getItem(ANON_CART_ID);
     } else if (!anonCartId && userId) {
-      this.createUserCart(userId);
+      await this.createUserCart(userId);
     }
     const userCartId = localStorage.getItem(USER_CART_ID);
 
     if (userCartId) {
-      this.updateCart(userCartId, productId);
+      await this.updateCart(userCartId, productId);
     } else if (anonCartId) {
-      this.updateCart(anonCartId, productId);
+      await this.updateCart(anonCartId, productId);
     }
   }
 
@@ -107,13 +109,13 @@ export default class CartService extends ClientBuilderService {
     }
   }
 
-  async cartToCartTransfer(originalCartId: string, endingCartId: string) {
-    const originalCart = await this.getCartById(originalCartId);
-    const endingCart = await this.getCartById(endingCartId);
+  async cartToCartTransfer(sourceCart: string, targetCart: string) {
+    const originalCart = await this.getCartById(sourceCart);
+    const endingCart = await this.getCartById(targetCart);
 
     if (originalCart && endingCart) {
       originalCart.lineItems.map((key) => {
-        this.updateCart(endingCartId, key.productId);
+        this.updateCart(targetCart, key.productId);
       });
     }
   }
@@ -126,7 +128,7 @@ export default class CartService extends ClientBuilderService {
         const cart = await this.getCartById(cartId);
 
         if (cart) {
-          const productResponse = await this.apiRoot
+          const cartResponse = await this.apiRoot
             .withProjectKey({ projectKey: this.projectKey })
             .carts()
             .withId({ ID: cartId })
@@ -147,7 +149,7 @@ export default class CartService extends ClientBuilderService {
               },
             })
             .execute();
-          this.cart = productResponse.body;
+          this.cart = this.mapCartResponse(cartResponse.body);
         }
       }
     } catch (error) {
@@ -201,12 +203,31 @@ export default class CartService extends ClientBuilderService {
           })
           .execute();
 
-        this.cart = cart.body;
+        this.cart = this.mapCartResponse(cart.body);
 
         return cart.body;
       } catch (error) {
         //
       }
     }
+  }
+
+  private mapCartResponse(cartResponse: CartResponse): Cart {
+    return {
+      id: cartResponse.id,
+      version: cartResponse.version,
+      key: cartResponse.key || "",
+      customerId: cartResponse.customerId || "",
+      customerEmail: cartResponse.customerEmail || "",
+      lineItems: cartResponse.lineItems.map(this.mapLineItemsResponseToLineItems.bind(this)) || [],
+      totalPrice: cartResponse.totalPrice,
+    };
+  }
+
+  private mapLineItemsResponseToLineItems(lineItemsResponse: LineItemResponse): LineItem {
+    return {
+      quantity: lineItemsResponse.quantity,
+      productId: lineItemsResponse.productId,
+    };
   }
 }
