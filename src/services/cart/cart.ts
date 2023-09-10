@@ -61,11 +61,7 @@ export default class CartService extends ClientBuilderService {
         return this.mapCartResponseToCart(cart.body);
       }
     } catch (error) {
-      const httpError = error as HttpErrorType;
-      eventBusService.publish(Events.showNotification, {
-        variant: NotificationVariant.danger,
-        message: httpError.message,
-      });
+      this.handleError(error);
     }
   }
 
@@ -217,11 +213,7 @@ export default class CartService extends ClientBuilderService {
         await this.createUserCart(customerId);
       }
 
-      eventBusService.publish(Events.showNotification, {
-        variant: NotificationVariant.danger,
-        message: httpError.message,
-      });
-      this.createUserCart(customerId);
+      this.handleError(error);
     }
   }
 
@@ -248,11 +240,7 @@ export default class CartService extends ClientBuilderService {
         return this.mapCartResponseToCart(cart.body);
       }
     } catch (error) {
-      const httpError = error as HttpErrorType;
-      eventBusService.publish(Events.showNotification, {
-        variant: NotificationVariant.danger,
-        message: httpError.message,
-      });
+      this.handleError(error);
     }
   }
 
@@ -274,11 +262,7 @@ export default class CartService extends ClientBuilderService {
 
         return this.mapCartResponseToCart(cart.body);
       } catch (error) {
-        const httpError = error as HttpErrorType;
-        eventBusService.publish(Events.showNotification, {
-          variant: NotificationVariant.danger,
-          message: httpError.message,
-        });
+        this.handleError(error);
       }
     }
   }
