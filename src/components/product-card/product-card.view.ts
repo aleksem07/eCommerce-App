@@ -41,7 +41,7 @@ export default class ProductCardView extends ViewBuilder {
 
   private createImageElement(images: string[]) {
     this.imageElement = this.createElement<HTMLImageElement>("img", {
-      classes: ["card-img-top"],
+      classes: ["card-img-top", "object-fit-contain"],
     });
     this.imageElement.alt = "Card image";
     this.imageElement.height = 250;

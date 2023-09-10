@@ -5,7 +5,10 @@ export default class AboutUsView extends ViewBuilder {
 
   constructor() {
     super();
-    this.element = this.createElement("div", {});
+    this.element = this.createElement("div", {
+      id: "about-us",
+      classes: ["container", "g-0"],
+    });
   }
 
   render() {
