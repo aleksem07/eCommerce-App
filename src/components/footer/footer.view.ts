@@ -13,7 +13,14 @@ export default class FooterView extends ViewBuilder {
       dataset: [{ bsTheme: "dark" }],
     });
     this.container = this.createElement("div", {
-      classes: ["container", "justify-content-between", "d-flex", "py-3", "align-items-center"],
+      classes: [
+        "container",
+        "justify-content-between",
+        "d-flex",
+        "py-3",
+        "align-items-center",
+        "g-0",
+      ],
     });
     this.copyright = this.createElement("p", {
       classes: ["text-white", "mb-0", "align-content-center"],
