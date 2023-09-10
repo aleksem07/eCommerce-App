@@ -74,3 +74,13 @@ function mockAddToCart(cartId: string, productId: string) {
 
   return cartMock;
 }
+
+function mockCreateCart() {
+  const cartMock = CartTestData.random().buildRest<CartResponse>();
+  fetchMock.post(`${apiURL}/${projectKey}/carts`, {
+    status: 201,
+    body: cartMock,
+  });
+
+  return cartMock;
+}
