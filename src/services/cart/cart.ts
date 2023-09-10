@@ -12,7 +12,6 @@ import { ANON_CART_ID_LS, LineItem, USER_CART_ID_LS } from "./cart.types";
 
 export default class CartService extends ClientBuilderService {
   private authService: AuthService;
-  private cart?: Cart;
 
   constructor() {
     super();
@@ -118,7 +117,6 @@ export default class CartService extends ClientBuilderService {
               },
             })
             .execute();
-          this.cart = this.mapCartResponse(cartResponse.body);
         }
       }
     } catch (error) {
@@ -130,7 +128,6 @@ export default class CartService extends ClientBuilderService {
     }
   }
 
-  // eslint-disable-next-line max-lines-per-function
   async getCartByCustomerID(customerId: string) {
     const token = await this.authService.retrieveToken();
     try {
@@ -177,7 +174,7 @@ export default class CartService extends ClientBuilderService {
           localStorage.setItem(USER_CART_ID_LS, cart.body.id);
         }
 
-        return cart;
+        return this.mapCartResponse(cart.body);
       }
     } catch (error) {
       const httpError = error as HttpErrorType;
@@ -204,9 +201,7 @@ export default class CartService extends ClientBuilderService {
           })
           .execute();
 
-        this.cart = this.mapCartResponse(cart.body);
-
-        return cart.body;
+        return this.mapCartResponse(cart.body);
       } catch (error) {
         const httpError = error as HttpErrorType;
         eventBusService.publish(Events.showNotification, {

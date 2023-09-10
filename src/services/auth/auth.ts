@@ -37,7 +37,7 @@ export default class AuthService extends ClientBuilderService {
 
       if (id) {
         localStorage.setItem(USERNAME_ID_LS, id);
-        new CartService().createUserCart(id);
+        new CartService().checkUserCart(id);
       }
 
       return authResult;
