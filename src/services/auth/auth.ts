@@ -9,7 +9,9 @@ import {
   TokenParams,
   SignUpParams,
   USERNAME_LS,
+  USERNAME_ID_LS,
 } from "./auth.types";
+import CartService from "@Services/cart/cart";
 
 export default class AuthService extends ClientBuilderService {
   constructor() {
@@ -25,11 +27,20 @@ export default class AuthService extends ClientBuilderService {
     });
 
     if (result.success && result.data?.access_token) {
-      return await this.login({
+      const authResult = await this.login({
         username,
         password,
         token: result.data?.access_token,
       });
+
+      const id = authResult.data?.body.customer.id;
+
+      if (id) {
+        localStorage.setItem(USERNAME_ID_LS, id);
+        new CartService().checkUserCart(id);
+      }
+
+      return authResult;
     }
 
     return result;
@@ -105,7 +116,6 @@ export default class AuthService extends ClientBuilderService {
       }
 
       const data: TokenInfo = await response.json();
-
       this.saveDataToLocalStorage(requestParams, data);
 
       return { success: true, data };
@@ -123,6 +133,10 @@ export default class AuthService extends ClientBuilderService {
     if (requestParams.username) {
       localStorage.setItem(AUTH_TOKEN_LS, data.access_token);
       localStorage.setItem(USERNAME_LS, requestParams.username);
+
+      if (requestParams.id) {
+        localStorage.setItem(USERNAME_ID_LS, requestParams.id);
+      }
     }
   }
 

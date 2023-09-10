@@ -1,21 +1,28 @@
 import ProductCardComponent from "@Components/product-card/product-card";
 import ProductListView from "./product-list.view";
 import { Product } from "@Services/product/product.types";
+import CartService from "@Services/cart/cart";
 
 export default class ProductListComponent {
   private view: ProductListView;
   private productCards?: HTMLLinkElement[];
   private products?: Product[];
-
+  private cartService: CartService;
   constructor() {
     this.view = new ProductListView();
+    this.cartService = new CartService();
   }
 
-  addToCartHandler(e: Event) {
+  async addToCartHandler(e: Event) {
     e.preventDefault();
     e.stopPropagation();
     const button = e.target as HTMLButtonElement;
     button.disabled = true;
+    const productId = button.dataset.productId;
+
+    if (productId) {
+      this.cartService.addToCart(productId);
+    }
   }
 
   init(products: Product[]) {
