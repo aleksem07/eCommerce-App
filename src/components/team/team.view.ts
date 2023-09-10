@@ -45,30 +45,29 @@ export default class TeamView extends ViewBuilder {
 
   private createDescription() {
     const description = this.createElement("div", {});
-    const paragraphFirst = this.createElement("p", {
-      classes: ["lead"],
-    });
-    const paragraphSecond = this.createElement("p", {
-      classes: ["lead"],
-    });
 
-    const chunksFirst = [
-      "We achieved success through effective collaboration within the our team.",
-      "We held regular meetings to discuss the project's current status, exchange ideas",
-      "and solve issues.",
-      "Our openness to suggestions and willingness to help each other contributed to",
-      "the successful implementation of the project.",
+    const paragraphs = [
+      [
+        "We achieved success through effective collaboration within the our team.",
+        "We held regular meetings to discuss the project's current status, exchange ideas",
+        "and solve issues.",
+        "Our openness to suggestions and willingness to help each other contributed to",
+        "the successful implementation of the project.",
+      ],
+      [
+        "Our project is the result of collective effort, creativity",
+        "and the contributions of each team member. We take pride in",
+        "our achievement and are ready for new challenges and projects.",
+      ],
     ];
 
-    const chunksSecond = [
-      "Our project is the result of collective effort, creativity",
-      "and the contributions of each team member. We take pride in",
-      "our achievement and are ready for new challenges and projects.",
-    ];
-
-    paragraphFirst.textContent = chunksFirst.join("\n");
-    paragraphSecond.textContent = chunksSecond.join("\n");
-    description.append(paragraphFirst, paragraphSecond);
+    paragraphs.forEach((chunk) => {
+      const paragraph = this.createElement("p", {
+        classes: ["lead"],
+      });
+      paragraph.textContent = chunk.join("\n");
+      description.append(paragraph);
+    });
 
     return description;
   }
@@ -77,7 +76,7 @@ export default class TeamView extends ViewBuilder {
     const container = this.createTeamMember({
       avatarPath: mentorImage,
       fullName: "Natalia Gulko",
-      roles: "Mentor",
+      roles: "Mentor/Tech Lead",
       bio: "Antalya, Turkey",
       gitHub,
     });
