@@ -147,9 +147,19 @@ export default class CartService extends ClientBuilderService {
           localStorage.setItem(USER_CART_ID_LS, cart.body.id);
         }
 
-        return cart.body;
+        return this.mapCartResponse(cart.body);
       }
     } catch (error) {
+      const httpError = error as HttpErrorType;
+
+      if (httpError.code === 404) {
+        await this.createUserCart(customerId);
+      }
+
+      eventBusService.publish(Events.showNotification, {
+        variant: NotificationVariant.danger,
+        message: httpError.message,
+      });
       this.createUserCart(customerId);
     }
   }
