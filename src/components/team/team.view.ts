@@ -64,7 +64,7 @@ export default class TeamView extends ViewBuilder {
       {
         avatarPath: mentorImage,
         fullName: "Natalia Gulko",
-        roles: "Mentor/Tech Lead",
+        roles: "Mentor",
         bio: "Antalya, Turkey",
         gitHub: devLinks[0],
       },
