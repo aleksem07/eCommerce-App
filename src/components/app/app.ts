@@ -16,6 +16,8 @@ import { NotificationVariant } from "@Components/notification/notification.types
 import ObjectGuardUtil from "@Utils/object-guard/object-guard";
 import CategoryNavigationComponent from "@Components/category-navigation/category-navigation";
 import SearchProductsPage from "@Pages/search-products/search-products";
+import AboutUsPage from "@Pages/about-us/about-us";
+import FooterComponent from "@Components/footer/footer";
 
 export default class AppComponent {
   private view: AppView;
@@ -23,6 +25,7 @@ export default class AppComponent {
   private header: HeaderComponent;
   private notification: NotificationComponent;
   private categoryNavigation: CategoryNavigationComponent;
+  private footer: FooterComponent;
 
   constructor() {
     this.view = new AppView();
@@ -32,6 +35,8 @@ export default class AppComponent {
     this.notification = new NotificationComponent();
     this.categoryNavigation = new CategoryNavigationComponent();
     this.categoryNavigation.init();
+    this.footer = new FooterComponent();
+    this.footer.init();
 
     this.router = RouterService.getInstance(this.view.element, {
       [Routes.MAIN]: new MainPage(),
@@ -42,6 +47,7 @@ export default class AppComponent {
       [Routes.PRODUCT]: new ProductPage(),
       [Routes.USER_PROFILE]: new UserProfilePage(),
       [Routes.SEARCH]: new SearchProductsPage(),
+      [Routes.ABOUT_US]: new AboutUsPage(),
     });
 
     eventBusService.subscribe(Events.showNotification, this.notificationHandler.bind(this));

@@ -1,3 +1,7 @@
+export const USER_CART_ID_LS = "userCartId";
+
+export const ANON_CART_ID_LS = "anonCartId";
+
 export interface Cart {
   id: string;
   version: number;
@@ -17,5 +21,3 @@ export interface CentPrecisionMoney {
   centAmount: number;
   currencyCode: string;
 }
-
-export const CART_ID_LS = "cartID";

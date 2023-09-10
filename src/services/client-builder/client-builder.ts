@@ -61,7 +61,7 @@ export default class ClientBuilderService {
     }
   }
 
-  protected async execute<T>(uri: string, token: string, body: Record<string, T>) {
+  protected async execute<T>(uri: string, token: string, body?: Record<string, T>) {
     try {
       const data = await this.commercetoolsClient.execute({
         method: "POST",
