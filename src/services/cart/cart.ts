@@ -19,21 +19,22 @@ export default class CartService extends ClientBuilderService {
   }
 
   async addToCart(productId: string): Promise<Cart | undefined> {
-    let anonCartId = localStorage.getItem(ANON_CART_ID_LS);
-    const userId = localStorage.getItem(USERNAME_ID_LS);
+    const cart = await this.getCart();
 
-    if (!anonCartId && !userId) {
-      await this.createAnonCart();
-      anonCartId = localStorage.getItem(ANON_CART_ID_LS);
-    } else if (!anonCartId && userId) {
-      await this.checkUserCart(userId);
+    if (cart) {
+      this.handleSuccess("Product added to cart");
+
+      return await this.addProductToCart(cart.id, productId);
     }
-    const userCartId = localStorage.getItem(USER_CART_ID_LS);
+  }
 
-    if (userCartId) {
-      return await this.updateCart(userCartId, productId);
-    } else if (anonCartId) {
-      return await this.updateCart(anonCartId, productId);
+  async removeFromCart(productId: string): Promise<Cart | undefined> {
+    const cart = await this.getCart();
+
+    if (cart) {
+      this.handleSuccess("Product removed from cart");
+
+      return await this.removeProductFromCart(cart.id, productId);
     }
   }
 
@@ -68,27 +69,35 @@ export default class CartService extends ClientBuilderService {
     }
   }
 
-  async checkUserCart(userId: string) {
+  async checkUserCart(userId: string): Promise<Cart | undefined> {
     const anonCartId = localStorage.getItem(ANON_CART_ID_LS);
-    await this.getCartByCustomerID(userId);
+    let cart = await this.getCartByCustomerID(userId);
 
     if (anonCartId) {
-      this.cartToCartTransfer(anonCartId, userId);
+      cart = await this.cartToCartTransfer(anonCartId, userId);
     }
+
+    return cart;
   }
 
-  private async cartToCartTransfer(sourceCart: string, targetCart: string) {
-    const originalCart = await this.getCartById(sourceCart);
-    const endingCart = await this.getCartById(targetCart);
+  private async cartToCartTransfer(
+    sourceCartId: string,
+    targetCartId: string
+  ): Promise<Cart | undefined> {
+    const sourceCart = await this.getCartById(sourceCartId);
+    const targetCart = await this.getCartById(targetCartId);
+    let resultCart: Cart | undefined;
 
-    if (originalCart && endingCart) {
-      originalCart.lineItems.map((key) => {
-        this.updateCart(targetCart, key.productId);
+    if (sourceCart && targetCart) {
+      sourceCart.lineItems.map(async (key) => {
+        resultCart = await this.addProductToCart(targetCartId, key.productId);
       });
+
+      return resultCart;
     }
   }
 
-  private async updateCart(cartId: string, productId: string): Promise<Cart | undefined> {
+  private async addProductToCart(cartId: string, productId: string): Promise<Cart | undefined> {
     try {
       const token = await this.authService.retrieveToken();
 
@@ -126,11 +135,57 @@ export default class CartService extends ClientBuilderService {
     }
   }
 
+  private async removeProductFromCart(
+    cartId: string,
+    lineItemId: string
+  ): Promise<Cart | undefined> {
+    try {
+      const token = await this.authService.retrieveToken();
+
+      if (token) {
+        const cart = await this.getCartById(cartId);
+
+        if (cart) {
+          const { body } = await this.apiRoot
+            .withProjectKey({ projectKey: this.projectKey })
+            .carts()
+            .withId({ ID: cartId })
+            .post({
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+              body: {
+                version: cart.version,
+                actions: [
+                  {
+                    action: "removeLineItem",
+                    lineItemId,
+                  },
+                ],
+              },
+            })
+            .execute();
+
+          return this.mapCartResponseToCart(body);
+        }
+      }
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
+
   private handleError(error: unknown) {
     const httpError = error as HttpErrorType;
     eventBusService.publish(Events.showNotification, {
       variant: NotificationVariant.danger,
       message: httpError.message,
+    });
+  }
+
+  private handleSuccess(message: string) {
+    eventBusService.publish(Events.showNotification, {
+      variant: NotificationVariant.success,
+      message,
     });
   }
 
@@ -233,7 +288,7 @@ export default class CartService extends ClientBuilderService {
     const anonCartId = localStorage.getItem(ANON_CART_ID_LS);
 
     if (userId) {
-      return await this.getCartByCustomerID(userId);
+      return await this.checkUserCart(userId);
     }
 
     if (anonCartId) {
@@ -257,6 +312,7 @@ export default class CartService extends ClientBuilderService {
 
   private mapLineItemsResponseToLineItems(lineItemsResponse: LineItemResponse): LineItem {
     return {
+      id: lineItemsResponse.id,
       quantity: lineItemsResponse.quantity,
       productId: lineItemsResponse.productId,
     };

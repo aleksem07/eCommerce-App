@@ -18,6 +18,7 @@ describe("ProductActionsComponent", () => {
       totalPrice: { centAmount: 0, currencyCode: "USD" },
       lineItems: [
         {
+          id: "some-cart-item-id",
           productId: PRODUCT_ID,
           quantity: 1,
         },
@@ -42,6 +43,7 @@ describe("ProductActionsComponent", () => {
       totalPrice: { centAmount: 0, currencyCode: "USD" },
       lineItems: [
         {
+          id: "some-cart-item-id",
           productId: "some-product-id",
           quantity: 1,
         },
