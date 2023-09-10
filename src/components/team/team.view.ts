@@ -11,17 +11,9 @@ export default class TeamView extends ViewBuilder {
   private descriptionContainer: HTMLElement;
   private teamContainer: HTMLElement;
   private descriptionTeam: HTMLElement;
-  private developer1: HTMLElement;
-  private developer2: HTMLElement;
-  private developer3: HTMLElement;
-  private developer4: HTMLElement;
+  private developersData: TeamMembersProps[] = [];
 
-  constructor([
-    gitHubLinkMentor,
-    gitHubLinkTeamLead,
-    gitHubLinkDeveloperFirst,
-    gitHubLinkDeveloperSecond,
-  ]: HTMLElement[]) {
+  constructor(devLinks: HTMLElement[]) {
     super();
     this.element = this.createElement("div", {
       classes: ["pt-4"],
@@ -31,15 +23,10 @@ export default class TeamView extends ViewBuilder {
       classes: ["d-flex", "flex-wrap", "justify-content-between", "mb-3"],
     });
     this.descriptionTeam = this.createDescription();
-    const developers = [
-      (this.developer1 = this.createMentor(gitHubLinkMentor)),
-      (this.developer2 = this.createTeamLead(gitHubLinkTeamLead)),
-      (this.developer3 = this.createDeveloperFirst(gitHubLinkDeveloperFirst)),
-      (this.developer4 = this.createDeveloperSecond(gitHubLinkDeveloperSecond)),
-    ];
+    this.developersData = this.createDevelopersData(devLinks);
 
     this.descriptionContainer.append(this.descriptionTeam);
-    this.teamContainer.append(...developers);
+    this.teamContainer.append(...this.createDevelopers());
     this.element.append(this.descriptionContainer, this.teamContainer);
   }
 
@@ -72,52 +59,41 @@ export default class TeamView extends ViewBuilder {
     return description;
   }
 
-  private createMentor(gitHub: HTMLElement) {
-    const container = this.createTeamMember({
-      avatarPath: mentorImage,
-      fullName: "Natalia Gulko",
-      roles: "Mentor/Tech Lead",
-      bio: "Antalya, Turkey",
-      gitHub,
-    });
-
-    return container;
+  private createDevelopersData(devLinks: HTMLElement[]): TeamMembersProps[] {
+    return [
+      {
+        avatarPath: mentorImage,
+        fullName: "Natalia Gulko",
+        roles: "Mentor/Tech Lead",
+        bio: "Antalya, Turkey",
+        gitHub: devLinks[0],
+      },
+      {
+        avatarPath: teamLeadImage,
+        fullName: "Anton Gulko",
+        roles: "Developer/Team Lead",
+        bio: "Antalya, Turkey",
+        gitHub: devLinks[1],
+      },
+      {
+        avatarPath: createDeveloperFirst,
+        fullName: "Nikita Starnoussov",
+        roles: "Developer",
+        bio: "Uralsk, Kazakhstan",
+        gitHub: devLinks[2],
+      },
+      {
+        avatarPath: createDeveloperSecond,
+        fullName: "Aleksey Semyachkin",
+        roles: "Developer",
+        bio: "Belgorod, Russia",
+        gitHub: devLinks[3],
+      },
+    ];
   }
 
-  private createTeamLead(gitHub: HTMLElement) {
-    const container = this.createTeamMember({
-      avatarPath: teamLeadImage,
-      fullName: "Anton Gulko",
-      roles: "Developer/Team Lead",
-      bio: "Antalya, Turkey",
-      gitHub,
-    });
-
-    return container;
-  }
-
-  private createDeveloperFirst(gitHub: HTMLElement) {
-    const container = this.createTeamMember({
-      avatarPath: createDeveloperFirst,
-      fullName: "Nikita Starnoussov",
-      roles: "Developer",
-      bio: "Uralsk, Kazakhstan",
-      gitHub,
-    });
-
-    return container;
-  }
-
-  private createDeveloperSecond(gitHub: HTMLElement) {
-    const container = this.createTeamMember({
-      avatarPath: createDeveloperSecond,
-      fullName: "Aleksey Semyachkin",
-      roles: "Developer",
-      bio: "Belgorod, Russia",
-      gitHub,
-    });
-
-    return container;
+  private createDevelopers() {
+    return this.developersData.map((data) => this.createTeamMember(data));
   }
 
   createTeamMember({ avatarPath, fullName, roles, bio, gitHub }: TeamMembersProps) {

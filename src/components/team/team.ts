@@ -25,6 +25,7 @@ export default class TeamComponent {
       text: gitHubName,
       classes: ["bi-github", "text-decoration-none"],
     }).init();
+    link.setAttribute("target", "_blank");
 
     return link;
   }
