@@ -38,7 +38,7 @@ export default class CartService extends ClientBuilderService {
     }
   }
 
-  async createAnonCart() {
+  private async createAnonCart() {
     try {
       const token = await this.authService.retrieveToken();
 
@@ -67,13 +67,13 @@ export default class CartService extends ClientBuilderService {
 
   async checkUserCart(userId: string): Promise<Cart | undefined> {
     const anonCartId = localStorage.getItem(ANON_CART_ID_LS);
-    let cart = await this.getCartByCustomerID(userId);
+    const userCart = await this.getCartByCustomerID(userId);
 
-    if (anonCartId) {
-      cart = await this.cartToCartTransfer(anonCartId, userId);
+    if (anonCartId && userCart) {
+      return await this.cartToCartTransfer(anonCartId, userCart.id);
     }
 
-    return cart;
+    return userCart;
   }
 
   private async cartToCartTransfer(
@@ -82,15 +82,16 @@ export default class CartService extends ClientBuilderService {
   ): Promise<Cart | undefined> {
     const sourceCart = await this.getCartById(sourceCartId);
     const targetCart = await this.getCartById(targetCartId);
-    let resultCart: Cart | undefined;
 
     if (sourceCart && targetCart) {
-      sourceCart.lineItems.map(async (key) => {
-        resultCart = await this.addProductToCart(targetCartId, key.productId);
-      });
+      for (const item of sourceCart.lineItems) {
+        await this.addProductToCart(targetCartId, item.productId);
+      }
 
-      return resultCart;
+      return await this.getCartById(targetCartId);
     }
+
+    return sourceCart || targetCart;
   }
 
   private async addProductToCart(cartId: string, productId: string): Promise<Cart | undefined> {
@@ -168,21 +169,6 @@ export default class CartService extends ClientBuilderService {
     } catch (error) {
       this.handleError(error);
     }
-  }
-
-  private handleError(error: unknown) {
-    const httpError = error as HttpErrorType;
-    eventBusService.publish(Events.showNotification, {
-      variant: NotificationVariant.danger,
-      message: httpError.message,
-    });
-  }
-
-  private handleSuccess(message: string) {
-    eventBusService.publish(Events.showNotification, {
-      variant: NotificationVariant.success,
-      message,
-    });
   }
 
   private async getCartByCustomerID(customerId: string) {
@@ -300,5 +286,20 @@ export default class CartService extends ClientBuilderService {
       quantity: lineItemsResponse.quantity,
       productId: lineItemsResponse.productId,
     };
+  }
+
+  private handleError(error: unknown) {
+    const httpError = error as HttpErrorType;
+    eventBusService.publish(Events.showNotification, {
+      variant: NotificationVariant.danger,
+      message: httpError.message,
+    });
+  }
+
+  private handleSuccess(message: string) {
+    eventBusService.publish(Events.showNotification, {
+      variant: NotificationVariant.success,
+      message,
+    });
   }
 }
