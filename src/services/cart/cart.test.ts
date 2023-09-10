@@ -16,6 +16,7 @@ describe("CartService", () => {
   afterEach(() => {
     fetchMock.reset();
     jest.clearAllMocks();
+    localStorage.clear();
   });
 
   it("should instantiate", () => {
