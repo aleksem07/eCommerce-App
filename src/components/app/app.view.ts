@@ -8,6 +8,7 @@ export default class AppView extends ViewBuilder {
     this.element = this.createElement<HTMLDivElement>("div", {
       id: "root",
     });
+    document.body.className = "d-flex flex-column min-vh-100";
   }
 
   render() {
