@@ -31,8 +31,10 @@
   "devDependencies": {
     "@babel/core": "^7.20.7",
     "@babel/preset-env": "^7.20.2",
+    "@commercetools-test-data/cart": "^5.10.1",
     "@commercetools-test-data/commons": "^5.10.1",
     "@commercetools-test-data/customer": "^5.10.1",
+    "@commercetools-test-data/line-item": "^5.10.1",
     "@commercetools-test-data/product": "^5.10.1",
     "@commercetools/platform-sdk": "^4.11.0",
     "@commercetools/sdk-client-v2": "^2.2.0",
