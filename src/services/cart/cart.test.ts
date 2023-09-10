@@ -28,9 +28,9 @@ describe("CartService", () => {
     it("when user is logged in", async () => {
       const usernameMock = "mock-username-id";
       const productIdMock = "mock-product-id";
-      const userCartMock = mockUserCart(usernameMock);
-      mockCartById(userCartMock.id);
-      mockAddToCart(userCartMock.id, productIdMock);
+      const userCartMock = mockGetUserCart(usernameMock);
+      mockGetCartById(userCartMock.id);
+      mockAddProductToCart(userCartMock.id, productIdMock);
       localStorage.setItem(USERNAME_ID_LS, usernameMock);
       const instance = new CartService();
 
@@ -46,7 +46,7 @@ describe("CartService", () => {
   });
 });
 
-function mockUserCart(usernameMock: string) {
+function mockGetUserCart(usernameMock: string) {
   const cartMock = CartTestData.random().buildRest<CartResponse>();
   fetchMock.get(`${apiURL}/${projectKey}/carts/customer-id=${usernameMock}`, {
     status: 200,
@@ -56,7 +56,7 @@ function mockUserCart(usernameMock: string) {
   return cartMock;
 }
 
-function mockCartById(cartId: string) {
+function mockGetCartById(cartId: string) {
   const cartMock = CartTestData.random().buildRest<CartResponse>();
   fetchMock.get(`${apiURL}/${projectKey}/carts/${cartId}`, {
     status: 200,
@@ -66,7 +66,7 @@ function mockCartById(cartId: string) {
   return cartMock;
 }
 
-function mockAddToCart(cartId: string, productId: string) {
+function mockAddProductToCart(cartId: string, productId: string) {
   const lineItem = LineItemTestData.random().productId(productId);
   const cartMock = CartTestData.random().lineItems([lineItem]).buildRest<CartResponse>();
   fetchMock.post(`${apiURL}/${projectKey}/carts/${cartId}`, {
