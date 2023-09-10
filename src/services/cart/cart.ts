@@ -18,7 +18,7 @@ export default class CartService extends ClientBuilderService {
     this.authService = new AuthService();
   }
 
-  async addToCart(productId: string) {
+  async addToCart(productId: string): Promise<Cart | undefined> {
     let anonCartId = localStorage.getItem(ANON_CART_ID_LS);
     const userId = localStorage.getItem(USERNAME_ID_LS);
 
@@ -31,9 +31,9 @@ export default class CartService extends ClientBuilderService {
     const userCartId = localStorage.getItem(USER_CART_ID_LS);
 
     if (userCartId) {
-      await this.updateCart(userCartId, productId);
+      return await this.updateCart(userCartId, productId);
     } else if (anonCartId) {
-      await this.updateCart(anonCartId, productId);
+      return await this.updateCart(anonCartId, productId);
     }
   }
 
@@ -88,7 +88,7 @@ export default class CartService extends ClientBuilderService {
     }
   }
 
-  private async updateCart(cartId: string, productId: string) {
+  private async updateCart(cartId: string, productId: string): Promise<Cart | undefined> {
     try {
       const token = await this.authService.retrieveToken();
 
@@ -96,7 +96,7 @@ export default class CartService extends ClientBuilderService {
         const cart = await this.getCartById(cartId);
 
         if (cart) {
-          await this.apiRoot
+          const { body } = await this.apiRoot
             .withProjectKey({ projectKey: this.projectKey })
             .carts()
             .withId({ ID: cartId })
@@ -117,15 +117,21 @@ export default class CartService extends ClientBuilderService {
               },
             })
             .execute();
+
+          return this.mapCartResponseToCart(body);
         }
       }
     } catch (error) {
-      const httpError = error as HttpErrorType;
-      eventBusService.publish(Events.showNotification, {
-        variant: NotificationVariant.danger,
-        message: httpError.message,
-      });
+      this.handleError(error);
     }
+  }
+
+  private handleError(error: unknown) {
+    const httpError = error as HttpErrorType;
+    eventBusService.publish(Events.showNotification, {
+      variant: NotificationVariant.danger,
+      message: httpError.message,
+    });
   }
 
   private async getCartByCustomerID(customerId: string) {

@@ -21,9 +21,12 @@ export default class ProductActionsComponent {
     return !!cart?.lineItems?.find((item) => item.productId === this.id);
   }
 
-  private addToCartHandler() {
-    // TODO: Add to cart
-    // this.cartService.addToCart(this.id);
+  private async addToCartHandler() {
+    const cart = await this.cartService.addToCart(this.id);
+
+    if (cart) {
+      await this.init();
+    }
   }
 
   private removeFromCartHandler() {
