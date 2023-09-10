@@ -3,9 +3,9 @@ import { ViewBuilder } from "@Interfaces/view-builder";
 export default class NavbarItemView extends ViewBuilder {
   private link: HTMLLinkElement;
   private element: HTMLLIElement;
-  private icon: HTMLElement;
+  private icon?: HTMLElement;
 
-  constructor(href: string, text: string, icon: string) {
+  constructor(href: string, text: string, icon?: string) {
     super();
 
     this.link = this.createElement<HTMLLinkElement>("a", {
@@ -14,8 +14,10 @@ export default class NavbarItemView extends ViewBuilder {
     this.link.href = href;
     this.link.textContent = text;
 
-    this.icon = this.createIcon(icon);
-    this.link.prepend(this.icon);
+    if (icon) {
+      this.icon = this.createIcon(icon);
+      this.link.prepend(this.icon);
+    }
 
     this.element = this.createElement("li", {
       classes: ["nav-item"],
