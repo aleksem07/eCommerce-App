@@ -26,18 +26,19 @@ describe("CartService", () => {
 
   describe("should add to cart", () => {
     it("when user is logged in", async () => {
-      const usernameMock = "username-id";
-      localStorage.setItem(USERNAME_ID_LS, usernameMock);
+      const usernameMock = "mock-username-id";
+      const productIdMock = "mock-product-id";
       const userCartMock = mockUserCart(usernameMock);
       mockCartById(userCartMock.id);
-      mockAddToCart(userCartMock.id, "productId");
+      mockAddToCart(userCartMock.id, productIdMock);
+      localStorage.setItem(USERNAME_ID_LS, usernameMock);
       const instance = new CartService();
 
-      const cart = await instance.addToCart("productId");
+      const cart = await instance.addToCart(productIdMock);
 
       expect(cart?.lineItems).toHaveLength(1);
       expect(cart?.lineItems).toContainEqual<LineItem>({
-        productId: "productId",
+        productId: productIdMock,
         quantity: expect.any(Number),
         id: expect.any(String),
       });
