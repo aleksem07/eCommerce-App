@@ -1,3 +1,5 @@
+import { Price } from "@Services/product/product.types";
+
 export const USER_CART_ID_LS = "userCartId";
 
 export const ANON_CART_ID_LS = "anonCartId";
@@ -16,6 +18,11 @@ export interface LineItem {
   id: string;
   quantity: number;
   productId: string;
+  name: string;
+  price: Price;
+  discountedPrice?: Price;
+  totalPrice: number;
+  images: string[];
 }
 
 export interface CentPrecisionMoney {

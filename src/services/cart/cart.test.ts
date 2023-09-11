@@ -37,7 +37,7 @@ describe("CartService", () => {
       const cart = await instance.addToCart(productIdMock);
 
       expect(cart?.lineItems).toHaveLength(1);
-      expect(cart?.lineItems).toContainEqual<LineItem>({
+      expect(cart?.lineItems[0]).toMatchObject<Partial<LineItem>>({
         productId: productIdMock,
         quantity: expect.any(Number),
         id: expect.any(String),
@@ -55,7 +55,7 @@ describe("CartService", () => {
       const cart = await instance.addToCart(productIdMock);
 
       expect(cart?.lineItems).toHaveLength(1);
-      expect(cart?.lineItems).toContainEqual<LineItem>({
+      expect(cart?.lineItems[0]).toMatchObject<Partial<LineItem>>({
         productId: productIdMock,
         quantity: expect.any(Number),
         id: expect.any(String),
@@ -72,7 +72,7 @@ describe("CartService", () => {
       const cart = await instance.addToCart(productIdMock);
 
       expect(cart?.lineItems).toHaveLength(1);
-      expect(cart?.lineItems).toContainEqual<LineItem>({
+      expect(cart?.lineItems[0]).toMatchObject<Partial<LineItem>>({
         productId: productIdMock,
         quantity: expect.any(Number),
         id: expect.any(String),

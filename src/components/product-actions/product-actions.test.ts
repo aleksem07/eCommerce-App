@@ -21,6 +21,11 @@ describe("ProductActionsComponent", () => {
           id: "some-cart-item-id",
           productId: PRODUCT_ID,
           quantity: 1,
+          name: "some-product-name",
+          price: { value: 100, currencyCode: "USD" },
+          discountedPrice: { value: 90, currencyCode: "USD" },
+          totalPrice: 90,
+          images: [],
         },
       ],
     });
@@ -46,6 +51,11 @@ describe("ProductActionsComponent", () => {
           id: "some-cart-item-id",
           productId: "some-product-id",
           quantity: 1,
+          name: "some-product-name",
+          price: { value: 100, currencyCode: "USD" },
+          discountedPrice: { value: 90, currencyCode: "USD" },
+          totalPrice: 90,
+          images: [],
         },
       ],
     });
