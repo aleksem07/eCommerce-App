@@ -28,13 +28,13 @@ export default class CartService extends ClientBuilderService {
     }
   }
 
-  async removeFromCart(productId: string): Promise<Cart | undefined> {
+  async removeFromCart(lineItemId: string): Promise<Cart | undefined> {
     const cart = await this.getCart();
 
     if (cart) {
       this.handleSuccess("Product removed from cart");
 
-      return await this.removeProductFromCart(cart.id, productId);
+      return await this.removeLineItemFromCart(cart.id, lineItemId);
     }
   }
 
@@ -132,7 +132,7 @@ export default class CartService extends ClientBuilderService {
     }
   }
 
-  private async removeProductFromCart(
+  private async removeLineItemFromCart(
     cartId: string,
     lineItemId: string
   ): Promise<Cart | undefined> {

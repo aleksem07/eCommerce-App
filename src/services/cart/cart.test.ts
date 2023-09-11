@@ -104,10 +104,26 @@ function mockGetCartById(cartId: string) {
 function mockAddProductToCart(cartId: string, productId: string) {
   const lineItem = LineItemTestData.random().productId(productId);
   const cartMock = CartTestData.random().id(cartId).lineItems([lineItem]).buildRest<CartResponse>();
-  fetchMock.post(`${apiURL}/${projectKey}/carts/${cartId}`, {
-    status: 201,
-    body: cartMock,
-  });
+  fetchMock.post(
+    {
+      url: `${apiURL}/${projectKey}/carts/${cartId}`,
+      body: {
+        actions: [
+          {
+            action: "addLineItem",
+            productId,
+          },
+        ],
+      },
+    },
+    {
+      status: 201,
+      body: cartMock,
+    },
+    {
+      matchPartialBody: true,
+    }
+  );
 
   return cartMock;
 }
