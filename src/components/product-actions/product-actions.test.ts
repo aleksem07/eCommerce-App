@@ -24,7 +24,10 @@ describe("ProductActionsComponent", () => {
           name: "some-product-name",
           price: { value: 100, currencyCode: "USD" },
           discountedPrice: { value: 90, currencyCode: "USD" },
-          totalPrice: 90,
+          totalPrice: {
+            value: 90,
+            currencyCode: "USD",
+          },
           images: [],
         },
       ],
@@ -54,7 +57,10 @@ describe("ProductActionsComponent", () => {
           name: "some-product-name",
           price: { value: 100, currencyCode: "USD" },
           discountedPrice: { value: 90, currencyCode: "USD" },
-          totalPrice: 90,
+          totalPrice: {
+            value: 90,
+            currencyCode: "USD",
+          },
           images: [],
         },
       ],

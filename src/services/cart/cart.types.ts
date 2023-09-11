@@ -21,7 +21,7 @@ export interface LineItem {
   name: string;
   price: Price;
   discountedPrice?: Price;
-  totalPrice: number;
+  totalPrice: Price;
   images: string[];
 }
 

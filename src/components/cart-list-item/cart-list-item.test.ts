@@ -8,7 +8,10 @@ describe("CartListItemComponent", () => {
       images: ["test"],
       price: { value: 1, currencyCode: "USD" },
       discountedPrice: { value: 2, currencyCode: "USD" },
-      totalPrice: 3,
+      totalPrice: {
+        value: 3,
+        currencyCode: "USD",
+      },
       id: "test",
       productId: "test",
     });

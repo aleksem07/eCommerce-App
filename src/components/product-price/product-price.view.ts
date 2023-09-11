@@ -8,10 +8,10 @@ export default class ProductPriceView extends ViewBuilder {
   private price: HTMLElement;
   private oldPrice: HTMLElement;
 
-  constructor({ price, discountedPrice, size = "sm" }: ProductPriceProps) {
+  constructor({ price, discountedPrice, size = "sm", classes }: ProductPriceProps) {
     super();
     this.element = this.createElement("div", {
-      classes: ["d-flex", "align-items-center"],
+      classes: ["d-flex", "align-items-center", ...(classes || [])],
     });
 
     if (discountedPrice) {

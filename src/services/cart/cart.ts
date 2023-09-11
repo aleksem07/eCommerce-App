@@ -10,6 +10,7 @@ import {
   Price as PriceResponse,
   Image as ImageResponse,
   LineItem as LineItemResponse,
+  CentPrecisionMoney,
 } from "@commercetools/platform-sdk";
 import { HttpErrorType } from "@commercetools/sdk-client-v2";
 import { ANON_CART_ID_LS, LineItem, USER_CART_ID_LS } from "./cart.types";
@@ -293,7 +294,7 @@ export default class CartService extends ClientBuilderService {
       name: lineItemsResponse.name.en,
       price: this.getPrice(lineItemsResponse.price),
       discountedPrice: this.getDiscountedPrice(lineItemsResponse.price),
-      totalPrice: this.getPriceValue(lineItemsResponse.totalPrice.centAmount),
+      totalPrice: this.getPriceFromCentPrecisionMoney(lineItemsResponse.totalPrice),
       images: this.mapProductImages(lineItemsResponse.variant.images),
     };
   }
@@ -303,6 +304,15 @@ export default class CartService extends ClientBuilderService {
 
     return {
       currencyCode: price?.value?.currencyCode || "USD",
+      value: Number(priceValue) || 0,
+    };
+  }
+
+  private getPriceFromCentPrecisionMoney(money: CentPrecisionMoney): Price {
+    const priceValue = this.getPriceValue(money.centAmount);
+
+    return {
+      currencyCode: money.currencyCode || "USD",
       value: Number(priceValue) || 0,
     };
   }
