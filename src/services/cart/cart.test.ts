@@ -1,6 +1,6 @@
 import fetchMock from "fetch-mock";
 import CartService from "./cart";
-import { LineItem } from "./cart.types";
+import { ANON_CART_ID_LS, LineItem } from "./cart.types";
 import { Cart as CartTestData } from "@commercetools-test-data/cart";
 import { LineItem as LineItemTestData } from "@commercetools-test-data/line-item";
 import { Cart as CartResponse, LineItem as LineItemResponse } from "@commercetools/platform-sdk";
@@ -43,6 +43,24 @@ describe("CartService", () => {
         id: expect.any(String),
       });
     });
+
+    it("when user is not logged in", async () => {
+      const productIdMock = "mock-product-id";
+      const anonCardIdMock = "mock-anon-cart-id";
+      localStorage.setItem(ANON_CART_ID_LS, anonCardIdMock);
+      mockGetCartById(anonCardIdMock);
+      mockAddProductToCart(anonCardIdMock, productIdMock);
+      const instance = new CartService();
+
+      const cart = await instance.addToCart(productIdMock);
+
+      expect(cart?.lineItems).toHaveLength(1);
+      expect(cart?.lineItems).toContainEqual<LineItem>({
+        productId: productIdMock,
+        quantity: expect.any(Number),
+        id: expect.any(String),
+      });
+    });
   });
 });
 
@@ -57,7 +75,7 @@ function mockGetUserCart(usernameMock: string) {
 }
 
 function mockGetCartById(cartId: string) {
-  const cartMock = CartTestData.random().buildRest<CartResponse>();
+  const cartMock = CartTestData.random().id(cartId).buildRest<CartResponse>();
   fetchMock.get(`${apiURL}/${projectKey}/carts/${cartId}`, {
     status: 200,
     body: cartMock,
@@ -68,7 +86,7 @@ function mockGetCartById(cartId: string) {
 
 function mockAddProductToCart(cartId: string, productId: string) {
   const lineItem = LineItemTestData.random().productId(productId);
-  const cartMock = CartTestData.random().lineItems([lineItem]).buildRest<CartResponse>();
+  const cartMock = CartTestData.random().id(cartId).lineItems([lineItem]).buildRest<CartResponse>();
   fetchMock.post(`${apiURL}/${projectKey}/carts/${cartId}`, {
     status: 201,
     body: cartMock,
