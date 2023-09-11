@@ -35,6 +35,7 @@ export default class CartListItemView extends ViewBuilder {
         "g-3",
         "border-bottom",
         "py-3",
+        "cart-list-item",
       ],
     });
 
