@@ -12,13 +12,13 @@ export default class CartView extends ViewBuilder {
       classes: ["container", "my-5"],
     });
     this.row = this.createElement("div", {
-      classes: ["row"],
+      classes: ["row", "justify-content-between"],
     });
     this.rightColumn = this.createElement("div", {
       classes: ["col-12", "col-md-4"],
     });
     this.leftColumn = this.createElement("div", {
-      classes: ["col-12", "col-md-8"],
+      classes: ["col-12", "col-md-7"],
     });
   }
 
