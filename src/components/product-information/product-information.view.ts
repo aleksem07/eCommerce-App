@@ -1,5 +1,5 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
-import { ProductInformationProps } from "./product-information.types";
+import { ProductInformationElements, ProductInformationProps } from "./product-information.types";
 
 export default class ProductInformationView extends ViewBuilder {
   private informationElement: HTMLDivElement;
@@ -83,21 +83,18 @@ export default class ProductInformationView extends ViewBuilder {
     returnDetails,
     price,
     imageSlider,
-  }: {
-    deliveryDetails: HTMLElement;
-    returnDetails: HTMLElement;
-    price: HTMLElement;
-    imageSlider: HTMLElement;
-  }): HTMLElement {
+    actions,
+  }: ProductInformationElements): HTMLElement {
     this.descriptionWrapperElement.append(
       price,
       this.descriptionHeaderElement,
       this.descriptionElement,
-      this.createDividerElement(),
+      actions,
       deliveryDetails,
       this.createDividerElement(),
       returnDetails
     );
+
     this.imageWrapperElement.append(imageSlider);
     this.wrapperElement.append(this.imageWrapperElement, this.descriptionWrapperElement);
     this.informationElement.append(this.titleElement, this.wrapperElement);

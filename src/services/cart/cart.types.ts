@@ -13,6 +13,7 @@ export interface Cart {
 }
 
 export interface LineItem {
+  id: string;
   quantity: number;
   productId: string;
 }

@@ -18,26 +18,27 @@ export default class CartService extends ClientBuilderService {
     this.authService = new AuthService();
   }
 
-  async addToCart(productId: string) {
-    let anonCartId = localStorage.getItem(ANON_CART_ID_LS);
-    const userId = localStorage.getItem(USERNAME_ID_LS);
+  async addToCart(productId: string): Promise<Cart | undefined> {
+    const cart = await this.getCart();
 
-    if (!anonCartId && !userId) {
-      await this.createAnonCart();
-      anonCartId = localStorage.getItem(ANON_CART_ID_LS);
-    } else if (!anonCartId && userId) {
-      await this.checkUserCart(userId);
-    }
-    const userCartId = localStorage.getItem(USER_CART_ID_LS);
+    if (cart) {
+      this.handleSuccess("Product added to cart");
 
-    if (userCartId) {
-      await this.updateCart(userCartId, productId);
-    } else if (anonCartId) {
-      await this.updateCart(anonCartId, productId);
+      return await this.addProductToCart(cart.id, productId);
     }
   }
 
-  async createAnonCart() {
+  async removeFromCart(lineItemId: string): Promise<Cart | undefined> {
+    const cart = await this.getCart();
+
+    if (cart) {
+      this.handleSuccess("Product removed from cart");
+
+      return await this.removeLineItemFromCart(cart.id, lineItemId);
+    }
+  }
+
+  private async createAnonCart() {
     try {
       const token = await this.authService.retrieveToken();
 
@@ -57,38 +58,43 @@ export default class CartService extends ClientBuilderService {
           localStorage.setItem(ANON_CART_ID_LS, cart.body.id);
         }
 
-        return cart;
+        return this.mapCartResponseToCart(cart.body);
       }
     } catch (error) {
-      const httpError = error as HttpErrorType;
-      eventBusService.publish(Events.showNotification, {
-        variant: NotificationVariant.danger,
-        message: httpError.message,
-      });
+      this.handleError(error);
     }
   }
 
-  async checkUserCart(userId: string) {
+  async checkUserCart(userId: string): Promise<Cart | undefined> {
     const anonCartId = localStorage.getItem(ANON_CART_ID_LS);
-    await this.getCartByCustomerID(userId);
+    const userCart = await this.getCartByCustomerID(userId);
 
-    if (anonCartId) {
-      this.cartToCartTransfer(anonCartId, userId);
+    if (anonCartId && userCart) {
+      return await this.cartToCartTransfer(anonCartId, userCart.id);
     }
+
+    return userCart;
   }
 
-  async cartToCartTransfer(sourceCart: string, targetCart: string) {
-    const originalCart = await this.getCartById(sourceCart);
-    const endingCart = await this.getCartById(targetCart);
+  private async cartToCartTransfer(
+    sourceCartId: string,
+    targetCartId: string
+  ): Promise<Cart | undefined> {
+    const sourceCart = await this.getCartById(sourceCartId);
+    const targetCart = await this.getCartById(targetCartId);
 
-    if (originalCart && endingCart) {
-      originalCart.lineItems.map((key) => {
-        this.updateCart(targetCart, key.productId);
-      });
+    if (sourceCart && targetCart) {
+      for (const item of sourceCart.lineItems) {
+        await this.addProductToCart(targetCartId, item.productId);
+      }
+
+      return await this.getCartById(targetCartId);
     }
+
+    return sourceCart || targetCart;
   }
 
-  private async updateCart(cartId: string, productId: string) {
+  private async addProductToCart(cartId: string, productId: string): Promise<Cart | undefined> {
     try {
       const token = await this.authService.retrieveToken();
 
@@ -96,7 +102,7 @@ export default class CartService extends ClientBuilderService {
         const cart = await this.getCartById(cartId);
 
         if (cart) {
-          const cartResponse = await this.apiRoot
+          const { body } = await this.apiRoot
             .withProjectKey({ projectKey: this.projectKey })
             .carts()
             .withId({ ID: cartId })
@@ -117,18 +123,55 @@ export default class CartService extends ClientBuilderService {
               },
             })
             .execute();
+
+          return this.mapCartResponseToCart(body);
         }
       }
     } catch (error) {
-      const httpError = error as HttpErrorType;
-      eventBusService.publish(Events.showNotification, {
-        variant: NotificationVariant.danger,
-        message: httpError.message,
-      });
+      this.handleError(error);
     }
   }
 
-  async getCartByCustomerID(customerId: string) {
+  private async removeLineItemFromCart(
+    cartId: string,
+    lineItemId: string
+  ): Promise<Cart | undefined> {
+    try {
+      const token = await this.authService.retrieveToken();
+
+      if (token) {
+        const cart = await this.getCartById(cartId);
+
+        if (cart) {
+          const { body } = await this.apiRoot
+            .withProjectKey({ projectKey: this.projectKey })
+            .carts()
+            .withId({ ID: cartId })
+            .post({
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+              body: {
+                version: cart.version,
+                actions: [
+                  {
+                    action: "removeLineItem",
+                    lineItemId,
+                  },
+                ],
+              },
+            })
+            .execute();
+
+          return this.mapCartResponseToCart(body);
+        }
+      }
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
+
+  private async getCartByCustomerID(customerId: string) {
     const token = await this.authService.retrieveToken();
     try {
       if (token) {
@@ -147,7 +190,7 @@ export default class CartService extends ClientBuilderService {
           localStorage.setItem(USER_CART_ID_LS, cart.body.id);
         }
 
-        return this.mapCartResponse(cart.body);
+        return this.mapCartResponseToCart(cart.body);
       }
     } catch (error) {
       const httpError = error as HttpErrorType;
@@ -156,15 +199,11 @@ export default class CartService extends ClientBuilderService {
         await this.createUserCart(customerId);
       }
 
-      eventBusService.publish(Events.showNotification, {
-        variant: NotificationVariant.danger,
-        message: httpError.message,
-      });
-      this.createUserCart(customerId);
+      this.handleError(error);
     }
   }
 
-  async createUserCart(customerId: string) {
+  private async createUserCart(customerId: string) {
     try {
       const token = await this.authService.retrieveToken();
 
@@ -184,18 +223,14 @@ export default class CartService extends ClientBuilderService {
           localStorage.setItem(USER_CART_ID_LS, cart.body.id);
         }
 
-        return this.mapCartResponse(cart.body);
+        return this.mapCartResponseToCart(cart.body);
       }
     } catch (error) {
-      const httpError = error as HttpErrorType;
-      eventBusService.publish(Events.showNotification, {
-        variant: NotificationVariant.danger,
-        message: httpError.message,
-      });
+      this.handleError(error);
     }
   }
 
-  async getCartById(cartId: string) {
+  private async getCartById(cartId: string) {
     const token = await this.authService.retrieveToken();
 
     if (token) {
@@ -211,18 +246,29 @@ export default class CartService extends ClientBuilderService {
           })
           .execute();
 
-        return this.mapCartResponse(cart.body);
+        return this.mapCartResponseToCart(cart.body);
       } catch (error) {
-        const httpError = error as HttpErrorType;
-        eventBusService.publish(Events.showNotification, {
-          variant: NotificationVariant.danger,
-          message: httpError.message,
-        });
+        this.handleError(error);
       }
     }
   }
 
-  private mapCartResponse(cartResponse: CartResponse): Cart {
+  async getCart(): Promise<Cart | undefined> {
+    const userId = localStorage.getItem(USERNAME_ID_LS);
+    const anonCartId = localStorage.getItem(ANON_CART_ID_LS);
+
+    if (userId) {
+      return await this.checkUserCart(userId);
+    }
+
+    if (anonCartId) {
+      return await this.getCartById(anonCartId);
+    }
+
+    return await this.createAnonCart();
+  }
+
+  private mapCartResponseToCart(cartResponse: CartResponse): Cart {
     return {
       id: cartResponse.id,
       version: cartResponse.version,
@@ -236,8 +282,24 @@ export default class CartService extends ClientBuilderService {
 
   private mapLineItemsResponseToLineItems(lineItemsResponse: LineItemResponse): LineItem {
     return {
+      id: lineItemsResponse.id,
       quantity: lineItemsResponse.quantity,
       productId: lineItemsResponse.productId,
     };
+  }
+
+  private handleError(error: unknown) {
+    const httpError = error as HttpErrorType;
+    eventBusService.publish(Events.showNotification, {
+      variant: NotificationVariant.danger,
+      message: httpError.message,
+    });
+  }
+
+  private handleSuccess(message: string) {
+    eventBusService.publish(Events.showNotification, {
+      variant: NotificationVariant.success,
+      message,
+    });
   }
 }
