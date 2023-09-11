@@ -16,6 +16,9 @@ export enum Events {
   renderProductSlider = "renderProductSlider",
   searchProducts = "searchProducts",
   sortProducts = "sortProducts",
+  pageSwitch = "pageSwitch",
+  moveByCategory = "moveByCategory",
+  getAllProductsInCategory = "getAllProductsInCategory",
 }
 
 export type EventCallback = (data?: EventData) => void;

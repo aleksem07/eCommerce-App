@@ -12,6 +12,7 @@ import { Routes } from "@Services/router/router.types";
 import { NotificationVariant } from "@Components/notification/notification.types";
 import CategoryService from "@Services/category/category";
 import BreadCrumbsComponent from "@Components/bread-crumbs/bread-crumbs";
+import ProductPaginationComponent from "@Components/product-pagination/product-pagination";
 
 export default class CatalogPage {
   private view: CatalogView;
@@ -21,6 +22,7 @@ export default class CatalogPage {
   private productListComponent: ProductListComponent;
   private filter: FilterComponent;
   private sort: SortComponent;
+  private pagination: ProductPaginationComponent;
   private sizesFilter: string[] = [];
   private colorsFilter: string[] = [];
   private sortValue = "";
@@ -39,6 +41,7 @@ export default class CatalogPage {
     this.productListComponent = new ProductListComponent();
     this.filter = new FilterComponent();
     this.sort = new SortComponent();
+    this.pagination = new ProductPaginationComponent();
     this.priceRange = {
       minPrice: "0",
       maxPrice: "*",
@@ -48,6 +51,7 @@ export default class CatalogPage {
     eventBusService.subscribe(Events.minPriceFilterValue, this.handlePriceChange.bind(this));
     eventBusService.subscribe(Events.maxPriceFilterValue, this.handlePriceChange.bind(this));
     eventBusService.subscribe(Events.sortProducts, this.handleSortProducts.bind(this));
+    eventBusService.subscribe(Events.pageSwitch, this.pageSwitch.bind(this));
     eventBusService.subscribe(
       Events.filterBySize,
       this.handleFilterEvent(FilterAttributeType.size, this.sizesFilter)
@@ -61,7 +65,7 @@ export default class CatalogPage {
   private async handleResetFiltersClick() {
     this.resetPriceRange();
     this.resetDataFilter();
-    await this.checkCategoryExists();
+    await this.fetchFilters();
     const { sizeFilter, colorFilter } = this.productService.generateFilters(
       this.sizesFilter,
       this.colorsFilter
@@ -120,9 +124,10 @@ export default class CatalogPage {
     this.sendFiltersToProductService();
   }
 
-  private async checkCategoryExists() {
+  private async checkCategoryExists(offset?: number) {
     const [, ...rest] = window.location.href.split("-");
     this.id = rest.join("-");
+    const PRODUCT_PER_PAGE = 6;
 
     if (!this.id) {
       RouterService.navigateTo(Routes.NOT_FOUND);
@@ -132,7 +137,11 @@ export default class CatalogPage {
       });
     } else {
       const category = await this.categoryService.getById(this.id);
-      const products = await this.productService.getProductsByCategory(this.id);
+      const products = await this.productService.getProductsByCategory(
+        this.id,
+        offset,
+        PRODUCT_PER_PAGE
+      );
 
       if (category) {
         this.view.displayHeader(category.name);
@@ -141,9 +150,6 @@ export default class CatalogPage {
       if (products) {
         const productListElement = this.productListComponent.init(products);
         this.view.displayProducts(productListElement);
-        const colors = products.map((product) => product.color);
-        const sizes = products.map((product) => product.size);
-        eventBusService.publish(Events.fetchProductsSuccessfully, { colors, sizes });
       } else {
         RouterService.navigateTo(Routes.NOT_FOUND);
       }
@@ -173,6 +179,22 @@ export default class CatalogPage {
     }
   }
 
+  private async fetchFilters() {
+    const [, ...rest] = window.location.href.split("-");
+    this.id = rest.join("-");
+    const filters = await this.productService.getProductsByCategory(this.id);
+
+    if (filters) {
+      const filterListElement = this.productListComponent.init(filters);
+      this.view.displayProducts(filterListElement);
+      const colors = filters.map((filter) => filter.color);
+      const sizes = filters.map((filter) => filter.size);
+      eventBusService.publish(Events.fetchProductsSuccessfully, { colors, sizes });
+      const productsInCategory = filters.length;
+      eventBusService.publish(Events.getAllProductsInCategory, { productsInCategory });
+    }
+  }
+
   private handleSortProducts(data?: EventData) {
     const hasSelectedValue = ObjectGuardUtil.hasProp<string>(data, "selectValue");
 
@@ -187,10 +209,22 @@ export default class CatalogPage {
     }
   }
 
+  private async pageSwitch(data?: EventData) {
+    const hasPage = ObjectGuardUtil.hasProp<number>(data, "page");
+    const STEP_SWITCH_PAGE = 6;
+
+    if (hasPage) {
+      let offset = 0;
+      data.page === 1 ? (offset = 0) : (offset = data.page * STEP_SWITCH_PAGE);
+      await this.checkCategoryExists(offset);
+    }
+  }
+
   init() {
     this.resetDataFilter();
-    this.view.displayToolbar(this.sort.init());
+    this.view.displayToolbar(this.sort.init(), this.pagination.init());
     this.view.displaySidebar(this.filter.init());
+    this.fetchFilters();
     this.checkCategoryExists();
     this.breadcrumbs.init();
     this.view.render();
