@@ -20,7 +20,6 @@ export default class CartView extends ViewBuilder {
     this.leftColumn = this.createElement("div", {
       classes: ["col-12", "col-md-9"],
     });
-    this.rightColumn.textContent = "Promocode + Order Total";
   }
 
   render(cartList: HTMLElement) {
@@ -28,6 +27,7 @@ export default class CartView extends ViewBuilder {
     this.leftColumn.innerHTML = "";
     this.rightColumn.innerHTML = "";
     this.leftColumn.append(cartList);
+    this.rightColumn.textContent = "Promocode + Order Total";
     this.row.append(this.leftColumn, this.rightColumn);
     this.element.append(this.row);
     this.appendTo("#root", this.element);
