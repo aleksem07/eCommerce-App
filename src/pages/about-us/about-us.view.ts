@@ -7,7 +7,14 @@ export default class AboutUsView extends ViewBuilder {
     super();
     this.element = this.createElement("div", {
       id: "about-us",
-      classes: ["container", "g-0"],
+      classes: [
+        "container",
+        "g-0",
+        "d-flex",
+        "justify-content-center",
+        "flex-column",
+        "align-items-center",
+      ],
     });
   }
 
