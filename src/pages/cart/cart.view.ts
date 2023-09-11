@@ -25,6 +25,8 @@ export default class CartView extends ViewBuilder {
 
   render(cartList: HTMLElement) {
     this.element.innerHTML = "";
+    this.leftColumn.innerHTML = "";
+    this.rightColumn.innerHTML = "";
     this.leftColumn.append(cartList);
     this.row.append(this.leftColumn, this.rightColumn);
     this.element.append(this.row);
