@@ -15,12 +15,20 @@ describe("ProductActionsComponent", () => {
       key: "some-cart-key",
       customerId: "some-customer-id",
       customerEmail: "some-customer-email",
-      totalPrice: { centAmount: 0, currencyCode: "USD" },
+      totalPrice: { value: 0, currencyCode: "USD" },
       lineItems: [
         {
           id: "some-cart-item-id",
           productId: PRODUCT_ID,
           quantity: 1,
+          name: "some-product-name",
+          price: { value: 100, currencyCode: "USD" },
+          discountedPrice: { value: 90, currencyCode: "USD" },
+          totalPrice: {
+            value: 90,
+            currencyCode: "USD",
+          },
+          images: [],
         },
       ],
     });
@@ -40,12 +48,20 @@ describe("ProductActionsComponent", () => {
       key: "some-cart-key",
       customerId: "some-customer-id",
       customerEmail: "some-customer-email",
-      totalPrice: { centAmount: 0, currencyCode: "USD" },
+      totalPrice: { value: 0, currencyCode: "USD" },
       lineItems: [
         {
           id: "some-cart-item-id",
           productId: "some-product-id",
           quantity: 1,
+          name: "some-product-name",
+          price: { value: 100, currencyCode: "USD" },
+          discountedPrice: { value: 90, currencyCode: "USD" },
+          totalPrice: {
+            value: 90,
+            currencyCode: "USD",
+          },
+          images: [],
         },
       ],
     });

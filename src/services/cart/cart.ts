@@ -5,10 +5,16 @@ import ClientBuilderService from "@Services/client-builder/client-builder";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
 import { Cart } from "./cart.types";
-import { Cart as CartResponse } from "@commercetools/platform-sdk";
-import { LineItem as LineItemResponse } from "@commercetools/platform-sdk";
+import {
+  Cart as CartResponse,
+  Price as PriceResponse,
+  Image as ImageResponse,
+  LineItem as LineItemResponse,
+  CentPrecisionMoney,
+} from "@commercetools/platform-sdk";
 import { HttpErrorType } from "@commercetools/sdk-client-v2";
 import { ANON_CART_ID_LS, LineItem, USER_CART_ID_LS } from "./cart.types";
+import { Price } from "@Services/product/product.types";
 
 export default class CartService extends ClientBuilderService {
   private authService: AuthService;
@@ -276,7 +282,7 @@ export default class CartService extends ClientBuilderService {
       customerId: cartResponse.customerId || "",
       customerEmail: cartResponse.customerEmail || "",
       lineItems: cartResponse.lineItems.map(this.mapLineItemsResponseToLineItems.bind(this)) || [],
-      totalPrice: cartResponse.totalPrice,
+      totalPrice: this.getPriceFromCentPrecisionMoney(cartResponse.totalPrice),
     };
   }
 
@@ -285,7 +291,51 @@ export default class CartService extends ClientBuilderService {
       id: lineItemsResponse.id,
       quantity: lineItemsResponse.quantity,
       productId: lineItemsResponse.productId,
+      name: lineItemsResponse.name.en,
+      price: this.getPrice(lineItemsResponse.price),
+      discountedPrice: this.getDiscountedPrice(lineItemsResponse.price),
+      totalPrice: this.getPriceFromCentPrecisionMoney(lineItemsResponse.totalPrice),
+      images: this.mapProductImages(lineItemsResponse.variant.images),
     };
+  }
+
+  private getPrice(price?: PriceResponse): Price {
+    const priceValue = this.getPriceValue(price?.value?.centAmount);
+
+    return {
+      currencyCode: price?.value?.currencyCode || "USD",
+      value: Number(priceValue) || 0,
+    };
+  }
+
+  private getPriceFromCentPrecisionMoney(money: CentPrecisionMoney): Price {
+    const priceValue = this.getPriceValue(money.centAmount);
+
+    return {
+      currencyCode: money.currencyCode || "USD",
+      value: Number(priceValue) || 0,
+    };
+  }
+
+  private getPriceValue(centAmount?: number): number {
+    return centAmount ? Number((centAmount / 100).toFixed(2)) : 0;
+  }
+
+  private getDiscountedPrice(price?: PriceResponse): Price | undefined {
+    const priceValue = this.getPriceValue(price?.discounted?.value?.centAmount);
+
+    if (!priceValue) {
+      return;
+    }
+
+    return {
+      currencyCode: price?.value?.currencyCode || "USD",
+      value: Number(priceValue) || 0,
+    };
+  }
+
+  private mapProductImages(images?: ImageResponse[]): string[] {
+    return images?.map((image) => image.url) || [];
   }
 
   private handleError(error: unknown) {
