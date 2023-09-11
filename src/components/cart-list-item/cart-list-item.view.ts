@@ -1,4 +1,5 @@
 import { ViewBuilder } from "@Interfaces/view-builder";
+import { LineItem } from "@Services/cart/cart.types";
 import fallbackImage from "assets/images/card-empty.png";
 
 export default class CartListItemView extends ViewBuilder {
@@ -12,13 +13,13 @@ export default class CartListItemView extends ViewBuilder {
   private inputWrapper: HTMLDivElement;
   private buttonWrapper: HTMLDivElement;
 
-  constructor(imageUrl: string, itemName: string) {
+  constructor({ name, quantity, images }: LineItem) {
     super();
     this.item = this.createItemWrapper();
     this.imageWrapper = this.createImageWrapper();
-    this.imageElement = this.createImageElement(imageUrl);
-    this.headerElement = this.createHeaderElement(itemName);
-    this.quantityInputElement = this.createQuantityInputElement();
+    this.imageElement = this.createImageElement(images[0]);
+    this.headerElement = this.createHeaderElement(name);
+    this.quantityInputElement = this.createQuantityInputElement(quantity);
     this.itemButton = this.deleteItemButton();
     this.priceWrapper = this.createPriceWrapper();
     this.inputWrapper = this.createInputWrapper();
@@ -27,7 +28,14 @@ export default class CartListItemView extends ViewBuilder {
 
   private createItemWrapper(): HTMLDivElement {
     const itemWrapper = this.createElement<HTMLDivElement>("div", {
-      classes: ["justify-content-between", "align-items-center", "row", "g-3"],
+      classes: [
+        "justify-content-between",
+        "align-items-center",
+        "row",
+        "g-3",
+        "border-bottom",
+        "py-3",
+      ],
     });
 
     return itemWrapper;
@@ -69,7 +77,7 @@ export default class CartListItemView extends ViewBuilder {
     const header = this.createElement<HTMLHeadingElement>("h5", {
       classes: ["col-12", "col-md-3"],
     });
-    header.textContent = "Item name";
+    header.textContent = itemName;
 
     return header;
   }
@@ -78,19 +86,19 @@ export default class CartListItemView extends ViewBuilder {
     const image = this.createElement<HTMLImageElement>("img", {
       classes: ["img-fluid"],
     });
-    image.src = fallbackImage;
+    image.src = imageUrl || fallbackImage;
 
     return image;
   }
 
-  private createQuantityInputElement(): HTMLInputElement {
+  private createQuantityInputElement(quantity: number): HTMLInputElement {
     const input = this.createElement<HTMLInputElement>("input", {
       classes: ["form-control", "form-control-sm", "p-1"],
     });
     input.type = "number";
     input.min = "1";
     input.max = "10";
-    input.value = "1";
+    input.value = quantity.toString();
 
     return input;
   }

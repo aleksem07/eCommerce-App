@@ -5,12 +5,14 @@ export default class CartListView extends ViewBuilder {
   private element: HTMLElement;
   private header: HTMLHeadingElement;
   private homeLink: HTMLLinkElement;
+  private itemsWrapper: HTMLDivElement;
 
   constructor() {
     super();
     this.element = this.createElement("div");
     this.header = this.createHeaderElement();
     this.homeLink = this.createHomeLink();
+    this.itemsWrapper = this.createItemsWrapper();
   }
 
   createHeaderElement(): HTMLHeadingElement {
@@ -32,10 +34,19 @@ export default class CartListView extends ViewBuilder {
     return link;
   }
 
-  render(cartListItems: HTMLElement) {
+  createItemsWrapper(): HTMLDivElement {
+    const itemsWrapper = this.createElement<HTMLDivElement>("div", {
+      classes: ["px-4", "border", "rounded", "mt-5"],
+    });
+
+    return itemsWrapper;
+  }
+
+  render(cartListItems: HTMLElement[]) {
     this.element.innerHTML = "";
+    this.itemsWrapper.append(...cartListItems);
     this.header.append(this.homeLink);
-    this.element.append(this.header, cartListItems);
+    this.element.append(this.header, this.itemsWrapper);
 
     return this.element;
   }

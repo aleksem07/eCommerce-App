@@ -5,23 +5,28 @@ import CartService from "@Services/cart/cart";
 
 export default class CartPage {
   private view: CartView;
-  private cartList: CartListComponent;
+  private cartList?: CartListComponent;
   private cartService: CartService;
   private cart?: Cart;
 
   constructor() {
     this.view = new CartView();
     this.cartService = new CartService();
-
-    this.cartList = new CartListComponent("", "");
   }
 
   private async fetchCart() {
     this.cart = await this.cartService.getCart();
+
+    if (this.cart) {
+      this.cartList = new CartListComponent(this.cart?.lineItems);
+    }
   }
 
-  init() {
-    const cartList = this.cartList.init();
-    this.view.render(cartList);
+  async init() {
+    await this.fetchCart();
+
+    if (this.cartList) {
+      this.view.render(this.cartList.init());
+    }
   }
 }

@@ -1,17 +1,20 @@
 import CartListItemComponent from "@Components/cart-list-item/cart-list-item";
 import CartListView from "./cart-list.view";
+import { LineItem } from "@Services/cart/cart.types";
 
 export default class CartListComponent {
   private view: CartListView;
-  private cartListItems: CartListItemComponent;
+  private lineItems: LineItem[];
 
-  constructor(imageUrl: string, itemName: string) {
+  constructor(lineItems: LineItem[]) {
     this.view = new CartListView();
-    this.cartListItems = new CartListItemComponent(imageUrl, itemName);
+    this.lineItems = lineItems;
   }
 
   init() {
-    const cartListItems = this.cartListItems.init();
+    const cartListItems = this.lineItems.map((lineItem) =>
+      new CartListItemComponent(lineItem).init()
+    );
 
     return this.view.render(cartListItems);
   }
