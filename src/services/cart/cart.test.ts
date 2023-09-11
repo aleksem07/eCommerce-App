@@ -3,7 +3,7 @@ import CartService from "./cart";
 import { ANON_CART_ID_LS, LineItem } from "./cart.types";
 import { Cart as CartTestData } from "@commercetools-test-data/cart";
 import { LineItem as LineItemTestData } from "@commercetools-test-data/line-item";
-import { Cart as CartResponse, LineItem as LineItemResponse } from "@commercetools/platform-sdk";
+import { Cart as CartResponse } from "@commercetools/platform-sdk";
 import { USERNAME_ID_LS } from "@Services/auth/auth.types";
 
 jest.mock("@Services/auth/auth");
@@ -50,6 +50,23 @@ describe("CartService", () => {
       localStorage.setItem(ANON_CART_ID_LS, anonCardIdMock);
       mockGetCartById(anonCardIdMock);
       mockAddProductToCart(anonCardIdMock, productIdMock);
+      const instance = new CartService();
+
+      const cart = await instance.addToCart(productIdMock);
+
+      expect(cart?.lineItems).toHaveLength(1);
+      expect(cart?.lineItems).toContainEqual<LineItem>({
+        productId: productIdMock,
+        quantity: expect.any(Number),
+        id: expect.any(String),
+      });
+    });
+
+    it("when user is not logged in and there is no cart", async () => {
+      const productIdMock = "mock-product-id";
+      const cartMock = mockCreateCart();
+      mockGetCartById(cartMock.id);
+      mockAddProductToCart(cartMock.id, productIdMock);
       const instance = new CartService();
 
       const cart = await instance.addToCart(productIdMock);
