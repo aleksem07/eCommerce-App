@@ -6,6 +6,7 @@ export default class CartListView extends ViewBuilder {
   private header: HTMLHeadingElement;
   private homeLink: HTMLLinkElement;
   private itemsWrapper: HTMLDivElement;
+  private subtotalHeader: HTMLHeadingElement;
 
   constructor() {
     super();
@@ -13,6 +14,7 @@ export default class CartListView extends ViewBuilder {
     this.header = this.createHeaderElement();
     this.homeLink = this.createHomeLink();
     this.itemsWrapper = this.createItemsWrapper();
+    this.subtotalHeader = this.createSubtotalHeader();
   }
 
   createHeaderElement(): HTMLHeadingElement {
@@ -26,12 +28,21 @@ export default class CartListView extends ViewBuilder {
 
   createHomeLink(): HTMLLinkElement {
     const link = this.createElement<HTMLLinkElement>("a", {
-      classes: ["fs-2", "link-primary", "link-offset-2"],
+      classes: ["fs-5", "link-primary", "link-offset-2"],
     });
-    link.textContent = "Home";
+    link.textContent = "Back to shopping";
     link.href = Routes.MAIN;
 
     return link;
+  }
+
+  createSubtotalHeader(): HTMLHeadingElement {
+    const header = this.createElement<HTMLHeadingElement>("h5", {
+      classes: ["d-flex", "justify-content-end", "align-items-center", "py-3"],
+    });
+    header.textContent = "Subtotal: ";
+
+    return header;
   }
 
   createItemsWrapper(): HTMLDivElement {
@@ -42,9 +53,10 @@ export default class CartListView extends ViewBuilder {
     return itemsWrapper;
   }
 
-  render(cartListItems: HTMLElement[]) {
+  render(cartListItems: HTMLElement[], totalPrice: HTMLElement): HTMLElement {
     this.element.innerHTML = "";
-    this.itemsWrapper.append(...cartListItems);
+    this.subtotalHeader.append(totalPrice);
+    this.itemsWrapper.append(...cartListItems, this.subtotalHeader);
     this.header.append(this.homeLink);
     this.element.append(this.header, this.itemsWrapper);
 

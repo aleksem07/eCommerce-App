@@ -11,7 +11,7 @@ export interface Cart {
   customerId: string;
   customerEmail: string;
   lineItems: LineItem[];
-  totalPrice: CentPrecisionMoney;
+  totalPrice: Price;
 }
 
 export interface LineItem {
@@ -23,9 +23,4 @@ export interface LineItem {
   discountedPrice?: Price;
   totalPrice: Price;
   images: string[];
-}
-
-export interface CentPrecisionMoney {
-  centAmount: number;
-  currencyCode: string;
 }

@@ -18,7 +18,7 @@ export default class CartPage {
     this.cart = await this.cartService.getCart();
 
     if (this.cart) {
-      this.cartList = new CartListComponent(this.cart?.lineItems);
+      this.cartList = new CartListComponent(this.cart.lineItems, this.cart.totalPrice);
     }
   }
 

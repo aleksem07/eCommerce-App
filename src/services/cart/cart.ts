@@ -282,7 +282,7 @@ export default class CartService extends ClientBuilderService {
       customerId: cartResponse.customerId || "",
       customerEmail: cartResponse.customerEmail || "",
       lineItems: cartResponse.lineItems.map(this.mapLineItemsResponseToLineItems.bind(this)) || [],
-      totalPrice: cartResponse.totalPrice,
+      totalPrice: this.getPriceFromCentPrecisionMoney(cartResponse.totalPrice),
     };
   }
 

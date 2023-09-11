@@ -15,7 +15,7 @@ describe("ProductActionsComponent", () => {
       key: "some-cart-key",
       customerId: "some-customer-id",
       customerEmail: "some-customer-email",
-      totalPrice: { centAmount: 0, currencyCode: "USD" },
+      totalPrice: { value: 0, currencyCode: "USD" },
       lineItems: [
         {
           id: "some-cart-item-id",
@@ -48,7 +48,7 @@ describe("ProductActionsComponent", () => {
       key: "some-cart-key",
       customerId: "some-customer-id",
       customerEmail: "some-customer-email",
-      totalPrice: { centAmount: 0, currencyCode: "USD" },
+      totalPrice: { value: 0, currencyCode: "USD" },
       lineItems: [
         {
           id: "some-cart-item-id",
