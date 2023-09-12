@@ -92,18 +92,6 @@ export default class CartListItemView extends ViewBuilder {
     return image;
   }
 
-  private createQuantityInputElement(quantity: number): HTMLInputElement {
-    const input = this.createElement<HTMLInputElement>("input", {
-      classes: ["form-control", "form-control-sm", "p-1"],
-    });
-    input.type = "number";
-    input.min = "1";
-    input.max = "10";
-    input.value = quantity.toString();
-
-    return input;
-  }
-
   private deleteItemButton(): HTMLButtonElement {
     const button = this.createElement<HTMLButtonElement>("button", {
       classes: ["btn", "btn-outline-danger"],
@@ -111,6 +99,23 @@ export default class CartListItemView extends ViewBuilder {
     button.textContent = "Delete";
 
     return button;
+  }
+
+  private createQuantityInputElement(quantity: number): HTMLInputElement {
+    const input = this.createElement<HTMLInputElement>("input", {
+      classes: ["form-control", "form-control-sm", "p-1"],
+    });
+    input.type = "number";
+    input.value = quantity.toString();
+
+    return input;
+  }
+
+  inputChangeListener(handler: (quantity: number) => void) {
+    this.quantityInputElement.addEventListener("change", () => {
+      this.quantityInputElement.disabled = true;
+      handler(Number(this.quantityInputElement.value));
+    });
   }
 
   render(price: HTMLElement, totalPrice: HTMLElement): HTMLElement {

@@ -338,6 +338,39 @@ export default class CartService extends ClientBuilderService {
     return images?.map((image) => image.url) || [];
   }
 
+  async updateListItemQuantity(cart: Cart, lineItemId: string, quantity: number) {
+    try {
+      const token = await this.authService.retrieveToken();
+
+      if (token) {
+        const { body } = await this.apiRoot
+          .withProjectKey({ projectKey: this.projectKey })
+          .carts()
+          .withId({ ID: cart.id })
+          .post({
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            body: {
+              version: cart.version,
+              actions: [
+                {
+                  action: "changeLineItemQuantity",
+                  lineItemId,
+                  quantity,
+                },
+              ],
+            },
+          })
+          .execute();
+
+        return this.mapCartResponseToCart(body);
+      }
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
+
   private handleError(error: unknown) {
     const httpError = error as HttpErrorType;
     eventBusService.publish(Events.showNotification, {

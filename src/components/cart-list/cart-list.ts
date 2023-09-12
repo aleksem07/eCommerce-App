@@ -1,23 +1,24 @@
 import CartListItemComponent from "@Components/cart-list-item/cart-list-item";
 import CartListView from "./cart-list.view";
-import { LineItem } from "@Services/cart/cart.types";
-import { Price } from "@Services/product/product.types";
+import { Cart, LineItem } from "@Services/cart/cart.types";
 import ProductPriceComponent from "@Components/product-price/product-price";
 
 export default class CartListComponent {
   private view: CartListView;
   private lineItems: LineItem[];
   private totalPrice: ProductPriceComponent;
+  private cart: Cart;
 
-  constructor(lineItems: LineItem[], totalPrice: Price) {
+  constructor(cart: Cart) {
     this.view = new CartListView();
-    this.lineItems = lineItems;
-    this.totalPrice = new ProductPriceComponent({ price: totalPrice, classes: ["ms-2"] });
+    this.cart = cart;
+    this.lineItems = this.cart.lineItems;
+    this.totalPrice = new ProductPriceComponent({ price: this.cart.totalPrice, classes: ["ms-2"] });
   }
 
   init() {
     const cartListItems = this.lineItems.map((lineItem) =>
-      new CartListItemComponent(lineItem).init()
+      new CartListItemComponent(this.cart, lineItem).init()
     );
 
     return this.view.render(cartListItems, this.totalPrice.init());
