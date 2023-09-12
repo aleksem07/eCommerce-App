@@ -120,6 +120,7 @@ export default class CartListItemView extends ViewBuilder {
 
   deleteButtonClickListener(handler: () => void) {
     this.deleteButton.addEventListener("click", () => {
+      this.quantityInputElement.disabled = true;
       this.deleteButton.disabled = true;
       handler();
     });
