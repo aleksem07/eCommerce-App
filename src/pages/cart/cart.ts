@@ -15,7 +15,7 @@ export default class CartPage {
     this.view = new CartView();
     this.cartService = new CartService();
 
-    eventBusService.subscribe(Events.updateCart, this.fetchCart.bind(this));
+    eventBusService.subscribe(Events.updateCart, this.init.bind(this));
   }
 
   private async fetchCart() {

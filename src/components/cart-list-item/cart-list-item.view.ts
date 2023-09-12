@@ -106,8 +106,6 @@ export default class CartListItemView extends ViewBuilder {
       classes: ["form-control", "form-control-sm", "p-1"],
     });
     input.type = "number";
-    input.min = "1";
-    input.max = "10";
     input.value = quantity.toString();
 
     return input;
@@ -115,6 +113,7 @@ export default class CartListItemView extends ViewBuilder {
 
   inputChangeListener(handler: (quantity: number) => void) {
     this.quantityInputElement.addEventListener("change", () => {
+      this.quantityInputElement.disabled = true;
       handler(Number(this.quantityInputElement.value));
     });
   }
