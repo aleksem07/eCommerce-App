@@ -5,6 +5,7 @@ import CartService from "@Services/cart/cart";
 import OrderTotalComponent from "@Components/order-total/order-total";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
+import PromoCodeComponent from "@Components/promo-code/promo-code";
 
 export default class CartPage {
   private view: CartView;
@@ -12,10 +13,12 @@ export default class CartPage {
   private cartService: CartService;
   private cart?: Cart;
   private orderTotal?: OrderTotalComponent;
+  private promoCode: PromoCodeComponent;
 
   constructor() {
     this.view = new CartView();
     this.cartService = new CartService();
+    this.promoCode = new PromoCodeComponent();
 
     eventBusService.subscribe(Events.updateCart, this.init.bind(this));
   }
@@ -33,7 +36,7 @@ export default class CartPage {
     await this.fetchCart();
 
     if (this.cartList && this.orderTotal) {
-      this.view.render(this.cartList.init(), this.orderTotal.init());
+      this.view.render(this.cartList.init(), this.orderTotal.init(), this.promoCode.init());
     }
   }
 }
