@@ -1,4 +1,3 @@
-import { Cart } from "@Services/cart/cart.types";
 import CartListComponent from "./cart-list";
 
 describe("CartListComponent", () => {
