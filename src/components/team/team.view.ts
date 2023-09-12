@@ -65,32 +65,58 @@ export default class TeamView extends ViewBuilder {
         avatarPath: mentorImage,
         fullName: "Natalia Gulko",
         roles: "Mentor",
-        bio: "Antalya, Turkey",
         gitHub: devLinks[0],
       },
       {
         avatarPath: teamLeadImage,
         fullName: "Anton Gulko",
         roles: "Developer/Team Lead",
-        bio: "Antalya, Turkey",
+        bio: this.membersBio.anton.join("\n"),
         gitHub: devLinks[1],
       },
       {
         avatarPath: createDeveloperFirst,
         fullName: "Nikita Starnoussov",
         roles: "Developer",
-        bio: "Uralsk, Kazakhstan",
+        bio: this.membersBio.nikita.join("\n"),
         gitHub: devLinks[2],
       },
       {
         avatarPath: createDeveloperSecond,
         fullName: "Aleksey Semyachkin",
         roles: "Developer",
-        bio: "Belgorod, Russia",
+        bio: this.membersBio.aleksey.join("\n"),
         gitHub: devLinks[3],
       },
     ];
   }
+
+  membersBio = {
+    anton: [
+      "Anton, our proactive team lead, has been the anchor of our project's journey.",
+      "Beyond shaping the project's vision, he showcased his technical prowess by",
+      "masterfully implementing the user-profile page, the intuitive cart system,",
+      "and the detailed product page. His attention to detail and commitment shines",
+      "through in every feature he's touched. Leading us through every challenge,",
+      "Tony's blend of leadership and technical expertise ensured our project's success.",
+    ],
+    nikita: [
+      "Nikita, another of our promising junior frontend developers, is the embodiment of",
+      "ambition and skill. Young yet incredibly adept, his drive to be the best is palpable",
+      "in every task he undertakes. Nikita was the mastermind behind our seamless login page,",
+      " intuitive navigation to categories, and the robust validation processes. Every line",
+      "of code he writes echoes his dedication and eagerness to excel. With such passion, ",
+      "there's no doubt that the sky's the limit for him in the tech world.",
+    ],
+    aleksey: [
+      "Aleksey, our dedicated junior frontend developer, truly exemplified the spirit of",
+      "commitment. Despite being newer to the scene, he often burned the midnight oil to ",
+      "perfect our app's filtration system and meticulously craft the registration pages. ",
+      "His tenacity and passion shine through in every feature he touched. Aleksey's hard",
+      "work and drive have been instrumental in elevating the user experience of our project,",
+      "proving that determination often outweighs experience.",
+    ],
+  };
 
   private createDevelopers() {
     return this.developersData.map((data) => this.createTeamMember(data));
@@ -106,7 +132,10 @@ export default class TeamView extends ViewBuilder {
     const role = this.createElement("h6");
     role.textContent = roles;
     const shortBio = this.createElement("p");
-    shortBio.textContent = bio;
+
+    if (bio) {
+      shortBio.textContent = bio;
+    }
     const gitHubLink = gitHub;
 
     container.append(image, name, role, shortBio, gitHubLink);
