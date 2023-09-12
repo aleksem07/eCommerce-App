@@ -92,6 +92,15 @@ export default class CartListItemView extends ViewBuilder {
     return image;
   }
 
+  private deleteItemButton(): HTMLButtonElement {
+    const button = this.createElement<HTMLButtonElement>("button", {
+      classes: ["btn", "btn-outline-danger"],
+    });
+    button.textContent = "Delete";
+
+    return button;
+  }
+
   private createQuantityInputElement(quantity: number): HTMLInputElement {
     const input = this.createElement<HTMLInputElement>("input", {
       classes: ["form-control", "form-control-sm", "p-1"],
@@ -104,13 +113,10 @@ export default class CartListItemView extends ViewBuilder {
     return input;
   }
 
-  private deleteItemButton(): HTMLButtonElement {
-    const button = this.createElement<HTMLButtonElement>("button", {
-      classes: ["btn", "btn-outline-danger"],
+  inputChangeListener(handler: (quantity: number) => void) {
+    this.quantityInputElement.addEventListener("change", () => {
+      handler(Number(this.quantityInputElement.value));
     });
-    button.textContent = "Delete";
-
-    return button;
   }
 
   render(price: HTMLElement, totalPrice: HTMLElement): HTMLElement {

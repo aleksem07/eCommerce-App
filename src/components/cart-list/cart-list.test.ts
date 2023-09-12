@@ -1,17 +1,15 @@
+import { Cart } from "@Services/cart/cart.types";
 import CartListComponent from "./cart-list";
 
 describe("CartListComponent", () => {
   it("should instantiate", () => {
-    const instance = new CartListComponent([], {
-      value: 0,
-      currencyCode: "USD",
-    });
+    const instance = new CartListComponent({} as Cart);
     expect(instance).toBeInstanceOf(CartListComponent);
   });
 
   it("should display line items", () => {
-    const instance = new CartListComponent(
-      [
+    const instance = new CartListComponent({
+      lineItems: [
         {
           name: "test",
           quantity: 1,
@@ -26,11 +24,7 @@ describe("CartListComponent", () => {
           productId: "test",
         },
       ],
-      {
-        value: 0,
-        currencyCode: "USD",
-      }
-    );
+    } as Cart);
 
     const element = instance.init();
     const lineItems = element.querySelectorAll(".cart-list-item");

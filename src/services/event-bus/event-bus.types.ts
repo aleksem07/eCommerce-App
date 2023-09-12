@@ -19,6 +19,7 @@ export enum Events {
   pageSwitch = "pageSwitch",
   moveByCategory = "moveByCategory",
   getAllProductsInCategory = "getAllProductsInCategory",
+  updateCart = "updateCart",
 }
 
 export type EventCallback = (data?: EventData) => void;

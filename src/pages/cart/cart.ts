@@ -2,6 +2,8 @@ import CartListComponent from "@Components/cart-list/cart-list";
 import CartView from "./cart.view";
 import { Cart } from "@Services/cart/cart.types";
 import CartService from "@Services/cart/cart";
+import eventBusService from "@Services/event-bus/event-bus";
+import { Events } from "@Services/event-bus/event-bus.types";
 
 export default class CartPage {
   private view: CartView;
@@ -12,13 +14,15 @@ export default class CartPage {
   constructor() {
     this.view = new CartView();
     this.cartService = new CartService();
+
+    eventBusService.subscribe(Events.updateCart, this.fetchCart.bind(this));
   }
 
   private async fetchCart() {
     this.cart = await this.cartService.getCart();
 
     if (this.cart) {
-      this.cartList = new CartListComponent(this.cart.lineItems, this.cart.totalPrice);
+      this.cartList = new CartListComponent(this.cart);
     }
   }
 

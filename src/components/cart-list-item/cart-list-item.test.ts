@@ -1,8 +1,9 @@
+import { Cart } from "@Services/cart/cart.types";
 import CartListItemComponent from "./cart-list-item";
 
 describe("CartListItemComponent", () => {
   it("should instantiate", () => {
-    const instance = new CartListItemComponent({
+    const instance = new CartListItemComponent({} as Cart, {
       name: "test",
       quantity: 1,
       images: ["test"],
