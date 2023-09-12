@@ -15,10 +15,10 @@ export default class CartView extends ViewBuilder {
       classes: ["row", "justify-content-between"],
     });
     this.rightColumn = this.createElement("div", {
-      classes: ["col-12", "col-md-4"],
+      classes: ["col-12", "col-lg-4"],
     });
     this.leftColumn = this.createElement("div", {
-      classes: ["col-12", "col-md-7"],
+      classes: ["col-12", "col-lg-7"],
     });
   }
 
