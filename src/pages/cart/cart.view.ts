@@ -12,22 +12,22 @@ export default class CartView extends ViewBuilder {
       classes: ["container", "my-5"],
     });
     this.row = this.createElement("div", {
-      classes: ["row"],
+      classes: ["row", "justify-content-between"],
     });
     this.rightColumn = this.createElement("div", {
-      classes: ["col-12", "col-md-3"],
+      classes: ["col-12", "col-lg-4"],
     });
     this.leftColumn = this.createElement("div", {
-      classes: ["col-12", "col-md-9"],
+      classes: ["col-12", "col-lg-7"],
     });
   }
 
-  render(cartList: HTMLElement) {
+  render(cartList: HTMLElement, orderTotal: HTMLElement) {
     this.element.innerHTML = "";
     this.leftColumn.innerHTML = "";
     this.rightColumn.innerHTML = "";
     this.leftColumn.append(cartList);
-    this.rightColumn.textContent = "Promocode + Order Total";
+    this.rightColumn.append(orderTotal);
     this.row.append(this.leftColumn, this.rightColumn);
     this.element.append(this.row);
     this.appendTo("#root", this.element);
