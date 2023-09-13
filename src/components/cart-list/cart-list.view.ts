@@ -7,6 +7,7 @@ export default class CartListView extends ViewBuilder {
   private homeLink: HTMLLinkElement;
   private itemsWrapper: HTMLDivElement;
   private subtotalHeader: HTMLHeadingElement;
+  deleteButton: HTMLButtonElement;
 
   constructor() {
     super();
@@ -15,6 +16,7 @@ export default class CartListView extends ViewBuilder {
     this.homeLink = this.createHomeLink();
     this.itemsWrapper = this.createItemsWrapper();
     this.subtotalHeader = this.createSubtotalHeader();
+    this.deleteButton = this.createDeleteButton();
   }
 
   createHeaderElement(): HTMLHeadingElement {
@@ -58,6 +60,22 @@ export default class CartListView extends ViewBuilder {
     return itemsWrapper;
   }
 
+  createDeleteButton(): HTMLButtonElement {
+    const deleteButton = this.createElement<HTMLButtonElement>("button", {
+      classes: ["btn", "btn-danger", "btn-sm"],
+    });
+    deleteButton.textContent = "Delete all items";
+
+    return deleteButton;
+  }
+
+  deleteButtonClickListener(handler: () => void) {
+    this.deleteButton.addEventListener("click", () => {
+      this.deleteButton.disabled = true;
+      handler();
+    });
+  }
+
   render(
     cartListItems: HTMLElement[],
     totalPrice: HTMLElement,
@@ -66,7 +84,7 @@ export default class CartListView extends ViewBuilder {
     this.element.innerHTML = "";
     this.subtotalHeader.append(totalPrice);
     this.itemsWrapper.append(...cartListItems, this.subtotalHeader);
-    this.header.append(this.homeLink);
+    this.header.append(this.deleteButton);
 
     if (cartEmptyHeading) {
       cartEmptyHeading.append(this.homeLink);

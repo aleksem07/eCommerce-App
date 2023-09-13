@@ -44,6 +44,17 @@ export default class CartService extends ClientBuilderService {
     }
   }
 
+  async removeAllFromCart(): Promise<Cart | undefined> {
+    const cart = await this.getCart();
+
+    if (cart) {
+      for (const item of cart.lineItems) {
+        return await this.removeLineItemFromCart(cart.id, item.id);
+      }
+      this.handleSuccess("All products removed from cart");
+    }
+  }
+
   private async createAnonCart() {
     try {
       const token = await this.authService.retrieveToken();
