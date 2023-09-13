@@ -9,7 +9,7 @@ export default class CartListComponent {
   private lineItems: LineItem[];
   private totalPrice: ProductPriceComponent;
   private cart: Cart;
-  cartEmptyHeading: CartEmptyHeadingComponent;
+  private cartEmptyHeading: CartEmptyHeadingComponent;
 
   constructor(cart: Cart) {
     this.view = new CartListView();
