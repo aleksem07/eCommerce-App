@@ -11,10 +11,6 @@ export default class CartEmptyHeadingView extends ViewBuilder {
     this.element.textContent = "Your cart is empty";
   }
 
-  delete() {
-    this.element.remove();
-  }
-
   render() {
     return this.element;
   }
