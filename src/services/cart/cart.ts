@@ -44,14 +44,21 @@ export default class CartService extends ClientBuilderService {
     }
   }
 
-  async removeAllFromCart(): Promise<Cart | undefined> {
-    const cart = await this.getCart();
+  async removeAllFromCart() {
+    let cart = await this.getCart();
 
     if (cart) {
-      for (const item of cart.lineItems) {
-        return await this.removeLineItemFromCart(cart.id, item.id);
+      while (cart.lineItems.length > 0) {
+        await this.removeLineItemFromCart(cart.id, cart.lineItems[0].id);
+        const newCart = await this.getCart();
+
+        if (newCart) {
+          cart = newCart;
+        }
       }
       this.handleSuccess("All products removed from cart");
+
+      return cart;
     }
   }
 
