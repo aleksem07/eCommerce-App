@@ -30,6 +30,7 @@ export default class CartListItemComponent {
     });
 
     this.view.inputChangeListener(this.inputChangeHandler.bind(this));
+    this.view.deleteButtonClickListener(this.deleteButtonClickHandler.bind(this));
   }
 
   async inputChangeHandler(quantity: number) {
@@ -38,6 +39,14 @@ export default class CartListItemComponent {
       this.lineItem.id,
       quantity
     );
+
+    if (cart) {
+      eventBusService.publish(Events.updateCart);
+    }
+  }
+
+  async deleteButtonClickHandler() {
+    const cart = await this.cartService.removeFromCart(this.lineItem.id);
 
     if (cart) {
       eventBusService.publish(Events.updateCart);
