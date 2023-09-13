@@ -22,6 +22,7 @@ export default class CartListView extends ViewBuilder {
       classes: ["d-flex", "align-items-center", "justify-content-between"],
     });
     header.textContent = "Your cart";
+    header.id = "cart-header";
 
     return header;
   }
@@ -31,7 +32,11 @@ export default class CartListView extends ViewBuilder {
       classes: ["fs-5", "link-primary", "link-offset-2"],
     });
     link.textContent = "Back to shopping";
-    link.href = Routes.MAIN;
+    const url = new URL(
+      `${window.location.origin}${Routes.CATALOG}-0580853f-c6c1-4b5a-8a1a-0cf545a29949`
+    );
+
+    link.href = url.href;
 
     return link;
   }
@@ -53,12 +58,22 @@ export default class CartListView extends ViewBuilder {
     return itemsWrapper;
   }
 
-  render(cartListItems: HTMLElement[], totalPrice: HTMLElement): HTMLElement {
+  render(
+    cartListItems: HTMLElement[],
+    totalPrice: HTMLElement,
+    cartEmptyHeading?: HTMLElement
+  ): HTMLElement {
     this.element.innerHTML = "";
     this.subtotalHeader.append(totalPrice);
     this.itemsWrapper.append(...cartListItems, this.subtotalHeader);
     this.header.append(this.homeLink);
-    this.element.append(this.header, this.itemsWrapper);
+
+    if (cartEmptyHeading) {
+      cartEmptyHeading.append(this.homeLink);
+      this.element.append(cartEmptyHeading);
+    } else {
+      this.element.append(this.header, this.itemsWrapper);
+    }
 
     return this.element;
   }
