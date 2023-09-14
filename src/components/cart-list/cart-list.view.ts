@@ -34,9 +34,8 @@ export default class CartListView extends ViewBuilder {
       classes: ["fs-5", "link-primary", "link-offset-2"],
     });
     link.textContent = "Back to shopping";
-    const url = new URL(
-      `${window.location.origin}${Routes.CATALOG}-0580853f-c6c1-4b5a-8a1a-0cf545a29949`
-    );
+    const roadsId = "0580853f-c6c1-4b5a-8a1a-0cf545a29949";
+    const url = new URL(`${window.location.origin}${Routes.CATALOG}-${roadsId}`);
 
     link.href = url.href;
 
