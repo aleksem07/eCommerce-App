@@ -13,6 +13,7 @@ export default class CartPage {
   private cartService: CartService;
   private cart?: Cart;
   private orderTotal?: OrderTotalComponent;
+  private promoCode?: PromoCodeComponent;
 
   constructor() {
     this.view = new CartView();
@@ -27,18 +28,15 @@ export default class CartPage {
     if (this.cart) {
       this.cartList = new CartListComponent(this.cart);
       this.orderTotal = new OrderTotalComponent(this.cart.totalPrice);
+      this.promoCode = new PromoCodeComponent();
     }
   }
 
   async init() {
     await this.fetchCart();
 
-    if (this.cartList && this.orderTotal) {
-      this.view.render(
-        this.cartList.init(),
-        this.orderTotal.init(),
-        new PromoCodeComponent().init()
-      );
+    if (this.cartList && this.orderTotal && this.promoCode) {
+      this.view.render(this.cartList.init(), this.orderTotal.init(), this.promoCode?.init());
     }
   }
 }
