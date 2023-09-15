@@ -70,7 +70,20 @@ export default class CartListView extends ViewBuilder {
 
   deleteButtonClickListener(handler: () => void) {
     this.deleteButton.addEventListener("click", () => {
-      this.deleteButton.disabled = true;
+      const inputs = document.querySelectorAll("input");
+
+      if (inputs) {
+        inputs.forEach((input) => {
+          input.disabled = true;
+        });
+      }
+
+      const buttons = document.querySelectorAll("button");
+
+      buttons.forEach((button) => {
+        button.disabled = true;
+      });
+
       handler();
     });
   }
