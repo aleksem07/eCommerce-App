@@ -209,7 +209,7 @@ export default class CartService extends ClientBuilderService {
     }
   }
 
-  private async applyPromoCodeCart(promoCode: string): Promise<Cart | undefined> {
+  async applyPromoCodeCart(promoCode: string) {
     try {
       const token = await this.authService.retrieveToken();
 
@@ -217,7 +217,7 @@ export default class CartService extends ClientBuilderService {
         const cart = await this.getCart();
 
         if (cart) {
-          const { body } = await this.apiRoot
+          const request = await this.apiRoot
             .withProjectKey({ projectKey: this.projectKey })
             .carts()
             .withId({ ID: cart.id })
@@ -236,8 +236,9 @@ export default class CartService extends ClientBuilderService {
               },
             })
             .execute();
+          console.log(request);
 
-          return this.mapCartResponseToCart(body);
+          return request;
         }
       }
     } catch (error) {
