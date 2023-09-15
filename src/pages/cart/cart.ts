@@ -13,12 +13,10 @@ export default class CartPage {
   private cartService: CartService;
   private cart?: Cart;
   private orderTotal?: OrderTotalComponent;
-  private promoCode: PromoCodeComponent;
 
   constructor() {
     this.view = new CartView();
     this.cartService = new CartService();
-    this.promoCode = new PromoCodeComponent();
 
     eventBusService.subscribe(Events.updateCart, this.init.bind(this));
   }
@@ -36,7 +34,11 @@ export default class CartPage {
     await this.fetchCart();
 
     if (this.cartList && this.orderTotal) {
-      this.view.render(this.cartList.init(), this.orderTotal.init(), this.promoCode.init());
+      this.view.render(
+        this.cartList.init(),
+        this.orderTotal.init(),
+        new PromoCodeComponent().init()
+      );
     }
   }
 }

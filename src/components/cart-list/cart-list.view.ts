@@ -74,7 +74,9 @@ export default class CartListView extends ViewBuilder {
 
       if (inputs) {
         inputs.forEach((input) => {
-          input.disabled = true;
+          if (input.id !== "search-search-input") {
+            input.disabled = true;
+          }
         });
       }
 

@@ -25,6 +25,7 @@ export default class PromoCodeComponent {
       placeholderText: "Enter promo code",
       type: "text",
       classes: ["form-control", "border-0", "p-0"],
+      disabled: false,
     });
   }
 
