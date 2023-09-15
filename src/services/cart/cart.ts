@@ -209,6 +209,42 @@ export default class CartService extends ClientBuilderService {
     }
   }
 
+  private async applyPromoCodeCart(promoCode: string): Promise<Cart | undefined> {
+    try {
+      const token = await this.authService.retrieveToken();
+
+      if (token) {
+        const cart = await this.getCart();
+
+        if (cart) {
+          const { body } = await this.apiRoot
+            .withProjectKey({ projectKey: this.projectKey })
+            .carts()
+            .withId({ ID: cart.id })
+            .post({
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+              body: {
+                version: cart.version,
+                actions: [
+                  {
+                    action: "addDiscountCode",
+                    code: promoCode,
+                  },
+                ],
+              },
+            })
+            .execute();
+
+          return this.mapCartResponseToCart(body);
+        }
+      }
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
+
   private async createUserCart(customerId: string) {
     try {
       const token = await this.authService.retrieveToken();
