@@ -25,7 +25,7 @@ export default class CartListItemComponent {
     });
     this.productPrice = new ProductPriceComponent({
       price: this.lineItem.price,
-      discountedPrice: this.lineItem.discountedPrice,
+      discountedPrice: this.lineItem.totalPrice || this.lineItem.discountedPrice,
       classes: ["mt-2"],
     });
 
