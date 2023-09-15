@@ -8,7 +8,6 @@ export default class OrderTotalView extends ViewBuilder {
   private costContainer: HTMLElement;
   private subtotalCost: HTMLElement;
   private shippingCost: HTMLElement;
-  private discount: HTMLElement;
   private tax: HTMLElement;
   private total: HTMLElement;
 
@@ -34,7 +33,6 @@ export default class OrderTotalView extends ViewBuilder {
     });
     this.subtotalCost = this.createCost("Subtotal", totalCost);
     this.shippingCost = this.createCost("Shipping costs", SHIPPING_COSTS);
-    this.discount = this.createCost("Discount", 0);
     this.tax = this.createCost("Estimated sales tax", TAX);
     this.total = this.createCost("Order total", total, "h5");
 
@@ -44,7 +42,7 @@ export default class OrderTotalView extends ViewBuilder {
     this.completeOrderButton.textContent = "Complete order";
 
     this.costContainer.append(this.title, this.calculationContainer, this.total);
-    this.calculationContainer.append(this.subtotalCost, this.shippingCost, this.discount, this.tax);
+    this.calculationContainer.append(this.subtotalCost, this.shippingCost, this.tax);
 
     this.element.append(this.costContainer, this.completeOrderButton);
   }
