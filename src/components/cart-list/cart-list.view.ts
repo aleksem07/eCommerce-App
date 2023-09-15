@@ -7,6 +7,7 @@ export default class CartListView extends ViewBuilder {
   private homeLink: HTMLLinkElement;
   private itemsWrapper: HTMLDivElement;
   private subtotalHeader: HTMLHeadingElement;
+  deleteButton: HTMLButtonElement;
 
   constructor() {
     super();
@@ -15,6 +16,7 @@ export default class CartListView extends ViewBuilder {
     this.homeLink = this.createHomeLink();
     this.itemsWrapper = this.createItemsWrapper();
     this.subtotalHeader = this.createSubtotalHeader();
+    this.deleteButton = this.createDeleteButton();
   }
 
   createHeaderElement(): HTMLHeadingElement {
@@ -22,6 +24,7 @@ export default class CartListView extends ViewBuilder {
       classes: ["d-flex", "align-items-center", "justify-content-between"],
     });
     header.textContent = "Your cart";
+    header.id = "cart-header";
 
     return header;
   }
@@ -31,7 +34,10 @@ export default class CartListView extends ViewBuilder {
       classes: ["fs-5", "link-primary", "link-offset-2"],
     });
     link.textContent = "Back to shopping";
-    link.href = Routes.MAIN;
+    const roadsId = "0580853f-c6c1-4b5a-8a1a-0cf545a29949";
+    const url = new URL(`${window.location.origin}${Routes.CATALOG}-${roadsId}`);
+
+    link.href = url.href;
 
     return link;
   }
@@ -53,12 +59,51 @@ export default class CartListView extends ViewBuilder {
     return itemsWrapper;
   }
 
-  render(cartListItems: HTMLElement[], totalPrice: HTMLElement): HTMLElement {
+  createDeleteButton(): HTMLButtonElement {
+    const deleteButton = this.createElement<HTMLButtonElement>("button", {
+      classes: ["btn", "btn-danger", "btn-sm"],
+    });
+    deleteButton.textContent = "Delete all items";
+
+    return deleteButton;
+  }
+
+  deleteButtonClickListener(handler: () => void) {
+    this.deleteButton.addEventListener("click", () => {
+      const inputs = document.querySelectorAll("input");
+
+      if (inputs) {
+        inputs.forEach((input) => {
+          input.disabled = true;
+        });
+      }
+
+      const buttons = document.querySelectorAll("button");
+
+      buttons.forEach((button) => {
+        button.disabled = true;
+      });
+
+      handler();
+    });
+  }
+
+  render(
+    cartListItems: HTMLElement[],
+    totalPrice: HTMLElement,
+    cartEmptyHeading?: HTMLElement
+  ): HTMLElement {
     this.element.innerHTML = "";
     this.subtotalHeader.append(totalPrice);
     this.itemsWrapper.append(...cartListItems, this.subtotalHeader);
-    this.header.append(this.homeLink);
-    this.element.append(this.header, this.itemsWrapper);
+    this.header.append(this.deleteButton);
+
+    if (cartEmptyHeading) {
+      cartEmptyHeading.append(this.homeLink);
+      this.element.append(cartEmptyHeading);
+    } else {
+      this.element.append(this.header, this.itemsWrapper);
+    }
 
     return this.element;
   }

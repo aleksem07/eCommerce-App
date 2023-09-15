@@ -2,11 +2,13 @@ import { Cart } from "@Services/cart/cart.types";
 import CartListItemComponent from "./cart-list-item";
 
 const updateListItemQuantityMock = jest.fn();
+const removeFromCartMock = jest.fn();
 
 jest.mock("@Services/cart/cart", () => {
   return jest.fn().mockImplementation(() => {
     return {
       updateListItemQuantity: updateListItemQuantityMock,
+      removeFromCart: removeFromCartMock,
     };
   });
 });
@@ -57,5 +59,32 @@ describe("CartListItemComponent", () => {
     quantityInputElement.dispatchEvent(changeEvent);
 
     expect(updateListItemQuantityMock).toHaveBeenCalledWith(cartMock, lineItemIdMock, 2);
+  });
+
+  it("should delete line item from cart", () => {
+    const lineItemIdMock = "line-item-id";
+    const cartMock = {
+      id: "cart-id",
+      version: 1,
+    };
+    const instance = new CartListItemComponent(cartMock as Cart, {
+      name: "test",
+      quantity: 1,
+      images: ["test"],
+      price: { value: 1, currencyCode: "USD" },
+      discountedPrice: { value: 2, currencyCode: "USD" },
+      totalPrice: {
+        value: 3,
+        currencyCode: "USD",
+      },
+      id: lineItemIdMock,
+      productId: "test",
+    });
+    const element = instance.init();
+    const deleteButton = element.querySelector("button") as HTMLButtonElement;
+
+    deleteButton.click();
+
+    expect(removeFromCartMock).toHaveBeenCalledWith(lineItemIdMock);
   });
 });

@@ -7,7 +7,7 @@ export default class CartListItemView extends ViewBuilder {
   private imageElement: HTMLImageElement;
   private headerElement: HTMLHeadingElement;
   private quantityInputElement: HTMLInputElement;
-  private itemButton: HTMLButtonElement;
+  private deleteButton: HTMLButtonElement;
   private imageWrapper: HTMLDivElement;
   private priceWrapper: HTMLDivElement;
   private inputWrapper: HTMLDivElement;
@@ -20,7 +20,7 @@ export default class CartListItemView extends ViewBuilder {
     this.imageElement = this.createImageElement(images[0]);
     this.headerElement = this.createHeaderElement(name);
     this.quantityInputElement = this.createQuantityInputElement(quantity);
-    this.itemButton = this.deleteItemButton();
+    this.deleteButton = this.deleteItemButton();
     this.priceWrapper = this.createPriceWrapper();
     this.inputWrapper = this.createInputWrapper();
     this.buttonWrapper = this.createButtonWrapper();
@@ -118,12 +118,20 @@ export default class CartListItemView extends ViewBuilder {
     });
   }
 
+  deleteButtonClickListener(handler: () => void) {
+    this.deleteButton.addEventListener("click", () => {
+      this.quantityInputElement.disabled = true;
+      this.deleteButton.disabled = true;
+      handler();
+    });
+  }
+
   render(price: HTMLElement, totalPrice: HTMLElement): HTMLElement {
     this.item.innerHTML = "";
     this.imageWrapper.append(this.imageElement);
     this.priceWrapper.append(totalPrice);
     this.inputWrapper.append(this.quantityInputElement);
-    this.buttonWrapper.append(this.itemButton);
+    this.buttonWrapper.append(this.deleteButton);
     this.headerElement.append(price);
     this.item.append(
       this.imageWrapper,
