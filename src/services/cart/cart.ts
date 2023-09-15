@@ -233,7 +233,7 @@ export default class CartService extends ClientBuilderService {
         const cart = await this.getCart();
 
         if (cart) {
-          const request = await this.apiRoot
+          const { body } = await this.apiRoot
             .withProjectKey({ projectKey: this.projectKey })
             .carts()
             .withId({ ID: cart.id })
@@ -252,9 +252,8 @@ export default class CartService extends ClientBuilderService {
               },
             })
             .execute();
-          console.log(request);
 
-          return request;
+          return body;
         }
       }
     } catch (error) {

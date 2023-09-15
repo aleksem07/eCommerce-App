@@ -1,6 +1,8 @@
 import CartService from "@Services/cart/cart";
 import PromoCodeView from "./promo-code.view";
 import FormControlComponent from "@Components/form-control/form-control";
+import eventBusService from "@Services/event-bus/event-bus";
+import { Events } from "@Services/event-bus/event-bus.types";
 
 export default class PromoCodeComponent {
   private view: PromoCodeView;
@@ -27,8 +29,11 @@ export default class PromoCodeComponent {
   }
 
   async inputSubmitHandler(promoCode: string) {
-    console.log("promocode", promoCode);
-    await this.cartService.applyPromoCodeCart(promoCode);
+    const cart = await this.cartService.applyPromoCodeCart(promoCode);
+
+    if (cart) {
+      eventBusService.publish(Events.updateCart);
+    }
   }
 
   init() {
