@@ -55,7 +55,6 @@ export default class CartService extends ClientBuilderService {
       }
 
       this.handleSuccess("All products removed from cart");
-      this.saveLineItemsCount(cart);
 
       return cart;
     }
@@ -83,6 +82,7 @@ export default class CartService extends ClientBuilderService {
 
         const result = this.mapCartResponseToCart(cart.body);
         this.saveLineItemsCount(result);
+        eventBusService.publish(Events.updateCart);
 
         return result;
       }
@@ -151,6 +151,7 @@ export default class CartService extends ClientBuilderService {
             .execute();
           const result = this.mapCartResponseToCart(body);
           this.saveLineItemsCount(result);
+          eventBusService.publish(Events.updateCart);
 
           return result;
         }
@@ -176,9 +177,7 @@ export default class CartService extends ClientBuilderService {
             .carts()
             .withId({ ID: cartId })
             .post({
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
+              headers: { Authorization: `Bearer ${token}` },
               body: {
                 version: cart.version,
                 actions: [
@@ -192,6 +191,7 @@ export default class CartService extends ClientBuilderService {
             .execute();
           const result = this.mapCartResponseToCart(body);
           this.saveLineItemsCount(result);
+          eventBusService.publish(Events.updateCart);
 
           return result;
         }
@@ -310,8 +310,6 @@ export default class CartService extends ClientBuilderService {
     } else {
       localStorage.setItem(LINE_ITEMS_COUNT_LS, cart.lineItems.length.toString());
     }
-
-    eventBusService.publish(Events.updateCart);
   }
 
   private mapCartResponseToCart(cartResponse: CartResponse): Cart {
@@ -406,6 +404,7 @@ export default class CartService extends ClientBuilderService {
 
         const result = this.mapCartResponseToCart(body);
         this.saveLineItemsCount(result);
+        eventBusService.publish(Events.updateCart);
 
         return result;
       }
