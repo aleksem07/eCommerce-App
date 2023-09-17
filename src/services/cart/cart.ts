@@ -28,7 +28,7 @@ export default class CartService extends ClientBuilderService {
     const cart = await this.getCart();
 
     if (cart) {
-      this.handleSuccess("Product added to cart");
+      this.handleSuccess("Product has been added to cart");
 
       return await this.addProductToCart(cart.id, productId);
     }
@@ -38,7 +38,7 @@ export default class CartService extends ClientBuilderService {
     const cart = await this.getCart();
 
     if (cart) {
-      this.handleSuccess("Product removed from cart");
+      this.handleSuccess("Product has been removed from cart");
 
       return await this.removeLineItemFromCart(cart.id, lineItemId);
     }
