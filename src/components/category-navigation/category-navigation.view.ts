@@ -49,12 +49,12 @@ export default class CategoryNavigationView extends ViewBuilder {
     return link;
   }
 
-  render(linksList: HTMLElement[], searchProducts: HTMLElement) {
+  render(linksList: HTMLElement[], searchProducts: HTMLElement, cartIcon: HTMLElement) {
     linksList.map((category) => {
       this.linksContainer.append(category);
     });
     this.wrapper.prepend(this.linksContainer);
-    this.container.append(this.wrapper, searchProducts);
+    this.container.append(this.wrapper, searchProducts, cartIcon);
 
     this.nav.append(this.container);
 
