@@ -30,9 +30,6 @@ export default class CartPage {
       const lineItems = this.cart.lineItems;
       this.oldPrice = lineItems.reduce((acc, item) => {
         if (item.price.value) {
-          console.log(item);
-          console.log(item.price.value);
-
           return acc + item.price.value;
         } else {
           return acc;

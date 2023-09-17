@@ -12,6 +12,13 @@ export interface Cart {
   customerEmail: string;
   lineItems: LineItem[];
   totalPrice: Price;
+  discountCodes?: DiscountCode[];
+}
+
+export interface DiscountCode {
+  readonly discountCode: {
+    readonly id: string;
+  };
 }
 
 export interface LineItem {
