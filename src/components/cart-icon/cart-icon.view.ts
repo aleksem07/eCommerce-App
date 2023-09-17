@@ -31,7 +31,12 @@ export default class CartIconView extends ViewBuilder {
     return badge;
   }
 
-  render() {
+  render(lineItemsCount: string) {
+    this.element.innerHTML = "";
+
+    if (Number(lineItemsCount) > 0) {
+      this.badgeElement.textContent = lineItemsCount;
+    }
     this.element.append(this.cartIcon, this.badgeElement);
 
     return this.element;

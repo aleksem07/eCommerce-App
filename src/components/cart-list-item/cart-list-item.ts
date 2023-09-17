@@ -46,11 +46,7 @@ export default class CartListItemComponent {
   }
 
   async deleteButtonClickHandler() {
-    const cart = await this.cartService.removeFromCart(this.lineItem.id);
-
-    if (cart) {
-      eventBusService.publish(Events.updateCart);
-    }
+    await this.cartService.removeFromCart(this.lineItem.id);
   }
 
   init() {
