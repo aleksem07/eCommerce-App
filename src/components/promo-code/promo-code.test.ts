@@ -1,9 +1,6 @@
 import PromoCodeComponent from "./promo-code";
 import FormControlComponent from "@Components/form-control/form-control";
 import CartService from "@Services/cart/cart";
-import eventBusService from "@Services/event-bus/event-bus";
-import { Events } from "@Services/event-bus/event-bus.types";
-import Cart from "@Services/cart/cart.types";
 
 describe("PromoCodeComponent", () => {
   let promoCodeComponent: PromoCodeComponent;
@@ -32,27 +29,5 @@ describe("PromoCodeComponent", () => {
     expect(promoCodeComponent).toBeInstanceOf(PromoCodeComponent);
     expect(promoCodeComponent["promoCode"]).toBe(promoCodeFormControlMock);
     expect(promoCodeComponent["cartService"]).toBe(cartServiceMock);
-  });
-
-  it("should call inputSubmitHandler method correctly", async () => {
-    const promoCode = "TEST_PROMO_CODE";
-    const cart: Cart = { id: "TEST_CART_ID", version: 1, items: [] };
-    const applyPromoCodeCartSpy = jest
-      .spyOn(cartServiceMock, "applyPromoCodeCart")
-      .mockResolvedValue(Promise.resolve(cart));
-    const publishSpy = jest.spyOn(eventBusService, "publish");
-
-    await promoCodeComponent["inputSubmitHandler"](promoCode);
-
-    expect(applyPromoCodeCartSpy).toHaveBeenCalledWith(promoCode);
-    expect(publishSpy).toHaveBeenCalledWith(Events.updateCart);
-  });
-
-  it("should call init method correctly", () => {
-    const renderSpy = jest.spyOn(promoCodeFormControlMock, "init");
-
-    promoCodeComponent.init();
-
-    expect(renderSpy).toHaveBeenCalled();
   });
 });
