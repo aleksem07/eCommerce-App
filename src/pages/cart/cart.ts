@@ -14,6 +14,7 @@ export default class CartPage {
   private cart?: Cart;
   private orderTotal?: OrderTotalComponent;
   private promoCode?: PromoCodeComponent;
+  private oldPrice?: number;
 
   constructor() {
     this.view = new CartView();
@@ -26,8 +27,19 @@ export default class CartPage {
     this.cart = await this.cartService.getCart();
 
     if (this.cart) {
+      const lineItems = this.cart.lineItems;
+      this.oldPrice = lineItems.reduce((acc, item) => {
+        if (item.price.value) {
+          console.log(item);
+          console.log(item.price.value);
+
+          return acc + item.price.value;
+        } else {
+          return acc;
+        }
+      }, 0);
       this.cartList = new CartListComponent(this.cart);
-      this.orderTotal = new OrderTotalComponent(this.cart.totalPrice);
+      this.orderTotal = new OrderTotalComponent(this.cart.totalPrice, this.oldPrice);
       this.promoCode = new PromoCodeComponent();
     }
   }
