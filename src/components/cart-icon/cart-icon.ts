@@ -11,6 +11,8 @@ export default class CartIconComponent {
     this.view = new CartIconView();
 
     eventBusService.subscribe(Events.updateCart, this.init.bind(this));
+    eventBusService.subscribe(Events.userLogin, this.init.bind(this));
+    eventBusService.subscribe(Events.logoutLinkClicked, this.init.bind(this));
   }
 
   init() {

@@ -4,8 +4,9 @@ import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
 import RouterService from "@Services/router/router";
 import { Routes } from "@Services/router/router.types";
-import { AUTH_TOKEN_LS, USERNAME_LS } from "@Services/auth/auth.types";
+import { AUTH_TOKEN_LS, USERNAME_ID_LS, USERNAME_LS } from "@Services/auth/auth.types";
 import LinkComponent from "@Components/link/link";
+import { USER_CART_ID_LS, ANON_CART_ID_LS, LINE_ITEMS_COUNT_LS } from "@Services/cart/cart.types";
 
 export default class NavbarComponent {
   private view: NavbarView;
@@ -74,6 +75,11 @@ export default class NavbarComponent {
 
   private logoutLinkHandler() {
     localStorage.removeItem(AUTH_TOKEN_LS);
+    localStorage.removeItem(USERNAME_LS);
+    localStorage.removeItem(USERNAME_ID_LS);
+    localStorage.removeItem(USER_CART_ID_LS);
+    localStorage.removeItem(ANON_CART_ID_LS);
+    localStorage.removeItem(LINE_ITEMS_COUNT_LS);
     RouterService.navigateTo(Routes.LOGIN);
     this.initAuthLinks();
   }

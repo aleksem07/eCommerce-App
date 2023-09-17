@@ -28,7 +28,6 @@ export default class CartService extends ClientBuilderService {
     const cart = await this.getCart();
 
     if (cart) {
-      eventBusService.publish(Events.updateCart);
       this.handleSuccess("Product added to cart");
 
       return await this.addProductToCart(cart.id, productId);
@@ -39,7 +38,6 @@ export default class CartService extends ClientBuilderService {
     const cart = await this.getCart();
 
     if (cart) {
-      eventBusService.publish(Events.updateCart);
       this.handleSuccess("Product removed from cart");
 
       return await this.removeLineItemFromCart(cart.id, lineItemId);
@@ -57,6 +55,7 @@ export default class CartService extends ClientBuilderService {
       }
 
       this.handleSuccess("All products removed from cart");
+      this.saveLineItemsCount(cart);
 
       return cart;
     }
@@ -99,8 +98,6 @@ export default class CartService extends ClientBuilderService {
     if (anonCartId && userCart) {
       return await this.cartToCartTransfer(anonCartId, userCart.id);
     }
-
-    this.saveLineItemsCount(userCart);
 
     return userCart;
   }
@@ -152,7 +149,6 @@ export default class CartService extends ClientBuilderService {
               },
             })
             .execute();
-
           const result = this.mapCartResponseToCart(body);
           this.saveLineItemsCount(result);
 
@@ -314,6 +310,8 @@ export default class CartService extends ClientBuilderService {
     } else {
       localStorage.setItem(LINE_ITEMS_COUNT_LS, cart.lineItems.length.toString());
     }
+
+    eventBusService.publish(Events.updateCart);
   }
 
   private mapCartResponseToCart(cartResponse: CartResponse): Cart {
@@ -406,7 +404,10 @@ export default class CartService extends ClientBuilderService {
           })
           .execute();
 
-        return this.mapCartResponseToCart(body);
+        const result = this.mapCartResponseToCart(body);
+        this.saveLineItemsCount(result);
+
+        return result;
       }
     } catch (error) {
       this.handleError(error);
