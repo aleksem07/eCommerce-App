@@ -27,9 +27,9 @@ export default class NavbarView extends ViewBuilder {
     this.available = this.createElement("p", {
       classes: ["text-muted", "mb-0"],
     });
-    this.available.textContent = "Available 24/7 at ";
 
     this.availableContainer = this.createLinksContainer();
+    this.availableContainer.classList.add("d-none", "d-sm-block");
     this.menuContainer = this.createLinksContainer();
     this.authLinksContainer = this.createLinksContainer();
 

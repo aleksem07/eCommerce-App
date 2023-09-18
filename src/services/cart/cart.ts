@@ -4,7 +4,7 @@ import { USERNAME_ID_LS } from "@Services/auth/auth.types";
 import ClientBuilderService from "@Services/client-builder/client-builder";
 import eventBusService from "@Services/event-bus/event-bus";
 import { Events } from "@Services/event-bus/event-bus.types";
-import { Cart } from "./cart.types";
+import { Cart, LINE_ITEMS_COUNT_LS } from "./cart.types";
 import {
   Cart as CartResponse,
   Price as PriceResponse,
@@ -28,7 +28,7 @@ export default class CartService extends ClientBuilderService {
     const cart = await this.getCart();
 
     if (cart) {
-      this.handleSuccess("Product added to cart");
+      this.handleSuccess("Product has been added to cart");
 
       return await this.addProductToCart(cart.id, productId);
     }
@@ -38,7 +38,7 @@ export default class CartService extends ClientBuilderService {
     const cart = await this.getCart();
 
     if (cart) {
-      this.handleSuccess("Product removed from cart");
+      this.handleSuccess("Product has been removed from cart");
 
       return await this.removeLineItemFromCart(cart.id, lineItemId);
     }
@@ -76,11 +76,15 @@ export default class CartService extends ClientBuilderService {
           })
           .execute();
 
-        if (cart) {
+        if (cart.body) {
           localStorage.setItem(ANON_CART_ID_LS, cart.body.id);
         }
 
-        return this.mapCartResponseToCart(cart.body);
+        const result = this.mapCartResponseToCart(cart.body);
+        this.saveLineItemsCount(result);
+        eventBusService.publish(Events.updateCart);
+
+        return result;
       }
     } catch (error) {
       this.handleError(error);
@@ -109,6 +113,8 @@ export default class CartService extends ClientBuilderService {
       for (const item of sourceCart.lineItems) {
         await this.addProductToCart(targetCartId, item.productId);
       }
+
+      localStorage.removeItem(ANON_CART_ID_LS);
 
       return await this.getCartById(targetCartId);
     }
@@ -145,8 +151,11 @@ export default class CartService extends ClientBuilderService {
               },
             })
             .execute();
+          const result = this.mapCartResponseToCart(body);
+          this.saveLineItemsCount(result);
+          eventBusService.publish(Events.updateCart);
 
-          return this.mapCartResponseToCart(body);
+          return result;
         }
       }
     } catch (error) {
@@ -170,9 +179,7 @@ export default class CartService extends ClientBuilderService {
             .carts()
             .withId({ ID: cartId })
             .post({
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
+              headers: { Authorization: `Bearer ${token}` },
               body: {
                 version: cart.version,
                 actions: [
@@ -184,8 +191,11 @@ export default class CartService extends ClientBuilderService {
               },
             })
             .execute();
+          const result = this.mapCartResponseToCart(body);
+          this.saveLineItemsCount(result);
+          eventBusService.publish(Events.updateCart);
 
-          return this.mapCartResponseToCart(body);
+          return result;
         }
       }
     } catch (error) {
@@ -212,7 +222,10 @@ export default class CartService extends ClientBuilderService {
           localStorage.setItem(USER_CART_ID_LS, cart.body.id);
         }
 
-        return this.mapCartResponseToCart(cart.body);
+        const result = this.mapCartResponseToCart(cart.body);
+        this.saveLineItemsCount(result);
+
+        return result;
       }
     } catch (error) {
       const httpError = error as HttpErrorType;
@@ -323,7 +336,10 @@ export default class CartService extends ClientBuilderService {
           })
           .execute();
 
-        return this.mapCartResponseToCart(cart.body);
+        const result = this.mapCartResponseToCart(cart.body);
+        this.saveLineItemsCount(result);
+
+        return result;
       } catch (error) {
         this.handleError(error);
       }
@@ -343,6 +359,14 @@ export default class CartService extends ClientBuilderService {
     }
 
     return await this.createAnonCart();
+  }
+
+  private async saveLineItemsCount(cart?: Cart) {
+    if (!cart) {
+      localStorage.setItem(LINE_ITEMS_COUNT_LS, "0");
+    } else {
+      localStorage.setItem(LINE_ITEMS_COUNT_LS, cart.lineItems.length.toString());
+    }
   }
 
   private mapCartResponseToCart(cartResponse: CartResponse): Cart {
@@ -436,7 +460,11 @@ export default class CartService extends ClientBuilderService {
           })
           .execute();
 
-        return this.mapCartResponseToCart(body);
+        const result = this.mapCartResponseToCart(body);
+        this.saveLineItemsCount(result);
+        eventBusService.publish(Events.updateCart);
+
+        return result;
       }
     } catch (error) {
       this.handleError(error);

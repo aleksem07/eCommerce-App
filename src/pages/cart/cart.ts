@@ -33,10 +33,12 @@ export default class CartPage {
   }
 
   async init() {
-    await this.fetchCart();
+    if (window.location.hash.includes("cart")) {
+      await this.fetchCart();
 
-    if (this.cartList && this.orderTotal && this.promoCode) {
-      this.view.render(this.cartList.init(), this.orderTotal.init(), this.promoCode?.init());
+      if (this.cartList && this.orderTotal && this.promoCode) {
+        this.view.render(this.cartList.init(), this.orderTotal.init(), this.promoCode?.init());
+      }
     }
   }
 }

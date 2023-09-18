@@ -4,8 +4,6 @@ import { Cart, LineItem } from "@Services/cart/cart.types";
 import ProductPriceComponent from "@Components/product-price/product-price";
 import CartEmptyHeadingComponent from "@Components/cart-empty-heading/cart-empty-heading";
 import CartService from "@Services/cart/cart";
-import eventBusService from "@Services/event-bus/event-bus";
-import { Events } from "@Services/event-bus/event-bus.types";
 
 export default class CartListComponent {
   private view: CartListView;
@@ -26,11 +24,7 @@ export default class CartListComponent {
   }
 
   async deleteButtonClickHandler() {
-    const cart = await this.cartService.removeAllFromCart();
-
-    if (cart) {
-      eventBusService.publish(Events.updateCart);
-    }
+    await this.cartService.removeAllFromCart();
   }
 
   init() {

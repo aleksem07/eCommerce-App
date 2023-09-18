@@ -8,8 +8,8 @@ export default class MainView extends ViewBuilder {
     super();
     this.container = this.createElement("div", {
       id: "main",
-      classes: ["container"],
     });
+
     this.heading = this.createElement("h1", {
       id: "main-heading",
       classes: ["h3", "mb-3", "fw-normal", "text-center", "py-5"],

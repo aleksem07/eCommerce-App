@@ -2,8 +2,6 @@ import ProductPriceComponent from "@Components/product-price/product-price";
 import CartListItemView from "./cart-list-item.view";
 import { Cart, LineItem } from "@Services/cart/cart.types";
 import CartService from "@Services/cart/cart";
-import eventBusService from "@Services/event-bus/event-bus";
-import { Events } from "@Services/event-bus/event-bus.types";
 
 export default class CartListItemComponent {
   private view: CartListItemView;
@@ -34,23 +32,11 @@ export default class CartListItemComponent {
   }
 
   async inputChangeHandler(quantity: number) {
-    const cart = await this.cartService.updateListItemQuantity(
-      this.cart,
-      this.lineItem.id,
-      quantity
-    );
-
-    if (cart) {
-      eventBusService.publish(Events.updateCart);
-    }
+    await this.cartService.updateListItemQuantity(this.cart, this.lineItem.id, quantity);
   }
 
   async deleteButtonClickHandler() {
-    const cart = await this.cartService.removeFromCart(this.lineItem.id);
-
-    if (cart) {
-      eventBusService.publish(Events.updateCart);
-    }
+    await this.cartService.removeFromCart(this.lineItem.id);
   }
 
   init() {
