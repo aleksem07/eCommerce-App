@@ -13,7 +13,7 @@ export default class CatalogView extends ViewBuilder {
       classes: ["container", "mt-5"],
     });
     this.containerRow = this.createElement("div", {
-      classes: ["row", "g-5"],
+      classes: ["row", "g-0", "g-md-5"],
     });
 
     this.rightColumn = this.createElement("div", {
