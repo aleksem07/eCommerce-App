@@ -149,7 +149,7 @@ export default class CatalogPage {
 
       if (products) {
         const productListElement = this.productListComponent.init(products);
-        this.view.displayProducts(productListElement);
+        this.view.displayProducts(await productListElement);
       } else {
         RouterService.navigateTo(Routes.NOT_FOUND);
       }
@@ -175,7 +175,7 @@ export default class CatalogPage {
 
     if (filteredProducts) {
       const productListElement = this.productListComponent.init(filteredProducts);
-      this.view.displayProducts(productListElement);
+      this.view.displayProducts(await productListElement);
     }
   }
 
@@ -186,7 +186,7 @@ export default class CatalogPage {
 
     if (filters) {
       const filterListElement = this.productListComponent.init(filters);
-      this.view.displayProducts(filterListElement);
+      this.view.displayProducts(await filterListElement);
       const colors = filters.map((filter) => filter.color);
       const sizes = filters.map((filter) => filter.size);
       eventBusService.publish(Events.fetchProductsSuccessfully, { colors, sizes });

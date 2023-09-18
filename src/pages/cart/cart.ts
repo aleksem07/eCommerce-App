@@ -27,9 +27,19 @@ export default class CartPage {
 
     if (this.cart) {
       this.cartList = new CartListComponent(this.cart);
-      this.orderTotal = new OrderTotalComponent(this.cart.totalPrice);
+      const discount = this.calculateDiscount(this.cart);
+      this.orderTotal = new OrderTotalComponent(this.cart.totalPrice, discount);
       this.promoCode = new PromoCodeComponent();
     }
+  }
+
+  private calculateDiscount(cart: Cart) {
+    const cartTotal = cart.totalPrice.value;
+    const cartTotalWithoutDiscounts = cart.lineItems.reduce((total, item) => {
+      return total + item.price.value * item.quantity;
+    }, 0);
+
+    return parseFloat((cartTotalWithoutDiscounts - cartTotal).toFixed(2));
   }
 
   async init() {

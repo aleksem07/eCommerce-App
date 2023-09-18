@@ -5,7 +5,7 @@ import CartService from "@Services/cart/cart";
 
 export default class CartListItemComponent {
   private view: CartListItemView;
-  private productPrice: ProductPriceComponent;
+  private productPrice?: ProductPriceComponent;
   private totalPrice: ProductPriceComponent;
   private cartService: CartService;
   private lineItem: LineItem;
@@ -21,11 +21,25 @@ export default class CartListItemComponent {
       size: "md",
       classes: ["justify-content-center"],
     });
-    this.productPrice = new ProductPriceComponent({
-      price: this.lineItem.price,
-      discountedPrice: this.lineItem.totalPrice || this.lineItem.discountedPrice,
-      classes: ["mt-2"],
-    });
+
+    if (cart.discountCodes) {
+      if (cart.discountCodes[0]) {
+        this.productPrice = new ProductPriceComponent({
+          price: this.lineItem.price,
+          discountedPrice: {
+            value: parseFloat((this.lineItem.totalPrice.value / this.lineItem.quantity).toFixed(2)),
+            currencyCode: "USD",
+          },
+          classes: ["mt-2"],
+        });
+      } else {
+        this.productPrice = new ProductPriceComponent({
+          price: this.lineItem.price,
+          discountedPrice: this.lineItem.discountedPrice,
+          classes: ["mt-2"],
+        });
+      }
+    }
 
     this.view.inputChangeListener(this.inputChangeHandler.bind(this));
     this.view.deleteButtonClickListener(this.deleteButtonClickHandler.bind(this));
@@ -40,9 +54,13 @@ export default class CartListItemComponent {
   }
 
   init() {
-    const price = this.productPrice.init();
+    const price = this.productPrice?.init();
     const total = this.totalPrice.init();
 
-    return this.view.render(price, total);
+    if (price) {
+      return this.view.render(price, total);
+    } else {
+      return this.view.render(total);
+    }
   }
 }

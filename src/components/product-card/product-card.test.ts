@@ -15,7 +15,7 @@ describe("ProductCardComponent", () => {
     expect(instance).toBeInstanceOf(ProductCardComponent);
   });
 
-  it("should render a card with the correct structure", () => {
+  it("should render a card with the correct structure", async () => {
     const props: ProductCardProps = {
       id: "id",
       title: "Sample Title",
@@ -27,7 +27,7 @@ describe("ProductCardComponent", () => {
     };
     const productCard = new ProductCardComponent(props);
 
-    const productCardEl = productCard.init();
+    const productCardEl = await productCard.init();
 
     expect(productCardEl.tagName).toBe("A");
     expect(productCardEl.classList.contains("card")).toBe(true);
