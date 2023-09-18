@@ -15,7 +15,9 @@ export default class ProductPriceView extends ViewBuilder {
     });
 
     if (discountedPrice) {
-      this.discountedPrice = this.createDiscountedPrice(discountedPrice, size);
+      if (discountedPrice.value !== price.value) {
+        this.discountedPrice = this.createDiscountedPrice(discountedPrice, size);
+      }
     }
     this.price = this.createPrice(price, size);
     this.oldPrice = this.createOldPrice(price, size);

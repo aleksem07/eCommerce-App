@@ -22,12 +22,12 @@ export default class CartView extends ViewBuilder {
     });
   }
 
-  render(cartList: HTMLElement, orderTotal: HTMLElement) {
+  render(cartList: HTMLElement, orderTotal: HTMLElement, promoCode: HTMLElement) {
     this.element.innerHTML = "";
     this.leftColumn.innerHTML = "";
     this.rightColumn.innerHTML = "";
     this.leftColumn.append(cartList);
-    this.rightColumn.append(orderTotal);
+    this.rightColumn.append(promoCode, orderTotal);
     this.row.append(this.leftColumn, this.rightColumn);
     this.element.append(this.row);
     this.appendTo("#root", this.element);

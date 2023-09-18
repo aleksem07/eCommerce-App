@@ -238,6 +238,61 @@ export default class CartService extends ClientBuilderService {
     }
   }
 
+  async applyPromoCodeCart(promoCode: string) {
+    try {
+      const token = await this.authService.retrieveToken();
+
+      if (token) {
+        const cart = await this.getCart();
+
+        if (cart) {
+          if (cart.discountCodes) {
+            if (cart.discountCodes[0]) {
+              eventBusService.publish(Events.showNotification, {
+                variant: NotificationVariant.danger,
+                message: "This promo code is already applied",
+              });
+            } else {
+              return this.addPromoCode(cart, token, promoCode);
+            }
+          }
+        }
+      }
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
+
+  private async addPromoCode(cart: Cart, token: string, promoCode: string) {
+    try {
+      const { body } = await this.apiRoot
+        .withProjectKey({ projectKey: this.projectKey })
+        .carts()
+        .withId({ ID: cart.id })
+        .post({
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: {
+            version: cart.version,
+            actions: [
+              {
+                action: "addDiscountCode",
+                code: promoCode,
+              },
+            ],
+          },
+        })
+        .execute();
+
+      this.handleSuccess("Promo code applied");
+
+      return body;
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
+
   private async createUserCart(customerId: string) {
     try {
       const token = await this.authService.retrieveToken();
@@ -323,6 +378,7 @@ export default class CartService extends ClientBuilderService {
       customerEmail: cartResponse.customerEmail || "",
       lineItems: cartResponse.lineItems.map(this.mapLineItemsResponseToLineItems.bind(this)) || [],
       totalPrice: this.getPriceFromCentPrecisionMoney(cartResponse.totalPrice),
+      discountCodes: cartResponse.discountCodes || [],
     };
   }
 
