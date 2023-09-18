@@ -38,7 +38,8 @@ export default class SearchProductsPage {
 
     if (searchProducts) {
       const productListElement = this.productListComponent.init(searchProducts);
-      this.view.displayProducts(productListElement);
+      const productList = await productListElement;
+      this.view.displayProducts(productList);
     }
   }
 

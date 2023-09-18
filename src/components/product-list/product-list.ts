@@ -25,10 +25,16 @@ export default class ProductListComponent {
     }
   }
 
-  init(products: Product[]) {
+  async init(products: Product[]) {
     this.products = products;
-    this.productCards = this.products.map((product) =>
-      new ProductCardComponent({ ...product, onClick: this.addToCartHandler.bind(this) }).init()
+    this.productCards = await Promise.all(
+      this.products.map(
+        async (product) =>
+          await new ProductCardComponent({
+            ...product,
+            onClick: this.addToCartHandler.bind(this),
+          }).init()
+      )
     );
 
     return this.view.render(...this.productCards);

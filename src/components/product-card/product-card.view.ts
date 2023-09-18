@@ -9,7 +9,7 @@ export default class ProductCardView extends ViewBuilder {
   private titleElement: HTMLHeadingElement;
   private descriptionElement: HTMLParagraphElement;
   private card: HTMLLinkElement;
-  private addToCartButton: HTMLElement;
+  private addToCartButton: HTMLButtonElement;
 
   constructor({ title, description, images, id }: ProductCardProps) {
     super();
@@ -73,7 +73,9 @@ export default class ProductCardView extends ViewBuilder {
   }
 
   private createAddToCartButton(id: string) {
-    const button = this.createElement("button", { classes: ["btn", "btn-primary"] });
+    const button: HTMLButtonElement = this.createElement("button", {
+      classes: ["btn", "btn-primary"],
+    });
     button.textContent = "Add to Cart";
     button.dataset.productId = id;
 
@@ -86,7 +88,12 @@ export default class ProductCardView extends ViewBuilder {
     }
   }
 
-  render(priceElement: HTMLElement) {
+  render(priceElement: HTMLElement, hasProduct: boolean) {
+    if (hasProduct) {
+      this.addToCartButton.disabled = true;
+    } else {
+      this.addToCartButton.disabled = false;
+    }
     this.card.append(this.imageElement, this.cardBody, this.addToCartButton);
     this.cardBody.append(this.titleElement, this.descriptionElement, priceElement);
 

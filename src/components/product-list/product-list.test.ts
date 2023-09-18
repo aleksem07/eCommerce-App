@@ -6,7 +6,7 @@ describe("ProductListComponent", () => {
     expect(instance).toBeInstanceOf(ProductListComponent);
   });
 
-  it("should render products", () => {
+  it("should render products", async () => {
     const instance = new ProductListComponent();
 
     const productListEl = instance.init([
@@ -42,7 +42,7 @@ describe("ProductListComponent", () => {
       },
     ]);
 
-    const productCards = productListEl.querySelectorAll(".col-12");
+    const productCards = (await productListEl).querySelectorAll(".col-12");
 
     expect(productCards).toHaveLength(3);
   });
