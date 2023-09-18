@@ -126,10 +126,13 @@ export default class CartListItemView extends ViewBuilder {
     });
   }
 
-  render(price: HTMLElement, totalPrice: HTMLElement): HTMLElement {
+  render(price: HTMLElement, totalPrice?: HTMLElement): HTMLElement {
     this.item.innerHTML = "";
     this.imageWrapper.append(this.imageElement);
-    this.priceWrapper.append(totalPrice);
+
+    if (totalPrice) {
+      this.priceWrapper.append(totalPrice);
+    }
     this.inputWrapper.append(this.quantityInputElement);
     this.buttonWrapper.append(this.deleteButton);
     this.headerElement.append(price);
