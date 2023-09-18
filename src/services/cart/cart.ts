@@ -114,6 +114,8 @@ export default class CartService extends ClientBuilderService {
         await this.addProductToCart(targetCartId, item.productId);
       }
 
+      localStorage.removeItem(ANON_CART_ID_LS);
+
       return await this.getCartById(targetCartId);
     }
 
