@@ -30,10 +30,12 @@ export default class CartPage {
   }
 
   async init() {
-    await this.fetchCart();
+    if (window.location.hash.includes("cart")) {
+      await this.fetchCart();
 
-    if (this.cartList && this.orderTotal) {
-      this.view.render(this.cartList.init(), this.orderTotal.init());
+      if (this.cartList && this.orderTotal) {
+        this.view.render(this.cartList.init(), this.orderTotal.init());
+      }
     }
   }
 }

@@ -21,7 +21,7 @@ export default class ProductListComponent {
     const productId = button.dataset.productId;
 
     if (productId) {
-      this.cartService.addToCart(productId);
+      await this.cartService.addToCart(productId);
     }
   }
 
