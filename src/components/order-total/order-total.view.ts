@@ -10,16 +10,18 @@ export default class OrderTotalView extends ViewBuilder {
   private shippingCost: HTMLElement;
   private tax: HTMLElement;
   private total: HTMLElement;
+  private discount: HTMLElement;
 
   private completeOrderButton: HTMLElement;
 
-  constructor(totalPrice: Price) {
+  constructor(totalPrice: Price, discount: number) {
     super();
     const totalCost = totalPrice.value;
     const PERCENT = 6;
     const SHIPPING_COSTS = totalCost === 0 ? 0 : 30;
     const TAX = parseFloat(((totalCost * PERCENT) / 100).toFixed(2));
     const total = parseFloat((totalCost + SHIPPING_COSTS + TAX).toFixed(2));
+
     this.element = this.createElement("div");
     this.costContainer = this.createElement("div", {
       classes: ["my-4", "p-4", "bg-light"],
@@ -31,6 +33,7 @@ export default class OrderTotalView extends ViewBuilder {
     this.calculationContainer = this.createElement("div", {
       classes: ["my-3", "py-3", "border-top", "border-bottom"],
     });
+    this.discount = this.createCost("Discount", discount || 0);
     this.subtotalCost = this.createCost("Subtotal", totalCost);
     this.shippingCost = this.createCost("Shipping costs", SHIPPING_COSTS);
     this.tax = this.createCost("Estimated sales tax", TAX);
@@ -42,7 +45,7 @@ export default class OrderTotalView extends ViewBuilder {
     this.completeOrderButton.textContent = "Complete order";
 
     this.costContainer.append(this.title, this.calculationContainer, this.total);
-    this.calculationContainer.append(this.subtotalCost, this.shippingCost, this.tax);
+    this.calculationContainer.append(this.subtotalCost, this.discount, this.shippingCost, this.tax);
 
     this.element.append(this.costContainer, this.completeOrderButton);
   }
