@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "target": "es2016",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@Components/*": ["src/components/*"],
+      "@Pages/*": ["src/pages/*"],
+      "@Services/*": ["src/services/*"],
+      "@State/*": ["src/state/*"],
+      "@Utils/*": ["src/utils/*"],
+      "@Interfaces/*": ["src/interfaces/*"],
+      "assets/*": ["assets/*"]
+    }
+  },
+  "exclude": ["node_modules"]
+}

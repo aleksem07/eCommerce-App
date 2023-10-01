@@ -1,0 +1,13 @@
+import {{pascalCase name}}View from "./{{dashCase name}}.view";
+
+export default class {{pascalCase name}}Page {
+  private view: {{pascalCase name}}View;
+
+  constructor() {
+    this.view = new {{pascalCase name}}View();
+  }
+
+  init() {
+    this.view.render();
+  }
+}

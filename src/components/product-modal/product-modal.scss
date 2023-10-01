@@ -1,0 +1,19 @@
+.modal-content {
+  .modal-body {
+    display: flex;
+  }
+
+  .swiper {
+    width: 100%;
+  }
+
+  .swiper-wrapper {
+    align-items: center;
+
+    .swiper-slide {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}

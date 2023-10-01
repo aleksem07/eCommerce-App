@@ -1,0 +1,17 @@
+{
+  "extends": [
+    "stylelint-config-standard"
+  ],
+  "plugins": ["stylelint-order", "stylelint-scss"],
+
+  "rules": {
+    "declaration-no-important": true,
+    "indentation": [2, {"ignore": ["inside-parens"]}],
+    "no-duplicate-selectors": true,
+    "selector-class-pattern": null,
+    "property-no-vendor-prefix": null,
+    "no-descending-specificity": null,
+    "no-empty-source": null,
+    "import-notation": "string"
+    }
+}
